@@ -1,0 +1,60 @@
+{
+  "name": "slp-realtime",
+  "version": "0.0.1",
+  "description": "Realtime slp parsing",
+  "license": "MIT",
+  "repository": "vinceau/slp-realtime",
+  "engines": {
+    "node": ">=6"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "jest --verbose",
+    "coverage": "yarn run test -- --coverage",
+    "postcoverage": "open-cli coverage/lcov-report/index.html",
+    "lint": "eslint \"src/**/*.ts\"",
+    "clean": "rimraf dist",
+    "prebuild": "yarn run clean",
+    "build": "rollup -c",
+    "watch": "rollup -cw",
+    "patch": "npm version patch && npm publish",
+    "minor": "npm version minor && npm publish",
+    "major": "npm version major && npm publish",
+    "prepublishOnly": "yarn run lint && yarn run test && yarn run build",
+    "postpublish": "git push origin master --follow-tags"
+  },
+  "jest": {
+    "testRegex": "/test/.*",
+    "testEnvironment": "node"
+  },
+  "keywords": [
+    "slp",
+    "slippi",
+    "realtime"
+  ],
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "moment": "^2.24.0",
+    "slp-parser-js": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/lodash": "^4.14.138",
+    "@types/node": "^12.7.3",
+    "@typescript-eslint/eslint-plugin": "^2.3.0",
+    "@typescript-eslint/parser": "^2.3.0",
+    "eslint": "^6.3.0",
+    "jest": "^24.9.0",
+    "open-cli": "^5.0.0",
+    "rimraf": "^3.0.0",
+    "rollup": "^1.20.3",
+    "rollup-plugin-typescript2": "^0.24.0",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.6.2"
+  }
+}
