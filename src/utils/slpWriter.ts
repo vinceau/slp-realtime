@@ -11,33 +11,32 @@ export interface SlpFileWriterOptions {
   consoleNick?: string;
 }
 
-export class SlpFileWriter {
+export class SlpFileWriter extends SlpStream {
   private folderPath: string;
   private consoleNick: string;
   private currentFile: SlpFile | null;
   private metadata: SlpFileMetadata;
-  private rawStream: SlpStream;
 
   public constructor(settings: SlpFileWriterOptions) {
+    super();
     this.folderPath = settings.folderPath;
     this.consoleNick = settings.consoleNick;
     this.metadata = {
       lastFrame: -124,
       players: {},
     };
-    this.rawStream = new SlpStream();
-    this.rawStream.on(SlpEvent.RAW_COMMAND, (command: Command, buffer: Uint8Array) => {
+    this.on(SlpEvent.RAW_COMMAND, (command: Command, buffer: Uint8Array) => {
       if (this.currentFile !== null) {
         this.currentFile.write(buffer);
       }
     })
-    this.rawStream.on(SlpEvent.POST_FRAME_UPDATE, (command: Command, payload: PostFrameUpdateType) => {
+    this.on(SlpEvent.POST_FRAME_UPDATE, (command: Command, payload: PostFrameUpdateType) => {
       this._handlePostFrameUpdate(command, payload);
     })
-    this.rawStream.on(SlpEvent.MESSAGE_SIZES, () => {
+    this.on(SlpEvent.MESSAGE_SIZES, () => {
       this._handleNewGame();
     })
-    this.rawStream.on(SlpEvent.GAME_END, () => {
+    this.on(SlpEvent.GAME_END, () => {
       this._handleEndGame();
     })
   }
@@ -45,10 +44,6 @@ export class SlpFileWriter {
   public updateSettings(settings: SlpFileWriterOptions): void {
     this.folderPath = settings.folderPath || this.folderPath;
     this.consoleNick = settings.consoleNick || this.consoleNick;
-  }
-
-  public handleData(newData: Uint8Array): void {
-    this.rawStream.write(newData);
   }
 
   private _handleNewGame(): void {
