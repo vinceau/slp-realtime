@@ -439,6 +439,14 @@
     lodash.unescape "4.0.1"
     semver "^6.3.0"
 
+"@vinceau/slp-wii-connect@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@vinceau/slp-wii-connect/-/slp-wii-connect-0.0.1.tgz#43018054a02dd02653e37d21552cac45b280f69f"
+  integrity sha512-7LvBiFl7xhGXbg03zhKaJRwbAi6b2f3l07HX9W/i2qqH4yZEb/WTUUyK6dW7t+izZHZWc+ljpTZuz/5W8hqhGQ==
+  dependencies:
+    "@shelacek/ubjson" "^1.0.1"
+    lodash "^4.17.11"
+
 abab@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.1.tgz#3fa17797032b71410ec372e11668f4b4ffc86a82"

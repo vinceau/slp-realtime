@@ -105,9 +105,11 @@ export class SlpStream extends Writable implements EventEmitter {
 
     switch (command) {
     case Command.GAME_START:
+      console.log("slp stream game start");
       this.emit(SlpEvent.GAME_START, command, parsedPayload);
       break;
     case Command.GAME_END:
+      console.log("slp stream game end");
       this.emit(SlpEvent.GAME_END, command, parsedPayload);
       break;
     case Command.PRE_FRAME_UPDATE:
