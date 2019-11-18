@@ -7,11 +7,13 @@ import { SlpStream, SlpEvent } from "./slpStream";
 import { Command, PostFrameUpdateType } from "slp-parser-js";
 
 export interface SlpFileWriterOptions {
+  outputFiles?: boolean;
   folderPath?: string;
   consoleNick?: string;
 }
 
 export class SlpFileWriter extends SlpStream {
+  private writeFiles: boolean;
   private folderPath: string;
   private consoleNick: string;
   private currentFile: SlpFile | null;
@@ -19,6 +21,7 @@ export class SlpFileWriter extends SlpStream {
 
   public constructor(settings: SlpFileWriterOptions) {
     super();
+    this.writeFiles = Boolean(settings.outputFiles);
     this.folderPath = settings.folderPath;
     this.consoleNick = settings.consoleNick;
     this.metadata = {
@@ -26,7 +29,7 @@ export class SlpFileWriter extends SlpStream {
       players: {},
     };
     this.on(SlpEvent.RAW_COMMAND, (command: Command, buffer: Uint8Array) => {
-      if (this.currentFile !== null) {
+      if (this.currentFile) {
         this.currentFile.write(buffer);
       }
     })
@@ -47,9 +50,11 @@ export class SlpFileWriter extends SlpStream {
   }
 
   private _handleNewGame(): void {
-    const filePath = getNewFilePath(this.folderPath, moment());
-    this.currentFile = new SlpFile(filePath);
-    console.log(`Creating new file at: ${filePath}`);
+    if (this.writeFiles) {
+      const filePath = getNewFilePath(this.folderPath, moment());
+      this.currentFile = new SlpFile(filePath);
+      console.log(`Creating new file at: ${filePath}`);
+    }
   }
 
   private _handlePostFrameUpdate(command: number, payload: PostFrameUpdateType): void {
@@ -79,11 +84,13 @@ export class SlpFileWriter extends SlpStream {
 
   private _handleEndGame(): void {
     // End the stream
-    this.currentFile.setMetadata(this.metadata);
-    this.currentFile.end();
-    console.log(`Finished writing file: ${this.currentFile.path()}`);
-    // Clear current file
-    this.currentFile = null;
+    if (this.currentFile) {
+      this.currentFile.setMetadata(this.metadata);
+      this.currentFile.end();
+      console.log(`Finished writing file: ${this.currentFile.path()}`);
+      // Clear current file
+      this.currentFile = null;
+    }
   }
 
 }
