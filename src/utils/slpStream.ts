@@ -1,4 +1,3 @@
-import EventEmitter from "events";
 import { Writable } from "stream";
 
 import { Command, parseMessage } from "slp-parser-js";
@@ -15,7 +14,7 @@ export enum SlpEvent {
 
 const NETWORK_MESSAGE = "HELO\0";
 
-export class SlpStream extends Writable implements EventEmitter {
+export class SlpStream extends Writable {
   private payloadSizes = new Map<Command, number>();
   private previousBuffer: Uint8Array = Buffer.from([]);
 
