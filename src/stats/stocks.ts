@@ -1,6 +1,6 @@
-// @flow
 import _ from 'lodash';
 import EventEmitter from "events";
+import StrictEventEmitter from 'strict-event-emitter-types';
 
 import { FrameEntryType, FramesType, isDead, didLoseStock, PlayerIndexedType, StockType, StatComputer } from 'slp-parser-js';
 
@@ -8,7 +8,12 @@ interface StockState {
   stock: StockType | null | undefined;
 }
 
-export class StockComputer extends EventEmitter implements StatComputer<StockType[]> {
+type StockEventEmitter = StrictEventEmitter<EventEmitter, {
+  spawn: StockType;
+  death: StockType;
+}>;
+
+export class StockComputer extends (EventEmitter as { new(): StockEventEmitter }) implements StatComputer<StockType[]> {
   private state = new Map<PlayerIndexedType, StockState>();
   private playerPermutations = new Array<PlayerIndexedType>();
   private stocks = new Array<StockType>();
