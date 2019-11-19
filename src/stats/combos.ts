@@ -19,7 +19,7 @@ interface ComboState {
   event: ComboEvent | null;
 }
 
-interface ComboComputerEvents {
+export interface ComboComputerEvents {
   comboStart: ComboType;
   comboExtend: ComboType;
   comboEnd: ComboType;

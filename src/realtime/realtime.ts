@@ -1,11 +1,13 @@
 /* eslint-disable no-param-reassign */
 import EventEmitter from "events";
+import StrictEventEmitter from 'strict-event-emitter-types';
+
 import { SlpStream, SlpEvent } from '../utils/slpStream';
-import { SlpParser, GameStartType, GameEndType, Command, PostFrameUpdateType, Stats as SlippiStats, StatComputer } from "slp-parser-js";
+import { SlpParser, GameStartType, GameEndType, Command, PostFrameUpdateType, Stats as SlippiStats } from "slp-parser-js";
 import { SlpFileWriter } from "../utils/slpWriter";
 import { ConsoleConnection } from "@vinceau/slp-wii-connect"
-import { StockComputer } from "../stats/stocks";
-import { ComboComputer } from "../stats/combos";
+import { StockComputer, StockComputerEvents } from "../stats/stocks";
+import { ComboComputer, ComboComputerEvents } from "../stats/combos";
 
 export interface SlippiRealtimeOptions {
   address: string;
@@ -14,10 +16,17 @@ export interface SlippiRealtimeOptions {
   writeSlpFileLocation: string;
 }
 
+interface SlippiRealtimeEvents extends StockComputerEvents, ComboComputerEvents {
+  gameStart: GameStartType;
+  gameEnd: GameEndType;
+}
+
+type SlippiRealtimeEventEmitter = { new(): StrictEventEmitter<EventEmitter, SlippiRealtimeEvents> };
+
 /**
  * Slippi Game class that wraps a read stream
  */
-export class SlippiRealtime extends EventEmitter {
+export class SlippiRealtime extends (EventEmitter as SlippiRealtimeEventEmitter) {
   private stream: SlpStream;
   private parser: SlpParser;
   private connection: ConsoleConnection;
@@ -41,7 +50,7 @@ export class SlippiRealtime extends EventEmitter {
     this.stream.on(SlpEvent.GAME_START, (command: Command, payload: GameStartType) => {
       this.parser = this._setupStats();
       this.parser.handleGameStart(payload);
-      this.emit("gameStart");
+      this.emit("gameStart", payload);
     });
 
     this.stream.on(SlpEvent.PRE_FRAME_UPDATE, (command: Command, payload: PostFrameUpdateType) => {
@@ -55,7 +64,7 @@ export class SlippiRealtime extends EventEmitter {
 
     this.stream.on(SlpEvent.GAME_END, (command: Command, payload: GameEndType) => {
       this.parser.handleGameEnd(payload);
-      this.emit("gameEnd");
+      this.emit("gameEnd", payload);
     });
   }
 
@@ -64,21 +73,21 @@ export class SlippiRealtime extends EventEmitter {
       processOnTheFly: true,
     });
     const stock = new StockComputer();
-    stock.on('spawn', () => {
-      this.emit('spawn');
+    stock.on('spawn', (s) => {
+      this.emit('spawn', s);
     });
-    stock.on('death', () => {
-      this.emit('death');
+    stock.on('death', (s) => {
+      this.emit('death', s);
     });
     const combo = new ComboComputer();
-    combo.on("comboStart", () => {
-      this.emit("comboStart");
+    combo.on("comboStart", (c) => {
+      this.emit("comboStart", c);
     });
-    combo.on("comboExtend", () => {
-      this.emit("comboExtend");
+    combo.on("comboExtend", (c) => {
+      this.emit("comboExtend", c);
     });
-    combo.on("comboEnd", () => {
-      this.emit("comboEnd");
+    combo.on("comboEnd", (c) => {
+      this.emit("comboEnd", c);
     });
     s.registerAll([
       stock,

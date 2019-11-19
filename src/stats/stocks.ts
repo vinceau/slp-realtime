@@ -8,7 +8,7 @@ interface StockState {
   stock: StockType | null | undefined;
 }
 
-interface StockComputerEvents {
+export interface StockComputerEvents {
   spawn: StockType;
   death: StockType;
 };
