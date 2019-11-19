@@ -8,12 +8,14 @@ interface StockState {
   stock: StockType | null | undefined;
 }
 
-type StockEventEmitter = StrictEventEmitter<EventEmitter, {
+interface StockComputerEvents {
   spawn: StockType;
   death: StockType;
-}>;
+};
 
-export class StockComputer extends (EventEmitter as { new(): StockEventEmitter }) implements StatComputer<StockType[]> {
+type StockComputeEventEmitter = { new(): StrictEventEmitter<EventEmitter, StockComputerEvents> };
+
+export class StockComputer extends (EventEmitter as StockComputeEventEmitter) implements StatComputer<StockType[]> {
   private state = new Map<PlayerIndexedType, StockState>();
   private playerPermutations = new Array<PlayerIndexedType>();
   private stocks = new Array<StockType>();

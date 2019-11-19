@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import EventEmitter from "events";
+import StrictEventEmitter from 'strict-event-emitter-types';
 
 import { FrameEntryType, FramesType, MoveLandedType, ComboType, PlayerIndexedType, PostFrameUpdateType,
   isDamaged, isGrabbed, calcDamageTaken, isTeching, didLoseStock, Timers, isDown, isDead, StatComputer } from 'slp-parser-js';
@@ -18,7 +19,15 @@ interface ComboState {
   event: ComboEvent | null;
 }
 
-export class ComboComputer extends EventEmitter implements StatComputer<ComboType[]> {
+interface ComboComputerEvents {
+  comboStart: ComboType;
+  comboExtend: ComboType;
+  comboEnd: ComboType;
+};
+
+type ComboComputeEventEmitter = { new(): StrictEventEmitter<EventEmitter, ComboComputerEvents> };
+
+export class ComboComputer extends (EventEmitter as ComboComputeEventEmitter) implements StatComputer<ComboType[]> {
   private playerPermutations = new Array<PlayerIndexedType>();
   private state = new Map<PlayerIndexedType, ComboState>();
   private combos = new Array<ComboType>();
