@@ -10,8 +10,6 @@ import { StockComputer, StockComputerEvents } from "../stats/stocks";
 import { ComboComputer, ComboComputerEvents } from "../stats/combos";
 
 export interface SlippiRealtimeOptions {
-  address: string;
-  port: number;
   writeSlpFiles: boolean;
   writeSlpFileLocation: string;
 }
@@ -30,23 +28,21 @@ export class SlippiRealtime extends (EventEmitter as SlippiRealtimeEventEmitter)
   private stream: SlpStream;
   private parser: SlpParser;
   private connection: ConsoleConnection;
-  private options: SlippiRealtimeOptions;
 
   public constructor(options: SlippiRealtimeOptions) {
     super();
-    this.options = options;
     this.stream = new SlpFileWriter({
       outputFiles: options.writeSlpFiles,
       folderPath: options.writeSlpFileLocation,
     });
-    this.connection = new ConsoleConnection(this.options.address, this.options.port);
+  }
+
+  public start(address: string, port: number): void {
+    this.connection = new ConsoleConnection(address, port);
     this.connection.connect();
     this.connection.on("data", (data) => {
       this.stream.write(data);
     });
-  }
-
-  public start(): void {
     this.stream.on(SlpEvent.GAME_START, (command: Command, payload: GameStartType) => {
       this.parser = this._setupStats();
       this.parser.handleGameStart(payload);
