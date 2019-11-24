@@ -10,6 +10,8 @@ import { StockComputer, StockComputerEvents } from "../stats/stocks";
 import { ComboComputer, ComboComputerEvents } from "../stats/combos";
 import { promiseTimeout } from "../utils/sleep";
 
+export { ConnectionStatus } from "@vinceau/slp-wii-connect";
+
 const SLIPPI_CONNECTION_TIMEOUT_MS = 5000;
 
 export interface SlippiRealtimeOptions {
@@ -20,6 +22,7 @@ export interface SlippiRealtimeOptions {
 interface SlippiRealtimeEvents extends StockComputerEvents, ComboComputerEvents {
   gameStart: GameStartType;
   gameEnd: GameEndType;
+  statusChange: ConnectionStatus;
 }
 
 type SlippiRealtimeEventEmitter = { new(): StrictEventEmitter<EventEmitter, SlippiRealtimeEvents> };
@@ -68,6 +71,9 @@ export class SlippiRealtime extends (EventEmitter as SlippiRealtimeEventEmitter)
           this.stream.write(data);
         });
         this.connection.on("statusChange", (status: ConnectionStatus) => {
+          this.emit("statusChange", status);
+        });
+        this.connection.once("statusChange", (status: ConnectionStatus) => {
           switch (status) {
           case ConnectionStatus.CONNECTED:
             resolve(true);
