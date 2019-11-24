@@ -5,9 +5,12 @@ import StrictEventEmitter from 'strict-event-emitter-types';
 import { SlpStream, SlpEvent } from '../utils/slpStream';
 import { SlpParser, GameStartType, GameEndType, Command, PostFrameUpdateType, Stats as SlippiStats } from "slp-parser-js";
 import { SlpFileWriter } from "../utils/slpWriter";
-import { ConsoleConnection } from "@vinceau/slp-wii-connect"
+import { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect"
 import { StockComputer, StockComputerEvents } from "../stats/stocks";
 import { ComboComputer, ComboComputerEvents } from "../stats/combos";
+import { promiseTimeout } from "../utils/sleep";
+
+const SLIPPI_CONNECTION_TIMEOUT_MS = 5000;
 
 export interface SlippiRealtimeOptions {
   writeSlpFiles: boolean;
@@ -35,14 +38,6 @@ export class SlippiRealtime extends (EventEmitter as SlippiRealtimeEventEmitter)
       outputFiles: options.writeSlpFiles,
       folderPath: options.writeSlpFileLocation,
     });
-  }
-
-  public start(address: string, port: number): void {
-    this.connection = new ConsoleConnection(address, port);
-    this.connection.connect();
-    this.connection.on("data", (data) => {
-      this.stream.write(data);
-    });
     this.stream.on(SlpEvent.GAME_START, (command: Command, payload: GameStartType) => {
       this.parser = this._setupStats();
       this.parser.handleGameStart(payload);
@@ -62,6 +57,31 @@ export class SlippiRealtime extends (EventEmitter as SlippiRealtimeEventEmitter)
       this.parser.handleGameEnd(payload);
       this.emit("gameEnd", payload);
     });
+  }
+
+  public async start(address: string, port: number): Promise<boolean> {
+    const assertConnected = new Promise<boolean>((resolve, reject): void => {
+      try {
+        this.connection = new ConsoleConnection(address, port);
+        this.connection.connect(SLIPPI_CONNECTION_TIMEOUT_MS);
+        this.connection.on("data", (data) => {
+          this.stream.write(data);
+        });
+        this.connection.on("statusChange", (status: ConnectionStatus) => {
+          switch (status) {
+          case ConnectionStatus.CONNECTED:
+            resolve(true);
+            break;
+          case ConnectionStatus.DISCONNECTED:
+            reject(`Failed to connect to: ${address}:${port}`);
+            break;
+          }
+        });
+      } catch (err) {
+        reject(err);
+      }
+    });
+    return promiseTimeout<boolean>(SLIPPI_CONNECTION_TIMEOUT_MS, assertConnected);
   }
 
   private _setupStats(): SlpParser {
