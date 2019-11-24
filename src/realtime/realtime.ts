@@ -84,6 +84,10 @@ export class SlippiRealtime extends (EventEmitter as SlippiRealtimeEventEmitter)
     return promiseTimeout<boolean>(SLIPPI_CONNECTION_TIMEOUT_MS, assertConnected);
   }
 
+  public getConnectionStatus(): ConnectionStatus {
+    return this.connection.getStatus();
+  }
+
   private _setupStats(): SlpParser {
     const s = new SlippiStats({
       processOnTheFly: true,
