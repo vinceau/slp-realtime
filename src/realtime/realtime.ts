@@ -91,7 +91,10 @@ export class SlippiRealtime extends (EventEmitter as SlippiRealtimeEventEmitter)
   }
 
   public getConnectionStatus(): ConnectionStatus {
-    return this.connection.getStatus();
+    if (this.connection) {
+      return this.connection.getStatus();
+    }
+    return ConnectionStatus.DISCONNECTED;
   }
 
   private _setupStats(): SlpParser {
