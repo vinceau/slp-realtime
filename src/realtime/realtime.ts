@@ -33,7 +33,7 @@ type SlippiRealtimeEventEmitter = { new(): StrictEventEmitter<EventEmitter, Slip
 export class SlippiRealtime extends (EventEmitter as SlippiRealtimeEventEmitter) {
   private stream: SlpStream;
   private parser: SlpParser;
-  private connection: ConsoleConnection;
+  private connection: ConsoleConnection | null = null;
 
   public constructor(options: SlippiRealtimeOptions) {
     super();
@@ -63,6 +63,11 @@ export class SlippiRealtime extends (EventEmitter as SlippiRealtimeEventEmitter)
   }
 
   public async start(address: string, port: number): Promise<boolean> {
+    if (this.connection !== null) {
+      this.connection.disconnect();
+      this.connection = null;
+    }
+
     const assertConnected = new Promise<boolean>((resolve, reject): void => {
       try {
         this.connection = new ConsoleConnection(address, port);
