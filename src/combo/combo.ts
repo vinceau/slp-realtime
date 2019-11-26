@@ -10,7 +10,7 @@ export interface ComboFilterOptions {
   excludeChainGrabs: boolean;
   excludeWobbles: boolean;
   largeHitThreshold: number; // The proportion of damage that a hit has to do to be considered a large hit
-  wobbleTreshold: number; // The number of pummels before it's considered a wobble
+  wobbleThreshold: number; // The number of pummels before it's considered a wobble
   chainGrabThreshold: number; // proportion of up throw / pummels to other moves to be considered a chain grab
   perCharacterMinComboPercent: { [characterId: number]: number };
 }
