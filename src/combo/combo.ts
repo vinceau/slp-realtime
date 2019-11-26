@@ -1,5 +1,6 @@
 import { Character } from "../melee/characters";
 import { ComboType, GameStartType } from "slp-parser-js";
+import { MatchesPlayerName, ExcludesChainGrabs, ExcludesWobbles, SatisfiesMinComboPercent, ExcludesLargeSingleHit, ExcludesCPUs, IsOneVsOne } from "./criteria";
 
 export interface ComboFilterOptions {
   chainGrabbers: Character[];
@@ -30,6 +31,16 @@ export class ComboFilter {
 
   public constructor(options: ComboFilterOptions) {
     this.options = options;
+    this.criteria = new Array<Criteria>();
+    this.criteria.push(
+      new MatchesPlayerName(),
+      new ExcludesChainGrabs(),
+      new ExcludesWobbles(),
+      new SatisfiesMinComboPercent(),
+      new ExcludesLargeSingleHit(),
+      new ExcludesCPUs(),
+      new IsOneVsOne(),
+    );
   }
 
   public isCombo(combo: ComboType, settings: GameStartType): boolean {
