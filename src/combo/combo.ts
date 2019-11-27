@@ -19,7 +19,7 @@ export interface Criteria {
   check: (combo: ComboType, settings: GameStartType, options: ComboFilterSettings) => boolean;
 }
 
-const defaultOptions: ComboFilterSettings = {
+const defaultSettings: ComboFilterSettings = {
   chainGrabbers: [Character.MARTH, Character.PEACH, Character.PIKACHU, Character.DR_MARIO],
   nameTags: [],
   minComboPercent: 60,
@@ -35,11 +35,11 @@ const defaultOptions: ComboFilterSettings = {
 }
 
 export class ComboFilter {
-  private options: ComboFilterSettings;
+  private settings: ComboFilterSettings;
   private criteria: Criteria[];
 
   public constructor(options?: Partial<ComboFilterSettings>) {
-    this.options = Object.assign({}, defaultOptions, options);
+    this.settings = Object.assign({}, defaultSettings, options);
     this.criteria = new Array<Criteria>();
     this.criteria.push(
       new MatchesPlayerName(),
@@ -53,21 +53,21 @@ export class ComboFilter {
   }
 
   public updateSettings(options: Partial<ComboFilterSettings>): void {
-    this.options = Object.assign({}, this.options, options);
+    this.settings = Object.assign({}, this.settings, options);
   }
 
   public getSettings(): ComboFilterSettings {
-    return this.options;
+    return this.settings;
   }
 
   public resetSettings(): void {
-    this.options = Object.assign({}, defaultOptions);
+    this.settings = Object.assign({}, defaultSettings);
   }
 
   public isCombo(combo: ComboType, settings: GameStartType): boolean {
     // Check if we satisfy all the criteria
     this.criteria.forEach((c) => {
-      if (!c.check(combo, settings, this.options)) {
+      if (!c.check(combo, settings, this.settings)) {
         return false;
       }
     });
