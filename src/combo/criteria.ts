@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import { Criteria, ComboFilterSettings } from "./combo";
+import { Criteria, ComboFilterSettings } from "./filter";
 import { ComboType, GameStartType } from "slp-parser-js";
 import { MoveID } from "../melee/moves";
 import { Character } from "../melee/characters";
