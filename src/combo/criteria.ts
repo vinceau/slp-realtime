@@ -67,7 +67,7 @@ export class ExcludesWobbles implements Criteria {
     });
     wobbles.push(pummels);
     const wobbled = _.some(wobbles, (pummelCount) => pummelCount > options.wobbleThreshold);
-    // Only continue processing of the combo is not a wobble
+    // Only continue processing if the combo is not a wobble
     return !wobbled;
   }
 }
