@@ -1,12 +1,12 @@
 import _ from "lodash";
 
-import { Criteria, ComboFilterOptions } from "./combo";
+import { Criteria, ComboFilterSettings } from "./combo";
 import { ComboType, GameStartType } from "slp-parser-js";
 import { MoveID } from "../melee/moves";
 import { Character } from "../melee/characters";
 
 export class MatchesPlayerName implements Criteria {
-  public check(combo: ComboType, settings: GameStartType, options: ComboFilterOptions): boolean {
+  public check(combo: ComboType, settings: GameStartType, options: ComboFilterSettings): boolean {
     if (options.nameTags.length === 0) {
       return true;
     }
@@ -25,7 +25,7 @@ export class MatchesPlayerName implements Criteria {
 }
 
 export class ExcludesChainGrabs implements Criteria {
-  public check(combo: ComboType, settings: GameStartType, options: ComboFilterOptions): boolean {
+  public check(combo: ComboType, settings: GameStartType, options: ComboFilterSettings): boolean {
     if (!options.excludeChainGrabs) {
       return true;
     }
@@ -44,7 +44,7 @@ export class ExcludesChainGrabs implements Criteria {
 }
 
 export class ExcludesWobbles implements Criteria {
-  public check(combo: ComboType, settings: GameStartType, options: ComboFilterOptions): boolean {
+  public check(combo: ComboType, settings: GameStartType, options: ComboFilterSettings): boolean {
     if (!options.excludeWobbles) {
       return true;
     }
@@ -73,7 +73,7 @@ export class ExcludesWobbles implements Criteria {
 }
 
 export class SatisfiesMinComboPercent implements Criteria {
-  public check(combo: ComboType, settings: GameStartType, options: ComboFilterOptions): boolean {
+  public check(combo: ComboType, settings: GameStartType, options: ComboFilterSettings): boolean {
     const player = _.find(settings.players, (player) => player.playerIndex === combo.playerIndex);
 
     const minComboPercent = options.perCharacterMinComboPercent[player.characterId] || options.minComboPercent;
@@ -84,7 +84,7 @@ export class SatisfiesMinComboPercent implements Criteria {
 }
 
 export class ExcludesLargeSingleHit implements Criteria {
-  public check(combo: ComboType, settings: GameStartType, options: ComboFilterOptions): boolean {
+  public check(combo: ComboType, settings: GameStartType, options: ComboFilterSettings): boolean {
     const totalDmg = _.sumBy(combo.moves, ({ damage }) => damage);
     const largeSingleHit = _.some(combo.moves, ({ damage }) => damage / totalDmg >= options.largeHitThreshold);
     return !largeSingleHit;

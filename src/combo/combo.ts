@@ -2,7 +2,7 @@ import { Character } from "../melee/characters";
 import { ComboType, GameStartType } from "slp-parser-js";
 import { MatchesPlayerName, ExcludesChainGrabs, ExcludesWobbles, SatisfiesMinComboPercent, ExcludesLargeSingleHit, ExcludesCPUs, IsOneVsOne } from "./criteria";
 
-export interface ComboFilterOptions {
+export interface ComboFilterSettings {
   chainGrabbers: Character[];
   nameTags: string[];
   minComboPercent: number;
@@ -16,21 +16,30 @@ export interface ComboFilterOptions {
 }
 
 export interface Criteria {
-  check: (combo: ComboType, settings: GameStartType, options: ComboFilterOptions) => boolean;
+  check: (combo: ComboType, settings: GameStartType, options: ComboFilterSettings) => boolean;
 }
 
-
-// const largeHitThreshold = 0.8;
-// const wobbleThreshold = 8;
-// const chainGrabThreshold = 0.8;
-// const chainGrabbers = [Character.MARTH, Character.PEACH, Character.PIKACHU, Character.DR_MARIO];
+const defaultOptions: ComboFilterSettings = {
+  chainGrabbers: [Character.MARTH, Character.PEACH, Character.PIKACHU, Character.DR_MARIO],
+  nameTags: [],
+  minComboPercent: 60,
+  excludeCPUs: true,
+  excludeChainGrabs: true,
+  excludeWobbles: true,
+  largeHitThreshold: 0.8,
+  wobbleThreshold: 8,
+  chainGrabThreshold: 0.8,
+  perCharacterMinComboPercent: {
+    [Character.JIGGLYPUFF]: 85,
+  },
+}
 
 export class ComboFilter {
-  private options: ComboFilterOptions;
+  private options: ComboFilterSettings;
   private criteria: Criteria[];
 
-  public constructor(options: ComboFilterOptions) {
-    this.options = options;
+  public constructor(options?: Partial<ComboFilterSettings>) {
+    this.options = Object.assign({}, defaultOptions, options);
     this.criteria = new Array<Criteria>();
     this.criteria.push(
       new MatchesPlayerName(),
@@ -41,6 +50,18 @@ export class ComboFilter {
       new ExcludesCPUs(),
       new IsOneVsOne(),
     );
+  }
+
+  public updateSettings(options: Partial<ComboFilterSettings>): void {
+    this.options = Object.assign({}, this.options, options);
+  }
+
+  public getSettings(): ComboFilterSettings {
+    return this.options;
+  }
+
+  public resetSettings(): void {
+    this.options = Object.assign({}, defaultOptions);
   }
 
   public isCombo(combo: ComboType, settings: GameStartType): boolean {
