@@ -43,6 +43,7 @@ transitions to -> upon what action
 interface TransitionDefinition {
   transitions: State[];
   from: string;
+  negate?: boolean;
 }
 
 const INITIAL_STATE = "initial";
@@ -84,7 +85,7 @@ export class TrackPlayerAction implements PlayerActionEvent {
       const playerFrame = frame.players[index.playerIndex].post;
       const currentAnimation = playerFrame.actionStateId;
       for (const nextState in this.stateActions) {
-        const { from, transitions } = this.stateActions[nextState];
+        const { from, transitions, negate } = this.stateActions[nextState];
 
         // Find the transitions for the current state
         if (state !== from) {
@@ -92,7 +93,12 @@ export class TrackPlayerAction implements PlayerActionEvent {
         }
 
         // Check if we can transition based off the current animation
-        if (transitions.includes(currentAnimation)) {
+        let canTransition = transitions.includes(currentAnimation);
+        if (negate) {
+          canTransition = !canTransition;
+        }
+
+        if (canTransition) {
           // We can successfully transition into the next state
           if (nextState !== FINAL_STATE) {
             // proceed to the next state
