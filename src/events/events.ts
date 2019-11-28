@@ -20,11 +20,28 @@ state1: [possible player action states]
 transitions to -> upon what action
 
 
+// start ->
 {
-    state1: {
-        transitions: [State.DASH], // any of these states will take us from the initial state to state1
-        from: "initial",
-    }
+    initial: [
+        {
+            states: [State.TURN],
+            to: "state2"
+        },
+        {
+            states: [State.DASH],
+            to: "state3"
+        }
+    ],
+    state1: [
+        {
+            transitions: [State.DASH], // any of these states will take us from the initial state to state1
+            from: "initial",
+        },
+        {
+            transitions: [State.DASH], // any of these states will take us from the initial state to state1
+            from: "state2",
+        }
+    ],
     state2: {
         transitions: [State.TURN], // any of these states will take us from the initial state to state1
         from: "state1",
@@ -41,16 +58,16 @@ transitions to -> upon what action
 */
 
 interface TransitionDefinition {
-  transitions: State[];
-  from: string;
+  states: State[];
+  to: string;
   negate?: boolean;
 }
 
 const INITIAL_STATE = "initial";
 const FINAL_STATE = "final";
 
-interface ActionDefinition {
-  [state: string]: TransitionDefinition;
+interface ActionStateDefinition {
+  [fromState: string]: TransitionDefinition[];
 }
 
 interface PlayerActionEvent {
@@ -70,14 +87,14 @@ const defaultActionSettings: ActionSettings = {
 
 export class TrackPlayerAction implements PlayerActionEvent {
   private state: Map<PlayerIndexedType, string>;
-  private stateActions: ActionDefinition;
+  private actionStates: ActionStateDefinition;
   private playerPermutations = new Array<PlayerIndexedType>();
   private settings: ActionSettings;
   private callback: () => void;
 
-  public constructor(stateActions: ActionDefinition, callback: () => void, options?: Partial<ActionSettings>) {
+  public constructor(stateActions: ActionStateDefinition, callback: () => void, options?: Partial<ActionSettings>) {
     this.state = new Map<PlayerIndexedType, string>();
-    this.stateActions = stateActions;
+    this.actionStates = stateActions;
     this.settings = Object.assign({}, defaultActionSettings, options);
     this.callback = callback;
   }
@@ -94,25 +111,21 @@ export class TrackPlayerAction implements PlayerActionEvent {
       const state = this.state.get(index);
       const playerFrame = frame.players[index.playerIndex].post;
       const currentAnimation = playerFrame.actionStateId;
-      for (const nextState in this.stateActions) {
-        const { from, transitions, negate } = this.stateActions[nextState];
-
-        // Find the transitions for the current state
-        if (state !== from) {
-          continue;
-        }
+      const transitions = this.actionStates[state] || [];
+      for (const transition of transitions) {
+        const { to, states, negate } = transition;
 
         // Check if we can transition based off the current animation
-        let canTransition = transitions.includes(currentAnimation);
+        let canTransition = states.includes(currentAnimation);
         if (negate) {
           canTransition = !canTransition;
         }
 
         if (canTransition) {
           // We can successfully transition into the next state
-          if (nextState !== FINAL_STATE) {
+          if (to !== FINAL_STATE) {
             // proceed to the next state
-            this.state.set(index, nextState);
+            this.state.set(index, to);
             return;
           }
 
