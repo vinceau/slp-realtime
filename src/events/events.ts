@@ -58,18 +58,28 @@ interface PlayerActionEvent {
   processFrame(newFrame: FrameEntryType, allFrames: FramesType): void;
 }
 
+interface ActionSettings {
+  resetToState: string;
+  resetOnNoTransition: boolean;
+}
+
+const defaultActionSettings: ActionSettings = {
+  resetToState: INITIAL_STATE,
+  resetOnNoTransition: true,
+};
+
 export class TrackPlayerAction implements PlayerActionEvent {
   private state: Map<PlayerIndexedType, string>;
   private stateActions: ActionDefinition;
   private playerPermutations = new Array<PlayerIndexedType>();
-  private resetToState: string;
+  private settings: ActionSettings;
   private callback: () => void;
 
-  public constructor(stateActions: ActionDefinition, callback: () => void, resetToState = INITIAL_STATE) {
+  public constructor(stateActions: ActionDefinition, callback: () => void, options?: Partial<ActionSettings>) {
     this.state = new Map<PlayerIndexedType, string>();
     this.stateActions = stateActions;
+    this.settings = Object.assign({}, defaultActionSettings, options);
     this.callback = callback;
-    this.resetToState = resetToState;
   }
 
   public setPlayerPermutations(indices: PlayerIndexedType[]): void {
@@ -109,14 +119,16 @@ export class TrackPlayerAction implements PlayerActionEvent {
           // We are at the final state so trigger callback and exit loop
           this.callback();
           // Reset back to the specified state
-          this.state.set(index, this.resetToState);
+          this.state.set(index, this.settings.resetToState);
           return;
         }
         break;
       }
 
-      // Reset back to the initial state.
-      this.state.set(index, INITIAL_STATE);
+      if (this.settings.resetOnNoTransition) {
+        // Reset back to the initial state.
+        this.state.set(index, INITIAL_STATE);
+      }
     });
   }
 }
