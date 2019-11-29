@@ -74,9 +74,9 @@ export class TrackPlayerAction {
   private state: string;
   private actionStates: ActionStateDefinition;
 
-  public constructor(stateActions: ActionStateDefinition) {
-    this.state = INITIAL_STATE;
+  public constructor(stateActions: ActionStateDefinition, initialState?: string) {
     this.actionStates = stateActions;
+    this.reset(initialState);
   }
 
   public step(action: State): boolean {
