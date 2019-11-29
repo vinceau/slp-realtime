@@ -97,8 +97,8 @@ export class TrackPlayerAction {
         }
         // proceed to the next state
         this.state = to;
+        break;
       }
-      break;
     }
     return false;
   }
