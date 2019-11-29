@@ -57,11 +57,18 @@ transitions to -> upon what action
 
 */
 
-interface TransitionDefinition {
+interface StateTransitionDefinition {
   states: State[];
   to: string;
   negate?: boolean;
 }
+
+interface TrackTransitionDefinition {
+  to: string;
+  tracker: TrackPlayerAction;
+}
+
+type TransitionDefinition = StateTransitionDefinition | TrackTransitionDefinition;
 
 const INITIAL_STATE = "initial";
 const FINAL_STATE = "final";
@@ -82,12 +89,19 @@ export class TrackPlayerAction {
   public step(action: State): boolean {
     const transitions = this.actionStates[this.state] || [];
     for (const transition of transitions) {
-      const { to, states, negate } = transition;
+      let canTransition: boolean;
+      const { to } = transition;
 
-      // Check if we can transition based off the current animation
-      let canTransition = states.includes(action);
-      if (negate) {
-        canTransition = !canTransition;
+      if ("states" in transition) {
+        const { states, negate } = transition;
+        // Check if we can transition based off the current animation
+        let canTransition = states.includes(action);
+        if (negate) {
+          canTransition = !canTransition;
+        }
+      } else {
+        const { tracker } = transition;
+        canTransition = tracker.step(action);
       }
 
       if (canTransition) {
