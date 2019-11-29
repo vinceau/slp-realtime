@@ -1,4 +1,4 @@
-import { PlayerIndexedType, FrameEntryType, FramesType, State } from "slp-parser-js";
+import { State } from "slp-parser-js";
 
 /*
 We need a way to fire an event when a sequence of player animations occur.
@@ -70,78 +70,45 @@ interface ActionStateDefinition {
   [fromState: string]: TransitionDefinition[];
 }
 
-interface PlayerActionEvent {
-  setPlayerPermutations(indices: PlayerIndexedType[]): void;
-  processFrame(newFrame: FrameEntryType, allFrames: FramesType): void;
-}
-
-interface ActionSettings {
-  resetToState: string;
-  resetOnNoTransition: boolean;
-}
-
-const defaultActionSettings: ActionSettings = {
-  resetToState: INITIAL_STATE,
-  resetOnNoTransition: true,
-};
-
-export class TrackPlayerAction implements PlayerActionEvent {
-  private state: Map<PlayerIndexedType, string>;
+export class TrackPlayerAction {
+  private state: string;
   private actionStates: ActionStateDefinition;
-  private playerPermutations = new Array<PlayerIndexedType>();
-  private settings: ActionSettings;
-  private callback: () => void;
 
-  public constructor(stateActions: ActionStateDefinition, callback: () => void, options?: Partial<ActionSettings>) {
-    this.state = new Map<PlayerIndexedType, string>();
+  public constructor(stateActions: ActionStateDefinition) {
+    this.state = INITIAL_STATE;
     this.actionStates = stateActions;
-    this.settings = Object.assign({}, defaultActionSettings, options);
-    this.callback = callback;
   }
 
-  public setPlayerPermutations(indices: PlayerIndexedType[]): void {
-    this.playerPermutations = indices;
-    this.playerPermutations.forEach((i) => {
-      this.state.set(i, INITIAL_STATE);
-    });
+  public step(action: State): boolean {
+    const transitions = this.actionStates[this.state] || [];
+    for (const transition of transitions) {
+      const { to, states, negate } = transition;
+
+      // Check if we can transition based off the current animation
+      let canTransition = states.includes(action);
+      if (negate) {
+        canTransition = !canTransition;
+      }
+
+      if (canTransition) {
+        // We can successfully transition into the next state
+        if (to === FINAL_STATE) {
+          return true;
+        }
+        // proceed to the next state
+        this.state = to;
+      }
+      break;
+    }
+    return false;
   }
 
-  public processFrame(frame: FrameEntryType): void {
-    this.playerPermutations.forEach((index) => {
-      const state = this.state.get(index);
-      const playerFrame = frame.players[index.playerIndex].post;
-      const currentAnimation = playerFrame.actionStateId;
-      const transitions = this.actionStates[state] || [];
-      for (const transition of transitions) {
-        const { to, states, negate } = transition;
-
-        // Check if we can transition based off the current animation
-        let canTransition = states.includes(currentAnimation);
-        if (negate) {
-          canTransition = !canTransition;
-        }
-
-        if (canTransition) {
-          // We can successfully transition into the next state
-          if (to !== FINAL_STATE) {
-            // proceed to the next state
-            this.state.set(index, to);
-            return;
-          }
-
-          // We are at the final state so trigger callback and exit loop
-          this.callback();
-          // Reset back to the specified state
-          this.state.set(index, this.settings.resetToState);
-          return;
-        }
-        break;
-      }
-
-      if (this.settings.resetOnNoTransition) {
-        // Reset back to the initial state.
-        this.state.set(index, INITIAL_STATE);
-      }
-    });
+  public reset(state?: string): void {
+    // Make sure it's a valid state
+    if (state && Object.keys(this.actionStates).includes(state)) {
+      this.state = state;
+    } else {
+      this.state = INITIAL_STATE;
+    }
   }
 }
