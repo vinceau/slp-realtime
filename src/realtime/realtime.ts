@@ -3,11 +3,11 @@ import EventEmitter from "events";
 import StrictEventEmitter from 'strict-event-emitter-types';
 
 import { SlpStream, SlpEvent } from '../utils/slpStream';
-import { SlpParser, GameStartType, GameEndType, Command, PostFrameUpdateType, Stats as SlippiStats } from "slp-parser-js";
+import { SlpParser, GameStartType, GameEndType, Command, PostFrameUpdateType, Stats as SlippiStats, ComboType, StockType } from "slp-parser-js";
 import { SlpFileWriter } from "../utils/slpWriter";
 import { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect"
-import { StockComputer, StockComputerEvents } from "../stats/stocks";
-import { ComboComputer, ComboComputerEvents } from "../stats/combos";
+import { StockComputer } from "../stats/stocks";
+import { ComboComputer } from "../stats/combos";
 import { promiseTimeout } from "../utils/sleep";
 
 export { ConnectionStatus } from "@vinceau/slp-wii-connect";
@@ -19,10 +19,15 @@ export interface SlippiRealtimeOptions {
   writeSlpFileLocation: string;
 }
 
-interface SlippiRealtimeEvents extends StockComputerEvents, ComboComputerEvents {
+interface SlippiRealtimeEvents {
   gameStart: GameStartType;
   gameEnd: GameEndType;
   statusChange: ConnectionStatus;
+  comboStart: (combo: ComboType, settings: GameStartType) => void;
+  comboExtend: (combo: ComboType, settings: GameStartType) => void;
+  comboEnd: (combo: ComboType, settings: GameStartType) => void;
+  spawn: (stock: StockType, settings: GameStartType) => void;
+  death: (stock: StockType, settings: GameStartType) => void;
 }
 
 type SlippiRealtimeEventEmitter = { new(): StrictEventEmitter<EventEmitter, SlippiRealtimeEvents> };
@@ -42,7 +47,7 @@ export class SlippiRealtime extends (EventEmitter as SlippiRealtimeEventEmitter)
       folderPath: options.writeSlpFileLocation,
     });
     this.stream.on(SlpEvent.GAME_START, (command: Command, payload: GameStartType) => {
-      this.parser = this._setupStats();
+      this.parser = this._setupStats(payload);
       this.parser.handleGameStart(payload);
       this.emit("gameStart", payload);
     });
@@ -102,31 +107,31 @@ export class SlippiRealtime extends (EventEmitter as SlippiRealtimeEventEmitter)
     return ConnectionStatus.DISCONNECTED;
   }
 
-  private _setupStats(): SlpParser {
-    const s = new SlippiStats({
+  private _setupStats(payload: GameStartType): SlpParser {
+    const stats = new SlippiStats({
       processOnTheFly: true,
     });
     const stock = new StockComputer();
     stock.on('spawn', (s) => {
-      this.emit('spawn', s);
+      this.emit('spawn', s, payload);
     });
     stock.on('death', (s) => {
-      this.emit('death', s);
+      this.emit('death', s, payload);
     });
     const combo = new ComboComputer();
     combo.on("comboStart", (c) => {
-      this.emit("comboStart", c);
+      this.emit("comboStart", c, payload);
     });
     combo.on("comboExtend", (c) => {
-      this.emit("comboExtend", c);
+      this.emit("comboExtend", c, payload);
     });
     combo.on("comboEnd", (c) => {
-      this.emit("comboEnd", c);
+      this.emit("comboEnd", c, payload);
     });
-    s.registerAll([
+    stats.registerAll([
       stock,
       combo,
     ]);
-    return new SlpParser(s);
+    return new SlpParser(stats);
   }
 }
