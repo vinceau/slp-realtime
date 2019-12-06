@@ -1,6 +1,6 @@
 # `slp-realtime`
 
-[![Build Status](https://github.com/vinceau/slp-realtime/workflows/build/badge.svg)](https://github.com/vinceau/realtime/actions?workflow=build)
+[![Build Status](https://github.com/vinceau/slp-realtime/workflows/build/badge.svg)](https://github.com/vinceau/slp-realtime/actions?workflow=build)
 
 This is a real-time slp parsing library.
 
