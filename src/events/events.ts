@@ -77,6 +77,18 @@ interface ActionStateDefinition {
   [fromState: string]: TransitionDefinition[];
 }
 
+
+interface ActionSettings {
+  resetToState: string;
+  resetOnNoTransition: boolean;
+}
+
+const defaultActionSettings: ActionSettings = {
+  resetToState: INITIAL_STATE,
+  resetOnNoTransition: true,
+};
+
+
 export class TrackPlayerAction {
   private state: string;
   private actionStates: ActionStateDefinition;
