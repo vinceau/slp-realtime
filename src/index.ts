@@ -4,5 +4,5 @@ export * from './melee/stages';
 
 export * from "./utils/slpStream";
 
-export * from './realtime/realtime';
+export * from './realtime';
 export * from './combo';
