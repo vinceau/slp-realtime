@@ -20,7 +20,7 @@
     "lint": "eslint \"src/**/*.ts\"",
     "clean": "rimraf dist",
     "prebuild": "yarn run clean",
-    "build": "yarn run lint",
+    "build": "rollup -c",
     "watch": "rollup -cw",
     "patch": "npm version patch && npm publish",
     "minor": "npm version minor && npm publish",
