@@ -26,10 +26,15 @@ jobs:
           ${{ runner.OS }}-build-${{ env.cache-name }}-
           ${{ runner.OS }}-build-
           ${{ runner.OS }}-
-    - name: yarn install, build, and lint
+    - name: Install dependencies
       run: |
         yarn install
+    - name: Run tests (if not on Windows)
+      if: "!startsWith(matrix.os,'windows')"
+      run: |
         yarn run test
+    - name: Build and lint
+      run: |
         yarn run build
         yarn run lint
       env:
