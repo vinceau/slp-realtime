@@ -1,4 +1,4 @@
-import { Writable } from "stream";
+import { Writable, WritableOptions } from "stream";
 
 import { Command, parseMessage } from "slp-parser-js";
 
@@ -14,9 +14,22 @@ export enum SlpEvent {
 
 const NETWORK_MESSAGE = "HELO\0";
 
+const defaultSettings = {
+  singleGameMode: false,
+};
+
+export type SlpStreamSettings = typeof defaultSettings;
+
 export class SlpStream extends Writable {
+  private settings: SlpStreamSettings;
+  private gameReady = false;
   private payloadSizes = new Map<Command, number>();
   private previousBuffer: Uint8Array = Buffer.from([]);
+
+  public constructor(slpOptions?: Partial<SlpStreamSettings>, opts?: WritableOptions) {
+    super(opts);
+    this.settings = Object.assign({}, defaultSettings, slpOptions);
+  }
 
   public _write(newData: Buffer, encoding: string, callback: (error?: Error | null, data?: any) => void): void {
     if (encoding !== "buffer") {
@@ -85,7 +98,14 @@ export class SlpStream extends Writable {
       this.emit(SlpEvent.MESSAGE_SIZES, command, this.payloadSizes);
       // Emit the raw command event
       this._writeCommand(command, entirePayload, payloadSize);
+      // Mark this game as ready to process data
+      this.gameReady = true;
       return payloadSize;
+    }
+
+    // If we're only processing a single game and the game is over then stop processing
+    if (this.settings.singleGameMode && !this.gameReady) {
+      return 0;
     }
 
     const payloadSize = this.payloadSizes.get(command);
@@ -99,16 +119,15 @@ export class SlpStream extends Writable {
     const parsedPayload = parseMessage(command, payload);
     if (!parsedPayload) {
       // Failed to parse
-      return;
+      return 0;
     }
 
     switch (command) {
     case Command.GAME_START:
-      console.log("slp stream game start");
       this.emit(SlpEvent.GAME_START, command, parsedPayload);
       break;
     case Command.GAME_END:
-      console.log("slp stream game end");
+      this.gameReady = false;
       this.emit(SlpEvent.GAME_END, command, parsedPayload);
       break;
     case Command.PRE_FRAME_UPDATE:

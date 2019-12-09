@@ -29,6 +29,7 @@ jobs:
     - name: yarn install, build, and lint
       run: |
         yarn install
+        yarn run test
         yarn run build
         yarn run lint
       env:

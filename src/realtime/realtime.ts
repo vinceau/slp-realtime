@@ -4,25 +4,12 @@ import StrictEventEmitter from 'strict-event-emitter-types';
 
 import { SlpStream, SlpEvent } from '../utils/slpStream';
 import { SlpParser, GameStartType, GameEndType, Command, PostFrameUpdateType, Stats as SlippiStats, ComboType, StockType } from "slp-parser-js";
-import { SlpFileWriter } from "../utils/slpWriter";
-import { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect"
 import { StockComputer } from "../stats/stocks";
 import { ComboComputer } from "../stats/combos";
-import { promiseTimeout } from "../utils/sleep";
-
-export { ConnectionStatus } from "@vinceau/slp-wii-connect";
-
-const SLIPPI_CONNECTION_TIMEOUT_MS = 5000;
-
-export interface SlippiRealtimeOptions {
-  writeSlpFiles: boolean;
-  writeSlpFileLocation: string;
-}
 
 interface SlippiRealtimeEvents {
   gameStart: GameStartType;
   gameEnd: GameEndType;
-  statusChange: ConnectionStatus;
   comboStart: (combo: ComboType, settings: GameStartType) => void;
   comboExtend: (combo: ComboType, settings: GameStartType) => void;
   comboEnd: (combo: ComboType, settings: GameStartType) => void;
@@ -36,16 +23,12 @@ type SlippiRealtimeEventEmitter = { new(): StrictEventEmitter<EventEmitter, Slip
  * Slippi Game class that wraps a read stream
  */
 export class SlippiRealtime extends (EventEmitter as SlippiRealtimeEventEmitter) {
-  private stream: SlpStream;
-  private parser: SlpParser;
-  private connection: ConsoleConnection | null = null;
+  protected stream: SlpStream;
+  protected parser: SlpParser;
 
-  public constructor(options: SlippiRealtimeOptions) {
+  public constructor(stream: SlpStream) {
     super();
-    this.stream = new SlpFileWriter({
-      outputFiles: options.writeSlpFiles,
-      folderPath: options.writeSlpFileLocation,
-    });
+    this.stream = stream;
     this.stream.on(SlpEvent.GAME_START, (command: Command, payload: GameStartType) => {
       this.parser = this._setupStats(payload);
       this.parser.handleGameStart(payload);
@@ -65,46 +48,6 @@ export class SlippiRealtime extends (EventEmitter as SlippiRealtimeEventEmitter)
       this.parser.handleGameEnd(payload);
       this.emit("gameEnd", payload);
     });
-  }
-
-  public async start(address: string, port: number): Promise<boolean> {
-    if (this.connection !== null) {
-      this.connection.disconnect();
-      this.connection = null;
-    }
-
-    const assertConnected = new Promise<boolean>((resolve, reject): void => {
-      try {
-        this.connection = new ConsoleConnection(address, port);
-        this.connection.connect(SLIPPI_CONNECTION_TIMEOUT_MS);
-        this.connection.on("data", (data) => {
-          this.stream.write(data);
-        });
-        this.connection.on("statusChange", (status: ConnectionStatus) => {
-          this.emit("statusChange", status);
-        });
-        this.connection.once("statusChange", (status: ConnectionStatus) => {
-          switch (status) {
-          case ConnectionStatus.CONNECTED:
-            resolve(true);
-            break;
-          case ConnectionStatus.DISCONNECTED:
-            reject(`Failed to connect to: ${address}:${port}`);
-            break;
-          }
-        });
-      } catch (err) {
-        reject(err);
-      }
-    });
-    return promiseTimeout<boolean>(SLIPPI_CONNECTION_TIMEOUT_MS, assertConnected);
-  }
-
-  public getConnectionStatus(): ConnectionStatus {
-    if (this.connection) {
-      return this.connection.getStatus();
-    }
-    return ConnectionStatus.DISCONNECTED;
   }
 
   private _setupStats(payload: GameStartType): SlpParser {
