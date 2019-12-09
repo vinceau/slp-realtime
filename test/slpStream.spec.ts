@@ -10,7 +10,7 @@ describe('when reading realtime events', () => {
     const gameEndSpy = sinon.spy();
 
     await new Promise((resolve): void => {
-      const readStream = fs.createReadStream("slp/Game_20190910T225823.slp");
+      const readStream = fs.createReadStream("slp/Game_20190810T162904.slp");
       const slpStream = new SlpStream({ singleGameMode: true });
 
       // This will wait until we know the readable stream is actually valid before piping
