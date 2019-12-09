@@ -30,7 +30,7 @@ jobs:
       run: |
         yarn install
     - name: Run tests (if not on Windows)
-      if: !startsWith(matrix.os,'windows')
+      if: "!startsWith(matrix.os,'windows')"
       run: |
         yarn run test
     - name: Build and lint
