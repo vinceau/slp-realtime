@@ -6,24 +6,22 @@ import { SlpFile, SlpFileMetadata } from './slpFile';
 import { SlpStream, SlpEvent } from "./slpStream";
 import { Command, PostFrameUpdateType } from "slp-parser-js";
 
-export interface SlpFileWriterOptions {
-  outputFiles?: boolean;
-  folderPath?: string;
-  consoleNick?: string;
+const defaultSettings = {
+  outputFiles: false,
+  folderPath: ".",
+  consoleNick: "unknown",
 }
 
+export type SlpFileWriterOptions = typeof defaultSettings;
+
 export class SlpFileWriter extends SlpStream {
-  private writeFiles: boolean;
-  private folderPath: string;
-  private consoleNick: string;
   private currentFile: SlpFile | null;
   private metadata: SlpFileMetadata;
+  private options: SlpFileWriterOptions;
 
-  public constructor(settings: SlpFileWriterOptions) {
+  public constructor(options?: Partial<SlpFileWriterOptions>) {
     super();
-    this.writeFiles = Boolean(settings.outputFiles);
-    this.folderPath = settings.folderPath;
-    this.consoleNick = settings.consoleNick;
+    this.options = Object.assign({}, defaultSettings, options);
     this.metadata = {
       lastFrame: -124,
       players: {},
@@ -44,14 +42,13 @@ export class SlpFileWriter extends SlpStream {
     })
   }
 
-  public updateSettings(settings: SlpFileWriterOptions): void {
-    this.folderPath = settings.folderPath || this.folderPath;
-    this.consoleNick = settings.consoleNick || this.consoleNick;
+  public updateSettings(settings: Partial<SlpFileWriterOptions>): void {
+    this.options = Object.assign({}, this.options, settings);
   }
 
   private _handleNewGame(): void {
-    if (this.writeFiles) {
-      const filePath = getNewFilePath(this.folderPath, moment());
+    if (this.options.outputFiles) {
+      const filePath = getNewFilePath(this.options.folderPath, moment());
       this.currentFile = new SlpFile(filePath);
       console.log(`Creating new file at: ${filePath}`);
     }
@@ -85,6 +82,8 @@ export class SlpFileWriter extends SlpStream {
   private _handleEndGame(): void {
     // End the stream
     if (this.currentFile) {
+      // Set the console nickname before writing the metadata
+      this.metadata.consoleNickname = this.options.consoleNick;
       this.currentFile.setMetadata(this.metadata);
       this.currentFile.end();
       console.log(`Finished writing file: ${this.currentFile.path()}`);

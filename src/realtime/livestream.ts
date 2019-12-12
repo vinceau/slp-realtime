@@ -1,16 +1,9 @@
-import { SlpFileWriter } from "../utils/slpWriter";
+import { SlpFileWriter, SlpFileWriterOptions } from "../utils/slpWriter";
 import { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect"
 import { promiseTimeout } from "../utils/sleep";
 import { SlippiRealtime } from "./realtime";
 
-export { ConnectionStatus } from "@vinceau/slp-wii-connect";
-
 const SLIPPI_CONNECTION_TIMEOUT_MS = 5000;
-
-export interface SlippiLivestreamOptions {
-  writeSlpFiles: boolean;
-  writeSlpFileLocation: string;
-}
 
 /**
  * Slippi Game class that wraps a read stream
@@ -18,11 +11,12 @@ export interface SlippiLivestreamOptions {
 export class SlippiLivestream extends SlippiRealtime {
   private connection: ConsoleConnection | null = null;
 
-  public constructor(options: SlippiLivestreamOptions) {
-    super(new SlpFileWriter({
-      outputFiles: options.writeSlpFiles,
-      folderPath: options.writeSlpFileLocation,
-    }));
+  public constructor() {
+    super(new SlpFileWriter());
+  }
+
+  public updateSettings(settings: Partial<SlpFileWriterOptions>): void {
+    (this.stream as SlpFileWriter).updateSettings(settings);
   }
 
   public async start(address: string, port: number): Promise<boolean> {
