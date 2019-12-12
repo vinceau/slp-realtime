@@ -60,7 +60,8 @@ export class ComboFilter {
   }
 
   public getSettings(): ComboFilterSettings {
-    return this.settings;
+    // Return a copy of the settings for immutability
+    return Object.assign({}, this.settings);
   }
 
   public resetSettings(): void {
