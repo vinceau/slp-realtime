@@ -202,7 +202,7 @@ function handleComboCompute(frames: FramesType, state: ComboState, indices: Play
     state.combo = null;
     state.move = null;
   }
-  if (state.event) {
-    console.log(state.event);
-  }
+  // if (state.event) {
+  //   console.log(state.event);
+  // }
 }
