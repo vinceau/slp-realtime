@@ -9,11 +9,12 @@ const SLIPPI_CONNECTION_TIMEOUT_MS = 5000;
  * Slippi Game class that wraps a read stream
  */
 export class SlippiLivestream {
-  public connection: ConsoleConnection | null = null;
+  public connection: ConsoleConnection;
   public events: SlippiRealtime;
   private stream: SlpFileWriter;
 
   public constructor() {
+    this.connection = new ConsoleConnection();
     this.stream = new SlpFileWriter();
     this.events = new SlippiRealtime(this.stream);
   }
@@ -30,8 +31,7 @@ export class SlippiLivestream {
 
     const assertConnected = new Promise<boolean>((resolve, reject): void => {
       try {
-        this.connection = new ConsoleConnection(address, port);
-        this.connection.connect(SLIPPI_CONNECTION_TIMEOUT_MS);
+        this.connection.connect(address, port, SLIPPI_CONNECTION_TIMEOUT_MS);
         this.connection.on("data", (data) => {
           this.stream.write(data);
         });
