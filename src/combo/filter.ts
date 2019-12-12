@@ -66,11 +66,11 @@ export class ComboFilter {
 
   public isCombo(combo: ComboType, settings: GameStartType): boolean {
     // Check if we satisfy all the criteria
-    this.criteria.forEach((c) => {
+    for (const c of this.criteria) {
       if (!c.check(combo, settings, this.settings)) {
         return false;
       }
-    });
+    }
 
     // If the combo killed then it's a valid combo
     return combo.didKill;
