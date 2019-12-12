@@ -8,7 +8,7 @@ describe('combo calculation', () => {
     jest.setTimeout(1000000);
   });
 
-  it('correctly matches combo critier', async () => {
+  it('correctly matches combo criteria', async () => {
     const comboSpy = sinon.spy();
 
     const filter = new ComboFilter();
