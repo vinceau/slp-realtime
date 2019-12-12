@@ -103,3 +103,9 @@ export class IsOneVsOne implements Criteria {
     return settings.players.length === 2;
   }
 }
+
+export class ComboDidKill implements Criteria {
+  public check(combo: ComboType, settings: GameStartType, options: ComboFilterSettings): boolean {
+    return !options.comboMustKill || combo.didKill;
+  }
+}

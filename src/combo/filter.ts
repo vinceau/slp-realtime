@@ -1,11 +1,12 @@
 import { Character } from "../melee/characters";
 import { ComboType, GameStartType } from "slp-parser-js";
-import { MatchesPlayerName, ExcludesChainGrabs, ExcludesWobbles, SatisfiesMinComboPercent, ExcludesLargeSingleHit, ExcludesCPUs, IsOneVsOne } from "./criteria";
+import { MatchesPlayerName, ExcludesChainGrabs, ExcludesWobbles, SatisfiesMinComboPercent, ExcludesLargeSingleHit, ExcludesCPUs, IsOneVsOne, ComboDidKill } from "./criteria";
 
 export interface ComboFilterSettings {
   chainGrabbers: Character[];
   nameTags: string[];
   minComboPercent: number;
+  comboMustKill: boolean;
   excludeCPUs: boolean;
   excludeChainGrabs: boolean;
   excludeWobbles: boolean;
@@ -23,6 +24,7 @@ const defaultSettings: ComboFilterSettings = {
   chainGrabbers: [Character.MARTH, Character.PEACH, Character.PIKACHU, Character.DR_MARIO],
   nameTags: [],
   minComboPercent: 60,
+  comboMustKill: true,
   excludeCPUs: true,
   excludeChainGrabs: true,
   excludeWobbles: true,
@@ -49,6 +51,7 @@ export class ComboFilter {
       new ExcludesLargeSingleHit(),
       new ExcludesCPUs(),
       new IsOneVsOne(),
+      new ComboDidKill(),
     );
   }
 
@@ -72,8 +75,8 @@ export class ComboFilter {
       }
     }
 
-    // If the combo killed then it's a valid combo
-    return combo.didKill;
+    // If we made it through all the criteria then it was a valid combo
+    return true;
   }
 }
 
