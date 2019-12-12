@@ -4,10 +4,6 @@ import { SlippiRealtime, SlpStream, ComboFilter } from '../src';
 import { pipeFileContents }  from "../src/utils/testHelper";
 
 describe('combo calculation', () => {
-  beforeEach(() => {
-    jest.setTimeout(1000000);
-  });
-
   it('correctly matches combo criteria', async () => {
     const comboSpy = sinon.spy();
 

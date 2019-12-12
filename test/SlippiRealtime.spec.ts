@@ -4,10 +4,6 @@ import { SlippiRealtime, SlpStream } from '../src';
 import { pipeFileContents } from '../src/utils/testHelper';
 
 describe('SlippiRealtime', () => {
-  beforeEach(() => {
-    jest.setTimeout(1000000);
-  });
-
   it('emits the correct number of events', async () => {
     const gameStartSpy = sinon.spy();
     const gameEndSpy = sinon.spy();

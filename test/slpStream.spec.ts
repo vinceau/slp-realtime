@@ -6,10 +6,6 @@ import { pipeFileContents } from '../src/utils/testHelper';
 describe('SlpStream', () => {
 
   describe('when reading from a standard slp file', () => {
-    beforeEach(() => {
-      jest.setTimeout(1000000);
-    });
-
     it('emits exactly one game start and one game end event', async () => {
       const gameStartSpy = sinon.spy();
       const gameEndSpy = sinon.spy();
