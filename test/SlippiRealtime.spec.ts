@@ -1,7 +1,7 @@
-import fs from 'fs';
 import sinon from "sinon";
 
 import { SlippiRealtime, SlpStream } from '../src';
+import { pipeFileContents } from '../src/utils/testHelper';
 
 describe('SlippiRealtime', () => {
   beforeEach(() => {
@@ -14,23 +14,14 @@ describe('SlippiRealtime', () => {
     const stockSpawnSpy = sinon.spy();
     const stockDeathSpy = sinon.spy();
 
-    await new Promise((resolve): void => {
-      const readStream = fs.createReadStream("slp/Game_20190810T162904.slp");
-      const slpStream = new SlpStream({ singleGameMode: true });
-      const realtime = new SlippiRealtime(slpStream);
+    const slpStream = new SlpStream({ singleGameMode: true });
+    const realtime = new SlippiRealtime(slpStream);
+    realtime.on("gameStart", gameStartSpy);
+    realtime.on("gameEnd", gameEndSpy);
+    realtime.on("spawn", stockSpawnSpy);
+    realtime.on("death", stockDeathSpy);
 
-      readStream.on('open', () => {
-        readStream.pipe(slpStream);
-      });
-      readStream.on("close", () => {
-        resolve();
-      });
-
-      realtime.on("gameStart", gameStartSpy);
-      realtime.on("gameEnd", gameEndSpy);
-      realtime.on("spawn", stockSpawnSpy);
-      realtime.on("death", stockDeathSpy);
-    });
+    await pipeFileContents("slp/Game_20190810T162904.slp", slpStream);
 
     expect(gameStartSpy.callCount).toEqual(1);
     expect(gameEndSpy.callCount).toEqual(1);
