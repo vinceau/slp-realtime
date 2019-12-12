@@ -8,15 +8,18 @@ const SLIPPI_CONNECTION_TIMEOUT_MS = 5000;
 /**
  * Slippi Game class that wraps a read stream
  */
-export class SlippiLivestream extends SlippiRealtime {
-  private connection: ConsoleConnection | null = null;
+export class SlippiLivestream {
+  public connection: ConsoleConnection | null = null;
+  public events: SlippiRealtime;
+  private stream: SlpFileWriter;
 
   public constructor() {
-    super(new SlpFileWriter());
+    this.stream = new SlpFileWriter();
+    this.events = new SlippiRealtime(this.stream);
   }
 
   public updateSettings(settings: Partial<SlpFileWriterOptions>): void {
-    (this.stream as SlpFileWriter).updateSettings(settings);
+    this.stream.updateSettings(settings);
   }
 
   public async start(address: string, port: number): Promise<boolean> {
@@ -51,12 +54,5 @@ export class SlippiLivestream extends SlippiRealtime {
       }
     });
     return promiseTimeout<boolean>(SLIPPI_CONNECTION_TIMEOUT_MS, assertConnected);
-  }
-
-  public getConnectionStatus(): ConnectionStatus {
-    if (this.connection) {
-      return this.connection.getStatus();
-    }
-    return ConnectionStatus.DISCONNECTED;
   }
 }
