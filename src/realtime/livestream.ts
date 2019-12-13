@@ -3,6 +3,9 @@ import { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect"
 import { promiseTimeout } from "../utils/sleep";
 import { SlippiRealtime } from "./realtime";
 
+// Re-export these for ease-of-use
+export { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect"
+
 const SLIPPI_CONNECTION_TIMEOUT_MS = 5000;
 
 /**
