@@ -11,6 +11,7 @@ interface StockState {
 export interface StockComputerEvents {
   spawn: (player: number, stock: StockType) => void;
   death: (player: number, stock: StockType) => void;
+  percentChange: (playerIndex: number, percent: number) => void;
 };
 
 type StockComputeEventEmitter = { new(): StrictEventEmitter<EventEmitter, StockComputerEvents> };
@@ -42,10 +43,11 @@ export class StockComputer extends (EventEmitter as StockComputeEventEmitter) im
   }
 
   private _handleStockCompute(frames: FramesType, state: StockState, indices: PlayerIndexedType, frame: FrameEntryType, stocks: StockType[]): void {
-    const playerFrame = frame.players[indices.playerIndex].post;
+    const playerIndex = indices.playerIndex;
+    const playerFrame = frame.players[playerIndex].post;
     // FIXME: use PostFrameUpdateType instead of any
     const prevPlayerFrame: any = _.get(
-      frames, [playerFrame.frame - 1, 'players', indices.playerIndex, 'post'], {}
+      frames, [playerFrame.frame - 1, 'players', playerIndex, 'post'], {}
     );
 
     // If there is currently no active stock, wait until the player is no longer spawning.
@@ -57,7 +59,7 @@ export class StockComputer extends (EventEmitter as StockComputeEventEmitter) im
       }
 
       state.stock = {
-        playerIndex: indices.playerIndex,
+        playerIndex: playerIndex,
         opponentIndex: indices.opponentIndex,
         startFrame: playerFrame.frame,
         endFrame: null,
@@ -69,15 +71,21 @@ export class StockComputer extends (EventEmitter as StockComputeEventEmitter) im
       };
 
       stocks.push(state.stock);
-      this.emit("spawn", indices.playerIndex, state.stock);
+      this.emit("spawn", playerIndex, state.stock);
+      this.emit("percentChange", playerIndex, 0);
     } else if (didLoseStock(playerFrame, prevPlayerFrame)) {
       state.stock.endFrame = playerFrame.frame;
       state.stock.endPercent = prevPlayerFrame.percent || 0;
       state.stock.deathAnimation = playerFrame.actionStateId;
-      this.emit("death", indices.playerIndex, state.stock);
+      this.emit("death", playerIndex, state.stock);
       state.stock = null;
     } else {
-      state.stock.currentPercent = playerFrame.percent || 0;
+      // Update the percentage
+      const newPercent = playerFrame.percent || 0;
+      if (state.stock.currentPercent !== newPercent) {
+        state.stock.currentPercent = newPercent;
+        this.emit("percentChange", playerIndex, newPercent);
+      }
     }
   }
 }
