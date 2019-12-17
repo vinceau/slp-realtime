@@ -17,6 +17,24 @@ export class MatchesPlayerName implements Criteria {
   }
 }
 
+export class MatchesCharacter implements Criteria {
+  public check(combo: ComboType, settings: GameStartType, options: ComboFilterSettings): boolean {
+    if (options.characterFilter.characters.length === 0) {
+      return true;
+    }
+
+    const player = _.find(settings.players, (player) => player.playerIndex === combo.playerIndex);
+    const matchesCharacter = options.characterFilter.characters.includes(player.characterId);
+
+    // Handle the negation of the character search criteria
+    if (options.characterFilter.negate) {
+      return !matchesCharacter;
+    }
+
+    return matchesCharacter;
+  }
+}
+
 export class ExcludesChainGrabs implements Criteria {
   public check(combo: ComboType, settings: GameStartType, options: ComboFilterSettings): boolean {
     if (!options.excludeChainGrabs) {

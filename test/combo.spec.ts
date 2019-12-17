@@ -1,6 +1,6 @@
 import sinon from "sinon";
 
-import { SlippiRealtime, SlpStream, ComboFilter } from '../src';
+import { SlippiRealtime, SlpStream, ComboFilter, Character } from '../src';
 import { pipeFileContents }  from "../src/utils/testHelper";
 
 describe('combo calculation', () => {
@@ -27,6 +27,39 @@ describe('combo calculation', () => {
 
     // We should have exactly 1 combo that matched the criteria
     expect(comboSpy.callCount).toEqual(1);
+  });
+
+  it('can filter by character', async () => {
+    const bowserOnlySpy = sinon.spy();
+    const bowserOnlyFilter = new ComboFilter();
+
+    const excludesBowserSpy = sinon.spy();
+    const excludesBowserFilter = new ComboFilter();
+
+    bowserOnlyFilter.updateSettings({ characterFilter: {
+      characters: [Character.BOWSER],
+      negate: false,
+    } });
+    excludesBowserFilter.updateSettings({ characterFilter: {
+      characters: [Character.BOWSER],
+      negate: true,
+    } });
+    const slpStream = new SlpStream({ singleGameMode: true });
+    const realtime = new SlippiRealtime(slpStream);
+
+    realtime.on("comboEnd", (c, s) => {
+      if (bowserOnlyFilter.isCombo(c, s)) {
+        bowserOnlySpy();
+      }
+      if (excludesBowserFilter.isCombo(c, s)) {
+        excludesBowserSpy();
+      }
+    });
+
+    await pipeFileContents("slp/Game_20190810T162904.slp", slpStream);
+
+    expect(bowserOnlySpy.callCount).toEqual(0);
+    expect(excludesBowserSpy.callCount).toEqual(1);
   });
 
   it('can update combo settings', async () => {
