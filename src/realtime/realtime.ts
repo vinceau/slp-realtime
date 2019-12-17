@@ -14,8 +14,8 @@ interface SlippiRealtimeEvents {
   comboStart: (combo: ComboType, settings: GameStartType) => void;
   comboExtend: (combo: ComboType, settings: GameStartType) => void;
   comboEnd: (combo: ComboType, settings: GameStartType) => void;
-  spawn: (stock: StockType, settings: GameStartType) => void;
-  death: (stock: StockType, settings: GameStartType) => void;
+  spawn: (playerIndex: number, stock: StockType, settings: GameStartType) => void;
+  death: (playerIndex: number, stock: StockType, settings: GameStartType) => void;
   percentChange: (playerIndex: number, percent: number) => void;
 }
 
@@ -61,11 +61,11 @@ export class SlippiRealtime extends (EventEmitter as SlippiRealtimeEventEmitter)
       this.emit('percentChange', index, percent);
     });
     const stock = new StockComputer();
-    stock.on('spawn', (s) => {
-      this.emit('spawn', s, payload);
+    stock.on('spawn', (i, s) => {
+      this.emit('spawn', i, s, payload);
     });
-    stock.on('death', (s) => {
-      this.emit('death', s, payload);
+    stock.on('death', (i, s) => {
+      this.emit('death', i, s, payload);
     });
     const combo = new ComboComputer();
     combo.on("comboStart", (c) => {

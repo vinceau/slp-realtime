@@ -9,8 +9,8 @@ interface StockState {
 }
 
 export interface StockComputerEvents {
-  spawn: StockType;
-  death: StockType;
+  spawn: (player: number, stock: StockType) => void;
+  death: (player: number, stock: StockType) => void;
 };
 
 type StockComputeEventEmitter = { new(): StrictEventEmitter<EventEmitter, StockComputerEvents> };
@@ -69,12 +69,12 @@ export class StockComputer extends (EventEmitter as StockComputeEventEmitter) im
       };
 
       stocks.push(state.stock);
-      this.emit("spawn", state.stock);
+      this.emit("spawn", indices.playerIndex, state.stock);
     } else if (didLoseStock(playerFrame, prevPlayerFrame)) {
       state.stock.endFrame = playerFrame.frame;
       state.stock.endPercent = prevPlayerFrame.percent || 0;
       state.stock.deathAnimation = playerFrame.actionStateId;
-      this.emit("death", state.stock);
+      this.emit("death", indices.playerIndex, state.stock);
       state.stock = null;
     } else {
       state.stock.currentPercent = playerFrame.percent || 0;
