@@ -57,8 +57,9 @@ export class ComboFilter {
     );
   }
 
-  public updateSettings(options: Partial<ComboFilterSettings>): void {
+  public updateSettings(options: Partial<ComboFilterSettings>): ComboFilterSettings {
     this.settings = Object.assign({}, this.settings, options);
+    return this.getSettings();
   }
 
   public getSettings(): ComboFilterSettings {
@@ -66,8 +67,8 @@ export class ComboFilter {
     return Object.assign({}, this.settings);
   }
 
-  public resetSettings(): void {
-    this.updateSettings(this.originalSettings);
+  public resetSettings(): ComboFilterSettings {
+    return this.updateSettings(this.originalSettings);
   }
 
   public isCombo(combo: ComboType, settings: GameStartType): boolean {
