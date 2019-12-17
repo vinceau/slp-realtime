@@ -47,11 +47,14 @@ r.on('gameEnd', () => {
     console.log('game ended');
 });
 
-r.on('spawn', () => {
-    console.log('spawn');
+r.on('percentChange', (i: number, percent: number) => {
+    console.log(`player ${i} percent: ${percent}`);
 });
-r.on('death', () => {
-    console.log('death');
+r.on('spawn', (i, s) => {
+    console.log(`player ${i} spawned with ${s.count} stocks remaining`);
+});
+r.on('death', (i) => {
+    console.log(`player ${i} died`);
 });
 r.on('comboStart', () => {
     console.log('comboStart');
@@ -59,7 +62,7 @@ r.on('comboStart', () => {
 r.on('comboExtend', () => {
     console.log('comboExtend');
 });
-r.on('comboEnd', (c, s) => {
+r.on('comboEnd', () => {
     console.log('the combo ended');
 });
 
