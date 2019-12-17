@@ -6,6 +6,7 @@ import { SlpStream, SlpEvent } from '../utils/slpStream';
 import { SlpParser, GameStartType, GameEndType, Command, PostFrameUpdateType, Stats as SlippiStats, ComboType, StockType } from "slp-parser-js";
 import { StockComputer } from "../stats/stocks";
 import { ComboComputer } from "../stats/combos";
+import { CharacterComputer } from "../stats/character";
 
 interface SlippiRealtimeEvents {
   gameStart: GameStartType;
@@ -15,6 +16,7 @@ interface SlippiRealtimeEvents {
   comboEnd: (combo: ComboType, settings: GameStartType) => void;
   spawn: (stock: StockType, settings: GameStartType) => void;
   death: (stock: StockType, settings: GameStartType) => void;
+  percentChange: (playerIndex: number, percent: number) => void;
 }
 
 type SlippiRealtimeEventEmitter = { new(): StrictEventEmitter<EventEmitter, SlippiRealtimeEvents> };
@@ -54,6 +56,10 @@ export class SlippiRealtime extends (EventEmitter as SlippiRealtimeEventEmitter)
     const stats = new SlippiStats({
       processOnTheFly: true,
     });
+    const character = new CharacterComputer();
+    character.on('percentChange', (index: number, percent: number) => {
+      this.emit('percentChange', index, percent);
+    });
     const stock = new StockComputer();
     stock.on('spawn', (s) => {
       this.emit('spawn', s, payload);
@@ -72,6 +78,7 @@ export class SlippiRealtime extends (EventEmitter as SlippiRealtimeEventEmitter)
       this.emit("comboEnd", c, payload);
     });
     stats.registerAll([
+      character,
       stock,
       combo,
     ]);
