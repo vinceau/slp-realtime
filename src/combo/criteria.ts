@@ -10,17 +10,10 @@ export class MatchesPlayerName implements Criteria {
     if (options.nameTags.length === 0) {
       return true;
     }
-         
+
     const player = _.find(settings.players, (player) => player.playerIndex === combo.playerIndex);
-    options.nameTags.forEach((filterName) => {
-      const playerTag = player.nametag || null;
-      if (playerTag === filterName) {
-        // Continue processing if it matches the name tag
-        return true;
-      }
-    });
-    // Combo did not match a name
-    return false;
+    const playerTag = player.nametag || null;
+    return options.nameTags.includes(playerTag);
   }
 }
 
