@@ -38,10 +38,12 @@ const defaultSettings: ComboFilterSettings = {
 
 export class ComboFilter {
   private settings: ComboFilterSettings;
+  private originalSettings: ComboFilterSettings;
   private criteria: Criteria[];
 
   public constructor(options?: Partial<ComboFilterSettings>) {
     this.settings = Object.assign({}, defaultSettings, options);
+    this.originalSettings = Object.assign({}, this.settings);
     this.criteria = new Array<Criteria>();
     this.criteria.push(
       new MatchesPlayerName(),
@@ -65,7 +67,7 @@ export class ComboFilter {
   }
 
   public resetSettings(): void {
-    this.settings = Object.assign({}, defaultSettings);
+    this.updateSettings(this.originalSettings);
   }
 
   public isCombo(combo: ComboType, settings: GameStartType): boolean {
