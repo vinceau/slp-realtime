@@ -103,7 +103,10 @@ export class ExcludesLargeSingleHit implements Criteria {
 }
 
 export class ExcludesCPUs implements Criteria {
-  public check(combo: ComboType, settings: GameStartType): boolean {
+  public check(combo: ComboType, settings: GameStartType, options: ComboFilterSettings): boolean {
+    if (!options.excludeCPUs) {
+      return true;
+    }
     const cpu = _.some(settings.players, (player) => player.type != 0)
     return !cpu;
   }
