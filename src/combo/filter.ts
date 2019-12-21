@@ -4,10 +4,7 @@ import { MatchesPlayerName, ExcludesChainGrabs, ExcludesWobbles, SatisfiesMinCom
 
 export interface ComboFilterSettings {
   chainGrabbers: Character[];
-  characterFilter: {
-    characters: Character[];
-    negate: boolean;
-  };
+  characterFilter: Character[];
   nameTags: string[];
   minComboPercent: number;
   comboMustKill: boolean;
@@ -26,10 +23,7 @@ export interface Criteria {
 
 const defaultSettings: ComboFilterSettings = {
   chainGrabbers: [Character.MARTH, Character.PEACH, Character.PIKACHU, Character.DR_MARIO],
-  characterFilter: {
-    characters: [],
-    negate: false,
-  },
+  characterFilter: [],
   nameTags: [],
   minComboPercent: 60,
   comboMustKill: true,

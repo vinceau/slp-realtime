@@ -36,14 +36,8 @@ describe('combo calculation', () => {
     const excludesBowserSpy = sinon.spy();
     const excludesBowserFilter = new ComboFilter();
 
-    bowserOnlyFilter.updateSettings({ characterFilter: {
-      characters: [Character.BOWSER],
-      negate: false,
-    } });
-    excludesBowserFilter.updateSettings({ characterFilter: {
-      characters: [Character.BOWSER],
-      negate: true,
-    } });
+    bowserOnlyFilter.updateSettings({ characterFilter: [Character.BOWSER] });
+    excludesBowserFilter.updateSettings({ characterFilter: [Character.CAPTAIN_FALCON] });
     const slpStream = new SlpStream({ singleGameMode: true });
     const realtime = new SlippiRealtime(slpStream);
 
