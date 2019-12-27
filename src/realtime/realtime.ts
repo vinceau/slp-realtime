@@ -7,6 +7,9 @@ import { SlpParser, GameStartType, GameEndType, Command, PostFrameUpdateType, St
 import { StockComputer } from "../stats/stocks";
 import { ComboComputer } from "../stats/combos";
 
+// Export the parameter types for events
+export { GameStartType, GameEndType, ComboType, StockType } from "slp-parser-js";
+
 interface SlippiRealtimeEvents {
   gameStart: GameStartType;
   gameEnd: GameEndType;
