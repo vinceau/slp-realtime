@@ -49,6 +49,10 @@ export class DolphinComboQueue {
     });
   }
 
+  public length(): number {
+    return this.combos.length;
+  }
+
   public clear(): void {
     this.combos = [];
   }
@@ -57,19 +61,27 @@ export class DolphinComboQueue {
     this.options = Object.assign({}, this.options, settings);
   }
 
-  public writeFileSync(filePath: string): void {
+  public writeFileSync(filePath: string): number {
     const data = this._dataToWrite();
     fs.writeFileSync(filePath, data);
+    return this.length();
   }
 
-  public async writeFile(filePath: string): Promise<void> {
+  /**
+   * Asynchronously writes out the combos to a JSON file
+   *
+   * @param {string} filePath The name of the combos file
+   * @returns {Promise<number>} The number of combos written out to the file
+   * @memberof DolphinComboQueue
+   */
+  public async writeFile(filePath: string): Promise<number> {
     return new Promise((resolve, reject): void => {
       const data = this._dataToWrite();
       fs.writeFile(filePath, data, (err) => {
         if (err) {
           reject(err);
         } else {
-          resolve();
+          resolve(this.length());
         }
       });
     });
