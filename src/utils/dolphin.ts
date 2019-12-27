@@ -1,5 +1,6 @@
 import fs from "fs";
 import { ComboType, Frames } from "slp-parser-js";
+import { shuffle } from "lodash";
 
 interface DolphinQueue {
   mode: string;
@@ -10,6 +11,7 @@ interface DolphinQueue {
 }
 
 const defaultSettings = {
+  shuffle: true,
   startBuffer: 240,
   endBuffer: 180,
 };
@@ -74,12 +76,13 @@ export class DolphinComboQueue {
   }
 
   private _dataToWrite(): string {
+    const combos = (this.options.shuffle) ? shuffle(this.combos) : this.combos;
     const queue: DolphinQueue = {
       mode: "queue",
       replay: "",
       isRealTimeMode: false,
       outputOverlayFiles: true,
-      queue: this.combos,
+      queue: combos,
     };
     return JSON.stringify(queue, null, 2);
   }
