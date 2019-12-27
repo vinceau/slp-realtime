@@ -4,19 +4,20 @@
 
 This is a real-time slp parsing library.
 
-## Development
+## Installation
 
 ### Setup
 
 ```bash
-git clone https://github.com/vinceau/slp-realtime
-cd slp-realtime
-yarn install
+yarn add @vinceau/slp-realtime
 ```
+
+## Development
 
 ### Build
 
 ```bash
+yarn install   # install the dependencies first
 yarn run build
 ```
 
@@ -33,7 +34,7 @@ yarn run test
 The following code is not tested! It also assumes you have the Slippi Desktop app set up to relay onto port 1667.
 
 ```typescript
-import { SlippiLivestream } from 'slp-realtime';
+import { SlippiLivestream } from '@vinceau/slp-realtime';
 
 const r = new SlippiLivestream({
     writeSlpFiles: false,
