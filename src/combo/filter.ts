@@ -1,11 +1,13 @@
 import { Character } from "../melee/characters";
 import { ComboType, GameStartType } from "slp-parser-js";
-import { MatchesPlayerName, ExcludesChainGrabs, ExcludesWobbles, SatisfiesMinComboPercent, ExcludesLargeSingleHit, ExcludesCPUs, IsOneVsOne, ComboDidKill, MatchesCharacter } from "./criteria";
+import { MatchesPlayerName, ExcludesChainGrabs, ExcludesWobbles, SatisfiesMinComboPercent, ExcludesLargeSingleHit, ExcludesCPUs, IsOneVsOne, ComboDidKill, MatchesCharacter, MatchesPortNumber, SatisfiesMinComboLength } from "./criteria";
 
 export interface ComboFilterSettings {
   chainGrabbers: Character[];
   characterFilter: Character[];
+  portFilter: number[];
   nameTags: string[];
+  minComboLength: number;
   minComboPercent: number;
   comboMustKill: boolean;
   excludeCPUs: boolean;
@@ -24,7 +26,9 @@ export interface Criteria {
 const defaultSettings: ComboFilterSettings = {
   chainGrabbers: [Character.MARTH, Character.PEACH, Character.PIKACHU, Character.DR_MARIO],
   characterFilter: [],
+  portFilter: [0, 1, 2, 3], // Enable combos for all ports
   nameTags: [],
+  minComboLength: 1,
   minComboPercent: 60,
   comboMustKill: true,
   excludeCPUs: true,
@@ -39,19 +43,21 @@ const defaultSettings: ComboFilterSettings = {
 }
 
 export class ComboFilter {
+  public criteria: Criteria[];
   private settings: ComboFilterSettings;
   private originalSettings: ComboFilterSettings;
-  private criteria: Criteria[];
 
   public constructor(options?: Partial<ComboFilterSettings>) {
     this.settings = Object.assign({}, defaultSettings, options);
     this.originalSettings = Object.assign({}, this.settings);
     this.criteria = new Array<Criteria>();
     this.criteria.push(
+      new MatchesPortNumber(),
       new MatchesPlayerName(),
       new MatchesCharacter(),
       new ExcludesChainGrabs(),
       new ExcludesWobbles(),
+      new SatisfiesMinComboLength(),
       new SatisfiesMinComboPercent(),
       new ExcludesLargeSingleHit(),
       new ExcludesCPUs(),
