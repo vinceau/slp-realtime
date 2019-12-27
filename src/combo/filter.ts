@@ -28,7 +28,7 @@ const defaultSettings: ComboFilterSettings = {
   characterFilter: [],
   portFilter: [0, 1, 2, 3], // Enable combos for all ports
   nameTags: [],
-  minComboLength: 3,
+  minComboLength: 1,
   minComboPercent: 60,
   comboMustKill: true,
   excludeCPUs: true,
