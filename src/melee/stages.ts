@@ -1,140 +1,165 @@
-export interface Stage {
-  id: number;
+export enum Stage {
+  FOUNTAIN_OF_DREAMS = 2,
+  POKEMON_STADIUM = 3,
+  PEACHS_CASTLE = 4,
+  KONGO_JUNGLE = 5,
+  BRINSTAR = 6,
+  CORNERIA = 7,
+  YOSHIS_STORY = 8,
+  ONETT = 9,
+  MUTE_CITY = 10,
+  RAINBOW_CRUISE = 11,
+  JUNGLE_JAPES = 12,
+  GREAT_BAY = 13,
+  HYRULE_TEMPLE = 14,
+  BRINSTAR_DEPTHS = 15,
+  YOSHIS_ISLAND = 16,
+  GREEN_GREENS = 17,
+  FOURSIDE = 18,
+  MUSHROOM_KINGDOM = 19,
+  MUSHROOM_KINGDOM_2 = 20,
+  VENOM = 22,
+  POKE_FLOATS = 23,
+  BIG_BLUE = 24,
+  ICICLE_MOUNTAIN = 25,
+  ICETOP = 26,
+  FLAT_ZONE = 27,
+  DREAMLAND = 28,
+  YOSHIS_ISLAND_N64 = 29,
+  KONGO_JUNGLE_N64 = 30,
+  BATTLEFIELD = 31,
+  FINAL_DESTINATION = 32,
+};
+
+export interface StageInfo {
+  id: Stage;
   name: string;
 }
 
-const stages: { [id: number]: Stage } = {
-  2: {
-    id: 2,
+const stagesMap = new Map<Stage, StageInfo>()
+  .set(Stage.FOUNTAIN_OF_DREAMS, {
+    id: Stage.FOUNTAIN_OF_DREAMS,
     name: "Fountain of Dreams",
-  },
-  3: {
-    id: 3,
+  })
+  .set(Stage.POKEMON_STADIUM, {
+    id: Stage.POKEMON_STADIUM,
     name: "Pokémon Stadium",
-  },
-  4: {
-    id: 4,
+  })
+  .set(Stage.PEACHS_CASTLE, {
+    id: Stage.PEACHS_CASTLE,
     name: "Princess Peach's Castle",
-  },
-  5: {
-    id: 5,
+  })
+  .set(Stage.KONGO_JUNGLE, {
+    id: Stage.KONGO_JUNGLE,
     name: "Kongo Jungle",
-  },
-  6: {
-    id: 6,
+  })
+  .set(Stage.BRINSTAR, {
+    id: Stage.BRINSTAR,
     name: "Brinstar",
-  },
-  7: {
-    id: 7,
+  })
+  .set(Stage.CORNERIA, {
+    id: Stage.CORNERIA,
     name: "Corneria",
-  },
-  8: {
-    id: 8,
+  })
+  .set(Stage.YOSHIS_STORY, {
+    id: Stage.YOSHIS_STORY,
     name: "Yoshi's Story",
-  },
-  9: {
-    id: 9,
+  })
+  .set(Stage.ONETT, {
+    id: Stage.ONETT,
     name: "Onett",
-  },
-  10: {
-    id: 10,
+  })
+  .set(Stage.MUTE_CITY, {
+    id: Stage.MUTE_CITY,
     name: "Mute City",
-  },
-  11: {
-    id: 11,
+  })
+  .set(Stage.RAINBOW_CRUISE, {
+    id: Stage.RAINBOW_CRUISE,
     name: "Rainbow Cruise",
-  },
-  12: {
-    id: 12,
+  })
+  .set(Stage.JUNGLE_JAPES, {
+    id: Stage.JUNGLE_JAPES,
     name: "Jungle Japes",
-  },
-  13: {
-    id: 13,
+  })
+  .set(Stage.GREAT_BAY, {
+    id: Stage.GREAT_BAY,
     name: "Great Bay",
-  },
-  14: {
-    id: 14,
+  })
+  .set(Stage.HYRULE_TEMPLE, {
+    id: Stage.HYRULE_TEMPLE,
     name: "Hyrule Temple",
-  },
-  15: {
-    id: 15,
+  })
+  .set(Stage.BRINSTAR_DEPTHS, {
+    id: Stage.BRINSTAR_DEPTHS,
     name: "Brinstar Depths",
-  },
-  16: {
-    id: 16,
+  })
+  .set(Stage.YOSHIS_ISLAND, {
+    id: Stage.YOSHIS_ISLAND,
     name: "Yoshi's Island",
-  },
-  17: {
-    id: 17,
+  })
+  .set(Stage.GREEN_GREENS, {
+    id: Stage.GREEN_GREENS,
     name: "Green Greens",
-  },
-  18: {
-    id: 18,
+  })
+  .set(Stage.FOURSIDE, {
+    id: Stage.FOURSIDE,
     name: "Fourside",
-  },
-  19: {
-    id: 19,
+  })
+  .set(Stage.MUSHROOM_KINGDOM, {
+    id: Stage.MUSHROOM_KINGDOM,
     name: "Mushroom Kingdom I",
-  },
-  20: {
-    id: 20,
+  })
+  .set(Stage.MUSHROOM_KINGDOM_2, {
+    id: Stage.MUSHROOM_KINGDOM_2,
     name: "Mushroom Kingdom II",
-  },
-  22: {
-    id: 22,
+  })
+  .set(Stage.VENOM, {
+    id: Stage.VENOM,
     name: "Venom",
-  },
-  23: {
-    id: 23,
+  })
+  .set(Stage.POKE_FLOATS, {
+    id: Stage.POKE_FLOATS,
     name: "Poké Floats",
-  },
-  24: {
-    id: 24,
+  })
+  .set(Stage.BIG_BLUE, {
+    id: Stage.BIG_BLUE,
     name: "Big Blue",
-  },
-  25: {
-    id: 25,
+  })
+  .set(Stage.ICICLE_MOUNTAIN, {
+    id: Stage.ICICLE_MOUNTAIN,
     name: "Icicle Mountain",
-  },
-  26: {
-    id: 26,
+  })
+  .set(Stage.ICETOP, {
+    id: Stage.ICETOP,
     name: "Icetop",
-  },
-  27: {
-    id: 27,
+  })
+  .set(Stage.FLAT_ZONE, {
+    id: Stage.FLAT_ZONE,
     name: "Flat Zone",
-  },
-  28: {
-    id: 28,
+  })
+  .set(Stage.DREAMLAND, {
+    id: Stage.DREAMLAND,
     name: "Dream Land N64",
-  },
-  29: {
-    id: 29,
+  })
+  .set(Stage.YOSHIS_ISLAND_N64, {
+    id: Stage.YOSHIS_ISLAND_N64,
     name: "Yoshi's Island N64",
-  },
-  30: {
-    id: 30,
+  })
+  .set(Stage.KONGO_JUNGLE_N64, {
+    id: Stage.KONGO_JUNGLE_N64,
     name: "Kongo Jungle N64",
-  },
-  31: {
-    id: 31,
+  })
+  .set(Stage.BATTLEFIELD, {
+    id: Stage.BATTLEFIELD,
     name: "Battlefield",
-  },
-  32: {
-    id: 32,
+  })
+  .set(Stage.FINAL_DESTINATION, {
+    id: Stage.FINAL_DESTINATION,
     name: "Final Destination",
-  },
-};
+  });
 
-export const STAGE_FOD = 2;
-export const STAGE_POKEMON = 3;
-export const STAGE_YOSHIS = 8;
-export const STAGE_DREAM_LAND = 28;
-export const STAGE_BATTLEFIELD = 31;
-export const STAGE_FD = 32;
-
-export function getStageInfo(stageId: number): Stage {
-  const s = stages[stageId];
+export function getStageInfo(stageId: number): StageInfo {
+  const s = stagesMap.get(stageId);
   if (!s) {
     throw new Error(`Invalid stage with id ${stageId}`)
   }
