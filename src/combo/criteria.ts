@@ -16,10 +16,6 @@ import { Character } from "../melee/characters";
  */
 export class MatchesPortNumber implements Criteria {
   public check(combo: ComboType, settings: GameStartType, options: ComboFilterSettings): boolean {
-    if (options.portFilter.length === 0) {
-      return true;
-    }
-
     const player = _.find(settings.players, (player) => player.playerIndex === combo.playerIndex);
     return options.portFilter.includes(player.playerIndex);
   }

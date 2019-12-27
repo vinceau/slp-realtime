@@ -26,7 +26,7 @@ export interface Criteria {
 const defaultSettings: ComboFilterSettings = {
   chainGrabbers: [Character.MARTH, Character.PEACH, Character.PIKACHU, Character.DR_MARIO],
   characterFilter: [],
-  portFilter: [],
+  portFilter: [0, 1, 2, 3], // Enable combos for all ports
   nameTags: [],
   minComboLength: 0,
   minComboPercent: 60,
