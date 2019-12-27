@@ -1,8 +1,8 @@
-export * from './melee/characters';
-export * from './melee/moves';
-export * from './melee/stages';
+export * from "./melee/characters";
+export * from "./melee/moves";
+export * from "./melee/stages";
 
-export * from "./utils/slpStream";
+export * from "./utils";
 
-export * from './realtime';
-export * from './combo';
+export * from "./realtime";
+export * from "./combo";
