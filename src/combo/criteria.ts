@@ -5,6 +5,26 @@ import { ComboType, GameStartType } from "slp-parser-js";
 import { MoveID } from "../melee/moves";
 import { Character } from "../melee/characters";
 
+/**
+ * MatchesPortNumber ensures the player performing the combo is a specific port.
+ * The port to be matched against is zero indexed. This means that player 1 is
+ * has the index 0, and player 2 has the index 1 etc.
+ *
+ * @export
+ * @class MatchesPortNumber
+ * @implements {Criteria}
+ */
+export class MatchesPortNumber implements Criteria {
+  public check(combo: ComboType, settings: GameStartType, options: ComboFilterSettings): boolean {
+    if (options.portFilter.length === 0) {
+      return true;
+    }
+
+    const player = _.find(settings.players, (player) => player.playerIndex === combo.playerIndex);
+    return options.portFilter.includes(player.playerIndex);
+  }
+}
+
 export class MatchesPlayerName implements Criteria {
   public check(combo: ComboType, settings: GameStartType, options: ComboFilterSettings): boolean {
     if (options.nameTags.length === 0) {

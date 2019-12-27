@@ -1,10 +1,11 @@
 import { Character } from "../melee/characters";
 import { ComboType, GameStartType } from "slp-parser-js";
-import { MatchesPlayerName, ExcludesChainGrabs, ExcludesWobbles, SatisfiesMinComboPercent, ExcludesLargeSingleHit, ExcludesCPUs, IsOneVsOne, ComboDidKill, MatchesCharacter } from "./criteria";
+import { MatchesPlayerName, ExcludesChainGrabs, ExcludesWobbles, SatisfiesMinComboPercent, ExcludesLargeSingleHit, ExcludesCPUs, IsOneVsOne, ComboDidKill, MatchesCharacter, MatchesPortNumber } from "./criteria";
 
 export interface ComboFilterSettings {
   chainGrabbers: Character[];
   characterFilter: Character[];
+  portFilter: number[];
   nameTags: string[];
   minComboPercent: number;
   comboMustKill: boolean;
@@ -24,6 +25,7 @@ export interface Criteria {
 const defaultSettings: ComboFilterSettings = {
   chainGrabbers: [Character.MARTH, Character.PEACH, Character.PIKACHU, Character.DR_MARIO],
   characterFilter: [],
+  portFilter: [],
   nameTags: [],
   minComboPercent: 60,
   comboMustKill: true,
@@ -48,6 +50,7 @@ export class ComboFilter {
     this.originalSettings = Object.assign({}, this.settings);
     this.criteria = new Array<Criteria>();
     this.criteria.push(
+      new MatchesPortNumber(),
       new MatchesPlayerName(),
       new MatchesCharacter(),
       new ExcludesChainGrabs(),
