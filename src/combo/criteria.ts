@@ -97,6 +97,13 @@ export class ExcludesWobbles implements Criteria {
   }
 }
 
+export class SatisfiesMinComboLength implements Criteria {
+  public check(combo: ComboType, settings: GameStartType, options: ComboFilterSettings): boolean {
+    const numMoves = combo.moves.length;
+    return numMoves >= options.minComboLength;
+  }
+}
+
 export class SatisfiesMinComboPercent implements Criteria {
   public check(combo: ComboType, settings: GameStartType, options: ComboFilterSettings): boolean {
     const player = _.find(settings.players, (player) => player.playerIndex === combo.playerIndex);

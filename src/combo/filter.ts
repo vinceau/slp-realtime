@@ -1,12 +1,13 @@
 import { Character } from "../melee/characters";
 import { ComboType, GameStartType } from "slp-parser-js";
-import { MatchesPlayerName, ExcludesChainGrabs, ExcludesWobbles, SatisfiesMinComboPercent, ExcludesLargeSingleHit, ExcludesCPUs, IsOneVsOne, ComboDidKill, MatchesCharacter, MatchesPortNumber } from "./criteria";
+import { MatchesPlayerName, ExcludesChainGrabs, ExcludesWobbles, SatisfiesMinComboPercent, ExcludesLargeSingleHit, ExcludesCPUs, IsOneVsOne, ComboDidKill, MatchesCharacter, MatchesPortNumber, SatisfiesMinComboLength } from "./criteria";
 
 export interface ComboFilterSettings {
   chainGrabbers: Character[];
   characterFilter: Character[];
   portFilter: number[];
   nameTags: string[];
+  minComboLength: number;
   minComboPercent: number;
   comboMustKill: boolean;
   excludeCPUs: boolean;
@@ -27,6 +28,7 @@ const defaultSettings: ComboFilterSettings = {
   characterFilter: [],
   portFilter: [],
   nameTags: [],
+  minComboLength: 0,
   minComboPercent: 60,
   comboMustKill: true,
   excludeCPUs: true,
@@ -55,6 +57,7 @@ export class ComboFilter {
       new MatchesCharacter(),
       new ExcludesChainGrabs(),
       new ExcludesWobbles(),
+      new SatisfiesMinComboLength(),
       new SatisfiesMinComboPercent(),
       new ExcludesLargeSingleHit(),
       new ExcludesCPUs(),
