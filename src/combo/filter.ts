@@ -39,9 +39,9 @@ const defaultSettings: ComboFilterSettings = {
 }
 
 export class ComboFilter {
+  public criteria: Criteria[];
   private settings: ComboFilterSettings;
   private originalSettings: ComboFilterSettings;
-  private criteria: Criteria[];
 
   public constructor(options?: Partial<ComboFilterSettings>) {
     this.settings = Object.assign({}, defaultSettings, options);
