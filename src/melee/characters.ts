@@ -40,157 +40,157 @@ const characterMap = new Map<Character, CharacterInfo>()
   .set(Character.CAPTAIN_FALCON, {
     id: Character.CAPTAIN_FALCON,
     name: "Captain Falcon",
-    shortName: "Falcon",
+    shortName: "falcon",
     colors: ["Default", "Black", "Red", "White", "Green", "Blue"],
   })
   .set(Character.DONKEY_KONG, {
     id: Character.DONKEY_KONG,
     name: "Donkey Kong",
-    shortName: "DK",
+    shortName: "dk",
     colors: ["Default", "Black", "Red", "Blue", "Green"],
   })
   .set(Character.FOX, {
     id: Character.FOX,
     name: "Fox",
-    shortName: "Fox",
+    shortName: "fox",
     colors: ["Default", "Red", "Blue", "Green"],
   })
   .set(Character.GAME_AND_WATCH, {
     id: Character.GAME_AND_WATCH,
     name: "Mr. Game & Watch",
-    shortName: "G&W",
+    shortName: "gnw",
     colors: ["Default", "Red", "Blue", "Green"],
   })
   .set(Character.KIRBY, {
     id: Character.KIRBY,
     name: "Kirby",
-    shortName: "Kirby",
+    shortName: "kirby",
     colors: ["Default", "Yellow", "Blue", "Red", "Green", "White"],
   })
   .set(Character.BOWSER, {
     id: Character.BOWSER,
     name: "Bowser",
-    shortName: "Bowser",
+    shortName: "bowser",
     colors: ["Default", "Red", "Blue", "Black"],
   })
   .set(Character.LINK, {
     id: Character.LINK,
     name: "Link",
-    shortName: "Link",
+    shortName: "link",
     colors: ["Default", "Red", "Blue", "Black", "White"],
   })
   .set(Character.LUIGI, {
     id: Character.LUIGI,
     name: "Luigi",
-    shortName: "Luigi",
+    shortName: "luigi",
     colors: ["Default", "White", "Blue", "Red"],
   })
   .set(Character.MARIO, {
     id: Character.MARIO,
     name: "Mario",
-    shortName: "Mario",
+    shortName: "mario",
     colors: ["Default", "Yellow", "Black", "Blue", "Green"],
   })
   .set(Character.MARTH, {
     id: Character.MARTH,
     name: "Marth",
-    shortName: "Marth",
+    shortName: "marth",
     colors: ["Default", "Red", "Green", "Black", "White"],
   })
   .set(Character.MEWTWO, {
     id: Character.MEWTWO,
     name: "Mewtwo",
-    shortName: "Mewtwo",
+    shortName: "mewtwo",
     colors: ["Default", "Red", "Blue", "Green"],
   })
   .set(Character.NESS, {
     id: Character.NESS,
     name: "Ness",
-    shortName: "Ness",
+    shortName: "ness",
     colors: ["Default", "Yellow", "Blue", "Green"],
   })
   .set(Character.PEACH, {
     id: Character.PEACH,
     name: "Peach",
-    shortName: "Peach",
+    shortName: "peach",
     colors: ["Default", "Daisy", "White", "Blue", "Green"],
   })
   .set(Character.PIKACHU, {
     id: Character.PIKACHU,
     name: "Pikachu",
-    shortName: "Pikachu",
+    shortName: "pikachu",
     colors: ["Default", "Red", "Party Hat", "Cowboy Hat"],
   })
   .set(Character.ICE_CLIMBERS, {
     id: Character.ICE_CLIMBERS,
     name: "Ice Climbers",
-    shortName: "ICs",
+    shortName: "ics",
     colors: ["Default", "Green", "Orange", "Red"],
   })
   .set(Character.JIGGLYPUFF, {
     id: Character.JIGGLYPUFF,
     name: "Jigglypuff",
-    shortName: "Puff",
+    shortName: "puff",
     colors: ["Default", "Red", "Blue", "Headband", "Crown"],
   })
   .set(Character.SAMUS, {
     id: Character.SAMUS,
     name: "Samus",
-    shortName: "Samus",
+    shortName: "samus",
     colors: ["Default", "Pink", "Black", "Green", "Purple"],
   })
   .set(Character.YOSHI, {
     id: Character.YOSHI,
     name: "Yoshi",
-    shortName: "Yoshi",
+    shortName: "yoshi",
     colors: ["Default", "Red", "Blue", "Yellow", "Pink", "Cyan"],
   })
   .set(Character.ZELDA, {
     id: Character.ZELDA,
     name: "Zelda",
-    shortName: "Zelda",
+    shortName: "zelda",
     colors: ["Default", "Red", "Blue", "Green", "White"],
   })
   .set(Character.SHEIK, {
     id: Character.SHEIK,
     name: "Sheik",
-    shortName: "Sheik",
+    shortName: "sheik",
     colors: ["Default", "Red", "Blue", "Green", "White"],
   })
   .set(Character.FALCO, {
     id: Character.FALCO,
     name: "Falco",
-    shortName: "Falco",
+    shortName: "falco",
     colors: ["Default", "Red", "Blue", "Green"],
   })
   .set(Character.YOUNG_LINK, {
     id: Character.YOUNG_LINK,
     name: "Young Link",
-    shortName: "YLink",
+    shortName: "yl",
     colors: ["Default", "Red", "Blue", "White", "Black"],
   })
   .set(Character.DR_MARIO, {
     id: Character.DR_MARIO,
     name: "Dr. Mario",
-    shortName: "Doc",
+    shortName: "doc",
     colors: ["Default", "Red", "Blue", "Green", "Black"],
   })
   .set(Character.ROY, {
     id: Character.ROY,
     name: "Roy",
-    shortName: "Roy",
+    shortName: "roy",
     colors: ["Default", "Red", "Blue", "Green", "Yellow"],
   })
   .set(Character.PICHU, {
     id: Character.PICHU,
     name: "Pichu",
-    shortName: "Pichu",
+    shortName: "pichu",
     colors: ["Default", "Red", "Blue", "Green"],
   })
   .set(Character.GANONDORF, {
     id: Character.GANONDORF,
     name: "Ganondorf",
-    shortName: "Ganon",
+    shortName: "ganon",
     colors: ["Default", "Red", "Blue", "Green", "Purple"],
   });
 

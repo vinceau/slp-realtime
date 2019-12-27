@@ -4,65 +4,49 @@
 
 This is a real-time slp parsing library.
 
-## Development
+## Usage
 
-### Setup
-
-```bash
-git clone https://github.com/vinceau/slp-realtime
-cd slp-realtime
-yarn install
-```
-
-### Build
+### Installation
 
 ```bash
-yarn run build
+yarn add @vinceau/slp-realtime
 ```
 
-You can also run `yarn run watch` to continuously build whenever changes are detected.
-
-### Test
-
-```bash
-yarn run test
-```
-
-### Example Typescript Usage
+### Example
 
 The following code is not tested! It also assumes you have the Slippi Desktop app set up to relay onto port 1667.
 
-```typescript
-import { SlippiLivestream } from 'slp-realtime';
+```javascript
+const { SlippiLivestream } = require('@vinceau/slp-realtime');
 
 const r = new SlippiLivestream({
     writeSlpFiles: false,
     writeSlpFileLocation: '.'
 });
 
-r.on('gameStart', () => {
+r.events.on('gameStart', () => {
     console.log('game started');
 });
-r.on('gameEnd', () => {
+r.events.on('gameEnd', () => {
     console.log('game ended');
 });
 
-r.on('percentChange', (i: number, percent: number) => {
+r.events.on('percentChange', (i, percent) => {
     console.log(`player ${i} percent: ${percent}`);
 });
-r.on('spawn', (i, s) => {
+r.events.on('spawn', (i, s) => {
     console.log(`player ${i} spawned with ${s.count} stocks remaining`);
 });
-r.on('death', (i) => {
+r.events.on('death', (i) => {
     console.log(`player ${i} died`);
 });
-r.on('comboStart', () => {
+r.events.on('comboStart', () => {
     console.log('comboStart');
 });
-r.on('comboExtend', () => {
+r.events.on('comboExtend', () => {
     console.log('comboExtend');
 });
-r.on('comboEnd', () => {
+r.events.on('comboEnd', () => {
     console.log('the combo ended');
 });
 
@@ -75,5 +59,21 @@ r.start(address, port)
     .catch(err => {
         console.error(err);
     });
+```
 
+## Development
+
+### Build
+
+```bash
+yarn install   # install the dependencies first
+yarn run build
+```
+
+You can also run `yarn run watch` to continuously build whenever changes are detected.
+
+### Test
+
+```bash
+yarn run test
 ```
