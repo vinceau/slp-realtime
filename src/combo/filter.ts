@@ -19,9 +19,7 @@ export interface ComboFilterSettings {
   perCharacterMinComboPercent: { [characterId: number]: number };
 }
 
-export interface Criteria {
-  check: (combo: ComboType, settings: GameStartType, options: ComboFilterSettings) => boolean;
-}
+export type Criteria = (combo: ComboType, settings: GameStartType, options: ComboFilterSettings) => boolean;
 
 const defaultSettings: ComboFilterSettings = {
   chainGrabbers: [Character.MARTH, Character.PEACH, Character.PIKACHU, Character.DR_MARIO],
@@ -52,17 +50,17 @@ export class ComboFilter {
     this.originalSettings = Object.assign({}, this.settings);
     this.criteria = new Array<Criteria>();
     this.criteria.push(
-      new MatchesPortNumber(),
-      new MatchesPlayerName(),
-      new MatchesCharacter(),
-      new ExcludesChainGrabs(),
-      new ExcludesWobbles(),
-      new SatisfiesMinComboLength(),
-      new SatisfiesMinComboPercent(),
-      new ExcludesLargeSingleHit(),
-      new ExcludesCPUs(),
-      new IsOneVsOne(),
-      new ComboDidKill(),
+      MatchesPortNumber,
+      MatchesPlayerName,
+      MatchesCharacter,
+      ExcludesChainGrabs,
+      ExcludesWobbles,
+      SatisfiesMinComboLength,
+      SatisfiesMinComboPercent,
+      ExcludesLargeSingleHit,
+      ExcludesCPUs,
+      IsOneVsOne,
+      ComboDidKill,
     );
   }
 
@@ -83,7 +81,7 @@ export class ComboFilter {
   public isCombo(combo: ComboType, settings: GameStartType): boolean {
     // Check if we satisfy all the criteria
     for (const c of this.criteria) {
-      if (!c.check(combo, settings, this.settings)) {
+      if (!c(combo, settings, this.settings)) {
         return false;
       }
     }
