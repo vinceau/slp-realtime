@@ -16,6 +16,7 @@ const NETWORK_MESSAGE = "HELO\0";
 
 const defaultSettings = {
   singleGameMode: false,
+  logErrors: false,
 };
 
 export type SlpStreamSettings = typeof defaultSettings;
@@ -72,7 +73,15 @@ export class SlpStream extends Writable {
 
       const payloadPtr = data.slice(index);
       const payloadDataView = new DataView(data.buffer, index);
-      const payloadLen = this._processCommand(command, payloadPtr, payloadDataView);
+      let payloadLen = 0;
+      try {
+        payloadLen = this._processCommand(command, payloadPtr, payloadDataView);
+      } catch (err) {
+        if (this.settings.logErrors) {
+          console.error(err);
+        }
+        payloadLen = 0;
+      }
       index += payloadLen;
     }
 
@@ -110,8 +119,7 @@ export class SlpStream extends Writable {
 
     const payloadSize = this.payloadSizes.get(command);
     if (!payloadSize) {
-      // TODO: Flag some kind of error
-      return 0;
+      throw new Error(`Could not get payload sizes for command: ${command}`);
     }
 
     // Fetch the payload and parse it
@@ -119,7 +127,7 @@ export class SlpStream extends Writable {
     const parsedPayload = parseMessage(command, payload);
     if (!parsedPayload) {
       // Failed to parse
-      return 0;
+      throw new Error(`Failed to parse payload for command: ${command}`);
     }
 
     switch (command) {
