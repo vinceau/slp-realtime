@@ -30,8 +30,6 @@ export class SlippiLivestream {
     // Restart the connection if already connected
     if (this.connection !== null) {
       this.connection.disconnect();
-      this.connection = null;
-      this.connection = new ConsoleConnection();
     }
 
     const assertConnected = new Promise<boolean>((resolve, reject): void => {
