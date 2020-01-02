@@ -2,7 +2,7 @@
   "name": "@vinceau/slp-realtime",
   "description": "Realtime slp parsing",
   "license": "MIT",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "repository": "vinceau/slp-realtime",
   "engines": {
     "node": ">=6"
