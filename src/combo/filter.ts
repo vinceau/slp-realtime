@@ -21,7 +21,7 @@ export interface ComboFilterSettings {
 
 export type Criteria = (combo: ComboType, settings: GameStartType, options: ComboFilterSettings) => boolean;
 
-const defaultSettings: ComboFilterSettings = {
+export const defaultComboFilterSettings: ComboFilterSettings = {
   chainGrabbers: [Character.MARTH, Character.PEACH, Character.PIKACHU, Character.DR_MARIO],
   characterFilter: [],
   portFilter: [0, 1, 2, 3], // Enable combos for all ports
@@ -46,7 +46,7 @@ export class ComboFilter {
   private originalSettings: ComboFilterSettings;
 
   public constructor(options?: Partial<ComboFilterSettings>) {
-    this.settings = Object.assign({}, defaultSettings, options);
+    this.settings = Object.assign({}, defaultComboFilterSettings, options);
     this.originalSettings = Object.assign({}, this.settings);
     this.criteria = new Array<Criteria>();
     this.criteria.push(
