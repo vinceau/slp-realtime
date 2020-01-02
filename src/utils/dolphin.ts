@@ -37,7 +37,7 @@ export class DolphinComboQueue {
   }
 
   public addCombo(path: string, combo: ComboType): void {
-    const startFrame = Math.min(Frames.FIRST, combo.startFrame - this.options.startBuffer);
+    const startFrame = Math.max(Frames.FIRST, combo.startFrame - this.options.startBuffer);
     // Ideally we use the end frame specified in the game, but we don't actually have
     // access to that information in a realtime environment.
     // So instead, if endFrame is undefined, we use the max possible end frame.
