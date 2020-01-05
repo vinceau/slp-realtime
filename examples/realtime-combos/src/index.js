@@ -4,7 +4,7 @@ const { ConnectionStatus, SlippiLivestream, ComboFilter, DolphinComboQueue } = r
 const ADDRESS = "localhost";  // leave as is if the relay is on the same computer
 const PORT = 1667;            // relay port
 
-const outputCombosFile = "combos.js";   // The file to write combos to
+const outputCombosFile = "combos.json";   // The json file to write combos to
 
 const comboQueue = new DolphinComboQueue();  // Tracks the combos to be written
 
