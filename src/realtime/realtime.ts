@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import EventEmitter from "events";
-import StrictEventEmitter from 'strict-event-emitter-types';
+import StrictEventEmitter from "strict-event-emitter-types";
 
-import { SlpStream, SlpEvent } from '../utils/slpStream';
+import { SlpStream, SlpEvent } from "../utils/slpStream";
 import { SlpParser, GameStartType, GameEndType, Command, PostFrameUpdateType, Stats as SlippiStats, ComboType, StockType } from "slp-parser-js";
 import { StockComputer } from "../stats/stocks";
 import { ComboComputer } from "../stats/combos";
@@ -60,14 +60,14 @@ export class SlippiRealtime extends (EventEmitter as SlippiRealtimeEventEmitter)
       processOnTheFly: true,
     });
     const stock = new StockComputer();
-    stock.on('percentChange', (i: number, percent: number) => {
-      this.emit('percentChange', i, percent);
+    stock.on("percentChange", (i: number, percent: number) => {
+      this.emit("percentChange", i, percent);
     });
-    stock.on('spawn', (i, s) => {
-      this.emit('spawn', i, s, payload);
+    stock.on("spawn", (i, s) => {
+      this.emit("spawn", i, s, payload);
     });
-    stock.on('death', (i, s) => {
-      this.emit('death', i, s, payload);
+    stock.on("death", (i, s) => {
+      this.emit("death", i, s, payload);
     });
     const combo = new ComboComputer();
     combo.on("comboStart", (c) => {

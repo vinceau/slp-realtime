@@ -1,7 +1,7 @@
-import _ from 'lodash';
-import fs, { WriteStream } from 'fs';
-import moment, { Moment } from 'moment';
-import { Writable, WritableOptions } from 'stream';
+import _ from "lodash";
+import fs, { WriteStream } from "fs";
+import moment, { Moment } from "moment";
+import { Writable, WritableOptions } from "stream";
 
 const DEFAULT_NICKNAME = "unknown";
 
@@ -63,7 +63,7 @@ export class SlpFile extends Writable {
 
   private _initializeNewGame(filePath: string): void {
     this.fileStream = fs.createWriteStream(filePath, {
-      encoding: 'binary',
+      encoding: "binary",
     });
 
     const header = Buffer.concat([
