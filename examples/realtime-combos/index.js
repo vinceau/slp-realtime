@@ -1,3 +1,9 @@
+/*
+This example script connects to a relay, automatically detects combos,
+and generates a Dolphin-compatible `combos.json` file when disconnected
+from the relay.
+*/
+
 const { ConnectionStatus, SlippiLivestream, ComboFilter, DolphinComboQueue } = require("@vinceau/slp-realtime");
 
 // TODO: Make sure you set these values!
@@ -30,9 +36,7 @@ livestream.start(ADDRESS, PORT)
 // Write out the files when we've been disconnected
 livestream.connection.on("statusChange", (status) => {
   if (status === ConnectionStatus.DISCONNECTED) {
-    // We got disconnected from the relayer
     console.log("Disconnected from the relay.");
-    // Write out the combos
     console.log("Writing combo files...");
     comboQueue.writeFile(outputCombosFile);
     console.log(`Wrote ${comboQueue.length()} combos to ${outputCombosFile}`);
@@ -44,10 +48,9 @@ livestream.events.on("comboEnd", (combo, settings) => {
   if (comboFilter.isCombo(combo, settings)) {
     console.log("Detected combo!");
     const filename = livestream.getCurrentFilename();
-    if (!filename) {
-      console.log("Could not find current slp filename");
+    if (filename) {
+      comboQueue.addCombo(filename, combo);
     }
-    comboQueue.addCombo(filename, combo);
   }
 });
 

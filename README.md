@@ -33,7 +33,7 @@ yarn add @vinceau/slp-realtime
 
 ### Subscribing to In-Game Events
 
-You can use this library to subscribe to in game events.
+We can use this library to subscribe to in game events.
 
 First instantiate an instance of `SlippiLivestream` and connect to a Wii or Slippi relay.
 
@@ -93,16 +93,16 @@ comboFilter.updateSettings({
 
 ```javascript
 livestream.events.on("comboEnd", (combo, settings) => {
-    // Combo didn't match
     if (!comboFilter.isCombo(combo, settings)) {
         console.log("Combo did not match criteria!");
         return;
     }
 
     console.log("Combo matched!");
-    // TODO: do something with this combo
 });
 ```
+
+To this all in action, checkout a [working example](examples/realtime-combos).
 
 ## Development
 
