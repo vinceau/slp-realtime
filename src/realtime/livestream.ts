@@ -51,7 +51,7 @@ export class SlippiLivestream {
             resolve();
             break;
           case ConnectionStatus.DISCONNECTED:
-            reject(`Failed to connect to: ${address}:${port}`);
+            reject(new Error(`Failed to connect to: ${address}:${port}`));
             break;
           }
         });
