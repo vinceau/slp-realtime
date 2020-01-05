@@ -38,7 +38,7 @@
     "realtime"
   ],
   "dependencies": {
-    "@vinceau/slp-wii-connect": "^0.0.3",
+    "@vinceau/slp-wii-connect": "^1.0.0",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "slp-parser-js": "^4.0.0",
