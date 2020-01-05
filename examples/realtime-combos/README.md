@@ -22,10 +22,10 @@ yarn install
 
 3. Set the address and port
 
-Open up the `src/index.js` file in your favourite editor, and modify the values for `ADDRESS` and `PORT` appropriately.
+Open up the `index.js` file in your favourite editor, and modify the values for `ADDRESS` and `PORT` appropriately.
 
 4. Run the actual code
 
 ```bash
-node src/index.js
+node index.js
 ```
