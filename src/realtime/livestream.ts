@@ -40,7 +40,6 @@ export class SlippiLivestream {
       try {
         this.connection.connect(address, port, SLIPPI_CONNECTION_TIMEOUT_MS);
         this.connection.on("handshake", (data) => {
-          console.log(`got nickname: ${data.consoleNickname}`);
           this.stream.updateSettings({ consoleNick: data.consoleNickname });
         });
         this.connection.on("data", (data) => {
