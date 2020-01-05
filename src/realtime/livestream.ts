@@ -26,26 +26,22 @@ export class SlippiLivestream {
     this.stream.updateSettings(settings);
   }
 
-  public async start(address: string, port: number): Promise<boolean> {
+  public async start(address: string, port: number): Promise<void> {
     // Restart the connection if already connected
     if (this.connection !== null) {
       this.connection.disconnect();
     }
 
-    const assertConnected = new Promise<boolean>((resolve, reject): void => {
+    const assertConnected: Promise<void> = new Promise((resolve, reject): void => {
       try {
         this.connection.connect(address, port, SLIPPI_CONNECTION_TIMEOUT_MS);
         this.connection.on("data", (data) => {
           this.stream.write(data);
         });
-        this.connection.on("statusChange", (status: ConnectionStatus) => {
-          // this.emit("statusChange", status);
-          console.log(`status changed: ${status}`);
-        });
         this.connection.once("statusChange", (status: ConnectionStatus) => {
           switch (status) {
           case ConnectionStatus.CONNECTED:
-            resolve(true);
+            resolve();
             break;
           case ConnectionStatus.DISCONNECTED:
             reject(`Failed to connect to: ${address}:${port}`);
@@ -56,6 +52,6 @@ export class SlippiLivestream {
         reject(err);
       }
     });
-    return promiseTimeout<boolean>(SLIPPI_CONNECTION_TIMEOUT_MS, assertConnected);
+    return promiseTimeout<void>(SLIPPI_CONNECTION_TIMEOUT_MS, assertConnected);
   }
 }
