@@ -31,7 +31,7 @@ yarn add @vinceau/slp-realtime
 
 ## Usage
 
-To this all in action, checkout a [working example](examples/realtime-combos).
+To see all this in action, check out a [working example](examples/realtime-combos).
 
 ### Subscribing to In-Game Events
 
