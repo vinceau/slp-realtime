@@ -473,10 +473,10 @@
     lodash.unescape "4.0.1"
     semver "^6.3.0"
 
-"@vinceau/slp-wii-connect@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@vinceau/slp-wii-connect/-/slp-wii-connect-1.0.0.tgz#81800a4cc9b3122ff328d06bf45ca8f2bb29949f"
-  integrity sha512-uxlYcgECSRKxydejzyScrC1Rcj6uiy/Cct06d8it49Dnj32ifL8ivDjkR6tDXvlRG4nuFKfyWKmR4+anFrkZFw==
+"@vinceau/slp-wii-connect@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@vinceau/slp-wii-connect/-/slp-wii-connect-1.0.1.tgz#0c9d4505c13b41d9df5776dc7f45bc2e6f2fc7c1"
+  integrity sha512-JaxkdA9HQAWI17xvwljAU6m1l5axePseFmUkocz5opMYcl0abVFDO0OknIr7AF28+yH6Qv9baYhkve6iejljRg==
   dependencies:
     "@shelacek/ubjson" "^1.0.1"
     lodash "^4.17.11"
