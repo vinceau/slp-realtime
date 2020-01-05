@@ -23,9 +23,10 @@ livestream.connection.on("statusChange", (status) => {
     comboQueue = new DolphinComboQueue();
   } else if (status === ConnectionStatus.DISCONNECTED) {
     // We got disconnected from the relayer
-    console.log("Disconnected from the relay. Writing combo files...");
+    console.log("Disconnected from the relay.");
     // Write out the combos
     if (comboQueue) {
+      console.log("Writing combo files...");
       comboQueue.writeFile(outputCombosFile);
       console.log(`Wrote ${comboQueue.length()} combos to ${outputCombosFile}`);
     }
