@@ -1,6 +1,10 @@
 # Real-time Combo Extraction Example
 
-An example demonstrating the real-time capabilities of `slp-realtime`.
+This is an example demonstrating the real-time capabilities of `slp-realtime`.
+
+This script connects to a Slippi relay, automatically detects combos,
+and generates a Dolphin-compatible `combos.json` file when disconnected
+from the relay.
 
 ## How to use
 

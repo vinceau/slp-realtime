@@ -31,6 +31,8 @@ yarn add @vinceau/slp-realtime
 
 ## Usage
 
+To this all in action, checkout a [working example](examples/realtime-combos).
+
 ### Subscribing to In-Game Events
 
 We can use this library to subscribe to in game events.
@@ -101,8 +103,6 @@ livestream.events.on("comboEnd", (combo, settings) => {
     console.log("Combo matched!");
 });
 ```
-
-To this all in action, checkout a [working example](examples/realtime-combos).
 
 ## Development
 
