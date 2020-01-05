@@ -1,9 +1,9 @@
 import sinon from "sinon";
 
-import { SlippiRealtime, SlpStream, ComboFilter, Character } from '../src';
+import { SlippiRealtime, SlpStream, ComboFilter, Character } from "../src";
 import { pipeFileContents }  from "../src/utils/testHelper";
 
-describe('combo calculation', () => {
+describe("combo calculation", () => {
   const filter = new ComboFilter();
 
   beforeEach(() => {
@@ -11,7 +11,7 @@ describe('combo calculation', () => {
     filter.resetSettings();
   });
 
-  it('correctly matches combo criteria', async () => {
+  it("correctly matches combo criteria", async () => {
     const comboSpy = sinon.spy();
 
     const slpStream = new SlpStream({ singleGameMode: true });
@@ -29,7 +29,7 @@ describe('combo calculation', () => {
     expect(comboSpy.callCount).toEqual(1);
   });
 
-  it('can filter by character', async () => {
+  it("can filter by character", async () => {
     const bowserOnlySpy = sinon.spy();
     const bowserOnlyFilter = new ComboFilter();
 
@@ -56,7 +56,7 @@ describe('combo calculation', () => {
     expect(excludesBowserSpy.callCount).toEqual(1);
   });
 
-  it('can update combo settings', async () => {
+  it("can update combo settings", async () => {
     const comboSpy = sinon.spy();
 
     filter.updateSettings({ minComboPercent: 20 });
