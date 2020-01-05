@@ -24,7 +24,8 @@ interface SlippiRealtimeEvents {
 type SlippiRealtimeEventEmitter = { new(): StrictEventEmitter<EventEmitter, SlippiRealtimeEvents> };
 
 /**
- * Slippi Game class that wraps a read stream
+ * SlippiRealtime is solely responsible for detecting notable in-game events
+ * and emitting an appropriate event.
  */
 export class SlippiRealtime extends (EventEmitter as SlippiRealtimeEventEmitter) {
   protected stream: SlpStream;

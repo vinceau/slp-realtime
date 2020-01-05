@@ -11,6 +11,13 @@ export interface SlpFileMetadata {
   players: any;
 };
 
+/**
+ * SlpFile is a class that wraps a Writable stream. It handles the writing of the binary
+ * header and footer, and also handles the overwriting of the raw data length.
+ *
+ * @class SlpFile
+ * @extends {Writable}
+ */
 export class SlpFile extends Writable {
   private filePath: string;
   private metadata: SlpFileMetadata;

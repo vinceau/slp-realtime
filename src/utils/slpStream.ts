@@ -21,12 +21,25 @@ const defaultSettings = {
 
 export type SlpStreamSettings = typeof defaultSettings;
 
+/**
+ * SlpStream is a writable stream of Slippi data. It passes the data being written in
+ * and emits an event based on what kind of Slippi messages were processed.
+ *
+ * @class SlpStream
+ * @extends {Writable}
+ */
 export class SlpStream extends Writable {
   private settings: SlpStreamSettings;
   private gameReady = false;
   private payloadSizes = new Map<Command, number>();
   private previousBuffer: Uint8Array = Buffer.from([]);
 
+  /**
+   *Creates an instance of SlpStream.
+   * @param {Partial<SlpStreamSettings>} [slpOptions]
+   * @param {WritableOptions} [opts]
+   * @memberof SlpStream
+   */
   public constructor(slpOptions?: Partial<SlpStreamSettings>, opts?: WritableOptions) {
     super(opts);
     this.settings = Object.assign({}, defaultSettings, slpOptions);
