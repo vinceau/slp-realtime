@@ -2,7 +2,7 @@
 	"name": "slp-realtime-combos-example",
 	"version": "1.0.0",
 	"license": "MIT",
-	"main": "src/index.js",
+	"main": "index.js",
 	"dependencies": {
 		"@vinceau/slp-realtime": "file:../.."
 	},
