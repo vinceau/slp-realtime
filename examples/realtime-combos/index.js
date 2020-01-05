@@ -39,6 +39,7 @@ livestream.connection.on("statusChange", (status) => {
 
 livestream.events.on("comboEnd", (combo, settings) => {
   if (comboFilter.isCombo(combo, settings)) {
+    console.log("Detected combo!");
     const filename = livestream.getCurrentFilename();
     if (!filename) {
       console.log("Could not find current slp filename");
