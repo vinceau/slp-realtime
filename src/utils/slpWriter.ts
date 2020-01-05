@@ -42,6 +42,13 @@ export class SlpFileWriter extends SlpStream {
     })
   }
 
+  public getCurrentFilename(): string | null {
+    if (this.currentFile !== null) {
+      return path.resolve(this.currentFile.path());
+    }
+    return null;
+  }
+
   public updateSettings(settings: Partial<SlpFileWriterOptions>): void {
     this.options = Object.assign({}, this.options, settings);
   }

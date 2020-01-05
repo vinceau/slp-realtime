@@ -16,10 +16,14 @@ export class SlippiLivestream {
   public events: SlippiRealtime;
   private stream: SlpFileWriter;
 
-  public constructor() {
+  public constructor(options?: Partial<SlpFileWriterOptions>) {
     this.connection = new ConsoleConnection();
-    this.stream = new SlpFileWriter();
+    this.stream = new SlpFileWriter(options);
     this.events = new SlippiRealtime(this.stream);
+  }
+
+  public getCurrentFilename(): string | null {
+    return this.stream.getCurrentFilename();
   }
 
   public updateSettings(settings: Partial<SlpFileWriterOptions>): void {
@@ -35,6 +39,10 @@ export class SlippiLivestream {
     const assertConnected: Promise<void> = new Promise((resolve, reject): void => {
       try {
         this.connection.connect(address, port, SLIPPI_CONNECTION_TIMEOUT_MS);
+        this.connection.on("handshake", (data) => {
+          console.log(`got nickname: ${data.consoleNickname}`);
+          this.stream.updateSettings({ consoleNick: data.consoleNickname });
+        });
         this.connection.on("data", (data) => {
           this.stream.write(data);
         });
