@@ -70,6 +70,38 @@ livestream.events.on("comboEnd", () => {
 });
 ```
 
+### Detecting Custom Combos
+
+We can already subscribe to the `comboEnd` event but that gets emitted for *every* combo. We need a way to filter out for specific combos.
+
+First, instantiate a `ComboFilter`. For all the possible filtering options, see Combo Filter Settings.
+
+```javascript
+const { ComboFilter } = require("@vinceau/slp-realtime");
+
+const comboFilter = new ComboFilter();
+comboFilter.updateSettings({
+    excludeCPUs: false,    // combos on CPUs are okay
+    comboMustKill: false,  // combos don't have to kill
+    minComboPercent: 40,   // combos have to do at least 40% damage
+});
+```
+
+`ComboFilter` exposes a handy `isCombo()` method which returns `true` if a given combo matches the specified criteria. We can hook it up to our live stream with the following:
+
+```javascript
+livestream.events.on("comboEnd", (combo, settings) => {
+    // Combo didn't match
+    if (!comboFilter.isCombo(combo, settings)) {
+        console.log("Combo did not match criteria!");
+        return;
+    }
+
+    console.log("Combo matched!");
+    // TODO: do something with this combo
+});
+```
+
 ## Development
 
 To build the library from source:
@@ -96,7 +128,7 @@ This project was made possible by:
 
 * [Jas Laferriere](https://github.com/JLaferri) and the rest of the [Project Slippi](https://github.com/project-slippi) team
 
-* [NikhilNarayana](https://github.com/NikhilNarayana) and his [GetSlippiCombos](https://gist.github.com/NikhilNarayana/d45e328e9ea47127634f2faf575e8dcf) script
+* [NikhilNarayana](https://github.com/NikhilNarayana) and his [Get Slippi Combos](https://gist.github.com/NikhilNarayana/d45e328e9ea47127634f2faf575e8dcf) script
 
 
 ## License
