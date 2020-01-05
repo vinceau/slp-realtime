@@ -1,10 +1,10 @@
 import sinon from "sinon";
 
-import { SlippiRealtime, SlpStream } from '../src';
-import { pipeFileContents } from '../src/utils/testHelper';
+import { SlippiRealtime, SlpStream } from "../src";
+import { pipeFileContents } from "./helpers";
 
-describe('SlippiRealtime', () => {
-  it('emits the correct number of events', async () => {
+describe("SlippiRealtime", () => {
+  it("emits the correct number of events", async () => {
     const gameStartSpy = sinon.spy();
     const gameEndSpy = sinon.spy();
     const stockSpawnSpy = sinon.spy();

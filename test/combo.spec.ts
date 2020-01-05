@@ -1,7 +1,7 @@
 import sinon from "sinon";
 
 import { SlippiRealtime, SlpStream, ComboFilter, Character } from "../src";
-import { pipeFileContents }  from "../src/utils/testHelper";
+import { pipeFileContents }  from "./helpers";
 
 describe("combo calculation", () => {
   const filter = new ComboFilter();
