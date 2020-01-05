@@ -17,15 +17,17 @@ comboFilter.updateSettings({
 
 // Connect to the relay
 const livestream = new SlippiLivestream({
-  outputFiles: true,
+  outputFiles: true,  // Write out slp files so we can reference them in the dolphin json file
 });
+
+// connect to the livestream
 livestream.start(ADDRESS, PORT)
   .then(() => {
     console.log("Connected to Slippi Relay");
   })
   .catch(console.error);
 
-// Write out the files when disconnected
+// Write out the files when we've been disconnected
 livestream.connection.on("statusChange", (status) => {
   if (status === ConnectionStatus.DISCONNECTED) {
     // We got disconnected from the relayer
@@ -37,6 +39,7 @@ livestream.connection.on("statusChange", (status) => {
   }
 });
 
+// Add the combos to the queue whenever we detect them
 livestream.events.on("comboEnd", (combo, settings) => {
   if (comboFilter.isCombo(combo, settings)) {
     console.log("Detected combo!");
