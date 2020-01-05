@@ -2,78 +2,103 @@
 
 [![Build Status](https://github.com/vinceau/slp-realtime/workflows/build/badge.svg)](https://github.com/vinceau/slp-realtime/actions?workflow=build)
 
-This is a real-time slp parsing library.
+> A real-time Slippi parsing library.
 
-## Usage
+This library provides an easy way to subscribe to real-time [Slippi](https://github.com/project-slippi/project-slippi) game events as they happen.
 
-### Installation
+
+## Highlights
+
+* Go file-less. Read directly from the relay or console.
+* Custom combos. Easily add combo parameters and output Dolphin-compatible JSON files.
+* Events, Promise, and Stream API.
+
+## Installation
+
+**With NPM**
+
+```bash
+npm install @vinceau/slp-realtime
+```
+
+**With Yarn**
 
 ```bash
 yarn add @vinceau/slp-realtime
 ```
 
-### Example
+## Usage
 
-The following code is not tested! It also assumes you have the Slippi Desktop app set up to relay onto port 1667.
+### Subscribing to In-Game Events
+
+You can use this library to subscribe to in game events.
+
+First instantiate an instance of `SlippiLivestream` and connect to a Wii or Slippi relay.
 
 ```javascript
-const { SlippiLivestream } = require('@vinceau/slp-realtime');
+const { SlippiLivestream } = require("@vinceau/slp-realtime");
 
-const r = new SlippiLivestream({
-    writeSlpFiles: false,
-    writeSlpFileLocation: '.'
+const livestream = new SlippiLivestream();
+livestream.start(address, slpPort)
+  .then(() => {
+    console.log("Successfully connected!");
+  })
+  .catch(console.error);
+```
+
+Then simply use `livestream.events.on()` to subscribe to desired events. For example:
+
+```javascript
+livestream.events.on("gameStart", () => {
+    console.log("game started");
 });
 
-r.events.on('gameStart', () => {
-    console.log('game started');
-});
-r.events.on('gameEnd', () => {
-    console.log('game ended');
+livestream.events.on("percentChange", (index, percent) => {
+    console.log(`player ${index}'s new percent: ${percent}`);
 });
 
-r.events.on('percentChange', (i, percent) => {
-    console.log(`player ${i} percent: ${percent}`);
+livestream.events.on("spawn", (index, stock) => {
+    console.log(`player ${index} spawned with ${stock.count} stocks remaining`);
 });
-r.events.on('spawn', (i, s) => {
-    console.log(`player ${i} spawned with ${s.count} stocks remaining`);
-});
-r.events.on('death', (i) => {
+
+livestream.events.on("death", (i) => {
     console.log(`player ${i} died`);
 });
-r.events.on('comboStart', () => {
-    console.log('comboStart');
-});
-r.events.on('comboExtend', () => {
-    console.log('comboExtend');
-});
-r.events.on('comboEnd', () => {
-    console.log('the combo ended');
-});
 
-const address = '0.0.0.0';
-const port = 1667;
-r.start(address, port)
-    .then(() => {
-        console.log('connected');
-    })
-    .catch(err => {
-        console.error(err);
-    });
+livestream.events.on("comboEnd", () => {
+    console.log("a combo just happened");
+});
 ```
 
 ## Development
 
-### Build
+To build the library from source:
 
 ```bash
-yarn install   # install the dependencies first
 yarn run build
 ```
 
-You can also run `yarn run watch` to continuously build whenever changes are detected.
+To start the development server:
 
-### Test
+```bash
+yarn run watch
+```
+
+To run the tests:
 
 ```bash
 yarn run test
 ```
+
+## Acknowledgements
+
+This project was made possible by:
+
+* [Jas Laferriere](https://github.com/JLaferri) and the rest of the [Project Slippi](https://github.com/project-slippi) team
+
+* [NikhilNarayana](https://github.com/NikhilNarayana) and his [GetSlippiCombos](https://gist.github.com/NikhilNarayana/d45e328e9ea47127634f2faf575e8dcf) script
+
+
+## License
+
+This software is released under the terms of [MIT license](LICENSE).
