@@ -8,10 +8,10 @@
 
 | Key | Type |
 | --- | ---- |
-| `slpVersion` | `string | null` |
-| `isTeams` | `boolean | null` |
-| `isPAL` | `boolean | null` |
-| `stageId` | `number | null` |
+| `slpVersion` | `string \| null` |
+| `isTeams` | `boolean \| null` |
+| `isPAL` | `boolean \| null` |
+| `stageId` | `number \| null` |
 | `players` | `PlayerType[]` |
 
 
@@ -19,8 +19,8 @@
 
 | Key | Type |
 | --- | ---- |
-| `gameEndMethod` | `number | null` |
-| `lrasInitiatorIndex` | `number | null` |
+| `gameEndMethod` | `number \| null` |
+| `lrasInitiatorIndex` | `number \| null` |
 
 #### `ComboType`
 
@@ -29,10 +29,10 @@
 | `playerIndex` | `number` |
 | `opponentIndex` | `number` |
 | `startFrame` | `number` |
-| `endFrame` | `number | null | undefined` |
+| `endFrame` | `number \| null \| undefined` |
 | `startPercent` | `number` |
 | `currentPercent` | `number`;
-| `endPercent` | `number | null | undefined` |
+| `endPercent` | `number \| null \| undefined` |
 
 ---
 
@@ -46,7 +46,7 @@
 | Key | Type |
 | --- | ---- |
 | `count` | `number` |
-| `deathAnimation` | `number | null | undefined` |
+| `deathAnimation` | `number \| null \| undefined` |
 
 #### `PlayerType`
 
@@ -54,12 +54,12 @@
 | --- | ---- |
 | `playerIndex` | `number` |
 | `port` | `number` |
-| `characterId` | `number | null` |
-| `characterColor` | `number | null` |
-| `startStocks` | `number | null` |
-| `type` | `number | null` |
-| `teamId` | `number | null` |
-| `controllerFix` | `string | null` |
-| `nametag` | `string | null` |
+| `characterId` | `number \| null` |
+| `characterColor` | `number \| null` |
+| `startStocks` | `number \| null` |
+| `type` | `number \| null` |
+| `teamId` | `number \| null` |
+| `controllerFix` | `string \| null` |
+| `nametag` | `string \| null` |
 
 #### `MoveLandedType`
