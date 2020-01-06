@@ -1,3 +1,4 @@
+
 # `slp-realtime`
 
 [![npm version](http://img.shields.io/npm/v/@vinceau/slp-realtime.svg?style=flat)](https://npmjs.org/package/@vinceau/slp-realtime "View this project on npm")
@@ -31,7 +32,7 @@ yarn add @vinceau/slp-realtime
 
 ## Usage
 
-To see all this in action, check out a [working example](examples/realtime-combos).
+Check out a [working example](examples/realtime-combos) or [read the docs](docs).
 
 ### Subscribing to In-Game Events
 
