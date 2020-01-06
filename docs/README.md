@@ -31,7 +31,7 @@
 | `startFrame` | `number` |
 | `endFrame` | `number \| null \| undefined` |
 | `startPercent` | `number` |
-| `currentPercent` | `number`;
+| `currentPercent` | `number` |
 | `endPercent` | `number \| null \| undefined` |
 
 ---
