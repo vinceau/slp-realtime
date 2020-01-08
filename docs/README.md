@@ -4,7 +4,20 @@
 
 ### `ComboFilter`
 
+`constructor(options?: Partial<ComboFilterSettings>)`
 
+`updateSettings(options: Partial<ComboFilterSettings>): ComboFilterSettings`
+
+`getSettings(): ComboFilterSettings`
+    // Return a copy of the settings for immutability
+    return Object.assign({}, this.settings);
+  }
+
+`resetSettings(): ComboFilterSettings`
+    return this.updateSettings(this.originalSettings);
+  }
+
+`isCombo(combo: ComboType, settings: GameStartType): boolean`
 
 #### Methods
 
