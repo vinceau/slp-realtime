@@ -1,6 +1,6 @@
-import { SlpFileWriter, SlpFileWriterOptions } from "../utils/slpWriter";
+import { SlpFileWriter, SlpFileWriterOptions } from "./slpWriter";
 import { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect"
-import { promiseTimeout } from "../utils/sleep";
+import { promiseTimeout } from "./sleep";
 
 // Re-export these for ease-of-use
 export { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect"
@@ -10,7 +10,7 @@ const SLIPPI_CONNECTION_TIMEOUT_MS = 5000;
 /**
  * Slippi Game class that wraps a read stream
  */
-export class SlippiLiveStream extends SlpFileWriter {
+export class SlpLiveStream extends SlpFileWriter {
   public connection: ConsoleConnection;
 
   public constructor(options?: Partial<SlpFileWriterOptions>) {
