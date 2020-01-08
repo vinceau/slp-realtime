@@ -1,4 +1,4 @@
-import { SlpFileWriter, SlpFileWriterOptions } from "./slpWriter";
+import { SlpFileWriter } from "./slpWriter";
 import { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect"
 import { promiseTimeout } from "./sleep";
 
@@ -11,12 +11,7 @@ const SLIPPI_CONNECTION_TIMEOUT_MS = 5000;
  * Slippi Game class that wraps a read stream
  */
 export class SlpLiveStream extends SlpFileWriter {
-  public connection: ConsoleConnection;
-
-  public constructor(options?: Partial<SlpFileWriterOptions>) {
-    super(options);
-    this.connection = new ConsoleConnection();
-  }
+  public connection = new ConsoleConnection();
 
   public async start(address: string, port: number): Promise<void> {
     // Restart the connection if already connected
