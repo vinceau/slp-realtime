@@ -10,7 +10,7 @@ import { ComboComputer } from "../stats/combos";
 // Export the parameter types for events
 export { GameStartType, GameEndType, ComboType, StockType } from "slp-parser-js";
 
-interface SlippiRealtimeEvents {
+interface SlpRealTimeEvents {
   gameStart: GameStartType;
   gameEnd: GameEndType;
   comboStart: (combo: ComboType, settings: GameStartType) => void;
@@ -21,13 +21,13 @@ interface SlippiRealtimeEvents {
   percentChange: (playerIndex: number, percent: number) => void;
 }
 
-type SlippiRealtimeEventEmitter = { new(): StrictEventEmitter<EventEmitter, SlippiRealtimeEvents> };
+type SlpRealTimeEventEmitter = { new(): StrictEventEmitter<EventEmitter, SlpRealTimeEvents> };
 
 /**
- * SlippiRealtime is solely responsible for detecting notable in-game events
+ * SlpRealTime is solely responsible for detecting notable in-game events
  * and emitting an appropriate event.
  */
-export class SlippiRealtime extends (EventEmitter as SlippiRealtimeEventEmitter) {
+export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
   protected stream: SlpStream;
   protected parser: SlpParser;
 

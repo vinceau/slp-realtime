@@ -1,7 +1,6 @@
-import { SlpFileWriter, SlpFileWriterOptions } from "../utils/slpWriter";
+import { SlpFileWriter } from "./slpWriter";
 import { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect"
-import { promiseTimeout } from "../utils/sleep";
-import { SlippiRealtime } from "./realtime";
+import { promiseTimeout } from "./sleep";
 
 // Re-export these for ease-of-use
 export { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect"
@@ -11,24 +10,8 @@ const SLIPPI_CONNECTION_TIMEOUT_MS = 5000;
 /**
  * Slippi Game class that wraps a read stream
  */
-export class SlippiLivestream {
-  public connection: ConsoleConnection;
-  public events: SlippiRealtime;
-  private stream: SlpFileWriter;
-
-  public constructor(options?: Partial<SlpFileWriterOptions>) {
-    this.connection = new ConsoleConnection();
-    this.stream = new SlpFileWriter(options);
-    this.events = new SlippiRealtime(this.stream);
-  }
-
-  public getCurrentFilename(): string | null {
-    return this.stream.getCurrentFilename();
-  }
-
-  public updateSettings(settings: Partial<SlpFileWriterOptions>): void {
-    this.stream.updateSettings(settings);
-  }
+export class SlpLiveStream extends SlpFileWriter {
+  public connection = new ConsoleConnection();
 
   public async start(address: string, port: number): Promise<void> {
     // Restart the connection if already connected
@@ -40,10 +23,10 @@ export class SlippiLivestream {
       try {
         this.connection.connect(address, port, SLIPPI_CONNECTION_TIMEOUT_MS);
         this.connection.on("handshake", (data) => {
-          this.stream.updateSettings({ consoleNick: data.consoleNickname });
+          this.updateSettings({ consoleNick: data.consoleNickname });
         });
         this.connection.on("data", (data) => {
-          this.stream.write(data);
+          this.write(data);
         });
         this.connection.once("statusChange", (status: ConnectionStatus) => {
           switch (status) {

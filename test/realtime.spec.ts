@@ -1,9 +1,9 @@
 import sinon from "sinon";
 
-import { SlippiRealtime, SlpStream } from "../src";
+import { SlpRealTime, SlpStream } from "../src";
 import { pipeFileContents } from "./helpers";
 
-describe("SlippiRealtime", () => {
+describe("SlpRealTime", () => {
   it("emits the correct number of events", async () => {
     const gameStartSpy = sinon.spy();
     const gameEndSpy = sinon.spy();
@@ -11,7 +11,7 @@ describe("SlippiRealtime", () => {
     const stockDeathSpy = sinon.spy();
 
     const slpStream = new SlpStream({ singleGameMode: true });
-    const realtime = new SlippiRealtime(slpStream);
+    const realtime = new SlpRealTime(slpStream);
     realtime.on("gameStart", gameStartSpy);
     realtime.on("gameEnd", gameEndSpy);
     realtime.on("spawn", stockSpawnSpy);

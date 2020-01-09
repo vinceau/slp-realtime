@@ -38,12 +38,12 @@ Check out a [working example](examples/realtime-combos) or [read the docs](docs)
 
 We can use this library to subscribe to in game events.
 
-First instantiate an instance of `SlippiLivestream` and connect to a Wii or Slippi relay.
+First instantiate an instance of `SlpLiveStream` and connect to a Wii or Slippi relay.
 
 ```javascript
-const { SlippiLivestream } = require("@vinceau/slp-realtime");
+const { SlpLiveStream } = require("@vinceau/slp-realtime");
 
-const livestream = new SlippiLivestream();
+const livestream = new SlpLiveStream();
 livestream.start(address, slpPort)
   .then(() => {
     console.log("Successfully connected!");
@@ -51,26 +51,31 @@ livestream.start(address, slpPort)
   .catch(console.error);
 ```
 
-Then simply use `livestream.events.on()` to subscribe to desired events. For example:
+Then instantiate an instance of `SlpRealTime` and pass the `SlpLiveStream` to it.
+We will use it to subscribe to desired events. For example:
 
 ```javascript
-livestream.events.on("gameStart", () => {
+const { SlpRealTime } = require("@vinceau/slp-realtime");
+
+const realtime = new SlpRealTime(livestream); // this is the SlpLiveStream object from before
+
+realtime.on("gameStart", () => {
     console.log("game started");
 });
 
-livestream.events.on("percentChange", (index, percent) => {
+realtime.on("percentChange", (index, percent) => {
     console.log(`player ${index}'s new percent: ${percent}`);
 });
 
-livestream.events.on("spawn", (index, stock) => {
+realtime.on("spawn", (index, stock) => {
     console.log(`player ${index} spawned with ${stock.count} stocks remaining`);
 });
 
-livestream.events.on("death", (i) => {
+realtime.on("death", (i) => {
     console.log(`player ${i} died`);
 });
 
-livestream.events.on("comboEnd", () => {
+realtime.on("comboEnd", () => {
     console.log("a combo just happened");
 });
 ```
@@ -95,7 +100,7 @@ comboFilter.updateSettings({
 `ComboFilter` exposes a handy `isCombo()` method which returns `true` if a given combo matches the specified criteria. We can hook it up to our live stream with the following:
 
 ```javascript
-livestream.events.on("comboEnd", (combo, settings) => {
+realtime.on("comboEnd", (combo, settings) => {
     if (!comboFilter.isCombo(combo, settings)) {
         console.log("Combo did not match criteria!");
         return;
