@@ -5,7 +5,7 @@ from the relay.
 */
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { ConnectionStatus, SlpLiveStream, ComboFilter, DolphinComboQueue } = require("@vinceau/slp-realtime");
+const { ConnectionStatus, SlpLiveStream, SlpRealTime, ComboFilter, DolphinComboQueue } = require("@vinceau/slp-realtime");
 
 // TODO: Make sure you set these values!
 const ADDRESS = "localhost";  // leave as is if the relay is on the same computer
@@ -45,7 +45,8 @@ livestream.connection.on("statusChange", (status) => {
 });
 
 // Add the combos to the queue whenever we detect them
-livestream.events.on("comboEnd", (combo, settings) => {
+const realtime = new SlpRealTime(livestream);
+realtime.on("comboEnd", (combo, settings) => {
   if (comboFilter.isCombo(combo, settings)) {
     console.log("Detected combo!");
     const filename = livestream.getCurrentFilename();
@@ -54,4 +55,3 @@ livestream.events.on("comboEnd", (combo, settings) => {
     }
   }
 });
-
