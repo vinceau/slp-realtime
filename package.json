@@ -26,7 +26,9 @@
     "minor": "npm version minor && npm publish",
     "major": "npm version major && npm publish",
     "prepublishOnly": "yarn run lint && yarn run test && yarn run build",
-    "postpublish": "git push origin master --follow-tags"
+    "postpublish": "git push origin master --follow-tags",
+    "docs": "yarn typedoc --excludePrivate --excludeNotExported",
+    "postdocs": "touch docs/.nojekyll"
   },
   "jest": {
     "testRegex": "/test/.*",
@@ -61,6 +63,7 @@
     "rollup-plugin-typescript2": "^0.24.0",
     "sinon": "^7.5.0",
     "ts-jest": "^24.0.2",
+    "typedoc": "^0.15.6",
     "typescript": "^3.6.2"
   }
 }
