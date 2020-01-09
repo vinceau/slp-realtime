@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>@vinceau/slp-realtime - v0.1.0</title>
+	<title>@vinceau/slp-realtime - v0.1.1</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">@vinceau/slp-realtime - v0.1.0</a>
+					<a href="index.html" class="title">@vinceau/slp-realtime - v0.1.1</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -54,7 +54,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1> @vinceau/slp-realtime - v0.1.0</h1>
+			<h1> @vinceau/slp-realtime - v0.1.1</h1>
 		</div>
 	</div>
 </header>
@@ -65,7 +65,7 @@
 				<a href="#codeslp-realtimecode" id="codeslp-realtimecode" style="color: inherit; text-decoration: none;">
 					<h1><code>slp-realtime</code></h1>
 				</a>
-				<p><a href="https://npmjs.org/package/@vinceau/slp-realtime" title="View this project on npm"><img src="http://img.shields.io/npm/v/@vinceau/slp-realtime.svg?style=flat" alt="npm version"></a>
+				<p><a href="https://npmjs.org/package/@vinceau/slp-realtime" title="View this project on npm"><img src="https://img.shields.io/npm/v/@vinceau/slp-realtime.svg?style=flat" alt="npm version"></a>
 					<a href="https://github.com/vinceau/slp-realtime/actions?workflow=build"><img src="https://github.com/vinceau/slp-realtime/workflows/build/badge.svg" alt="Build Status"></a>
 				<a href="https://github.com/vinceau/slp-realtime/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/@vinceau/slp-realtime" alt="License"></a></p>
 				<blockquote>
@@ -90,7 +90,7 @@
 				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 					<h2>Usage</h2>
 				</a>
-				<p>Check out a <a href="examples/realtime-combos">working example</a> or <a href="docs">read the docs</a>.</p>
+				<p>See a <a href="examples/realtime-combos">working example</a> or <a href="https://vince.id.au/slp-realtime/">check out the docs</a>.</p>
 				<a href="#subscribing-to-in-game-events" id="subscribing-to-in-game-events" style="color: inherit; text-decoration: none;">
 					<h3>Subscribing to In-Game Events</h3>
 				</a>
@@ -108,7 +108,9 @@ livestream.start(address, slpPort)
 				We will use it to subscribe to desired events. For example:</p>
 				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> { SlpRealTime } = <span class="hljs-built_in">require</span>(<span class="hljs-string">"@vinceau/slp-realtime"</span>);
 
-<span class="hljs-keyword">const</span> realtime = <span class="hljs-keyword">new</span> SlpRealTime(livestream); <span class="hljs-comment">// this is the SlpLiveStream object from before</span>
+<span class="hljs-keyword">const</span> realtime = <span class="hljs-keyword">new</span> SlpRealTime();
+<span class="hljs-comment">// Read from the SlpLiveStream object from before</span>
+realtime.setStream(livestream);
 
 realtime.on(<span class="hljs-string">"gameStart"</span>, () =&gt; {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"game started"</span>);
@@ -222,7 +224,7 @@ comboFilter.updateSettings({
 						<a href="modules/_utils_index_.html">&quot;utils/index&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_utils_sleep_.html">&quot;utils/sleep&quot;</a>
+						<a href="modules/_utils_promise_.html">&quot;utils/promise&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_utils_slpfile_.html">&quot;utils/slp<wbr>File&quot;</a>
