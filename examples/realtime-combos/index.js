@@ -4,7 +4,8 @@ and generates a Dolphin-compatible `combos.json` file when disconnected
 from the relay.
 */
 
-const { ConnectionStatus, SlippiLivestream, ComboFilter, DolphinComboQueue } = require("@vinceau/slp-realtime");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { ConnectionStatus, SlpLiveStream, ComboFilter, DolphinComboQueue } = require("@vinceau/slp-realtime");
 
 // TODO: Make sure you set these values!
 const ADDRESS = "localhost";  // leave as is if the relay is on the same computer
@@ -22,7 +23,7 @@ comboFilter.updateSettings({
 });
 
 // Connect to the relay
-const livestream = new SlippiLivestream({
+const livestream = new SlpLiveStream({
   outputFiles: true,  // Write out slp files so we can reference them in the dolphin json file
 });
 

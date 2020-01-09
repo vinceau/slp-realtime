@@ -23,9 +23,9 @@
 
 ### `DolphinComboQueue`
 
-### `SlippiLivestream`
+### `SlpLiveStream`
 
-### `SlippiRealtime`
+### `SlpRealTime`
 
 ### `SlpStream`
 

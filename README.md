@@ -38,12 +38,12 @@ Check out a [working example](examples/realtime-combos) or [read the docs](docs)
 
 We can use this library to subscribe to in game events.
 
-First instantiate an instance of `SlippiLivestream` and connect to a Wii or Slippi relay.
+First instantiate an instance of `SlpLiveStream` and connect to a Wii or Slippi relay.
 
 ```javascript
-const { SlippiLivestream } = require("@vinceau/slp-realtime");
+const { SlpLiveStream } = require("@vinceau/slp-realtime");
 
-const livestream = new SlippiLivestream();
+const livestream = new SlpLiveStream();
 livestream.start(address, slpPort)
   .then(() => {
     console.log("Successfully connected!");
