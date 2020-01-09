@@ -45,7 +45,8 @@ livestream.connection.on("statusChange", (status) => {
 });
 
 // Add the combos to the queue whenever we detect them
-const realtime = new SlpRealTime(livestream);
+const realtime = new SlpRealTime();
+realtime.setStream(livestream);
 realtime.on("comboEnd", (combo, settings) => {
   if (comboFilter.isCombo(combo, settings)) {
     console.log("Detected combo!");
