@@ -28,11 +28,17 @@ type SlpRealTimeEventEmitter = { new(): StrictEventEmitter<EventEmitter, SlpReal
  * and emitting an appropriate event.
  */
 export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
-  protected stream: SlpStream;
-  protected parser: SlpParser;
+  protected stream: SlpStream | null = null;
+  protected parser: SlpParser | null = null;
 
-  public constructor(stream: SlpStream) {
-    super();
+  /**
+   * Starts listening to the provided stream for Slippi events
+   *
+   * @param {SlpStream} stream
+   * @memberof SlpRealTime
+   */
+  public setStream(stream: SlpStream): void {
+    this._reset();
     this.stream = stream;
     this.stream.on(SlpEvent.GAME_START, (command: Command, payload: GameStartType) => {
       this.parser = this._setupStats(payload);
@@ -41,18 +47,43 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
     });
 
     this.stream.on(SlpEvent.PRE_FRAME_UPDATE, (command: Command, payload: PostFrameUpdateType) => {
-      this.parser.handleFrameUpdate(command, payload);
+      if (this.parser) {
+        this.parser.handleFrameUpdate(command, payload);
+      }
     });
 
     this.stream.on(SlpEvent.POST_FRAME_UPDATE, (command: Command, payload: PostFrameUpdateType) => {
-      this.parser.handlePostFrameUpdate(payload);
-      this.parser.handleFrameUpdate(command, payload);
+      if (this.parser) {
+        this.parser.handlePostFrameUpdate(payload);
+        this.parser.handleFrameUpdate(command, payload);
+      }
     });
 
     this.stream.on(SlpEvent.GAME_END, (command: Command, payload: GameEndType) => {
-      this.parser.handleGameEnd(payload);
-      this.emit("gameEnd", payload);
+      if (this.parser) {
+        this.parser.handleGameEnd(payload);
+        this.emit("gameEnd", payload);
+      }
     });
+  }
+
+  /**
+   * Unsubscribes from the previous stream so we won't keep emitting events.
+   * Resets the stream and parser to null.
+   *
+   * @private
+   * @memberof SlpRealTime
+   */
+  private _reset(): void {
+    if (this.stream) {
+      this.stream.removeAllListeners(SlpEvent.GAME_START);
+      this.stream.removeAllListeners(SlpEvent.PRE_FRAME_UPDATE);
+      this.stream.removeAllListeners(SlpEvent.POST_FRAME_UPDATE);
+      this.stream.removeAllListeners(SlpEvent.GAME_END);
+    }
+    // Reset the stream and the parser
+    this.stream = null;
+    this.parser = null;
   }
 
   private _setupStats(payload: GameStartType): SlpParser {
