@@ -1,9 +1,9 @@
 import * as path from "path";
 import chokidar, { FSWatcher } from "chokidar";
-import fs from "fs";
 import tailstream, { TailStream } from "tailstream";
 
 import { SlpStream } from "./slpStream";
+import { readDir } from "./promise";
 
 export class SlpFolderStream extends SlpStream {
   private watcher: FSWatcher | null = null;
@@ -16,13 +16,15 @@ export class SlpFolderStream extends SlpStream {
    * @param {string} slpFolder
    * @memberof SlpFolderStream
    */
-  public start(slpFolder: string): void {
-    const initialFiles = fs.readdirSync(slpFolder).map(file =>
-      path.resolve(path.join(slpFolder, file))
-    );
-    const slpGlob = path.join(slpFolder, "*.slp");
+  public async start(slpFolder: string): Promise<void> {
+    let initialFiles = await readDir(slpFolder);
+    // Convert file paths into absolute paths
+    initialFiles = initialFiles.map(file => {
+      return path.resolve(path.join(slpFolder, file))
+    });
 
     // Initialize watcher.
+    const slpGlob = path.join(slpFolder, "*.slp");
     this.watcher = chokidar.watch(slpGlob, {
       ignored: /(^|[\/\\])\../, // ignore dotfiles
       persistent: true

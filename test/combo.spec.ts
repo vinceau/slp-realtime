@@ -15,7 +15,8 @@ describe("combo calculation", () => {
     const comboSpy = sinon.spy();
 
     const slpStream = new SlpStream({ singleGameMode: true });
-    const realtime = new SlpRealTime(slpStream);
+    const realtime = new SlpRealTime();
+    realtime.setStream(slpStream);
 
     realtime.on("comboEnd", (c, s) => {
       if (filter.isCombo(c, s)) {
@@ -39,7 +40,8 @@ describe("combo calculation", () => {
     bowserOnlyFilter.updateSettings({ characterFilter: [Character.BOWSER] });
     excludesBowserFilter.updateSettings({ characterFilter: [Character.CAPTAIN_FALCON] });
     const slpStream = new SlpStream({ singleGameMode: true });
-    const realtime = new SlpRealTime(slpStream);
+    const realtime = new SlpRealTime();
+    realtime.setStream(slpStream);
 
     realtime.on("comboEnd", (c, s) => {
       if (bowserOnlyFilter.isCombo(c, s)) {
@@ -61,7 +63,8 @@ describe("combo calculation", () => {
 
     filter.updateSettings({ minComboPercent: 20 });
     const slpStream = new SlpStream({ singleGameMode: true });
-    const realtime = new SlpRealTime(slpStream);
+    const realtime = new SlpRealTime();
+    realtime.setStream(slpStream);
 
     realtime.on("comboEnd", (c, s) => {
       if (filter.isCombo(c, s)) {

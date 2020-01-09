@@ -57,7 +57,9 @@ We will use it to subscribe to desired events. For example:
 ```javascript
 const { SlpRealTime } = require("@vinceau/slp-realtime");
 
-const realtime = new SlpRealTime(livestream); // this is the SlpLiveStream object from before
+const realtime = new SlpRealTime();
+// Read from the SlpLiveStream object from before
+realtime.setStream(livestream);
 
 realtime.on("gameStart", () => {
     console.log("game started");

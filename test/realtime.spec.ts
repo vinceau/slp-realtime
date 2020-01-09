@@ -11,7 +11,8 @@ describe("SlpRealTime", () => {
     const stockDeathSpy = sinon.spy();
 
     const slpStream = new SlpStream({ singleGameMode: true });
-    const realtime = new SlpRealTime(slpStream);
+    const realtime = new SlpRealTime();
+    realtime.setStream(slpStream);
     realtime.on("gameStart", gameStartSpy);
     realtime.on("gameEnd", gameEndSpy);
     realtime.on("spawn", stockSpawnSpy);

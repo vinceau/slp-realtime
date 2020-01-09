@@ -1,9 +1,9 @@
 import { SlpFileWriter } from "./slpWriter";
-import { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect"
-import { promiseTimeout } from "./sleep";
+import { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect";
+import { promiseTimeout } from "./promise";
 
 // Re-export these for ease-of-use
-export { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect"
+export { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect";
 
 const SLIPPI_CONNECTION_TIMEOUT_MS = 5000;
 
