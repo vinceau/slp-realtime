@@ -1,9 +1,9 @@
-import _ from 'lodash';
+import _ from "lodash";
 import EventEmitter from "events";
-import StrictEventEmitter from 'strict-event-emitter-types';
+import StrictEventEmitter from "strict-event-emitter-types";
 
 import { FrameEntryType, FramesType, MoveLandedType, ComboType, PlayerIndexedType, PostFrameUpdateType,
-  isDamaged, isGrabbed, calcDamageTaken, isTeching, didLoseStock, Timers, isDown, isDead, StatComputer } from 'slp-parser-js';
+  isDamaged, isGrabbed, calcDamageTaken, isTeching, didLoseStock, Timers, isDown, isDead, StatComputer } from "slp-parser-js";
 
 enum ComboEvent {
   Start = "start",
@@ -77,13 +77,13 @@ function handleComboCompute(frames: FramesType, state: ComboState, indices: Play
   // FIXME: use type PostFrameUpdateType instead of any
   // This is because the default value {} should not be casted as a type of PostFrameUpdateType
   const prevPlayerFrame: any = _.get(
-    frames, [playerFrame.frame - 1, 'players', indices.playerIndex, 'post'], {}
+    frames, [playerFrame.frame - 1, "players", indices.playerIndex, "post"], {}
   );
   const opponentFrame: PostFrameUpdateType = frame.players[indices.opponentIndex].post;
   // FIXME: use type PostFrameUpdateType instead of any
   // This is because the default value {} should not be casted as a type of PostFrameUpdateType
   const prevOpponentFrame: any = _.get(
-    frames, [playerFrame.frame - 1, 'players', indices.opponentIndex, 'post'], {}
+    frames, [playerFrame.frame - 1, "players", indices.opponentIndex, "post"], {}
   );
 
   const opntIsDamaged = isDamaged(opponentFrame.actionStateId);

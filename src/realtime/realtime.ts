@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import EventEmitter from "events";
-import StrictEventEmitter from 'strict-event-emitter-types';
+import StrictEventEmitter from "strict-event-emitter-types";
 
-import { SlpStream, SlpEvent } from '../utils/slpStream';
+import { SlpStream, SlpEvent } from "../utils/slpStream";
 import { SlpParser, GameStartType, GameEndType, Command, PostFrameUpdateType, Stats as SlippiStats, ComboType, StockType } from "slp-parser-js";
 import { StockComputer } from "../stats/stocks";
 import { ComboComputer } from "../stats/combos";
@@ -10,7 +10,7 @@ import { ComboComputer } from "../stats/combos";
 // Export the parameter types for events
 export { GameStartType, GameEndType, ComboType, StockType } from "slp-parser-js";
 
-interface SlippiRealtimeEvents {
+interface SlpRealTimeEvents {
   gameStart: GameStartType;
   gameEnd: GameEndType;
   comboStart: (combo: ComboType, settings: GameStartType) => void;
@@ -21,12 +21,13 @@ interface SlippiRealtimeEvents {
   percentChange: (playerIndex: number, percent: number) => void;
 }
 
-type SlippiRealtimeEventEmitter = { new(): StrictEventEmitter<EventEmitter, SlippiRealtimeEvents> };
+type SlpRealTimeEventEmitter = { new(): StrictEventEmitter<EventEmitter, SlpRealTimeEvents> };
 
 /**
- * Slippi Game class that wraps a read stream
+ * SlpRealTime is solely responsible for detecting notable in-game events
+ * and emitting an appropriate event.
  */
-export class SlippiRealtime extends (EventEmitter as SlippiRealtimeEventEmitter) {
+export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
   protected stream: SlpStream;
   protected parser: SlpParser;
 
@@ -59,14 +60,14 @@ export class SlippiRealtime extends (EventEmitter as SlippiRealtimeEventEmitter)
       processOnTheFly: true,
     });
     const stock = new StockComputer();
-    stock.on('percentChange', (i: number, percent: number) => {
-      this.emit('percentChange', i, percent);
+    stock.on("percentChange", (i: number, percent: number) => {
+      this.emit("percentChange", i, percent);
     });
-    stock.on('spawn', (i, s) => {
-      this.emit('spawn', i, s, payload);
+    stock.on("spawn", (i, s) => {
+      this.emit("spawn", i, s, payload);
     });
-    stock.on('death', (i, s) => {
-      this.emit('death', i, s, payload);
+    stock.on("death", (i, s) => {
+      this.emit("death", i, s, payload);
     });
     const combo = new ComboComputer();
     combo.on("comboStart", (c) => {

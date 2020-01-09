@@ -1,8 +1,8 @@
-import _ from 'lodash';
+import _ from "lodash";
 import EventEmitter from "events";
-import StrictEventEmitter from 'strict-event-emitter-types';
+import StrictEventEmitter from "strict-event-emitter-types";
 
-import { FrameEntryType, FramesType, isDead, didLoseStock, PlayerIndexedType, StockType, StatComputer } from 'slp-parser-js';
+import { FrameEntryType, FramesType, isDead, didLoseStock, PlayerIndexedType, StockType, StatComputer } from "slp-parser-js";
 
 interface StockState {
   stock: StockType | null | undefined;
@@ -47,7 +47,7 @@ export class StockComputer extends (EventEmitter as StockComputeEventEmitter) im
     const playerFrame = frame.players[playerIndex].post;
     // FIXME: use PostFrameUpdateType instead of any
     const prevPlayerFrame: any = _.get(
-      frames, [playerFrame.frame - 1, 'players', playerIndex, 'post'], {}
+      frames, [playerFrame.frame - 1, "players", playerIndex, "post"], {}
     );
 
     // If there is currently no active stock, wait until the player is no longer spawning.

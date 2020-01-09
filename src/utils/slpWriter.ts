@@ -1,8 +1,8 @@
 import path from "path";
-import _ from 'lodash';
-import moment, { Moment } from 'moment';
+import _ from "lodash";
+import moment, { Moment } from "moment";
 
-import { SlpFile, SlpFileMetadata } from './slpFile';
+import { SlpFile, SlpFileMetadata } from "./slpFile";
 import { SlpStream, SlpEvent } from "./slpStream";
 import { Command, PostFrameUpdateType } from "slp-parser-js";
 
@@ -42,6 +42,13 @@ export class SlpFileWriter extends SlpStream {
     })
   }
 
+  public getCurrentFilename(): string | null {
+    if (this.currentFile !== null) {
+      return path.resolve(this.currentFile.path());
+    }
+    return null;
+  }
+
   public updateSettings(settings: Partial<SlpFileWriterOptions>): void {
     this.options = Object.assign({}, this.options, settings);
   }
@@ -66,7 +73,7 @@ export class SlpFileWriter extends SlpStream {
     // Update character usage
     const playerIndex = payload.playerIndex;
     const internalCharacterId = payload.internalCharacterId;
-    const prevPlayer = _.get(this.currentFile, ['metadata', 'players', `${playerIndex}`]) || {};
+    const prevPlayer = _.get(this.currentFile, ["metadata", "players", `${playerIndex}`]) || {};
     const characterUsage = prevPlayer.characterUsage || {};
     const curCharFrames = characterUsage[internalCharacterId] || 0;
     const player = {

@@ -1,12 +1,12 @@
 import sinon from "sinon";
 
-import { SlpStream } from '../src';
-import { pipeFileContents } from '../src/utils/testHelper';
+import { SlpStream } from "../src";
+import { pipeFileContents } from "./helpers";
 
-describe('SlpStream', () => {
+describe("SlpStream", () => {
 
-  describe('when reading from a standard slp file', () => {
-    it('emits exactly one game start and one game end event', async () => {
+  describe("when reading from a standard slp file", () => {
+    it("emits exactly one game start and one game end event", async () => {
       const gameStartSpy = sinon.spy();
       const gameEndSpy = sinon.spy();
 

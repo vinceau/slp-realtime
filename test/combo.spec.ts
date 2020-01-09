@@ -1,9 +1,9 @@
 import sinon from "sinon";
 
-import { SlippiRealtime, SlpStream, ComboFilter, Character } from '../src';
-import { pipeFileContents }  from "../src/utils/testHelper";
+import { SlpRealTime, SlpStream, ComboFilter, Character } from "../src";
+import { pipeFileContents }  from "./helpers";
 
-describe('combo calculation', () => {
+describe("combo calculation", () => {
   const filter = new ComboFilter();
 
   beforeEach(() => {
@@ -11,11 +11,11 @@ describe('combo calculation', () => {
     filter.resetSettings();
   });
 
-  it('correctly matches combo criteria', async () => {
+  it("correctly matches combo criteria", async () => {
     const comboSpy = sinon.spy();
 
     const slpStream = new SlpStream({ singleGameMode: true });
-    const realtime = new SlippiRealtime(slpStream);
+    const realtime = new SlpRealTime(slpStream);
 
     realtime.on("comboEnd", (c, s) => {
       if (filter.isCombo(c, s)) {
@@ -29,7 +29,7 @@ describe('combo calculation', () => {
     expect(comboSpy.callCount).toEqual(1);
   });
 
-  it('can filter by character', async () => {
+  it("can filter by character", async () => {
     const bowserOnlySpy = sinon.spy();
     const bowserOnlyFilter = new ComboFilter();
 
@@ -39,7 +39,7 @@ describe('combo calculation', () => {
     bowserOnlyFilter.updateSettings({ characterFilter: [Character.BOWSER] });
     excludesBowserFilter.updateSettings({ characterFilter: [Character.CAPTAIN_FALCON] });
     const slpStream = new SlpStream({ singleGameMode: true });
-    const realtime = new SlippiRealtime(slpStream);
+    const realtime = new SlpRealTime(slpStream);
 
     realtime.on("comboEnd", (c, s) => {
       if (bowserOnlyFilter.isCombo(c, s)) {
@@ -56,12 +56,12 @@ describe('combo calculation', () => {
     expect(excludesBowserSpy.callCount).toEqual(1);
   });
 
-  it('can update combo settings', async () => {
+  it("can update combo settings", async () => {
     const comboSpy = sinon.spy();
 
     filter.updateSettings({ minComboPercent: 20 });
     const slpStream = new SlpStream({ singleGameMode: true });
-    const realtime = new SlippiRealtime(slpStream);
+    const realtime = new SlpRealTime(slpStream);
 
     realtime.on("comboEnd", (c, s) => {
       if (filter.isCombo(c, s)) {
