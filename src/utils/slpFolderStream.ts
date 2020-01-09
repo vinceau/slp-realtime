@@ -3,7 +3,7 @@ import chokidar, { FSWatcher } from "chokidar";
 import tailstream, { TailStream } from "tailstream";
 
 import { SlpStream } from "./slpStream";
-import { readDirAsync } from "./promise";
+import { readDir } from "./promise";
 
 export class SlpFolderStream extends SlpStream {
   private watcher: FSWatcher | null = null;
@@ -17,7 +17,7 @@ export class SlpFolderStream extends SlpStream {
    * @memberof SlpFolderStream
    */
   public async start(slpFolder: string): Promise<void> {
-    let initialFiles = await readDirAsync(slpFolder);
+    let initialFiles = await readDir(slpFolder);
     // Convert file paths into absolute paths
     initialFiles = initialFiles.map(file => {
       return path.resolve(path.join(slpFolder, file))

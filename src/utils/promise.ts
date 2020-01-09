@@ -15,7 +15,7 @@ export const promiseTimeout = <T>(ms: number, promise: Promise<T>): Promise<T> =
   return Promise.race([promise, timeout]) as Promise<T>;
 }
 
-export const readDirAsync = (folderPath: string, options?: any): Promise<string[]> => {
+export const readDir = (folderPath: string, options?: any): Promise<string[]> => {
   return new Promise((resolve, reject): void => {
     fs.readdir(folderPath, options, (err, files) => {
       if (err) {
