@@ -40,7 +40,6 @@ realtime.on("comboEnd", (combo, settings) => {
 
 // Write out combos when we detect an interrupt
 process.on("SIGINT", function() {
-  writeCombos();
   comboQueue.writeFile(outputCombosFile).then(() => {
     console.log(`Wrote ${comboQueue.length()} combos to ${outputCombosFile}`);
     stream.stop();
