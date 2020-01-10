@@ -9,6 +9,7 @@ const { SlpFolderStream, SlpRealTime, ComboFilter, DolphinComboQueue } = require
 
 // TODO: Make sure you set this value!
 const slpLiveFolderPath = "C:\\Users\\Vince\\Documents\\FM-v5.9-Slippi-r18-Win\\Slippi";
+console.log(`Monitoring ${slpLiveFolderPath} for new SLP files`);
 
 const outputCombosFile = "combos.json";   // The json file to write combos to
 
@@ -37,18 +38,18 @@ realtime.on("comboEnd", (combo, settings) => {
   }
 });
 
-const writeCombos = () => {
-  comboQueue.writeFile(outputCombosFile);
-  console.log(`Wrote ${comboQueue.length()} combos to ${outputCombosFile}`);
-}
-
 // Write out combos when we detect an interrupt
 process.on("SIGINT", function() {
   writeCombos();
-  stream.stop();
-  process.exit();
+  comboQueue.writeFile(outputCombosFile).then(() => {
+    console.log(`Wrote ${comboQueue.length()} combos to ${outputCombosFile}`);
+    stream.stop();
+    process.exit();
+  }).catch(err => {
+    console.error(err);
+    process.exit();
+  })
 });
 
 // Start monitoring the folder for changes
 stream.start(slpLiveFolderPath);
-
