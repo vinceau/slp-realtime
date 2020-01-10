@@ -8,6 +8,7 @@ import { readDir } from "./promise";
 export class SlpFolderStream extends SlpStream {
   private watcher: FSWatcher | null = null;
   private readStream: TailStream | null = null;
+  private currentFilePath: string | null = null;
 
   /**
    * Starts watching a particular folder for slp files. It treats all new
@@ -38,10 +39,18 @@ export class SlpFolderStream extends SlpStream {
         // End the old stream
         this.readStream.done();
       }
+      this.currentFilePath = filePath;
       // Create a new stream for the new file
       this.readStream = tailstream.createReadStream(filePath);
       this.readStream.on("data", (data: any) => this.write(data));
     });
+  }
+
+  public getCurrentFilename(): string | null {
+    if (this.currentFilePath !== null) {
+      return path.resolve(this.currentFilePath);
+    }
+    return null;
   }
 
   /**
@@ -56,6 +65,7 @@ export class SlpFolderStream extends SlpStream {
     if (this.readStream) {
       this.readStream.done();
     }
+    this.currentFilePath = null;
   }
 
   /**
