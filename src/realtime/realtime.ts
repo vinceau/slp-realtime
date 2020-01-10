@@ -28,8 +28,41 @@ type SlpRealTimeEventEmitter = { new(): StrictEventEmitter<EventEmitter, SlpReal
  * and emitting an appropriate event.
  */
 export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
-  protected stream: SlpStream | null = null;
-  protected parser: SlpParser | null = null;
+  protected stream: SlpStream | null;
+  protected parser: SlpParser | null;
+
+  private gameStartHandler: (command: Command, payload: GameStartType) => void;
+  private preFrameHandler: (command: Command, payload: PostFrameUpdateType) => void;
+  private postFrameHandler: (command: Command, payload: PostFrameUpdateType) => void;
+  private gameEndHandler: (command: Command, payload: GameEndType) => void;
+
+  public constructor() {
+    super();
+    this.stream = null;
+    this.parser = null;
+    this.gameStartHandler = (command, payload): void => {
+      this.parser = this._setupStats(payload);
+      this.parser.handleGameStart(payload);
+      this.emit("gameStart", payload);
+    };
+    this.preFrameHandler = (command, payload): void => {
+      if (this.parser) {
+        this.parser.handleFrameUpdate(command, payload);
+      }
+    };
+    this.postFrameHandler = (command, payload): void => {
+      if (this.parser) {
+        this.parser.handlePostFrameUpdate(payload);
+        this.parser.handleFrameUpdate(command, payload);
+      }
+    };
+    this.gameEndHandler = (command, payload): void => {
+      if (this.parser) {
+        this.parser.handleGameEnd(payload);
+        this.emit("gameEnd", payload);
+      }
+    };
+  }
 
   /**
    * Starts listening to the provided stream for Slippi events
@@ -40,31 +73,10 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
   public setStream(stream: SlpStream): void {
     this._reset();
     this.stream = stream;
-    this.stream.on(SlpEvent.GAME_START, (command: Command, payload: GameStartType) => {
-      this.parser = this._setupStats(payload);
-      this.parser.handleGameStart(payload);
-      this.emit("gameStart", payload);
-    });
-
-    this.stream.on(SlpEvent.PRE_FRAME_UPDATE, (command: Command, payload: PostFrameUpdateType) => {
-      if (this.parser) {
-        this.parser.handleFrameUpdate(command, payload);
-      }
-    });
-
-    this.stream.on(SlpEvent.POST_FRAME_UPDATE, (command: Command, payload: PostFrameUpdateType) => {
-      if (this.parser) {
-        this.parser.handlePostFrameUpdate(payload);
-        this.parser.handleFrameUpdate(command, payload);
-      }
-    });
-
-    this.stream.on(SlpEvent.GAME_END, (command: Command, payload: GameEndType) => {
-      if (this.parser) {
-        this.parser.handleGameEnd(payload);
-        this.emit("gameEnd", payload);
-      }
-    });
+    this.stream.on(SlpEvent.GAME_START, this.gameStartHandler);
+    this.stream.on(SlpEvent.PRE_FRAME_UPDATE, this.preFrameHandler);
+    this.stream.on(SlpEvent.POST_FRAME_UPDATE, this.postFrameHandler);
+    this.stream.on(SlpEvent.GAME_END, this.gameEndHandler);
   }
 
   /**
@@ -76,10 +88,10 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
    */
   private _reset(): void {
     if (this.stream) {
-      this.stream.removeAllListeners(SlpEvent.GAME_START);
-      this.stream.removeAllListeners(SlpEvent.PRE_FRAME_UPDATE);
-      this.stream.removeAllListeners(SlpEvent.POST_FRAME_UPDATE);
-      this.stream.removeAllListeners(SlpEvent.GAME_END);
+      this.stream.removeListener(SlpEvent.GAME_START, this.gameStartHandler);
+      this.stream.removeListener(SlpEvent.PRE_FRAME_UPDATE, this.preFrameHandler);
+      this.stream.removeListener(SlpEvent.POST_FRAME_UPDATE, this.postFrameHandler);
+      this.stream.removeListener(SlpEvent.GAME_END, this.gameEndHandler);
     }
     // Reset the stream and the parser
     this.stream = null;
