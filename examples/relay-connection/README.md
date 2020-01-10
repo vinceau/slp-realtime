@@ -1,4 +1,4 @@
-# Real-time Combo Extraction Example
+# Relay Connection Example
 
 This is an example demonstrating the real-time capabilities of `slp-realtime`.
 
