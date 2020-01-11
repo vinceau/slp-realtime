@@ -26,6 +26,10 @@ type SlpRealTimeEventEmitter = { new(): StrictEventEmitter<EventEmitter, SlpReal
 /**
  * SlpRealTime is solely responsible for detecting notable in-game events
  * and emitting an appropriate event.
+ *
+ * @export
+ * @class SlpRealTime
+ * @extends {EventEmitter}
  */
 export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
   protected stream: SlpStream | null;

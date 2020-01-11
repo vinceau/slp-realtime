@@ -14,11 +14,26 @@ const defaultSettings = {
 
 export type SlpFileWriterOptions = typeof defaultSettings;
 
+/**
+ * SlpFileWriter lets us not only emit events as an SlpStream but also
+ * writes the data that is being passed in to an SLP file. Use this if
+ * you want to process Slippi data in real time but also want to be able
+ * to write out the data to an SLP file.
+ *
+ * @export
+ * @class SlpFileWriter
+ * @extends {SlpStream}
+ */
 export class SlpFileWriter extends SlpStream {
   private currentFile: SlpFile | null;
   private metadata: SlpFileMetadata;
   private options: SlpFileWriterOptions;
 
+  /**
+   * Creates an instance of SlpFileWriter.
+   * @param {Partial<SlpFileWriterOptions>} [options] The options for the SlpWriter
+   * @memberof SlpFileWriter
+   */
   public constructor(options?: Partial<SlpFileWriterOptions>) {
     super();
     this.options = Object.assign({}, defaultSettings, options);
@@ -42,6 +57,13 @@ export class SlpFileWriter extends SlpStream {
     })
   }
 
+  /**
+   * Return the name of the SLP file currently being written or null if
+   * no file is being written to currently.
+   *
+   * @returns {(string | null)}
+   * @memberof SlpFileWriter
+   */
   public getCurrentFilename(): string | null {
     if (this.currentFile !== null) {
       return path.resolve(this.currentFile.path());
@@ -49,6 +71,12 @@ export class SlpFileWriter extends SlpStream {
     return null;
   }
 
+  /**
+   * Updates the settings to be the desired ones passed in.
+   *
+   * @param {Partial<SlpFileWriterOptions>} settings
+   * @memberof SlpFileWriter
+   */
   public updateSettings(settings: Partial<SlpFileWriterOptions>): void {
     this.options = Object.assign({}, this.options, settings);
   }

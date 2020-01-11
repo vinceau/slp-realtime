@@ -5,6 +5,22 @@ import tailstream, { TailStream } from "tailstream";
 import { SlpStream } from "./slpStream";
 import { readDir } from "./promise";
 
+/**
+ * SlpFolderStream is responsible for monitoring a folder, and detecting
+ * when a new SLP file is created and is written to. This creates
+ * essentially a fake live-stream by reading the SLP file as it's
+ * still being written to.
+ *
+ * Typically when you detect changes to a file that is still being written
+ * to, you want to include a timeout where if the file isn't changed within
+ * that timeout, you consider it "done" and stop checking it. However, since
+ * players can pause Slippi games for an indefinite amount of time, we don't
+ * want to timeout since the file might still continue to be written to. So to achieve
+ * this, we use the package `tailstream` where we have to manually call `done()`
+ * when we no longer anticipate the file to change.
+ *
+ * @extends {SlpStream}
+ */
 export class SlpFolderStream extends SlpStream {
   private watcher: FSWatcher | null = null;
   private readStream: TailStream | null = null;
@@ -46,6 +62,12 @@ export class SlpFolderStream extends SlpStream {
     });
   }
 
+  /**
+   * Get the current name of the file path that is changing and is being written to.
+   *
+   * @returns {(string | null)}
+   * @memberof SlpFolderStream
+   */
   public getCurrentFilename(): string | null {
     if (this.currentFilePath !== null) {
       return path.resolve(this.currentFilePath);

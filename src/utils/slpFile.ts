@@ -25,6 +25,12 @@ export class SlpFile extends Writable {
   private rawDataLength = 0;
   private startTime: Moment;
 
+  /**
+   * Creates an instance of SlpFile.
+   * @param {string} filePath The file location to write to.
+   * @param {WritableOptions} [opts] Options for writing.
+   * @memberof SlpFile
+   */
   public constructor(filePath: string, opts?: WritableOptions) {
     super(opts);
     this.filePath = filePath;
@@ -44,10 +50,22 @@ export class SlpFile extends Writable {
     });
   }
 
+  /**
+   * Get the current file path being written to.
+   *
+   * @returns {string} The location of the current file path
+   * @memberof SlpFile
+   */
   public path(): string {
     return this.filePath;
   }
 
+  /**
+   * Sets the metadata of the Slippi file, such as consoleNickname, lastFrame, and players.
+   *
+   * @param {SlpFileMetadata} metadata The metadata to be written
+   * @memberof SlpFile
+   */
   public setMetadata(metadata: SlpFileMetadata): void {
     this.metadata = metadata;
   }

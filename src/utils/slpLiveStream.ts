@@ -8,11 +8,29 @@ export { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect";
 const SLIPPI_CONNECTION_TIMEOUT_MS = 5000;
 
 /**
- * Slippi Game class that wraps a read stream
+ * SlpLiveStream connects to a Wii or Slippi relay and parses all the data
+ * and emits SlpStream events.
+ *
+ * @export
+ * @class SlpLiveStream
+ * @extends {SlpFileWriter}
  */
 export class SlpLiveStream extends SlpFileWriter {
+  /**
+   * Connection can be used to return the connection status.
+   *
+   * @memberof SlpLiveStream
+   */
   public connection = new ConsoleConnection();
 
+  /**
+   * Connect to a Wii or Slippi relay on the specified address and port.
+   *
+   * @param {string} address The address of the Wii or Slippi relay
+   * @param {number} port The port of the Wii or Slippi relay
+   * @returns {Promise<void>}
+   * @memberof SlpLiveStream
+   */
   public async start(address: string, port: number): Promise<void> {
     // Restart the connection if already connected
     if (this.connection !== null) {
