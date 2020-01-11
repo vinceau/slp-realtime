@@ -32,7 +32,7 @@ yarn add @vinceau/slp-realtime
 
 ## Usage
 
-See a [working example](examples/realtime-combos) or [check out the docs](https://vince.id.au/slp-realtime/).
+See a [working example](examples) or [check out the docs](https://vince.id.au/slp-realtime/).
 
 ### Subscribing to In-Game Events
 

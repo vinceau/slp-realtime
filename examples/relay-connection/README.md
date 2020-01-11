@@ -1,4 +1,4 @@
-# Real-time Combo Extraction Example
+# Relay Connection Example
 
 This is an example demonstrating the real-time capabilities of `slp-realtime`.
 
@@ -20,7 +20,7 @@ yarn run build
 2. Prepare the example by changing directory into the example folder and installing the dependencies. 
 
 ```bash
-cd /examples/realtime-combos
+cd examples/relay-connection
 yarn install
 ```
 
