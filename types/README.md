@@ -1,45 +1,8 @@
 # Documentation
 
-## Classes
+## Types
 
-### `ComboFilter`
-
-`constructor(options?: Partial<ComboFilterSettings>)`
-
-`updateSettings(options: Partial<ComboFilterSettings>): ComboFilterSettings`
-
-`getSettings(): ComboFilterSettings`
-    // Return a copy of the settings for immutability
-    return Object.assign({}, this.settings);
-  }
-
-`resetSettings(): ComboFilterSettings`
-    return this.updateSettings(this.originalSettings);
-  }
-
-`isCombo(combo: ComboType, settings: GameStartType): boolean`
-
-#### Methods
-
-### `DolphinComboQueue`
-
-### `SlpLiveStream`
-
-### `SlpRealTime`
-
-### `SlpStream`
-
-### `SlpFile`
-
-### `SlpFileWriter`
-
-
-
-## API
-
-### Types
-
-#### `GameStartType`
+### `GameStartType`
 
 | Key | Type |
 | --- | ---- |
@@ -50,14 +13,14 @@
 | `players` | [`PlayerType`](#playertype)[] |
 
 
-#### `GameEndType`
+### `GameEndType`
 
 | Key | Type |
 | --- | ---- |
 | `gameEndMethod` | `number \| null` |
 | `lrasInitiatorIndex` | `number \| null` |
 
-#### `ComboType`
+### `ComboType`
 
 | Key | Type |
 | --- | ---- |
@@ -71,7 +34,7 @@
 | `moves` | [`MoveLandedType`](#movelandedtype)[] |
 | `didKill` | `boolean` |
 
-#### `StockType`
+### `StockType`
 
 | Key | Type |
 | --- | ---- |
@@ -85,7 +48,7 @@
 | `count` | `number` |
 | `deathAnimation` | `number \| null \| undefined` |
 
-#### `PlayerType`
+### `PlayerType`
 
 | Key | Type |
 | --- | ---- |
@@ -99,7 +62,7 @@
 | `controllerFix` | `string \| null` |
 | `nametag` | `string \| null` |
 
-#### `MoveLandedType`
+### `MoveLandedType`
 
 | Key        | Type     |
 | ---------- | -------- |
@@ -109,100 +72,100 @@
 | `damage`   | `number` |
 
 
-#### `ComboFilterSettings`
+### `ComboFilterSettings`
 
-##### `characterFilter`
+#### `characterFilter`
 
 * Type: `number[]`
 * Default: `[]`
 
 Only match if one of these characters are performing the combo.
 
-##### `portFilter`
+#### `portFilter`
 
 * Type: `number[]`
 * Default: `[0, 1, 2, 3]`
 
 Only match if the player is using one of these ports. Note that the ports are 0 indexed. This means that Player 1 is `0`, Player 2 is `1`, etc.
 
-##### `nameTags`
+#### `nameTags`
 
 * Type: `string[]`
 * Default: `[]`
 
 Only match if the player has this name tag.
 
-##### `minComboLength`
+#### `minComboLength`
 
 * Type: `number`
 * Default: `1`
 
 Only match if the combo has at least this many moves.
 
-##### `minComboPercent`
+#### `minComboPercent`
 
 * Type: `number`
 * Default: `60`
 
 Only match if the combo does at least this much percent.
 
-##### `comboMustKill`
+#### `comboMustKill`
 
 * Type: `boolean`
 * Default: `true`
 
 Only match if the combo killed.
 
-##### `excludeCPUs`
+#### `excludeCPUs`
 
 * Type: `boolean`
 * Default: `true`
 
 Don't match if the character being combo'd is a CPU.
 
-##### `excludeChainGrabs`
+#### `excludeChainGrabs`
 
 * Type: `boolean`
 * Default: `true`
 
 Don't match if the combo is mostly chain-grabs.
 
-##### `chainGrabThreshold`
+#### `chainGrabThreshold`
 
 * Type: `number`
 * Default: `0.8`
 
 The proportion of up-throw and pummels to other moves for the combo to be considered mostly chain grabs.
 
-##### `excludeWobbles`
+#### `excludeWobbles`
 
 * Type: `boolean`
 * Default: `true`
 
 Don't match if the combo is mostly wobbling.
 
-##### `wobbleThreshold`
+#### `wobbleThreshold`
 
 * Type: `number`
 * Default: `8`
 
 The number of consecutive pummels before it's considered a wobble.
 
-##### `largeHitThreshold`
+#### `largeHitThreshold`
 
 * Type: `number`
 * Default: `0.8`
 
 Don't match if this decimal percentage of the combo damage was done by one single move.
 
-##### `chainGrabbers`
+#### `chainGrabbers`
 
 * Type: `number[]`
 * Default: `[Character.MARTH, Character.PEACH, Character.PIKACHU, Character.DR_MARIO]`
 
 The characters which the should be considered for chain-grabbing in [`excludeChainGrabs`](#excludechaingrabs).
 
-##### `perCharacterMinComboPercent`
+#### `perCharacterMinComboPercent`
 
 * Type: `{ [characterId: number]: number }`
 * Default: `{ [Character.JIGGLYPUFF]: 85 }`
