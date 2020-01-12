@@ -86,7 +86,7 @@ realtime.on("comboEnd", () => {
 
 We can already subscribe to the `comboEnd` event but that gets emitted for *every* combo. We need a way to filter out for specific combos.
 
-First, instantiate a `ComboFilter`. For all the possible filtering options, see Combo Filter Settings.
+First, instantiate a `ComboFilter`. For all the possible filtering options, see [ComboFilterSettings](api/README.md#combofiltersettings).
 
 ```javascript
 const { ComboFilter } = require("@vinceau/slp-realtime");
