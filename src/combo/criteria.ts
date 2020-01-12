@@ -10,7 +10,7 @@ import { Character } from "../melee/characters";
  * has the index 0, and player 2 has the index 1 etc.
  */
 export const MatchesPortNumber: Criteria = (combo, settings, options) => {
-  const player = _.find(settings.players, (player) => player.playerIndex === combo.playerIndex);
+  const player = settings.players.filter(player => player.playerIndex === combo.playerIndex)[0];
   return options.portFilter.includes(player.playerIndex);
 }
 
@@ -19,7 +19,7 @@ export const MatchesPlayerName: Criteria = (combo, settings, options) => {
     return true;
   }
 
-  const player = _.find(settings.players, (player) => player.playerIndex === combo.playerIndex);
+  const player = settings.players.filter(player => player.playerIndex === combo.playerIndex)[0];
   const playerTag = player.nametag || null;
   return options.nameTags.includes(playerTag);
 }
@@ -29,7 +29,7 @@ export const MatchesCharacter: Criteria = (combo, settings, options) => {
     return true;
   }
 
-  const player = _.find(settings.players, (player) => player.playerIndex === combo.playerIndex);
+  const player = settings.players.filter(player => player.playerIndex === combo.playerIndex)[0];
   const matchesCharacter = options.characterFilter.includes(player.characterId);
   return matchesCharacter;
 }
@@ -39,7 +39,7 @@ export const ExcludesChainGrabs: Criteria = (combo, settings, options) => {
     return true;
   }
 
-  const player = _.find(settings.players, (player) => player.playerIndex === combo.playerIndex);
+  const player = settings.players.filter(player => player.playerIndex === combo.playerIndex)[0];
   if (!options.chainGrabbers.includes(player.characterId)) {
     return true;
   }
@@ -55,8 +55,8 @@ export const ExcludesWobbles: Criteria = (combo, settings, options) => {
   if (!options.excludeWobbles) {
     return true;
   }
-         
-  const player = _.find(settings.players, (player) => player.playerIndex === combo.playerIndex);
+
+  const player = settings.players.filter(player => player.playerIndex === combo.playerIndex)[0];
   if (player.characterId !== Character.ICE_CLIMBERS) {
     // Continue processing if the character is not Ice Climbers
     return true;
@@ -84,7 +84,7 @@ export const SatisfiesMinComboLength: Criteria = (combo, settings, options) => {
 }
 
 export const SatisfiesMinComboPercent: Criteria = (combo, settings, options) => {
-  const player = _.find(settings.players, (player) => player.playerIndex === combo.playerIndex);
+  const player = settings.players.filter(player => player.playerIndex === combo.playerIndex)[0];
 
   const minComboPercent = options.perCharacterMinComboPercent[player.characterId] || options.minComboPercent;
   const totalComboPercent = combo.endPercent - combo.startPercent
