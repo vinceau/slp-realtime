@@ -1,4 +1,6 @@
 import _ from "lodash";
+import EventEmitter from "events";
+import StrictEventEmitter from "strict-event-emitter-types";
 import { ConversionType, MoveLandedType, StatComputer, PlayerIndexedType, FrameEntryType, FramesType, PostFrameUpdateType, isDamaged, isGrabbed, calcDamageTaken, isInControl, didLoseStock, Timers } from "slp-parser-js";
 
 interface PlayerConversionState {
@@ -14,13 +16,20 @@ interface MetadataType {
   };
 }
 
-export class ConversionComputer implements StatComputer<ConversionType[]> {
+export interface ConversionComputerEvents {
+  conversion: ConversionType;
+};
+
+type ConversionComputeEventEmitter = { new(): StrictEventEmitter<EventEmitter, ConversionComputerEvents> };
+
+export class ConversionComputer extends (EventEmitter as ConversionComputeEventEmitter) implements StatComputer<ConversionType[]> {
   private playerPermutations = new Array<PlayerIndexedType>();
   private conversions = new Array<ConversionType>();
   private state = new Map<PlayerIndexedType, PlayerConversionState>();
   private metadata: MetadataType;
 
   public constructor() {
+    super();
     this.metadata = {
       lastEndFrameByOppIdx: {},
     };
@@ -42,7 +51,10 @@ export class ConversionComputer implements StatComputer<ConversionType[]> {
   public processFrame(frame: FrameEntryType, allFrames: FramesType): void {
     this.playerPermutations.forEach((indices) => {
       const state = this.state.get(indices);
-      handleConversionCompute(allFrames, state, indices, frame, this.conversions);
+      const terminated = handleConversionCompute(allFrames, state, indices, frame, this.conversions);
+      if (terminated) {
+        this.emit("conversion", _.last(this.conversions));
+      }
     });
   }
 
@@ -85,7 +97,7 @@ export class ConversionComputer implements StatComputer<ConversionType[]> {
   }
 }
 
-function handleConversionCompute(frames: FramesType, state: PlayerConversionState, indices: PlayerIndexedType, frame: FrameEntryType, conversions: ConversionType[]): void {
+function handleConversionCompute(frames: FramesType, state: PlayerConversionState, indices: PlayerIndexedType, frame: FrameEntryType, conversions: ConversionType[]): boolean {
   const playerFrame: PostFrameUpdateType = frame.players[indices.playerIndex].post;
   // FIXME: use type PostFrameUpdateType instead of any
   // This is because the default value {} should not be casted as a type of PostFrameUpdateType
@@ -211,4 +223,6 @@ function handleConversionCompute(frames: FramesType, state: PlayerConversionStat
     state.conversion = null;
     state.move = null;
   }
+
+  return shouldTerminate;
 }
