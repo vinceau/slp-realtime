@@ -135,6 +135,7 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
     stats.registerAll([
       stock,
       combo,
+      conversion,
     ]);
     return new SlpParser(stats);
   }
