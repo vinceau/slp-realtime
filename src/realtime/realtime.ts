@@ -3,9 +3,10 @@ import EventEmitter from "events";
 import StrictEventEmitter from "strict-event-emitter-types";
 
 import { SlpStream, SlpEvent } from "../utils/slpStream";
-import { SlpParser, GameStartType, GameEndType, Command, PostFrameUpdateType, Stats as SlippiStats, ComboType, StockType } from "slp-parser-js";
+import { SlpParser, GameStartType, GameEndType, Command, PostFrameUpdateType, Stats as SlippiStats, ComboType, StockType, ConversionType } from "slp-parser-js";
 import { StockComputer } from "../stats/stocks";
 import { ComboComputer } from "../stats/combos";
+import { ConversionComputer } from "../stats/conversions";
 
 // Export the parameter types for events
 export { GameStartType, GameEndType, ComboType, StockType } from "slp-parser-js";
@@ -16,6 +17,7 @@ interface SlpRealTimeEvents {
   comboStart: (combo: ComboType, settings: GameStartType) => void;
   comboExtend: (combo: ComboType, settings: GameStartType) => void;
   comboEnd: (combo: ComboType, settings: GameStartType) => void;
+  conversion: (conversion: ConversionType, settings: GameStartType) => void;
   spawn: (playerIndex: number, stock: StockType, settings: GameStartType) => void;
   death: (playerIndex: number, stock: StockType, settings: GameStartType) => void;
   percentChange: (playerIndex: number, percent: number) => void;
@@ -125,6 +127,10 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
     });
     combo.on("comboEnd", (c) => {
       this.emit("comboEnd", c, payload);
+    });
+    const conversion = new ConversionComputer();
+    conversion.on("conversion", (c) => {
+      this.emit("conversion", c, payload);
     });
     stats.registerAll([
       stock,
