@@ -78,4 +78,19 @@ describe("combo calculation", () => {
     expect(comboSpy.callCount).toEqual(3);
   });
 
+  it("emits the correct number of conversions", async () => {
+    const conversionSpy = sinon.spy();
+    filter.updateSettings({ minComboPercent: 20 });
+    const slpStream = new SlpStream({ singleGameMode: true });
+    const realtime = new SlpRealTime();
+    realtime.setStream(slpStream);
+    realtime.on("conversion", (c, s) => {
+      if (filter.isCombo(c, s)) {
+        conversionSpy();
+      }
+    });
+    await pipeFileContents("slp/Game_20190324T113942.slp", slpStream);
+    expect(conversionSpy.callCount).toEqual(7);
+  });
+
 });
