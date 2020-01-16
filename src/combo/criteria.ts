@@ -6,12 +6,10 @@ import { Character } from "../melee/characters";
 
 /**
  * MatchesPortNumber ensures the player performing the combo is a specific port.
- * The port to be matched against is zero indexed. This means that player 1 is
- * has the index 0, and player 2 has the index 1 etc.
  */
 export const MatchesPortNumber: Criteria = (combo, settings, options) => {
   const player = settings.players.filter(player => player.playerIndex === combo.playerIndex)[0];
-  return options.portFilter.includes(player.playerIndex);
+  return options.portFilter.includes(player.port);
 }
 
 export const MatchesPlayerName: Criteria = (combo, settings, options) => {
