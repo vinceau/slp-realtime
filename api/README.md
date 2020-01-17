@@ -88,6 +88,8 @@ Only match if one of these characters are performing the combo.
 
 Only match if the player performing the combo is using one of these ports.
 
+Note: Prior to version 1.1.0, ports in the `portFilter` were 0 indexed. i.e. `0` meant Port 1, `1` meant Port 2 etc.
+
 #### `nameTags`
 
 * Type: `string[]`
