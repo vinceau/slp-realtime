@@ -9,7 +9,7 @@ import { ComboComputer } from "../stats/combos";
 import { ConversionComputer } from "../stats/conversions";
 
 // Export the parameter types for events
-export { GameStartType, GameEndType, ComboType, StockType } from "slp-parser-js";
+export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
 
 interface SlpRealTimeEvents {
   gameStart: GameStartType;
