@@ -178,7 +178,7 @@ export function getStageName(stageId: number): string {
   return stage.name;
 }
 
-export function getShortStageName(stageId: number): string {
+export function getStageShortName(stageId: number): string {
   const stage = getStageInfo(stageId);
   return stage.shortName || getStageName(stageId);
 }
