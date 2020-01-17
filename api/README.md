@@ -34,6 +34,21 @@
 | `moves` | [`MoveLandedType`](#movelandedtype)[] |
 | `didKill` | `boolean` |
 
+### `ConversionType`
+
+| Key | Type |
+| --- | ---- |
+| `playerIndex` | `number` |
+| `opponentIndex` | `number` |
+| `startFrame` | `number` |
+| `endFrame` | `number \| null \| undefined` |
+| `startPercent` | `number` |
+| `currentPercent` | `number` |
+| `endPercent` | `number \| null \| undefined` |
+| `moves` | [`MoveLandedType`](#movelandedtype)[] |
+| `didKill` | `boolean` |
+| `openingType` | `string` |
+
 ### `StockType`
 
 | Key | Type |
