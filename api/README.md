@@ -84,9 +84,9 @@ Only match if one of these characters are performing the combo.
 #### `portFilter`
 
 * Type: `number[]`
-* Default: `[0, 1, 2, 3]`
+* Default: `[1, 2, 3, 4]`
 
-Only match if the player is using one of these ports. Note that the ports are 0 indexed. This means that Player 1 is `0`, Player 2 is `1`, etc.
+Only match if the player performing the combo is using one of these ports.
 
 #### `nameTags`
 

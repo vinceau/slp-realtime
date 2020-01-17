@@ -24,7 +24,7 @@ export type Criteria = (combo: ComboType, settings: GameStartType, options: Comb
 export const defaultComboFilterSettings: ComboFilterSettings = {
   chainGrabbers: [Character.MARTH, Character.PEACH, Character.PIKACHU, Character.DR_MARIO],
   characterFilter: [],
-  portFilter: [0, 1, 2, 3], // Enable combos for all ports
+  portFilter: [1, 2, 3, 4], // Enable combos for all ports
   nameTags: [],
   minComboLength: 1,
   minComboPercent: 60,

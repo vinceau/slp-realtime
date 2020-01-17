@@ -34,16 +34,19 @@ export enum Stage {
 export interface StageInfo {
   id: Stage;
   name: string;
+  shortName?: string;
 }
 
 const stagesMap = new Map<Stage, StageInfo>()
   .set(Stage.FOUNTAIN_OF_DREAMS, {
     id: Stage.FOUNTAIN_OF_DREAMS,
     name: "Fountain of Dreams",
+    shortName: "FoD",
   })
   .set(Stage.POKEMON_STADIUM, {
     id: Stage.POKEMON_STADIUM,
     name: "Pokémon Stadium",
+    shortName: "PS"
   })
   .set(Stage.PEACHS_CASTLE, {
     id: Stage.PEACHS_CASTLE,
@@ -64,6 +67,7 @@ const stagesMap = new Map<Stage, StageInfo>()
   .set(Stage.YOSHIS_STORY, {
     id: Stage.YOSHIS_STORY,
     name: "Yoshi's Story",
+    shortName: "YS",
   })
   .set(Stage.ONETT, {
     id: Stage.ONETT,
@@ -140,6 +144,7 @@ const stagesMap = new Map<Stage, StageInfo>()
   .set(Stage.DREAMLAND, {
     id: Stage.DREAMLAND,
     name: "Dream Land N64",
+    shortName: "DL",
   })
   .set(Stage.YOSHIS_ISLAND_N64, {
     id: Stage.YOSHIS_ISLAND_N64,
@@ -152,10 +157,12 @@ const stagesMap = new Map<Stage, StageInfo>()
   .set(Stage.BATTLEFIELD, {
     id: Stage.BATTLEFIELD,
     name: "Battlefield",
+    shortName: "BF",
   })
   .set(Stage.FINAL_DESTINATION, {
     id: Stage.FINAL_DESTINATION,
     name: "Final Destination",
+    shortName: "FD",
   });
 
 export function getStageInfo(stageId: number): StageInfo {
@@ -169,4 +176,9 @@ export function getStageInfo(stageId: number): StageInfo {
 export function getStageName(stageId: number): string {
   const stage = getStageInfo(stageId);
   return stage.name;
+}
+
+export function getShortStageName(stageId: number): string {
+  const stage = getStageInfo(stageId);
+  return stage.shortName || getStageName(stageId);
 }
