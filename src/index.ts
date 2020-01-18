@@ -10,4 +10,7 @@ export * from "./realtime";
 export * from "./combo";
 export * from "./types";
 
+// Re-export SlippiGame for convenience
+export { SlippiGame } from "slp-parser-js";
+
 export default SlpRealTime;
