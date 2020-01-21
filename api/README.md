@@ -187,4 +187,4 @@ The characters which the should be considered for chain-grabbing in [`excludeCha
 * Type: `{ [characterId: number]: number }`
 * Default: `{ [Character.JIGGLYPUFF]: 85 }`
 
-The minimum amount of damage that a specific character performing a combo needs to do. This is mainly to combat characters like Puff which often will end combos in rest. This probably isn't if you adjust the [`minComboLength`](#mincombolength) but it's included for backwards compatibility with the combo script.
+The minimum amount of damage that a specific character performing a combo needs to do. This is mainly to combat characters like Puff which often will end combos in rest. This probably isn't necessary if you adjust the [`minComboLength`](#mincombolength) but it's included for backwards compatibility with the combo script.
