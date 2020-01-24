@@ -30,7 +30,7 @@ export type SlpStreamSettings = typeof defaultSettings;
  * @class SlpStream
  * @extends {Writable}
  */
-export class SlpStream extends Writable {
+export class RxSlpStream extends Writable {
   private settings: SlpStreamSettings;
   private gameReady = false;
   private payloadSizes = new Map<Command, number>();

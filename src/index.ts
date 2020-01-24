@@ -10,6 +10,9 @@ export * from "./realtime";
 export * from "./combo";
 export * from "./types";
 
+export { RxSlpStream } from "./utils/rxSlpStream";
+export { RxSlpRealTime } from "./realtime/rxRealTime";
+
 // Re-export SlippiGame for convenience
 export { SlippiGame } from "slp-parser-js";
 

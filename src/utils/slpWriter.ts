@@ -3,7 +3,7 @@ import _ from "lodash";
 import moment, { Moment } from "moment";
 
 import { SlpFile, SlpFileMetadata } from "./slpFile";
-import { SlpStream, SlpEvent } from "./slpStream";
+import { RxSlpStream } from "./rxSlpStream";
 import { Command, PostFrameUpdateType } from "slp-parser-js";
 
 const defaultSettings = {
@@ -24,7 +24,7 @@ export type SlpFileWriterOptions = typeof defaultSettings;
  * @class SlpFileWriter
  * @extends {SlpStream}
  */
-export class SlpFileWriter extends SlpStream {
+export class SlpFileWriter extends RxSlpStream {
   private currentFile: SlpFile | null;
   private metadata: SlpFileMetadata;
   private options: SlpFileWriterOptions;
@@ -41,20 +41,22 @@ export class SlpFileWriter extends SlpStream {
       lastFrame: -124,
       players: {},
     };
-    this.on(SlpEvent.RAW_COMMAND, (command: Command, buffer: Uint8Array) => {
+    // this.on(SlpEvent.RAW_COMMAND, (command: Command, buffer: Uint8Array) => {
+    this.rawCommand$.subscribe(data => {
       if (this.currentFile) {
-        this.currentFile.write(buffer);
+        this.currentFile.write(data.payload);
       }
-    })
-    this.on(SlpEvent.POST_FRAME_UPDATE, (command: Command, payload: PostFrameUpdateType) => {
-      this._handlePostFrameUpdate(command, payload);
-    })
-    this.on(SlpEvent.MESSAGE_SIZES, () => {
+    });
+    // this.on(SlpEvent.POST_FRAME_UPDATE, (command: Command, payload: PostFrameUpdateType) => {
+    this.postFrameUpdate$.subscribe(payload => {
+      this._handlePostFrameUpdate(Command.POST_FRAME_UPDATE, payload);
+    });
+    this.messageSize$.subscribe(() => {
       this._handleNewGame();
-    })
-    this.on(SlpEvent.GAME_END, () => {
+    });
+    this.gameEnd$.subscribe(() => {
       this._handleEndGame();
-    })
+    });
   }
 
   /**

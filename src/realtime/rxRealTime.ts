@@ -1,7 +1,7 @@
 import { Observable } from "rxjs";
-
-import { SlpStream } from "../utils/rxSlpStream";
-import { SlpParser, GameStartType, GameEndType, Command, PostFrameUpdateType, Stats as SlippiStats } from "slp-parser-js";
+import { map } from "rxjs/operators";
+import { RxSlpStream } from "../utils/rxSlpStream";
+import { GameEndType, GameStartType } from "slp-parser-js";
 
 // Export the parameter types for events
 export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
@@ -25,7 +25,7 @@ export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from
  * @extends {EventEmitter}
  */
 export class RxSlpRealTime {
-  protected stream: SlpStream | null = null;
+  protected stream: RxSlpStream | null = null;
   // protected parser: SlpParser | null;
 
   public gameStart$: Observable<GameStartType>;
@@ -37,7 +37,7 @@ export class RxSlpRealTime {
    * @param {SlpStream} stream
    * @memberof SlpRealTime
    */
-  public setStream(stream: SlpStream): void {
+  public setStream(stream: RxSlpStream): void {
     /*
     this._reset();
     this.stream = stream;
@@ -46,7 +46,13 @@ export class RxSlpRealTime {
     this.stream.on(SlpEvent.POST_FRAME_UPDATE, this.postFrameHandler);
     this.stream.on(SlpEvent.GAME_END, this.gameEndHandler);
     */
-    this.gameStart$ = stream.gameStart$;
+    this.gameStart$ = stream.gameStart$.pipe<GameStartType>(
+      // We want to filter out the empty players
+      map(data => ({
+        ...data,
+        players: data.players.filter(p => p.type !== 3),
+      })),
+    );
     this.gameEnd$ = stream.gameEnd$;
   }
 
