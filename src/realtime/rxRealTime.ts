@@ -1,7 +1,7 @@
-import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { Observable, merge } from "rxjs";
+import { map, take } from "rxjs/operators";
 import { RxSlpStream } from "../utils/rxSlpStream";
-import { GameEndType, GameStartType } from "slp-parser-js";
+import { GameEndType, GameStartType, PreFrameUpdateType, FrameEntryType } from "slp-parser-js";
 
 // Export the parameter types for events
 export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
@@ -30,6 +30,12 @@ export class RxSlpRealTime {
 
   public gameStart$: Observable<GameStartType>;
   public gameEnd$: Observable<GameEndType>;
+  public aButtonPressed$: Observable<number>;
+  public newFrame$: Observable<FrameEntryType>;
+  public playerFrame$: Observable<FrameEntryType>;
+  public followerFrame$: Observable<FrameEntryType>;
+
+  private currentGameSettings: GameStartType;
 
   /**
    * Starts listening to the provided stream for Slippi events
@@ -54,6 +60,19 @@ export class RxSlpRealTime {
       })),
     );
     this.gameEnd$ = stream.gameEnd$;
+    this.newFrame$ = merge(stream.playerFrame$, stream.followerFrame$);
+    this.playerFrame$ = stream.playerFrame$;
+    this.followerFrame$ = stream.followerFrame$;
   }
 
 }
+
+/*
+export type FrameEntryType = {
+  frame: number;
+  players: { [playerIndex: number]: {
+    pre: PreFrameUpdateType;
+    post: PostFrameUpdateType;
+  };};
+};
+*/

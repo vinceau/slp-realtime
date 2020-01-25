@@ -46,7 +46,8 @@ export class RxSlpStream extends Writable {
   public gameStart$ = new Subject<GameStartType>();
   public preFrameUpdate$ = new Subject<PreFrameUpdateType>();
   public postFrameUpdate$ = new Subject<PostFrameUpdateType>();
-  public onFrame$ = new Subject<FrameEntryType>()
+  public playerFrame$ = new Subject<FrameEntryType>()
+  public followerFrame$ = new Subject<FrameEntryType>()
   public gameEnd$ = new Subject<GameEndType>();
 
   /**
@@ -211,7 +212,11 @@ export class RxSlpStream extends Writable {
       } else if (command === Command.PRE_FRAME_UPDATE) {
         // This is probably the start of the next frame
         // Fire off an event for the last frame
-        this.onFrame$.next(currentFrameData);
+        if (isFollower) {
+          this.followerFrame$.next(currentFrameData);
+        } else {
+          this.playerFrame$.next(currentFrameData);
+        }
         // Reset the current frame data
         currentFrameData = null;
       }
