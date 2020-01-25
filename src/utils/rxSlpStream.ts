@@ -1,6 +1,6 @@
 import { Writable, WritableOptions } from "stream";
 
-import { Command, parseMessage, GameStartType, PreFrameUpdateType, PostFrameUpdateType, GameEndType } from "slp-parser-js";
+import { Command, parseMessage, GameStartType, PreFrameUpdateType, PostFrameUpdateType, GameEndType, FrameEntryType } from "slp-parser-js";
 import { Subject } from "rxjs";
 
 /*
@@ -35,6 +35,8 @@ export class RxSlpStream extends Writable {
   private gameReady = false;
   private payloadSizes = new Map<Command, number>();
   private previousBuffer: Uint8Array = Buffer.from([]);
+  private playerFrame: FrameEntryType | null = null;
+  private followerFrame: FrameEntryType | null = null;
 
   public messageSize$ = new Subject<Map<Command, number>>();
   public rawCommand$ = new Subject<{
@@ -44,6 +46,7 @@ export class RxSlpStream extends Writable {
   public gameStart$ = new Subject<GameStartType>();
   public preFrameUpdate$ = new Subject<PreFrameUpdateType>();
   public postFrameUpdate$ = new Subject<PostFrameUpdateType>();
+  public onFrame$ = new Subject<FrameEntryType>()
   public gameEnd$ = new Subject<GameEndType>();
 
   /**
@@ -168,9 +171,11 @@ export class RxSlpStream extends Writable {
       break;
     case Command.PRE_FRAME_UPDATE:
       this.preFrameUpdate$.next(parsedPayload as PreFrameUpdateType);
+      this._handleFrameUpdate(command, parsedPayload as PreFrameUpdateType);
       break;
     case Command.POST_FRAME_UPDATE:
       this.postFrameUpdate$.next(parsedPayload as PostFrameUpdateType);
+      this._handleFrameUpdate(command, parsedPayload as PostFrameUpdateType);
       break;
     default:
       break;
@@ -186,6 +191,47 @@ export class RxSlpStream extends Writable {
       this.payloadSizes.set(commandByte, payloadSize);
     }
     return payloadLen;
+  }
+
+  private _handleFrameUpdate(command: Command, payload: PreFrameUpdateType | PostFrameUpdateType): void {
+    // we need to determine distinguish between player frames and follower frames
+    // and reconstruct a full FrameEntryType
+    const preOrPost = command === Command.PRE_FRAME_UPDATE ? "pre" : "post";
+    const { frame, isFollower, playerIndex } = payload;
+    let currentFrameData = isFollower ? this.followerFrame : this.playerFrame;
+
+    if (currentFrameData !== null) {
+      if (currentFrameData.frame === frame) {
+        const playerInfo: any = currentFrameData.players[playerIndex];
+        if (!playerInfo) {
+          (currentFrameData as any).players[playerIndex] = {[preOrPost]: payload};
+        } else {
+          (currentFrameData as any).players[playerIndex][preOrPost] = payload;
+        }
+      } else if (command === Command.PRE_FRAME_UPDATE) {
+        // This is probably the start of the next frame
+        // Fire off an event for the last frame
+        this.onFrame$.next(currentFrameData);
+        // Reset the current frame data
+        currentFrameData = null;
+      }
+    }
+
+    if (currentFrameData === null) {
+      const newFrameData = {
+        frame,
+        players: {
+          [playerIndex]: {
+            [preOrPost]: payload
+          }
+        }
+      };
+      if (isFollower) {
+        this.followerFrame = newFrameData as FrameEntryType;
+      } else {
+        this.playerFrame = newFrameData as FrameEntryType;
+      }
+    }
   }
 
 }
