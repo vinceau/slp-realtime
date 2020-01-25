@@ -1,5 +1,5 @@
 import { Observable, merge } from "rxjs";
-import { map, take } from "rxjs/operators";
+import { map, pairwise, distinctUntilChanged, take, filter } from "rxjs/operators";
 import { RxSlpStream } from "../utils/rxSlpStream";
 import { GameEndType, GameStartType, PreFrameUpdateType, FrameEntryType } from "slp-parser-js";
 
@@ -44,9 +44,9 @@ export class RxSlpRealTime {
    * @memberof SlpRealTime
    */
   public setStream(stream: RxSlpStream): void {
-    /*
-    this._reset();
+    // this._reset();
     this.stream = stream;
+    /*
     this.stream.on(SlpEvent.GAME_START, this.gameStartHandler);
     this.stream.on(SlpEvent.PRE_FRAME_UPDATE, this.preFrameHandler);
     this.stream.on(SlpEvent.POST_FRAME_UPDATE, this.postFrameHandler);
@@ -63,6 +63,17 @@ export class RxSlpRealTime {
     this.newFrame$ = merge(stream.playerFrame$, stream.followerFrame$);
     this.playerFrame$ = stream.playerFrame$;
     this.followerFrame$ = stream.followerFrame$;
+  }
+
+  public playerInputs(index: number, controlBitMask: number): Observable<number> {
+    if (!this.stream) {
+      throw new Error("No stream to subscribe to");
+    }
+    return this.stream.playerFrame$.pipe(
+      map(f => f.players[index].pre.physicalButtons & controlBitMask),
+      distinctUntilChanged(),
+      filter(n => n === controlBitMask),
+    );
   }
 
 }
