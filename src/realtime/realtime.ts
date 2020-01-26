@@ -2,11 +2,13 @@
 import EventEmitter from "events";
 import StrictEventEmitter from "strict-event-emitter-types";
 
-import { SlpStream, SlpEvent } from "../utils/slpStream";
-import { SlpParser, GameStartType, GameEndType, Command, PostFrameUpdateType, Stats as SlippiStats, ComboType, StockType, ConversionType } from "slp-parser-js";
+import { SlpParser, GameStartType, GameEndType, Command, Stats as SlippiStats, ComboType, StockType, ConversionType } from "slp-parser-js";
 import { StockComputer } from "../stats/stocks";
 import { ComboComputer } from "../stats/combos";
 import { ConversionComputer } from "../stats/conversions";
+import { SlpStream } from "../utils/slpStream";
+import { map, tap } from "rxjs/operators";
+import { Subscription } from "rxjs";
 
 // Export the parameter types for events
 export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
@@ -34,41 +36,10 @@ type SlpRealTimeEventEmitter = { new(): StrictEventEmitter<EventEmitter, SlpReal
  * @extends {EventEmitter}
  */
 export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
-  protected stream: SlpStream | null;
-  protected parser: SlpParser | null;
+  protected stream: SlpStream | null = null;
+  protected parser: SlpParser | null = null;
 
-  private gameStartHandler: (command: Command, payload: GameStartType) => void;
-  private preFrameHandler: (command: Command, payload: PostFrameUpdateType) => void;
-  private postFrameHandler: (command: Command, payload: PostFrameUpdateType) => void;
-  private gameEndHandler: (command: Command, payload: GameEndType) => void;
-
-  public constructor() {
-    super();
-    this.stream = null;
-    this.parser = null;
-    this.gameStartHandler = (command, payload): void => {
-      this.parser = this._setupStats(payload);
-      this.parser.handleGameStart(payload);
-      this.emit("gameStart", payload);
-    };
-    this.preFrameHandler = (command, payload): void => {
-      if (this.parser) {
-        this.parser.handleFrameUpdate(command, payload);
-      }
-    };
-    this.postFrameHandler = (command, payload): void => {
-      if (this.parser) {
-        this.parser.handlePostFrameUpdate(payload);
-        this.parser.handleFrameUpdate(command, payload);
-      }
-    };
-    this.gameEndHandler = (command, payload): void => {
-      if (this.parser) {
-        this.parser.handleGameEnd(payload);
-        this.emit("gameEnd", payload);
-      }
-    };
-  }
+  private subscriptions = new Array<Subscription>();
 
   /**
    * Starts listening to the provided stream for Slippi events
@@ -79,10 +50,37 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
   public setStream(stream: SlpStream): void {
     this._reset();
     this.stream = stream;
-    this.stream.on(SlpEvent.GAME_START, this.gameStartHandler);
-    this.stream.on(SlpEvent.PRE_FRAME_UPDATE, this.preFrameHandler);
-    this.stream.on(SlpEvent.POST_FRAME_UPDATE, this.postFrameHandler);
-    this.stream.on(SlpEvent.GAME_END, this.gameEndHandler);
+    const unsubGameStart = stream.gameStart$
+      .pipe<GameStartType>(
+      // We want to filter out the empty players
+      map(data => ({
+        ...data,
+        players: data.players.filter(p => p.type !== 3),
+      })),
+    )
+      .subscribe(payload => {
+        this.parser = this._setupStats(payload);
+        this.parser.handleGameStart(payload);
+        this.emit("gameStart", payload);
+      });
+    const unsubPreFrame = stream.preFrameUpdate$.subscribe(payload => {
+      if (this.parser) {
+        this.parser.handleFrameUpdate(Command.PRE_FRAME_UPDATE, payload);
+      }
+    });
+    const unsubPostFrame = stream.postFrameUpdate$.subscribe(payload => {
+      if (this.parser) {
+        this.parser.handlePostFrameUpdate(payload);
+        this.parser.handleFrameUpdate(Command.POST_FRAME_UPDATE, payload);
+      }
+    });
+    const unsubGameEnd = stream.gameEnd$.subscribe(payload => {
+      if (this.parser) {
+        this.parser.handleGameEnd(payload);
+        this.emit("gameEnd", payload);
+      }
+    });
+    this.subscriptions.push(unsubGameStart, unsubPreFrame, unsubPostFrame, unsubGameEnd);
   }
 
   /**
@@ -94,10 +92,8 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
    */
   private _reset(): void {
     if (this.stream) {
-      this.stream.removeListener(SlpEvent.GAME_START, this.gameStartHandler);
-      this.stream.removeListener(SlpEvent.PRE_FRAME_UPDATE, this.preFrameHandler);
-      this.stream.removeListener(SlpEvent.POST_FRAME_UPDATE, this.postFrameHandler);
-      this.stream.removeListener(SlpEvent.GAME_END, this.gameEndHandler);
+      this.subscriptions.forEach(s => s.unsubscribe());
+      this.subscriptions = [];
     }
     // Reset the stream and the parser
     this.stream = null;

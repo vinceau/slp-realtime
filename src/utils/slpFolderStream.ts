@@ -2,8 +2,8 @@ import * as path from "path";
 import chokidar, { FSWatcher } from "chokidar";
 import tailstream, { TailStream } from "tailstream";
 
-import { SlpStream } from "./slpStream";
 import { readDir } from "./promise";
+import { SlpStream } from "./slpStream";
 
 /**
  * SlpFolderStream is responsible for monitoring a folder, and detecting

@@ -3,7 +3,7 @@ import _ from "lodash";
 import moment, { Moment } from "moment";
 
 import { SlpFile, SlpFileMetadata } from "./slpFile";
-import { RxSlpStream } from "./rxSlpStream";
+import { SlpStream } from "./slpStream";
 import { Command, PostFrameUpdateType } from "slp-parser-js";
 
 const defaultSettings = {
@@ -24,7 +24,7 @@ export type SlpFileWriterOptions = typeof defaultSettings;
  * @class SlpFileWriter
  * @extends {SlpStream}
  */
-export class SlpFileWriter extends RxSlpStream {
+export class SlpFileWriter extends SlpStream {
   private currentFile: SlpFile | null;
   private metadata: SlpFileMetadata;
   private options: SlpFileWriterOptions;
