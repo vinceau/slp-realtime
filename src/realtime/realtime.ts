@@ -39,7 +39,8 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
   protected stream: SlpStream | null = null;
   protected parser: SlpParser | null = null;
 
-  private subscriptions = new Array<Subscription>();
+  private streamSubscriptions = new Array<Subscription>();
+  private gameSubscriptions = new Array<Subscription>();
 
   /**
    * Starts listening to the provided stream for Slippi events
@@ -80,7 +81,7 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
         this.emit("gameEnd", payload);
       }
     });
-    this.subscriptions.push(unsubGameStart, unsubPreFrame, unsubPostFrame, unsubGameEnd);
+    this.streamSubscriptions.push(unsubGameStart, unsubPreFrame, unsubPostFrame, unsubGameEnd);
   }
 
   public playerInputs(index: number, controlBitMask: number): Observable<number> {
@@ -113,8 +114,8 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
    */
   private _reset(): void {
     if (this.stream) {
-      this.subscriptions.forEach(s => s.unsubscribe());
-      this.subscriptions = [];
+      this.streamSubscriptions.forEach(s => s.unsubscribe());
+      this.streamSubscriptions = [];
     }
     // Reset the stream and the parser
     this.stream = null;
@@ -122,6 +123,10 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
   }
 
   private _setupStats(payload: GameStartType): SlpParser {
+    // Clean up old subscriptions
+    this.gameSubscriptions.forEach(s => s.unsubscribe());
+    this.gameSubscriptions = [];
+
     const stats = new SlippiStats({
       processOnTheFly: true,
     });
@@ -136,15 +141,17 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
       this.emit("death", i, s, payload);
     });
     const combo = new ComboComputer();
-    combo.on("comboStart", (c) => {
-      this.emit("comboStart", c, payload);
-    });
-    combo.on("comboExtend", (c) => {
-      this.emit("comboExtend", c, payload);
-    });
-    combo.on("comboEnd", (c) => {
-      this.emit("comboEnd", c, payload);
-    });
+    this.gameSubscriptions.push(
+      combo.comboStart$.subscribe((c) => {
+        this.emit("comboStart", c, payload);
+      }),
+      combo.comboExtend$.subscribe((c) => {
+        this.emit("comboExtend", c, payload);
+      }),
+      combo.comboEnd$.subscribe((c) => {
+        this.emit("comboEnd", c, payload);
+      }),
+    );
     const conversion = new ConversionComputer();
     conversion.on("conversion", (c) => {
       this.emit("conversion", c, payload);
