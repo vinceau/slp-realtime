@@ -51,13 +51,13 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
     this._reset();
     this.stream = stream;
     const unsubGameStart = stream.gameStart$
-      .pipe<GameStartType>(
-      // We want to filter out the empty players
-      map(data => ({
-        ...data,
-        players: data.players.filter(p => p.type !== 3),
-      })),
-    )
+    //   .pipe<GameStartType>(
+    //   // We want to filter out the empty players
+    //   map(data => ({
+    //     ...data,
+    //     players: data.players.filter(p => p.type !== 3),
+    //   })),
+    // )
       .subscribe(payload => {
         this.parser = this._setupStats(payload);
         this.parser.handleGameStart(payload);
