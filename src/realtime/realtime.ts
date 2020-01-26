@@ -7,8 +7,8 @@ import { StockComputer } from "../stats/stocks";
 import { ComboComputer } from "../stats/combos";
 import { ConversionComputer } from "../stats/conversions";
 import { SlpStream } from "../utils/slpStream";
-import { map, tap } from "rxjs/operators";
-import { Subscription } from "rxjs";
+import { map, tap, distinctUntilChanged, filter } from "rxjs/operators";
+import { Subscription, Observable } from "rxjs";
 
 // Export the parameter types for events
 export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
@@ -81,6 +81,27 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
       }
     });
     this.subscriptions.push(unsubGameStart, unsubPreFrame, unsubPostFrame, unsubGameEnd);
+  }
+
+  public playerInputs(index: number, controlBitMask: number): Observable<number> {
+    if (!this.stream) {
+      throw new Error("No stream to subscribe to");
+    }
+    return this.stream.playerFrame$.pipe(
+      map(f => f.players[index].pre.physicalButtons & controlBitMask),
+      distinctUntilChanged(),
+      filter(n => n === controlBitMask),
+    );
+  }
+
+  public playerPercentChange(index: number): Observable<number> {
+    if (!this.stream) {
+      throw new Error("No stream to subscribe to");
+    }
+    return this.stream.playerFrame$.pipe(
+      map(f => f.players[index].post.percent),
+      distinctUntilChanged(),
+    );
   }
 
   /**
