@@ -164,7 +164,13 @@ export class SlpStream extends Writable {
 
     switch (command) {
     case Command.GAME_START:
-      this.gameStart$.next(parsedPayload as GameStartType);
+      // Filter out the empty players
+      let gameStart = parsedPayload as GameStartType;
+      gameStart = {
+        ...gameStart,
+        players: gameStart.players.filter(p => p.type !== 3),
+      };
+      this.gameStart$.next(gameStart);
       break;
     case Command.GAME_END:
       this.gameReady = false;
