@@ -2,6 +2,7 @@ import { Writable, WritableOptions } from "stream";
 
 import { Command, parseMessage, GameStartType, PreFrameUpdateType, PostFrameUpdateType, GameEndType, FrameEntryType } from "slp-parser-js";
 import { Subject } from "rxjs";
+import { PlayerType } from "slp-parser-js/dist/utils/slpReader";
 
 /*
 export enum SlpEvent {
@@ -37,6 +38,7 @@ export class SlpStream extends Writable {
   private previousBuffer: Uint8Array = Buffer.from([]);
   private playerFrame: FrameEntryType | null = null;
   private followerFrame: FrameEntryType | null = null;
+  private players = new Array<PlayerType>();
 
   public messageSize$ = new Subject<Map<Command, number>>();
   public rawCommand$ = new Subject<{
@@ -166,15 +168,19 @@ export class SlpStream extends Writable {
     case Command.GAME_START:
       // Filter out the empty players
       let gameStart = parsedPayload as GameStartType;
+      // Set the players for this current game
+      this.players = gameStart.players.filter(p => p.type !== 3);
       gameStart = {
         ...gameStart,
-        players: gameStart.players.filter(p => p.type !== 3),
+        players: this.players,
       };
       this.gameStart$.next(gameStart);
       break;
     case Command.GAME_END:
       this.gameReady = false;
       this.gameEnd$.next(parsedPayload as GameEndType);
+      // Reset players
+      this.players = [];
       break;
     case Command.PRE_FRAME_UPDATE:
       this.preFrameUpdate$.next(parsedPayload as PreFrameUpdateType);
@@ -205,44 +211,62 @@ export class SlpStream extends Writable {
     // and reconstruct a full FrameEntryType
     const preOrPost = command === Command.PRE_FRAME_UPDATE ? "pre" : "post";
     const { frame, isFollower, playerIndex } = payload;
-    let currentFrameData = isFollower ? this.followerFrame : this.playerFrame;
+    let currentFrameData: any = isFollower ? this.followerFrame : this.playerFrame;
 
-    if (currentFrameData !== null) {
-      if (currentFrameData.frame === frame) {
-        const playerInfo: any = currentFrameData.players[playerIndex];
-        if (!playerInfo) {
-          (currentFrameData as any).players[playerIndex] = {[preOrPost]: payload};
-        } else {
-          (currentFrameData as any).players[playerIndex][preOrPost] = payload;
-        }
-      } else if (command === Command.PRE_FRAME_UPDATE) {
-        // This is probably the start of the next frame
-        // Fire off an event for the last frame
-        if (isFollower) {
-          this.followerFrame$.next(currentFrameData);
-        } else {
-          this.playerFrame$.next(currentFrameData);
-        }
-        // Reset the current frame data
-        currentFrameData = null;
+    // Set up the initial frame information
+    if (currentFrameData === null) {
+      currentFrameData = {
+        frame,
+        players: {}
+      };
+      if (isFollower) {
+        this.followerFrame = currentFrameData as FrameEntryType;
+      } else {
+        this.playerFrame = currentFrameData as FrameEntryType;
       }
     }
 
-    if (currentFrameData === null) {
-      const newFrameData = {
-        frame,
-        players: {
-          [playerIndex]: {
-            [preOrPost]: payload
-          }
-        }
-      };
-      if (isFollower) {
-        this.followerFrame = newFrameData as FrameEntryType;
+    // Sanity check, ensure that the frame is the same
+    if (currentFrameData.frame === frame) {
+      const playerInfo: any = currentFrameData.players[playerIndex];
+      if (!playerInfo) {
+        currentFrameData.players[playerIndex] = {[preOrPost]: payload};
       } else {
-        this.playerFrame = newFrameData as FrameEntryType;
+        currentFrameData.players[playerIndex][preOrPost] = payload;
+      }
+    }
+
+    // If the frame is complete then send off the frame
+    if (command === Command.POST_FRAME_UPDATE && this._isCompletedFrame(currentFrameData)) {
+      // Fire off an event for the last frame and reset the frame
+      if (isFollower) {
+        this.followerFrame$.next(currentFrameData);
+        this.followerFrame = null;
+      } else {
+        this.playerFrame$.next(currentFrameData);
+        this.playerFrame = null;
       }
     }
   }
 
+  private _isCompletedFrame(frame: FrameEntryType): boolean {
+    const playerIndices = Object.keys(frame.players);
+    // Make sure we have the correct number of players
+    if (this.players.length === 0 || playerIndices.length !== this.players.length) {
+      return false;
+    }
+
+    for (const playerIndex of playerIndices) {
+      const frameData = frame.players[playerIndex as any];
+      // Make sure we have both pre and post frame data
+      const missingPre = Boolean(frameData.pre);
+      const missingPost = Boolean(frameData.post);
+
+      if (!missingPre || !missingPost) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 }
