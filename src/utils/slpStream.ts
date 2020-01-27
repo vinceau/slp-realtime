@@ -259,10 +259,7 @@ export class SlpStream extends Writable {
     for (const playerIndex of playerIndices) {
       const frameData = frame.players[playerIndex as any];
       // Make sure we have both pre and post frame data
-      const missingPre = Boolean(frameData.pre);
-      const missingPost = Boolean(frameData.post);
-
-      if (!missingPre || !missingPost) {
+      if (!frameData.pre || !frameData.post) {
         return false;
       }
     }
