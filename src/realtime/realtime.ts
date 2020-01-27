@@ -106,6 +106,21 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
   }
 
   /**
+   * Emits an event each time player dies. The payload emitted is the player index.
+   */
+  public playerDied(index: number): Observable<number> {
+    if (!this.stream) {
+      throw new Error("No stream to subscribe to");
+    }
+    return this.stream.playerFrame$.pipe(
+      map(f => f.players[index].post),
+      pairwise(),
+      filter(([prevFrame, latestFrame]) => didLoseStock(latestFrame, prevFrame)),
+      mapTo(index),
+    );
+  }
+
+  /**
    * Unsubscribes from the previous stream so we won't keep emitting events.
    * Resets the stream and parser to null.
    *
