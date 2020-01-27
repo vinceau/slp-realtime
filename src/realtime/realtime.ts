@@ -113,10 +113,14 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
       throw new Error("No stream to subscribe to");
     }
     return this.stream.playerFrame$.pipe(
-      map(f => f.players[index].post),
-      pairwise(),
-      filter(([prevFrame, latestFrame]) => didLoseStock(latestFrame, prevFrame)),
-      mapTo(index),
+      map(f => f.players[index].post),  // Only take the post frame data
+      pairwise(),                       // We want both the latest frame and the previous frame
+      // We make sure that the latest frame is strictly greater than the previous frame
+      // in the case where a new game starts, we don't want the previous frame to be that of
+      // the last game.
+      // And then we check if the player lost a stock.
+      filter(([prevFrame, latestFrame]) => latestFrame.frame > prevFrame.frame && didLoseStock(latestFrame, prevFrame)),
+      mapTo(index),  // Return the player index
     );
   }
 
