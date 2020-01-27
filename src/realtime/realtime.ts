@@ -2,13 +2,14 @@
 import EventEmitter from "events";
 import StrictEventEmitter from "strict-event-emitter-types";
 
-import { SlpParser, GameStartType, GameEndType, Command, Stats as SlippiStats, ComboType, StockType, ConversionType } from "slp-parser-js";
+import { SlpParser, GameStartType, GameEndType, Command, Stats as SlippiStats, ComboType, StockType, ConversionType, FrameEntryType, didLoseStock, PostFrameUpdateType } from "slp-parser-js";
 import { StockComputer } from "../stats/stocks";
 import { ComboComputer } from "../stats/combos";
 import { ConversionComputer } from "../stats/conversions";
 import { SlpStream } from "../utils/slpStream";
-import { map, tap, distinctUntilChanged, filter } from "rxjs/operators";
-import { Subscription, Observable } from "rxjs";
+import { map, tap, distinctUntilChanged, withLatestFrom, filter, pairwise, mapTo } from "rxjs/operators";
+import { Subscription, Observable, Subject } from "rxjs";
+import { findWinner } from "../utils/helpers";
 
 // Export the parameter types for events
 export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
@@ -42,6 +43,8 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
   private streamSubscriptions = new Array<Subscription>();
   private gameSubscriptions = new Array<Subscription>();
 
+  public gameWinner$: Observable<number>;
+
   /**
    * Starts listening to the provided stream for Slippi events
    *
@@ -74,6 +77,11 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
       }
     });
     this.streamSubscriptions.push(unsubGameStart, unsubPreFrame, unsubPostFrame, unsubGameEnd);
+
+    this.gameWinner$ = stream.gameEnd$.pipe(
+      withLatestFrom(stream.playerFrame$),
+      map(([_, playerFrame]) => findWinner(playerFrame)),
+    );
   }
 
   public playerInputs(index: number, controlBitMask: number): Observable<number> {
