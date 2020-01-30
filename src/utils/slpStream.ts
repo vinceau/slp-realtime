@@ -4,17 +4,6 @@ import { Command, parseMessage, GameStartType, PreFrameUpdateType, PostFrameUpda
 import { Subject } from "rxjs";
 import { PlayerType } from "slp-parser-js/dist/utils/slpReader";
 
-/*
-export enum SlpEvent {
-  MESSAGE_SIZES = "messageSizes",
-  RAW_COMMAND = "command",
-  GAME_START = "gameStart",
-  PRE_FRAME_UPDATE = "preFrameUpdate",
-  POST_FRAME_UPDATE = "postFrameUpdate",
-  GAME_END = "gameEnd",
-}
-*/
-
 const NETWORK_MESSAGE = "HELO\0";
 
 const defaultSettings = {
@@ -40,17 +29,28 @@ export class SlpStream extends Writable {
   private followerFrame: FrameEntryType | null = null;
   private players = new Array<PlayerType>();
 
-  public messageSize$ = new Subject<Map<Command, number>>();
-  public rawCommand$ = new Subject<{
+  // Sources
+  private messageSizeSource = new Subject<Map<Command, number>>();
+  private rawCommandSource = new Subject<{
     command: Command;
     payload: Buffer;
   }>();
-  public gameStart$ = new Subject<GameStartType>();
-  public preFrameUpdate$ = new Subject<PreFrameUpdateType>();
-  public postFrameUpdate$ = new Subject<PostFrameUpdateType>();
-  public playerFrame$ = new Subject<FrameEntryType>()
-  public followerFrame$ = new Subject<FrameEntryType>()
-  public gameEnd$ = new Subject<GameEndType>();
+  private gameStartSource = new Subject<GameStartType>();
+  private preFrameUpdateSource = new Subject<PreFrameUpdateType>();
+  private postFrameUpdateSource = new Subject<PostFrameUpdateType>();
+  private playerFrameSource = new Subject<FrameEntryType>()
+  private followerFrameSource = new Subject<FrameEntryType>()
+  private gameEndSource = new Subject<GameEndType>();
+
+  // Observables
+  public messageSize$ = this.messageSizeSource.asObservable();
+  public rawCommand$ = this.rawCommandSource.asObservable();
+  public gameStart$ = this.gameStartSource.asObservable();
+  public preFrameUpdate$ = this.preFrameUpdateSource.asObservable();
+  public postFrameUpdate$ = this.postFrameUpdateSource.asObservable();
+  public playerFrame$ = this.playerFrameSource.asObservable()
+  public followerFrame$ = this.followerFrameSource.asObservable()
+  public gameEnd$ = this.gameEndSource.asObservable();
 
   /**
    *Creates an instance of SlpStream.
@@ -126,7 +126,7 @@ export class SlpStream extends Writable {
       payloadBuf,
     ]);
     // Forward the data onwards
-    this.rawCommand$.next({
+    this.rawCommandSource.next({
       command,
       payload: bufToWrite,
     });
@@ -138,7 +138,7 @@ export class SlpStream extends Writable {
     if (command === Command.MESSAGE_SIZES) {
       const payloadSize =  this._processReceiveCommands(dataView);
       // Emit the message size event
-      this.messageSize$.next(this.payloadSizes);
+      this.messageSizeSource.next(this.payloadSizes);
       // Emit the raw command event
       this._writeCommand(command, entirePayload, payloadSize);
       // Mark this game as ready to process data
@@ -174,20 +174,20 @@ export class SlpStream extends Writable {
         ...gameStart,
         players: this.players,
       };
-      this.gameStart$.next(gameStart);
+      this.gameStartSource.next(gameStart);
       break;
     case Command.GAME_END:
       this.gameReady = false;
-      this.gameEnd$.next(parsedPayload as GameEndType);
+      this.gameEndSource.next(parsedPayload as GameEndType);
       // Reset players
       this.players = [];
       break;
     case Command.PRE_FRAME_UPDATE:
-      this.preFrameUpdate$.next(parsedPayload as PreFrameUpdateType);
+      this.preFrameUpdateSource.next(parsedPayload as PreFrameUpdateType);
       this._handleFrameUpdate(command, parsedPayload as PreFrameUpdateType);
       break;
     case Command.POST_FRAME_UPDATE:
-      this.postFrameUpdate$.next(parsedPayload as PostFrameUpdateType);
+      this.postFrameUpdateSource.next(parsedPayload as PostFrameUpdateType);
       this._handleFrameUpdate(command, parsedPayload as PostFrameUpdateType);
       break;
     default:
@@ -240,10 +240,10 @@ export class SlpStream extends Writable {
     if (command === Command.POST_FRAME_UPDATE && this._isCompletedFrame(currentFrameData)) {
       // Fire off an event for the last frame and reset the frame
       if (isFollower) {
-        this.followerFrame$.next(currentFrameData);
+        this.followerFrameSource.next(currentFrameData);
         this.followerFrame = null;
       } else {
-        this.playerFrame$.next(currentFrameData);
+        this.playerFrameSource.next(currentFrameData);
         this.playerFrame = null;
       }
     }

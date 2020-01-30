@@ -7,8 +7,8 @@ import { StockComputer } from "../stats/stocks";
 import { ComboComputer } from "../stats/combos";
 import { ConversionComputer } from "../stats/conversions";
 import { SlpStream } from "../utils/slpStream";
-import { map, tap, distinctUntilChanged, withLatestFrom, filter, pairwise, mapTo } from "rxjs/operators";
-import { Subscription, Observable, Subject } from "rxjs";
+import { map, distinctUntilChanged, withLatestFrom, filter, pairwise, mapTo } from "rxjs/operators";
+import { Subscription, Observable } from "rxjs";
 import { findWinner } from "../utils/helpers";
 
 // Export the parameter types for events

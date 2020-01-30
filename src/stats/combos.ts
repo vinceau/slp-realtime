@@ -23,9 +23,13 @@ export class ComboComputer implements StatComputer<ComboType[]> {
   private state = new Map<PlayerIndexedType, ComboState>();
   private combos = new Array<ComboType>();
 
-  public comboStart$ = new Subject<ComboType>();
-  public comboExtend$ = new Subject<ComboType>();
-  public comboEnd$ = new Subject<ComboType>();
+  private comboStartSource = new Subject<ComboType>();
+  private comboExtendSource = new Subject<ComboType>();
+  private comboEndSource = new Subject<ComboType>();
+
+  public comboStart$ = this.comboStartSource.asObservable();
+  public comboExtend$ = this.comboExtendSource.asObservable();
+  public comboEnd$ = this.comboEndSource.asObservable();
 
   public setPlayerPermutations(playerPermutations: PlayerIndexedType[]): void {
     this.playerPermutations = playerPermutations;
@@ -47,13 +51,13 @@ export class ComboComputer implements StatComputer<ComboType[]> {
       handleComboCompute(allFrames, state, indices, frame, this.combos);
       switch (state.event) {
       case ComboEvent.Start:
-        this.comboStart$.next(state.combo);
+        this.comboStartSource.next(state.combo);
         break;
       case ComboEvent.Extend:
-        this.comboExtend$.next(state.combo);
+        this.comboExtendSource.next(state.combo);
         break;
       case ComboEvent.End:
-        this.comboEnd$.next(_.last(this.combos));
+        this.comboEndSource.next(_.last(this.combos));
         break;
       }
       if (state.event !== null) {
