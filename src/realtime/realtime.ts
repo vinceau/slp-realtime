@@ -7,10 +7,11 @@ import { StockComputer } from "../stats/stocks";
 import { ComboComputer } from "../stats/combos";
 import { ConversionComputer } from "../stats/conversions";
 import { SlpStream } from "../utils/slpStream";
-import { map, distinctUntilChanged, withLatestFrom, filter, pairwise, mapTo, switchMap } from "rxjs/operators";
+import { map, withLatestFrom } from "rxjs/operators";
 import { Subscription, Observable } from "rxjs";
 import { findWinner } from "../utils/helpers";
 import { StockEvents } from "../events/stocks";
+import { InputEvents } from "../events/inputs";
 
 // Export the parameter types for events
 export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
@@ -45,7 +46,8 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
   private gameSubscriptions = new Array<Subscription>();
 
   public gameWinner$: Observable<number>;
-  public stock: StockEvents;
+  public stock = new StockEvents();
+  public input = new InputEvents();
 
   /**
    * Starts listening to the provided stream for Slippi events
@@ -56,6 +58,9 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
   public setStream(stream: SlpStream): void {
     this._reset();
     this.stream = stream;
+    this.stock.setStream(stream);
+    this.input.setStream(stream);
+
     const unsubGameStart = stream.gameStart$.subscribe(payload => {
       this.parser = this._setupStats(payload);
       this.parser.handleGameStart(payload);
@@ -83,19 +88,6 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
     this.gameWinner$ = stream.gameEnd$.pipe(
       withLatestFrom(stream.playerFrame$),
       map(([_, playerFrame]) => findWinner(playerFrame)),
-    );
-    this.stock = new StockEvents();
-    this.stock.setStream(stream);
-  }
-
-  public playerInputs(index: number, controlBitMask: number): Observable<number> {
-    if (!this.stream) {
-      throw new Error("No stream to subscribe to");
-    }
-    return this.stream.playerFrame$.pipe(
-      map(f => f.players[index].pre.physicalButtons & controlBitMask),
-      distinctUntilChanged(),
-      filter(n => n === controlBitMask),
     );
   }
 
