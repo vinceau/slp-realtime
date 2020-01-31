@@ -2,14 +2,15 @@
 import EventEmitter from "events";
 import StrictEventEmitter from "strict-event-emitter-types";
 
-import { SlpParser, GameStartType, GameEndType, Command, Stats as SlippiStats, ComboType, StockType, ConversionType, FrameEntryType, didLoseStock, PostFrameUpdateType } from "slp-parser-js";
+import { SlpParser, GameStartType, GameEndType, Command, Stats as SlippiStats, ComboType, StockType, ConversionType, FrameEntryType, didLoseStock, PostFrameUpdateType, isDead } from "slp-parser-js";
 import { StockComputer } from "../stats/stocks";
 import { ComboComputer } from "../stats/combos";
 import { ConversionComputer } from "../stats/conversions";
 import { SlpStream } from "../utils/slpStream";
-import { map, distinctUntilChanged, withLatestFrom, filter, pairwise, mapTo } from "rxjs/operators";
+import { map, distinctUntilChanged, withLatestFrom, filter, pairwise, mapTo, switchMap } from "rxjs/operators";
 import { Subscription, Observable } from "rxjs";
 import { findWinner } from "../utils/helpers";
+import { StockEvents } from "../events/stocks";
 
 // Export the parameter types for events
 export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
@@ -44,6 +45,7 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
   private gameSubscriptions = new Array<Subscription>();
 
   public gameWinner$: Observable<number>;
+  public stock: StockEvents;
 
   /**
    * Starts listening to the provided stream for Slippi events
@@ -82,6 +84,8 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
       withLatestFrom(stream.playerFrame$),
       map(([_, playerFrame]) => findWinner(playerFrame)),
     );
+    this.stock = new StockEvents();
+    this.stock.setStream(stream);
   }
 
   public playerInputs(index: number, controlBitMask: number): Observable<number> {
@@ -108,10 +112,38 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
   /**
    * Emits an event each time player dies. The payload emitted is the player index.
    */
-  public playerDied(index: number): Observable<number> {
+  public playerSpawn(index: number): Observable<StockType> {
     if (!this.stream) {
       throw new Error("No stream to subscribe to");
     }
+    return this.stream.playerFrame$.pipe(
+      map(f => f.players[index].post),  // Only take the post frame data
+      pairwise(),                       // We want both the latest frame and the previous frame
+      filter(([prevFrame, latestFrame]) =>
+        latestFrame.frame > prevFrame.frame    // So we don't mix up frames between games
+        && isDead(prevFrame.actionStateId)     // We only care about the frames where we just spawned
+        && !isDead(latestFrame.actionStateId)
+      ),
+      map(([_, latestFrame]) => {
+        return {
+          playerIndex: latestFrame.playerIndex,
+          opponentIndex: -1, // FIXME: figure out how to get the opponent index
+          startFrame: latestFrame.frame,
+          endFrame: null,
+          startPercent: 0,
+          endPercent: null,
+          currentPercent: 0,
+          count: latestFrame.stocksRemaining,
+          deathAnimation: null,
+        };
+      }),
+    );
+  }
+
+  /**
+   * Emits an event each time player dies. The payload emitted is the player index.
+   */
+  public playerDied(index: number): Observable<number> {
     return this.stream.playerFrame$.pipe(
       map(f => f.players[index].post),  // Only take the post frame data
       pairwise(),                       // We want both the latest frame and the previous frame
