@@ -1,12 +1,17 @@
 import { StockType, didLoseStock } from "slp-parser-js";
 import { SlpStream } from "../utils/slpStream";
-import { map, filter } from "rxjs/operators";
+import { map, filter, distinctUntilChanged } from "rxjs/operators";
 import { Subscription, Observable, merge } from "rxjs";
 import { playerFilter, withPreviousFrame } from "../operators/frames";
 import { mapFrameToSpawnStockType, mapFramesToDeathStockType, filterJustSpawned } from "../operators/stocks";
 
 // Export the parameter types for events
 export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
+
+interface PercentChange {
+  playerIndex: number;
+  percent: number;
+}
 
 export class StockEvents {
   protected stream: SlpStream | null = null;
@@ -15,6 +20,7 @@ export class StockEvents {
 
   public playerSpawn$: Observable<StockType>;
   public playerDied$: Observable<StockType>;
+  public percentChange$: Observable<PercentChange>
 
   /**
    * Starts listening to the provided stream for Slippi events
@@ -36,6 +42,12 @@ export class StockEvents {
       this.playerIndexDied(1),
       this.playerIndexDied(2),
       this.playerIndexDied(3),
+    );
+    this.percentChange$ = merge(
+      this.playerIndexPercentChange(0),
+      this.playerIndexPercentChange(1),
+      this.playerIndexPercentChange(2),
+      this.playerIndexPercentChange(3),
     );
   }
 
@@ -70,6 +82,20 @@ export class StockEvents {
         didLoseStock(latestFrame, prevFrame)     // We only care about the frames where we just died
       ),
       mapFramesToDeathStockType(this.playerIndexSpawn(index)), // Map the frame to StockType
+    );
+  }
+
+  public playerIndexPercentChange(index: number): Observable<PercentChange> {
+    if (!this.stream) {
+      throw new Error("No stream to subscribe to");
+    }
+    return this.stream.playerFrame$.pipe(
+      map(f => f.players[index].post.percent),
+      distinctUntilChanged(),
+      map(percent => ({
+        playerIndex: index,
+        percent,
+      })),
     );
   }
 

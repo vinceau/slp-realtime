@@ -99,63 +99,6 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
     );
   }
 
-  public playerPercentChange(index: number): Observable<number> {
-    if (!this.stream) {
-      throw new Error("No stream to subscribe to");
-    }
-    return this.stream.playerFrame$.pipe(
-      map(f => f.players[index].post.percent),
-      distinctUntilChanged(),
-    );
-  }
-
-  /**
-   * Emits an event each time player dies. The payload emitted is the player index.
-   */
-  public playerSpawn(index: number): Observable<StockType> {
-    if (!this.stream) {
-      throw new Error("No stream to subscribe to");
-    }
-    return this.stream.playerFrame$.pipe(
-      map(f => f.players[index].post),  // Only take the post frame data
-      pairwise(),                       // We want both the latest frame and the previous frame
-      filter(([prevFrame, latestFrame]) =>
-        latestFrame.frame > prevFrame.frame    // So we don't mix up frames between games
-        && isDead(prevFrame.actionStateId)     // We only care about the frames where we just spawned
-        && !isDead(latestFrame.actionStateId)
-      ),
-      map(([_, latestFrame]) => {
-        return {
-          playerIndex: latestFrame.playerIndex,
-          opponentIndex: -1, // FIXME: figure out how to get the opponent index
-          startFrame: latestFrame.frame,
-          endFrame: null,
-          startPercent: 0,
-          endPercent: null,
-          currentPercent: 0,
-          count: latestFrame.stocksRemaining,
-          deathAnimation: null,
-        };
-      }),
-    );
-  }
-
-  /**
-   * Emits an event each time player dies. The payload emitted is the player index.
-   */
-  public playerDied(index: number): Observable<number> {
-    return this.stream.playerFrame$.pipe(
-      map(f => f.players[index].post),  // Only take the post frame data
-      pairwise(),                       // We want both the latest frame and the previous frame
-      // We make sure that the latest frame is strictly greater than the previous frame
-      // in the case where a new game starts, we don't want the previous frame to be that of
-      // the last game.
-      // And then we check if the player lost a stock.
-      filter(([prevFrame, latestFrame]) => latestFrame.frame > prevFrame.frame && didLoseStock(latestFrame, prevFrame)),
-      mapTo(index),  // Return the player index
-    );
-  }
-
   /**
    * Unsubscribes from the previous stream so we won't keep emitting events.
    * Resets the stream and parser to null.
