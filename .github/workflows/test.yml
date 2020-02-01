@@ -1,4 +1,4 @@
-name: build
+name: test
 
 on: [push]
 
@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         node-version: [10.x]
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [ubuntu-latest]
     steps:
     - name: Use Node.js ${{ matrix.node-version }} on ${{ matrix.os }}
       uses: actions/setup-node@v1
@@ -30,10 +30,10 @@ jobs:
       if: steps.cache.outputs.cache-hit != 'true'
       run: |
         yarn install
-    - name: Build and lint
+    - name: Run tests
       run: |
-        yarn run build
-        yarn run lint
-      env:
-        CI: true
-
+        yarn run coverage
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
