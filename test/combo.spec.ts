@@ -86,8 +86,8 @@ describe("combo calculation", () => {
     const slpStream = new SlpStream({ singleGameMode: true });
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
-    realtime.conversion.end$.subscribe((payload) => {
-      if (filter.isCombo(payload.conversion, payload.settings)) {
+    realtime.combo.conversion$.subscribe((payload) => {
+      if (filter.isCombo(payload.combo, payload.settings)) {
         conversionSpy();
       }
     });

@@ -2,10 +2,11 @@ import _ from "lodash";
 
 import { FrameEntryType, MoveLandedType, ComboType, PlayerIndexedType, PostFrameUpdateType,
   isDamaged, isGrabbed, calcDamageTaken, isTeching, didLoseStock, Timers, isDown, isDead, getSinglesPlayerPermutationsFromSettings, GameStartType } from "slp-parser-js";
-import { Subject, Subscription } from "rxjs";
+import { Subject, Subscription, Observable } from "rxjs";
 import { SlpStream } from "..";
 import { filter } from "rxjs/operators";
 import { withPreviousFrame } from "../operators/frames";
+import { ConversionEvents } from "./conversion";
 
 enum ComboEvent {
   Start = "start",
@@ -30,6 +31,7 @@ export class ComboEvents {
   private stream: SlpStream | null = null;
   private subscriptions = new Array<Subscription>();
 
+  private conversionEvents = new ConversionEvents();
   private settings: GameStartType;
   private playerPermutations = new Array<PlayerIndexedType>();
   private state = new Map<PlayerIndexedType, ComboState>();
@@ -42,6 +44,7 @@ export class ComboEvents {
   public start$ = this.comboStartSource.asObservable();
   public extend$ = this.comboExtendSource.asObservable();
   public end$ = this.comboEndSource.asObservable();
+  public conversion$: Observable<ComboEventPayload> = this.conversionEvents.end$;
 
   private resetState(): void {
     this.playerPermutations = new Array<PlayerIndexedType>();
@@ -53,6 +56,7 @@ export class ComboEvents {
     // Clean up old subscriptions
     this.subscriptions.forEach(s => s.unsubscribe());
     this.stream = stream;
+    this.conversionEvents.setStream(stream);
 
     // Reset the state on game start
     this.subscriptions.push(

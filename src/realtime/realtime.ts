@@ -1,9 +1,10 @@
 import { SlpStream } from "../utils/slpStream";
-import { StockEvents } from "../events/stocks";
+import { StockEvents, ConversionType, GameStartType } from "../events/stocks";
 import { InputEvents } from "../events/inputs";
 import { ComboEvents } from "../events/combos";
 import { GameEvents } from "../events/game";
 import { ConversionEvents } from "../events/conversion";
+import { Observable } from "rxjs";
 
 // Export the parameter types for events
 export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
@@ -21,7 +22,6 @@ export class SlpRealTime {
   public stock = new StockEvents();
   public input = new InputEvents();
   public combo = new ComboEvents();
-  public conversion = new ConversionEvents();
 
   /**
    * Starts listening to the provided stream for Slippi events
@@ -34,7 +34,6 @@ export class SlpRealTime {
     this.stock.setStream(stream);
     this.input.setStream(stream);
     this.combo.setStream(stream);
-    this.conversion.setStream(stream);
   }
 
 }

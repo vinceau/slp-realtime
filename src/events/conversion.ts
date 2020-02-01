@@ -20,7 +20,7 @@ interface PlayerConversionState {
 // }
 
 interface ConversionEventPayload {
-  conversion: ConversionType;
+  combo: ConversionType;
   settings: GameStartType;
 };
 
@@ -102,7 +102,7 @@ export class ConversionEvents {
       const terminated = handleConversionCompute(state, indices, prevFrame, latestFrame, this.conversions);
       if (terminated) {
         this.conversionSource.next({
-          conversion: _.last(this.conversions),
+          combo: _.last(this.conversions),
           settings: this.settings,
         });
       }
