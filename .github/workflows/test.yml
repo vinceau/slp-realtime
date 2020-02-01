@@ -33,8 +33,7 @@ jobs:
     - name: Run tests
       run: |
         yarn run coverage
-    - uses: codecov/codecov-action@v1
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
       with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./coverage/lcov.info
-        fail_ci_if_error: true
+        github-token: ${{ secrets.GITHUB_TOKEN }}
