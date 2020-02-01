@@ -13,10 +13,10 @@ describe("SlpRealTime", () => {
     const slpStream = new SlpStream({ singleGameMode: true });
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
-    realtime.on("gameStart", gameStartSpy);
-    realtime.on("gameEnd", gameEndSpy);
-    realtime.on("spawn", stockSpawnSpy);
-    realtime.on("death", stockDeathSpy);
+    realtime.game.start$.subscribe(gameStartSpy);
+    realtime.game.start$.subscribe(gameEndSpy);
+    realtime.stock.playerSpawn$.subscribe(stockSpawnSpy);
+    realtime.stock.playerDied$.subscribe(stockDeathSpy);
 
     await pipeFileContents("slp/Game_20190810T162904.slp", slpStream);
 

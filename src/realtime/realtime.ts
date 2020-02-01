@@ -1,34 +1,11 @@
-/* eslint-disable no-param-reassign */
-import EventEmitter from "events";
-import StrictEventEmitter from "strict-event-emitter-types";
-
-import { SlpParser, GameStartType, GameEndType, Command, Stats as SlippiStats, ComboType, StockType, ConversionType, FrameEntryType, didLoseStock, PostFrameUpdateType, isDead } from "slp-parser-js";
-import { StockComputer } from "../stats/stocks";
-import { ComboComputer } from "../stats/combos";
-import { ConversionComputer } from "../stats/conversions";
 import { SlpStream } from "../utils/slpStream";
-import { map, withLatestFrom } from "rxjs/operators";
-import { Subscription, Observable } from "rxjs";
-import { findWinner } from "../utils/helpers";
 import { StockEvents } from "../events/stocks";
 import { InputEvents } from "../events/inputs";
+import { ComboEvents } from "../events/combos";
+import { GameEvents } from "../events/game";
 
 // Export the parameter types for events
 export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
-
-interface SlpRealTimeEvents {
-  gameStart: GameStartType;
-  gameEnd: GameEndType;
-  comboStart: (combo: ComboType, settings: GameStartType) => void;
-  comboExtend: (combo: ComboType, settings: GameStartType) => void;
-  comboEnd: (combo: ComboType, settings: GameStartType) => void;
-  conversion: (conversion: ConversionType, settings: GameStartType) => void;
-  spawn: (playerIndex: number, stock: StockType, settings: GameStartType) => void;
-  death: (playerIndex: number, stock: StockType, settings: GameStartType) => void;
-  percentChange: (playerIndex: number, percent: number) => void;
-}
-
-type SlpRealTimeEventEmitter = { new(): StrictEventEmitter<EventEmitter, SlpRealTimeEvents> };
 
 /**
  * SlpRealTime is solely responsible for detecting notable in-game events
@@ -38,16 +15,11 @@ type SlpRealTimeEventEmitter = { new(): StrictEventEmitter<EventEmitter, SlpReal
  * @class SlpRealTime
  * @extends {EventEmitter}
  */
-export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
-  protected stream: SlpStream | null = null;
-  protected parser: SlpParser | null = null;
-
-  private streamSubscriptions = new Array<Subscription>();
-  private gameSubscriptions = new Array<Subscription>();
-
-  public gameWinner$: Observable<number>;
+export class SlpRealTime {
+  public game = new GameEvents();
   public stock = new StockEvents();
   public input = new InputEvents();
+  public combo = new ComboEvents();
 
   /**
    * Starts listening to the provided stream for Slippi events
@@ -56,97 +28,10 @@ export class SlpRealTime extends (EventEmitter as SlpRealTimeEventEmitter) {
    * @memberof SlpRealTime
    */
   public setStream(stream: SlpStream): void {
-    this._reset();
-    this.stream = stream;
+    this.game.setStream(stream);
     this.stock.setStream(stream);
     this.input.setStream(stream);
-
-    const unsubGameStart = stream.gameStart$.subscribe(payload => {
-      this.parser = this._setupStats(payload);
-      this.parser.handleGameStart(payload);
-      this.emit("gameStart", payload);
-    });
-    const unsubPreFrame = stream.preFrameUpdate$.subscribe(payload => {
-      if (this.parser) {
-        this.parser.handleFrameUpdate(Command.PRE_FRAME_UPDATE, payload);
-      }
-    });
-    const unsubPostFrame = stream.postFrameUpdate$.subscribe(payload => {
-      if (this.parser) {
-        this.parser.handlePostFrameUpdate(payload);
-        this.parser.handleFrameUpdate(Command.POST_FRAME_UPDATE, payload);
-      }
-    });
-    const unsubGameEnd = stream.gameEnd$.subscribe(payload => {
-      if (this.parser) {
-        this.parser.handleGameEnd(payload);
-        this.emit("gameEnd", payload);
-      }
-    });
-    this.streamSubscriptions.push(unsubGameStart, unsubPreFrame, unsubPostFrame, unsubGameEnd);
-
-    this.gameWinner$ = stream.gameEnd$.pipe(
-      withLatestFrom(stream.playerFrame$),
-      map(([_, playerFrame]) => findWinner(playerFrame)),
-    );
+    this.combo.setStream(stream);
   }
 
-  /**
-   * Unsubscribes from the previous stream so we won't keep emitting events.
-   * Resets the stream and parser to null.
-   *
-   * @private
-   * @memberof SlpRealTime
-   */
-  private _reset(): void {
-    if (this.stream) {
-      this.streamSubscriptions.forEach(s => s.unsubscribe());
-      this.streamSubscriptions = [];
-    }
-    // Reset the stream and the parser
-    this.stream = null;
-    this.parser = null;
-  }
-
-  private _setupStats(payload: GameStartType): SlpParser {
-    // Clean up old subscriptions
-    this.gameSubscriptions.forEach(s => s.unsubscribe());
-    this.gameSubscriptions = [];
-
-    const stats = new SlippiStats({
-      processOnTheFly: true,
-    });
-    const stock = new StockComputer();
-    stock.on("percentChange", (i: number, percent: number) => {
-      this.emit("percentChange", i, percent);
-    });
-    stock.on("spawn", (i, s) => {
-      this.emit("spawn", i, s, payload);
-    });
-    stock.on("death", (i, s) => {
-      this.emit("death", i, s, payload);
-    });
-    const combo = new ComboComputer();
-    this.gameSubscriptions.push(
-      combo.comboStart$.subscribe((c) => {
-        this.emit("comboStart", c, payload);
-      }),
-      combo.comboExtend$.subscribe((c) => {
-        this.emit("comboExtend", c, payload);
-      }),
-      combo.comboEnd$.subscribe((c) => {
-        this.emit("comboEnd", c, payload);
-      }),
-    );
-    const conversion = new ConversionComputer();
-    conversion.on("conversion", (c) => {
-      this.emit("conversion", c, payload);
-    });
-    stats.registerAll([
-      stock,
-      combo,
-      conversion,
-    ]);
-    return new SlpParser(stats);
-  }
 }

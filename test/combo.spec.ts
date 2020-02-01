@@ -18,8 +18,8 @@ describe("combo calculation", () => {
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 
-    realtime.on("comboEnd", (c, s) => {
-      if (filter.isCombo(c, s)) {
+    realtime.combo.end$.subscribe(payload => {
+      if (filter.isCombo(payload.combo, payload.settings)) {
         comboSpy();
       }
     });
@@ -43,7 +43,9 @@ describe("combo calculation", () => {
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 
-    realtime.on("comboEnd", (c, s) => {
+    realtime.combo.end$.subscribe(payload => {
+      const c = payload.combo;
+      const s = payload.settings;
       if (bowserOnlyFilter.isCombo(c, s)) {
         bowserOnlySpy();
       }
@@ -66,8 +68,8 @@ describe("combo calculation", () => {
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 
-    realtime.on("comboEnd", (c, s) => {
-      if (filter.isCombo(c, s)) {
+    realtime.combo.end$.subscribe((payload) => {
+      if (filter.isCombo(payload.combo, payload.settings)) {
         comboSpy();
       }
     });
@@ -84,11 +86,11 @@ describe("combo calculation", () => {
     const slpStream = new SlpStream({ singleGameMode: true });
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
-    realtime.on("conversion", (c, s) => {
-      if (filter.isCombo(c, s)) {
-        conversionSpy();
-      }
-    });
+    // realtime.on("conversion", (c, s) => {
+    //   if (filter.isCombo(c, s)) {
+    //     conversionSpy();
+    //   }
+    // });
     await pipeFileContents("slp/Game_20190324T113942.slp", slpStream);
     expect(conversionSpy.callCount).toEqual(7);
   });

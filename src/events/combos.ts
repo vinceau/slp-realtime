@@ -1,8 +1,11 @@
 import _ from "lodash";
 
-import { FrameEntryType, FramesType, MoveLandedType, ComboType, PlayerIndexedType, PostFrameUpdateType,
-  isDamaged, isGrabbed, calcDamageTaken, isTeching, didLoseStock, Timers, isDown, isDead, StatComputer } from "slp-parser-js";
-import { Subject } from "rxjs";
+import { FrameEntryType, MoveLandedType, ComboType, PlayerIndexedType, PostFrameUpdateType,
+  isDamaged, isGrabbed, calcDamageTaken, isTeching, didLoseStock, Timers, isDown, isDead, getSinglesPlayerPermutationsFromSettings, GameStartType } from "slp-parser-js";
+import { Subject, Subscription } from "rxjs";
+import { SlpStream } from "..";
+import { filter } from "rxjs/operators";
+import { withPreviousFrame } from "../operators/frames";
 
 enum ComboEvent {
   Start = "start",
@@ -18,20 +21,69 @@ interface ComboState {
   event: ComboEvent | null;
 }
 
-export class ComboComputer implements StatComputer<ComboType[]> {
+interface ComboEventPayload {
+  combo: ComboType;
+  settings: GameStartType;
+}
+
+export class ComboEvents {
+  private stream: SlpStream | null = null;
+  private subscriptions = new Array<Subscription>();
+
+  private settings: GameStartType;
   private playerPermutations = new Array<PlayerIndexedType>();
   private state = new Map<PlayerIndexedType, ComboState>();
   private combos = new Array<ComboType>();
 
-  private comboStartSource = new Subject<ComboType>();
-  private comboExtendSource = new Subject<ComboType>();
-  private comboEndSource = new Subject<ComboType>();
+  private comboStartSource = new Subject<ComboEventPayload>();
+  private comboExtendSource = new Subject<ComboEventPayload>();
+  private comboEndSource = new Subject<ComboEventPayload>();
 
-  public comboStart$ = this.comboStartSource.asObservable();
-  public comboExtend$ = this.comboExtendSource.asObservable();
-  public comboEnd$ = this.comboEndSource.asObservable();
+  public start$ = this.comboStartSource.asObservable();
+  public extend$ = this.comboExtendSource.asObservable();
+  public end$ = this.comboEndSource.asObservable();
 
-  public setPlayerPermutations(playerPermutations: PlayerIndexedType[]): void {
+  private resetState(): void {
+    this.playerPermutations = new Array<PlayerIndexedType>();
+    this.state = new Map<PlayerIndexedType, ComboState>();
+    this.combos = new Array<ComboType>();
+  }
+
+  public setStream(stream: SlpStream): void {
+    // Clean up old subscriptions
+    this.subscriptions.forEach(s => s.unsubscribe());
+    this.stream = stream;
+
+    // Reset the state on game start
+    this.subscriptions.push(
+      this.stream.gameStart$.subscribe((settings) => {
+        this.resetState();
+        // We only care about the 2 player games
+        if (settings.players.length === 2) {
+          const perms = getSinglesPlayerPermutationsFromSettings(settings);
+          this.setPlayerPermutations(perms);
+          this.settings = settings;
+        }
+      })
+    );
+
+    // Handle the frame processing
+    this.subscriptions.push(
+      // Pipe the frames onwards
+      this.stream.playerFrame$.pipe(
+        // We only want the frames for two player games
+        filter(frame => {
+          const players = Object.keys(frame.players);
+          return players.length === 2;
+        }),
+        withPreviousFrame(),
+      ).subscribe(([prevFrame, latestFrame]) => {
+        this.processFrame(prevFrame, latestFrame);
+      }),
+    );
+  }
+
+  private setPlayerPermutations(playerPermutations: PlayerIndexedType[]): void {
     this.playerPermutations = playerPermutations;
     this.playerPermutations.forEach((indices) => {
       const playerState: ComboState = {
@@ -45,19 +97,28 @@ export class ComboComputer implements StatComputer<ComboType[]> {
     })
   }
 
-  public processFrame(frame: FrameEntryType, allFrames: FramesType): void {
+  private processFrame(prevFrame: FrameEntryType, latestFrame: FrameEntryType): void {
     this.playerPermutations.forEach((indices) => {
       const state = this.state.get(indices);
-      handleComboCompute(allFrames, state, indices, frame, this.combos);
+      handleComboCompute(state, indices, prevFrame, latestFrame, this.combos);
       switch (state.event) {
       case ComboEvent.Start:
-        this.comboStartSource.next(state.combo);
+        this.comboStartSource.next({
+          combo: state.combo,
+          settings: this.settings
+        });
         break;
       case ComboEvent.Extend:
-        this.comboExtendSource.next(state.combo);
+        this.comboExtendSource.next({
+          combo: state.combo,
+          settings: this.settings,
+        });
         break;
       case ComboEvent.End:
-        this.comboEndSource.next(_.last(this.combos));
+        this.comboEndSource.next({
+          combo: _.last(this.combos),
+          settings: this.settings,
+        });
         break;
       }
       if (state.event !== null) {
@@ -66,24 +127,13 @@ export class ComboComputer implements StatComputer<ComboType[]> {
     });
   }
 
-  public fetch(): ComboType[] {
-    return this.combos;
-  }
 }
 
-function handleComboCompute(frames: FramesType, state: ComboState, indices: PlayerIndexedType, frame: FrameEntryType, combos: ComboType[]): void {
-  const playerFrame: PostFrameUpdateType = frame.players[indices.playerIndex].post;
-  // FIXME: use type PostFrameUpdateType instead of any
-  // This is because the default value {} should not be casted as a type of PostFrameUpdateType
-  const prevPlayerFrame: any = _.get(
-    frames, [playerFrame.frame - 1, "players", indices.playerIndex, "post"], {}
-  );
-  const opponentFrame: PostFrameUpdateType = frame.players[indices.opponentIndex].post;
-  // FIXME: use type PostFrameUpdateType instead of any
-  // This is because the default value {} should not be casted as a type of PostFrameUpdateType
-  const prevOpponentFrame: any = _.get(
-    frames, [playerFrame.frame - 1, "players", indices.opponentIndex, "post"], {}
-  );
+function handleComboCompute(state: ComboState, indices: PlayerIndexedType, prevFrame: FrameEntryType, latestFrame: FrameEntryType, combos: ComboType[]): void {
+  const playerFrame: PostFrameUpdateType = latestFrame.players[indices.playerIndex].post;
+  const prevPlayerFrame: PostFrameUpdateType = prevFrame.players[indices.playerIndex].post;
+  const opponentFrame: PostFrameUpdateType = latestFrame.players[indices.opponentIndex].post;
+  const prevOpponentFrame: PostFrameUpdateType = prevFrame.players[indices.opponentIndex].post;
 
   const opntIsDamaged = isDamaged(opponentFrame.actionStateId);
   const opntIsGrabbed = isGrabbed(opponentFrame.actionStateId);
