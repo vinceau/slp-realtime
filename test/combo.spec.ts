@@ -86,11 +86,11 @@ describe("combo calculation", () => {
     const slpStream = new SlpStream({ singleGameMode: true });
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
-    // realtime.on("conversion", (c, s) => {
-    //   if (filter.isCombo(c, s)) {
-    //     conversionSpy();
-    //   }
-    // });
+    realtime.conversion.end$.subscribe((payload) => {
+      if (filter.isCombo(payload.conversion, payload.settings)) {
+        conversionSpy();
+      }
+    });
     await pipeFileContents("slp/Game_20190324T113942.slp", slpStream);
     expect(conversionSpy.callCount).toEqual(7);
   });

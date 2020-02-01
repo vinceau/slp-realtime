@@ -1,7 +1,10 @@
 import _ from "lodash";
-import EventEmitter from "events";
-import StrictEventEmitter from "strict-event-emitter-types";
-import { ConversionType, MoveLandedType, StatComputer, PlayerIndexedType, FrameEntryType, FramesType, PostFrameUpdateType, isDamaged, isGrabbed, calcDamageTaken, isInControl, didLoseStock, Timers } from "slp-parser-js";
+
+import { ConversionType, MoveLandedType, PlayerIndexedType, FrameEntryType, PostFrameUpdateType, isDamaged, isGrabbed, calcDamageTaken, isInControl, didLoseStock, Timers, GameStartType, getSinglesPlayerPermutationsFromSettings } from "slp-parser-js";
+import { Subscription, Subject } from "rxjs";
+import { SlpStream } from "../utils/slpStream";
+import { filter } from "rxjs/operators";
+import { withPreviousFrame } from "../operators/frames";
 
 interface PlayerConversionState {
   conversion: ConversionType | null;
@@ -10,30 +13,75 @@ interface PlayerConversionState {
   lastHitAnimation: number | null;
 }
 
-interface MetadataType {
-  lastEndFrameByOppIdx: {
-    [oppIdx: number]: number;
-  };
-}
+// interface MetadataType {
+//   lastEndFrameByOppIdx: {
+//     [oppIdx: number]: number;
+//   };
+// }
 
-export interface ConversionComputerEvents {
+interface ConversionEventPayload {
   conversion: ConversionType;
+  settings: GameStartType;
 };
 
-type ConversionComputeEventEmitter = { new(): StrictEventEmitter<EventEmitter, ConversionComputerEvents> };
+export class ConversionEvents {
+  private stream: SlpStream | null = null;
+  private subscriptions = new Array<Subscription>();
+  private settings: GameStartType;
 
-export class ConversionComputer extends (EventEmitter as ConversionComputeEventEmitter) implements StatComputer<ConversionType[]> {
   private playerPermutations = new Array<PlayerIndexedType>();
   private conversions = new Array<ConversionType>();
   private state = new Map<PlayerIndexedType, PlayerConversionState>();
-  private metadata: MetadataType;
+  // private metadata: MetadataType = {
+  //   lastEndFrameByOppIdx: {},
+  // };
 
-  public constructor() {
-    super();
-    this.metadata = {
-      lastEndFrameByOppIdx: {},
-    };
+  private conversionSource = new Subject<ConversionEventPayload>();
+  public end$ = this.conversionSource.asObservable();
+
+  private resetState(): void {
+    this.playerPermutations = new Array<PlayerIndexedType>();
+    this.state = new Map<PlayerIndexedType, PlayerConversionState>();
+    this.conversions = new Array<ConversionType>();
+    // this.metadata = {
+    //   lastEndFrameByOppIdx: {},
+    // };
   }
+
+  public setStream(stream: SlpStream): void {
+    // Clean up old subscriptions
+    this.subscriptions.forEach(s => s.unsubscribe());
+    this.stream = stream;
+
+    // Reset the state on game start
+    this.subscriptions.push(
+      this.stream.gameStart$.subscribe((settings) => {
+        this.resetState();
+        // We only care about the 2 player games
+        if (settings.players.length === 2) {
+          const perms = getSinglesPlayerPermutationsFromSettings(settings);
+          this.setPlayerPermutations(perms);
+          this.settings = settings;
+        }
+      })
+    );
+
+    // Handle the frame processing
+    this.subscriptions.push(
+      // Pipe the frames onwards
+      this.stream.playerFrame$.pipe(
+        // We only want the frames for two player games
+        filter(frame => {
+          const players = Object.keys(frame.players);
+          return players.length === 2;
+        }),
+        withPreviousFrame(),
+      ).subscribe(([prevFrame, latestFrame]) => {
+        this.processFrame(prevFrame, latestFrame);
+      }),
+    );
+  }
+
 
   public setPlayerPermutations(playerPermutations: PlayerIndexedType[]): void {
     this.playerPermutations = playerPermutations;
@@ -48,68 +96,25 @@ export class ConversionComputer extends (EventEmitter as ConversionComputeEventE
     })
   }
 
-  public processFrame(frame: FrameEntryType, allFrames: FramesType): void {
+  public processFrame(prevFrame: FrameEntryType, latestFrame: FrameEntryType): void {
     this.playerPermutations.forEach((indices) => {
       const state = this.state.get(indices);
-      const terminated = handleConversionCompute(allFrames, state, indices, frame, this.conversions);
+      const terminated = handleConversionCompute(state, indices, prevFrame, latestFrame, this.conversions);
       if (terminated) {
-        this.emit("conversion", _.last(this.conversions));
+        this.conversionSource.next({
+          conversion: _.last(this.conversions),
+          settings: this.settings,
+        });
       }
-    });
-  }
-
-  public fetch(): ConversionType[] {
-    this._populateConversionTypes();
-    return this.conversions;
-  }
-
-  private _populateConversionTypes(): void {
-    // Post-processing step: set the openingTypes
-    const conversionsToHandle = _.filter(this.conversions, (conversion) => {
-      return conversion.openingType === "unknown";
-    });
-
-    // Group new conversions by startTime and sort
-    const sortedConversions: ConversionType[][] = _.chain(conversionsToHandle)
-      .groupBy("startFrame")
-      .orderBy((conversions) => _.get(conversions, [0, "startFrame"]))
-      .value();
-
-    // Set the opening types on the conversions we need to handle
-    sortedConversions.forEach(conversions => {
-      const isTrade = conversions.length >= 2;
-      conversions.forEach(conversion => {
-        // Set end frame for this conversion
-        this.metadata.lastEndFrameByOppIdx[conversion.playerIndex] = conversion.endFrame;
-
-        if (isTrade) {
-          // If trade, just short-circuit
-          conversion.openingType = "trade";
-          return;
-        }
-
-        // If not trade, check the opponent endFrame
-        const oppEndFrame = this.metadata.lastEndFrameByOppIdx[conversion.opponentIndex];
-        const isCounterAttack = oppEndFrame && oppEndFrame > conversion.startFrame;
-        conversion.openingType = isCounterAttack ? "counter-attack" : "neutral-win";
-      });
     });
   }
 }
 
-function handleConversionCompute(frames: FramesType, state: PlayerConversionState, indices: PlayerIndexedType, frame: FrameEntryType, conversions: ConversionType[]): boolean {
-  const playerFrame: PostFrameUpdateType = frame.players[indices.playerIndex].post;
-  // FIXME: use type PostFrameUpdateType instead of any
-  // This is because the default value {} should not be casted as a type of PostFrameUpdateType
-  const prevPlayerFrame: any = _.get(
-    frames, [playerFrame.frame - 1, "players", indices.playerIndex, "post"], {}
-  );
-  const opponentFrame: PostFrameUpdateType = frame.players[indices.opponentIndex].post;
-  // FIXME: use type PostFrameUpdateType instead of any
-  // This is because the default value {} should not be casted as a type of PostFrameUpdateType
-  const prevOpponentFrame: any = _.get(
-    frames, [playerFrame.frame - 1, "players", indices.opponentIndex, "post"], {}
-  );
+function handleConversionCompute(state: PlayerConversionState, indices: PlayerIndexedType, prevFrame: FrameEntryType, latestFrame: FrameEntryType, conversions: ConversionType[]): boolean {
+  const playerFrame: PostFrameUpdateType = latestFrame.players[indices.playerIndex].post;
+  const prevPlayerFrame: PostFrameUpdateType = prevFrame.players[indices.playerIndex].post;
+  const opponentFrame: PostFrameUpdateType = latestFrame.players[indices.opponentIndex].post;
+  const prevOpponentFrame: PostFrameUpdateType = prevFrame.players[indices.opponentIndex].post;
 
   const opntIsDamaged = isDamaged(opponentFrame.actionStateId);
   const opntIsGrabbed = isGrabbed(opponentFrame.actionStateId);
