@@ -1,6 +1,5 @@
 import { SlpFileWriter } from "./slpWriter";
 import { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect";
-import { promiseTimeout } from "./promise";
 
 // Re-export these for ease-of-use
 export { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect";
@@ -62,4 +61,20 @@ export class SlpLiveStream extends SlpFileWriter {
     });
     return promiseTimeout<void>(SLIPPI_CONNECTION_TIMEOUT_MS, assertConnected);
   }
+}
+
+/**
+ * Returns either the promise resolved or a rejection after a specified timeout.
+ */
+const promiseTimeout = <T>(ms: number, promise: Promise<T>): Promise<T> => {
+  // Create a promise that rejects in <ms> milliseconds
+  const timeout = new Promise((resolve, reject): void => {
+    const id = setTimeout(() => {
+      clearTimeout(id);
+      reject(new Error(`Timed out after ${ms}ms.`))
+    }, ms)
+  })
+
+  // Returns a race between our timeout and the passed in promise
+  return Promise.race([promise, timeout]) as Promise<T>;
 }
