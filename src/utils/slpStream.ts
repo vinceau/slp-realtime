@@ -1,16 +1,8 @@
 import { Writable, WritableOptions } from "stream";
 
-import { Command, parseMessage } from "slp-parser-js";
-
-
-export enum SlpEvent {
-  MESSAGE_SIZES = "messageSizes",
-  RAW_COMMAND = "command",
-  GAME_START = "gameStart",
-  PRE_FRAME_UPDATE = "preFrameUpdate",
-  POST_FRAME_UPDATE = "postFrameUpdate",
-  GAME_END = "gameEnd",
-}
+import { Command, parseMessage, GameStartType, PreFrameUpdateType, PostFrameUpdateType, GameEndType, FrameEntryType } from "slp-parser-js";
+import { Subject } from "rxjs";
+import { PlayerType } from "slp-parser-js/dist/utils/slpReader";
 
 const NETWORK_MESSAGE = "HELO\0";
 
@@ -33,6 +25,32 @@ export class SlpStream extends Writable {
   private gameReady = false;
   private payloadSizes = new Map<Command, number>();
   private previousBuffer: Uint8Array = Buffer.from([]);
+  private playerFrame: FrameEntryType | null = null;
+  private followerFrame: FrameEntryType | null = null;
+  private players = new Array<PlayerType>();
+
+  // Sources
+  private messageSizeSource = new Subject<Map<Command, number>>();
+  private rawCommandSource = new Subject<{
+    command: Command;
+    payload: Buffer;
+  }>();
+  private gameStartSource = new Subject<GameStartType>();
+  private preFrameUpdateSource = new Subject<PreFrameUpdateType>();
+  private postFrameUpdateSource = new Subject<PostFrameUpdateType>();
+  private playerFrameSource = new Subject<FrameEntryType>()
+  private followerFrameSource = new Subject<FrameEntryType>()
+  private gameEndSource = new Subject<GameEndType>();
+
+  // Observables
+  public messageSize$ = this.messageSizeSource.asObservable();
+  public rawCommand$ = this.rawCommandSource.asObservable();
+  public gameStart$ = this.gameStartSource.asObservable();
+  public preFrameUpdate$ = this.preFrameUpdateSource.asObservable();
+  public postFrameUpdate$ = this.postFrameUpdateSource.asObservable();
+  public playerFrame$ = this.playerFrameSource.asObservable()
+  public followerFrame$ = this.followerFrameSource.asObservable()
+  public gameEnd$ = this.gameEndSource.asObservable();
 
   /**
    *Creates an instance of SlpStream.
@@ -108,7 +126,10 @@ export class SlpStream extends Writable {
       payloadBuf,
     ]);
     // Forward the data onwards
-    this.emit(SlpEvent.RAW_COMMAND, command, bufToWrite);
+    this.rawCommandSource.next({
+      command,
+      payload: bufToWrite,
+    });
     return new Uint8Array(bufToWrite);
   }
 
@@ -117,7 +138,7 @@ export class SlpStream extends Writable {
     if (command === Command.MESSAGE_SIZES) {
       const payloadSize =  this._processReceiveCommands(dataView);
       // Emit the message size event
-      this.emit(SlpEvent.MESSAGE_SIZES, command, this.payloadSizes);
+      this.messageSizeSource.next(this.payloadSizes);
       // Emit the raw command event
       this._writeCommand(command, entirePayload, payloadSize);
       // Mark this game as ready to process data
@@ -145,17 +166,29 @@ export class SlpStream extends Writable {
 
     switch (command) {
     case Command.GAME_START:
-      this.emit(SlpEvent.GAME_START, command, parsedPayload);
+      // Filter out the empty players
+      let gameStart = parsedPayload as GameStartType;
+      // Set the players for this current game
+      this.players = gameStart.players.filter(p => p.type !== 3);
+      gameStart = {
+        ...gameStart,
+        players: this.players,
+      };
+      this.gameStartSource.next(gameStart);
       break;
     case Command.GAME_END:
       this.gameReady = false;
-      this.emit(SlpEvent.GAME_END, command, parsedPayload);
+      this.gameEndSource.next(parsedPayload as GameEndType);
+      // Reset players
+      this.players = [];
       break;
     case Command.PRE_FRAME_UPDATE:
-      this.emit(SlpEvent.PRE_FRAME_UPDATE, command, parsedPayload);
+      this.preFrameUpdateSource.next(parsedPayload as PreFrameUpdateType);
+      this._handleFrameUpdate(command, parsedPayload as PreFrameUpdateType);
       break;
     case Command.POST_FRAME_UPDATE:
-      this.emit(SlpEvent.POST_FRAME_UPDATE, command, parsedPayload);
+      this.postFrameUpdateSource.next(parsedPayload as PostFrameUpdateType);
+      this._handleFrameUpdate(command, parsedPayload as PostFrameUpdateType);
       break;
     default:
       break;
@@ -173,4 +206,64 @@ export class SlpStream extends Writable {
     return payloadLen;
   }
 
+  private _handleFrameUpdate(command: Command, payload: PreFrameUpdateType | PostFrameUpdateType): void {
+    // we need to determine distinguish between player frames and follower frames
+    // and reconstruct a full FrameEntryType
+    const preOrPost = command === Command.PRE_FRAME_UPDATE ? "pre" : "post";
+    const { frame, isFollower, playerIndex } = payload;
+    let currentFrameData: any = isFollower ? this.followerFrame : this.playerFrame;
+
+    // Set up the initial frame information
+    if (currentFrameData === null) {
+      currentFrameData = {
+        frame,
+        players: {}
+      };
+      if (isFollower) {
+        this.followerFrame = currentFrameData as FrameEntryType;
+      } else {
+        this.playerFrame = currentFrameData as FrameEntryType;
+      }
+    }
+
+    // Sanity check, ensure that the frame is the same
+    if (currentFrameData.frame === frame) {
+      const playerInfo: any = currentFrameData.players[playerIndex];
+      if (!playerInfo) {
+        currentFrameData.players[playerIndex] = {[preOrPost]: payload};
+      } else {
+        currentFrameData.players[playerIndex][preOrPost] = payload;
+      }
+    }
+
+    // If the frame is complete then send off the frame
+    if (command === Command.POST_FRAME_UPDATE && this._isCompletedFrame(currentFrameData)) {
+      // Fire off an event for the last frame and reset the frame
+      if (isFollower) {
+        this.followerFrameSource.next(currentFrameData);
+        this.followerFrame = null;
+      } else {
+        this.playerFrameSource.next(currentFrameData);
+        this.playerFrame = null;
+      }
+    }
+  }
+
+  private _isCompletedFrame(frame: FrameEntryType): boolean {
+    const playerIndices = Object.keys(frame.players);
+    // Make sure we have the correct number of players
+    if (this.players.length === 0 || playerIndices.length !== this.players.length) {
+      return false;
+    }
+
+    for (const playerIndex of playerIndices) {
+      const frameData = frame.players[playerIndex as any];
+      // Make sure we have both pre and post frame data
+      if (!frameData.pre || !frameData.post) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 }
