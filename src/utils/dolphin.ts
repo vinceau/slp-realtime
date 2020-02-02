@@ -1,8 +1,6 @@
-import fs from "fs";
+import fs from "fs-extra";
 import { ComboType, Frames } from "slp-parser-js";
 import { shuffle } from "lodash";
-
-import { writeFile } from "./promise";
 
 interface DolphinQueue {
   mode: string;
@@ -78,7 +76,7 @@ export class DolphinComboQueue {
    */
   public async writeFile(filePath: string): Promise<number> {
     const data = this._dataToWrite();
-    await writeFile(filePath, data);
+    await fs.writeFile(filePath, data);
     return this.length();
   }
 
