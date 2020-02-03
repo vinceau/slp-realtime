@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;stats/stocks&quot; | @vinceau/slp-realtime - v1.1.3</title>
+	<title>&quot;utils/controls&quot; | @vinceau/slp-realtime - v2.0.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">@vinceau/slp-realtime - v1.1.3</a>
+					<a href="../index.html" class="title">@vinceau/slp-realtime - v2.0.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_stats_stocks_.html">&quot;stats/stocks&quot;</a>
+					<a href="_utils_controls_.html">&quot;utils/controls&quot;</a>
 				</li>
 			</ul>
-			<h1>External module &quot;stats/stocks&quot;</h1>
+			<h1>External module &quot;utils/controls&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -69,18 +69,38 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Classes</h3>
+							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter"><a href="../classes/_stats_stocks_.stockcomputer.html" class="tsd-kind-icon">Stock<wbr>Computer</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Interfaces</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_stats_stocks_.stockcomputerevents.html" class="tsd-kind-icon">Stock<wbr>Computer<wbr>Events</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_utils_controls_.html#generatecontrollerbitmask" class="tsd-kind-icon">generate<wbr>Controller<wbr>Bitmask</a></li>
 							</ul>
 						</section>
 					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="generatecontrollerbitmask" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> generate<wbr>Controller<wbr>Bitmask</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">generate<wbr>Controller<wbr>Bitmask<span class="tsd-signature-symbol">(</span>buttons<span class="tsd-signature-symbol">: </span><a href="../enums/_types_.controllerinput.html" class="tsd-signature-type">ControllerInput</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/bae0f6a/src/utils/controls.ts#L3">src/utils/controls.ts:3</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> buttons: <a href="../enums/_types_.controllerinput.html" class="tsd-signature-type">ControllerInput</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -90,78 +110,15 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_combo_criteria_.html">&quot;combo/criteria&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_combo_filter_.html">&quot;combo/filter&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_combo_index_.html">&quot;combo/index&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_index_.html">&quot;index&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_melee_characters_.html">&quot;melee/characters&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_melee_moves_.html">&quot;melee/moves&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_melee_stages_.html">&quot;melee/stages&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_realtime_index_.html">&quot;realtime/index&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_realtime_realtime_.html">&quot;realtime/realtime&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_stats_combos_.html">&quot;stats/combos&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_stats_conversions_.html">&quot;stats/conversions&quot;</a>
-					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="_stats_stocks_.html">&quot;stats/stocks&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_types_.html">&quot;types&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_utils_dolphin_.html">&quot;utils/dolphin&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_utils_index_.html">&quot;utils/index&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_utils_promise_.html">&quot;utils/promise&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_utils_slpfile_.html">&quot;utils/slp<wbr>File&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_utils_slpfolderstream_.html">&quot;utils/slp<wbr>Folder<wbr>Stream&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_utils_slplivestream_.html">&quot;utils/slp<wbr>Live<wbr>Stream&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_utils_slpstream_.html">&quot;utils/slp<wbr>Stream&quot;</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_utils_slpwriter_.html">&quot;utils/slp<wbr>Writer&quot;</a>
+						<a href="_utils_controls_.html">&quot;utils/controls&quot;</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="../classes/_stats_stocks_.stockcomputer.html" class="tsd-kind-icon">Stock<wbr>Computer</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_stats_stocks_.stockcomputerevents.html" class="tsd-kind-icon">Stock<wbr>Computer<wbr>Events</a>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_utils_controls_.html#generatecontrollerbitmask" class="tsd-kind-icon">generate<wbr>Controller<wbr>Bitmask</a>
 					</li>
 				</ul>
 			</nav>

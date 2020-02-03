@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;melee/characters&quot; | @vinceau/slp-realtime - v2.0.0</title>
+	<title>&quot;operators/stocks&quot; | @vinceau/slp-realtime - v2.0.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_melee_characters_.html">&quot;melee/characters&quot;</a>
+					<a href="_operators_stocks_.html">&quot;operators/stocks&quot;</a>
 				</li>
 			</ul>
-			<h1>External module &quot;melee/characters&quot;</h1>
+			<h1>External module &quot;operators/stocks&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -69,160 +69,87 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Enumerations</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-enum tsd-parent-kind-external-module"><a href="../enums/_melee_characters_.character.html" class="tsd-kind-icon">Character</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Interfaces</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/_melee_characters_.characterinfo.html" class="tsd-kind-icon">Character<wbr>Info</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Type aliases</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="_melee_characters_.html#charactercolor" class="tsd-kind-icon">Character<wbr>Color</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_melee_characters_.html#getallcharacters" class="tsd-kind-icon">get<wbr>All<wbr>Characters</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_melee_characters_.html#getcharactercolorname" class="tsd-kind-icon">get<wbr>Character<wbr>Color<wbr>Name</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_melee_characters_.html#getcharacterinfo" class="tsd-kind-icon">get<wbr>Character<wbr>Info</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_melee_characters_.html#getcharactername" class="tsd-kind-icon">get<wbr>Character<wbr>Name</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_melee_characters_.html#getcharactershortname" class="tsd-kind-icon">get<wbr>Character<wbr>Short<wbr>Name</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_operators_stocks_.html#filterjustspawned" class="tsd-kind-icon">filter<wbr>Just<wbr>Spawned</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_operators_stocks_.html#mapframetospawnstocktype" class="tsd-kind-icon">map<wbr>Frame<wbr>ToSpawn<wbr>Stock<wbr>Type</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_operators_stocks_.html#mapframestodeathstocktype" class="tsd-kind-icon">map<wbr>Frames<wbr>ToDeath<wbr>Stock<wbr>Type</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Type aliases</h2>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
-					<a name="charactercolor" class="tsd-anchor"></a>
-					<h3>Character<wbr>Color</h3>
-					<div class="tsd-signature tsd-kind-icon">Character<wbr>Color<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/bae0f6a/src/melee/characters.ts#L1">src/melee/characters.ts:1</a></li>
-						</ul>
-					</aside>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="getallcharacters" class="tsd-anchor"></a>
-					<h3>get<wbr>All<wbr>Characters</h3>
+					<a name="filterjustspawned" class="tsd-anchor"></a>
+					<h3>filter<wbr>Just<wbr>Spawned</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>All<wbr>Characters<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_melee_characters_.characterinfo.html" class="tsd-signature-type">CharacterInfo</a><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">filter<wbr>Just<wbr>Spawned<span class="tsd-signature-symbol">(</span>playerIndex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MonoTypeOperatorFunction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">FrameEntryType</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/bae0f6a/src/melee/characters.ts#L179">src/melee/characters.ts:179</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_melee_characters_.characterinfo.html" class="tsd-signature-type">CharacterInfo</a><span class="tsd-signature-symbol">[]</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="getcharactercolorname" class="tsd-anchor"></a>
-					<h3>get<wbr>Character<wbr>Color<wbr>Name</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Character<wbr>Color<wbr>Name<span class="tsd-signature-symbol">(</span>externalCharacterId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, characterColor<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_melee_characters_.html#charactercolor" class="tsd-signature-type">CharacterColor</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/bae0f6a/src/melee/characters.ts#L203">src/melee/characters.ts:203</a></li>
+									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/bae0f6a/src/operators/stocks.ts#L10">src/operators/stocks.ts:10</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>externalCharacterId: <span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li>
-									<h5>characterColor: <span class="tsd-signature-type">number</span></h5>
+									<h5>playerIndex: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_melee_characters_.html#charactercolor" class="tsd-signature-type">CharacterColor</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">MonoTypeOperatorFunction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">FrameEntryType</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="getcharacterinfo" class="tsd-anchor"></a>
-					<h3>get<wbr>Character<wbr>Info</h3>
+					<a name="mapframetospawnstocktype" class="tsd-anchor"></a>
+					<h3>map<wbr>Frame<wbr>ToSpawn<wbr>Stock<wbr>Type</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Character<wbr>Info<span class="tsd-signature-symbol">(</span>externalCharacterId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_melee_characters_.characterinfo.html" class="tsd-signature-type">CharacterInfo</a></li>
+						<li class="tsd-signature tsd-kind-icon">map<wbr>Frame<wbr>ToSpawn<wbr>Stock<wbr>Type<span class="tsd-signature-symbol">(</span>settings$<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">GameStartType</span><span class="tsd-signature-symbol">&gt;</span>, playerIndex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">OperatorFunction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">PostFrameUpdateType</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">StockType</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/bae0f6a/src/melee/characters.ts#L183">src/melee/characters.ts:183</a></li>
+									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/bae0f6a/src/operators/stocks.ts#L55">src/operators/stocks.ts:55</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>externalCharacterId: <span class="tsd-signature-type">number</span></h5>
+									<h5>settings$: <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">GameStartType</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5>playerIndex: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_melee_characters_.characterinfo.html" class="tsd-signature-type">CharacterInfo</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">OperatorFunction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">PostFrameUpdateType</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">StockType</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="getcharactername" class="tsd-anchor"></a>
-					<h3>get<wbr>Character<wbr>Name</h3>
+					<a name="mapframestodeathstocktype" class="tsd-anchor"></a>
+					<h3>map<wbr>Frames<wbr>ToDeath<wbr>Stock<wbr>Type</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Character<wbr>Name<span class="tsd-signature-symbol">(</span>externalCharacterId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">map<wbr>Frames<wbr>ToDeath<wbr>Stock<wbr>Type<span class="tsd-signature-symbol">(</span>playerSpawned$<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">StockType</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">OperatorFunction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">PostFrameUpdateType</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">PostFrameUpdateType</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">StockType</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/bae0f6a/src/melee/characters.ts#L197">src/melee/characters.ts:197</a></li>
+									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/bae0f6a/src/operators/stocks.ts#L77">src/operators/stocks.ts:77</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>externalCharacterId: <span class="tsd-signature-type">number</span></h5>
+									<h5>playerSpawned$: <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">StockType</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="getcharactershortname" class="tsd-anchor"></a>
-					<h3>get<wbr>Character<wbr>Short<wbr>Name</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Character<wbr>Short<wbr>Name<span class="tsd-signature-symbol">(</span>externalCharacterId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/bae0f6a/src/melee/characters.ts#L191">src/melee/characters.ts:191</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>externalCharacterId: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">OperatorFunction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">PostFrameUpdateType</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">PostFrameUpdateType</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">StockType</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -235,35 +162,20 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="_melee_characters_.html">&quot;melee/characters&quot;</a>
+						<a href="_operators_stocks_.html">&quot;operators/stocks&quot;</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum tsd-parent-kind-external-module">
-						<a href="../enums/_melee_characters_.character.html" class="tsd-kind-icon">Character</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="../interfaces/_melee_characters_.characterinfo.html" class="tsd-kind-icon">Character<wbr>Info</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
-						<a href="_melee_characters_.html#charactercolor" class="tsd-kind-icon">Character<wbr>Color</a>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_operators_stocks_.html#filterjustspawned" class="tsd-kind-icon">filter<wbr>Just<wbr>Spawned</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="_melee_characters_.html#getallcharacters" class="tsd-kind-icon">get<wbr>All<wbr>Characters</a>
+						<a href="_operators_stocks_.html#mapframetospawnstocktype" class="tsd-kind-icon">map<wbr>Frame<wbr>ToSpawn<wbr>Stock<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="_melee_characters_.html#getcharactercolorname" class="tsd-kind-icon">get<wbr>Character<wbr>Color<wbr>Name</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="_melee_characters_.html#getcharacterinfo" class="tsd-kind-icon">get<wbr>Character<wbr>Info</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="_melee_characters_.html#getcharactername" class="tsd-kind-icon">get<wbr>Character<wbr>Name</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="_melee_characters_.html#getcharactershortname" class="tsd-kind-icon">get<wbr>Character<wbr>Short<wbr>Name</a>
+						<a href="_operators_stocks_.html#mapframestodeathstocktype" class="tsd-kind-icon">map<wbr>Frames<wbr>ToDeath<wbr>Stock<wbr>Type</a>
 					</li>
 				</ul>
 			</nav>
