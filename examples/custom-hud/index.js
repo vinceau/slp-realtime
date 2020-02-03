@@ -24,7 +24,6 @@ const errHandler = (err) => {
   }
 }
 
-// Add the combos to the queue whenever we detect them
 const realtime = new SlpRealTime();
 realtime.setStream(stream);
 realtime.game.start$.subscribe(() => {
