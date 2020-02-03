@@ -47,7 +47,8 @@ livestream.connection.on("statusChange", (status) => {
 // Add the combos to the queue whenever we detect them
 const realtime = new SlpRealTime();
 realtime.setStream(livestream);
-realtime.on("comboEnd", (combo, settings) => {
+realtime.combo.end$.subscribe(payload => {
+  const { combo, settings } = payload;
   if (comboFilter.isCombo(combo, settings)) {
     console.log("Detected combo!");
     const filename = livestream.getCurrentFilename();

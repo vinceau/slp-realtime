@@ -2,8 +2,19 @@ import sinon from "sinon";
 
 import { SlpRealTime, SlpStream } from "../src";
 import { pipeFileContents } from "./helpers";
+import { Subscription } from "rxjs";
 
 describe("SlpRealTime", () => {
+  let subscriptions: Array<Subscription>;
+
+  beforeAll(() => {
+    subscriptions = [];
+  });
+
+  afterAll(() => {
+    subscriptions.forEach(s => s.unsubscribe());
+  });
+
   it("emits the correct number of events", async () => {
     const gameStartSpy = sinon.spy();
     const gameEndSpy = sinon.spy();
@@ -13,10 +24,13 @@ describe("SlpRealTime", () => {
     const slpStream = new SlpStream({ singleGameMode: true });
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
-    realtime.on("gameStart", gameStartSpy);
-    realtime.on("gameEnd", gameEndSpy);
-    realtime.on("spawn", stockSpawnSpy);
-    realtime.on("death", stockDeathSpy);
+
+    subscriptions.push(
+      realtime.game.start$.subscribe(gameStartSpy),
+      realtime.game.start$.subscribe(gameEndSpy),
+      realtime.stock.playerSpawn$.subscribe(stockSpawnSpy),
+      realtime.stock.playerDied$.subscribe(stockDeathSpy),
+    );
 
     await pipeFileContents("slp/Game_20190810T162904.slp", slpStream);
 

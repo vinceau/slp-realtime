@@ -1,9 +1,10 @@
 import * as path from "path";
+import fs from "fs-extra";
+
 import chokidar, { FSWatcher } from "chokidar";
 import tailstream, { TailStream } from "tailstream";
 
 import { SlpStream } from "./slpStream";
-import { readDir } from "./promise";
 
 /**
  * SlpFolderStream is responsible for monitoring a folder, and detecting
@@ -34,7 +35,7 @@ export class SlpFolderStream extends SlpStream {
    * @memberof SlpFolderStream
    */
   public async start(slpFolder: string): Promise<void> {
-    let initialFiles = await readDir(slpFolder);
+    let initialFiles = await fs.readdir(slpFolder);
     // Convert file paths into absolute paths
     initialFiles = initialFiles.map(file => {
       return path.resolve(path.join(slpFolder, file))
