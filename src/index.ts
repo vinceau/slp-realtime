@@ -9,6 +9,7 @@ export * from "./utils";
 export * from "./realtime";
 export * from "./combo";
 export * from "./types";
+export * from "./operators";
 
 // Re-export SlippiGame for convenience
 export { SlippiGame } from "slp-parser-js";

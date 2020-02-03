@@ -1,3 +1,8 @@
+import { ComboType, GameStartType } from "slp-parser-js";
+
+// Export the parameter types for events
+export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
+
 export enum GameEndMethod {
   UNRESOLVED = 0,
   TIME = 1,
@@ -20,3 +25,18 @@ export enum ControllerInput {
   Y_BUTTON = 0x0800,
   START_BUTTON = 0x1000,
 };
+
+export interface PercentChange {
+  playerIndex: number;
+  percent: number;
+}
+
+export interface StockCountChange {
+  playerIndex: number;
+  stocksRemaining: number;
+}
+
+export interface ComboEventPayload {
+  combo: ComboType;
+  settings: GameStartType;
+}

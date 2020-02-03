@@ -4,19 +4,7 @@ import { map, filter, distinctUntilChanged } from "rxjs/operators";
 import { Observable, merge } from "rxjs";
 import { playerFilter, withPreviousFrame } from "../operators/frames";
 import { mapFrameToSpawnStockType, mapFramesToDeathStockType, filterJustSpawned } from "../operators/stocks";
-
-// Export the parameter types for events
-export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
-
-interface PercentChange {
-  playerIndex: number;
-  percent: number;
-}
-
-interface StockCountChange {
-  playerIndex: number;
-  stocksRemaining: number;
-}
+import { PercentChange, StockCountChange } from "../types";
 
 export class StockEvents {
   protected stream: SlpStream | null = null;
