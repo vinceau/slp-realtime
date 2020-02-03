@@ -87,6 +87,7 @@ export class StockEvents {
       throw new Error("No stream to subscribe to");
     }
     return this.stream.playerFrame$.pipe(
+      playerFilter(index),
       map(f => f.players[index].post.percent),
       distinctUntilChanged(),
       map(percent => ({
