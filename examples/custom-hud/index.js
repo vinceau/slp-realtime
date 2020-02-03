@@ -10,7 +10,7 @@ const playerInfoFolder = "C:\\Users\\Vince\\Desktop";
 
 const { SlpFolderStream, SlpRealTime } = require("@vinceau/slp-realtime");
 const fs = require("fs");
-const path = require("fs");
+const path = require("path");
 
 // TODO: Make sure you set this value!
 const slpLiveFolderPath = "C:\\Users\\Vince\\Documents\\FM-v5.9-Slippi-r18-Win\\Slippi";
