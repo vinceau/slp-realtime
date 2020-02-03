@@ -24,7 +24,7 @@ export class StockEvents {
   public playerSpawn$: Observable<StockType>;
   public playerDied$: Observable<StockType>;
   public percentChange$: Observable<PercentChange>
-  public stockCountChange$: Observable<StockCountChange>
+  public countChange$: Observable<StockCountChange>
 
   /**
    * Starts listening to the provided stream for Slippi events
@@ -52,7 +52,7 @@ export class StockEvents {
       this.playerIndexPercentChange(2),
       this.playerIndexPercentChange(3),
     );
-    this.stockCountChange$ = merge(
+    this.countChange$ = merge(
       this.playerIndexStockCountChange(0),
       this.playerIndexStockCountChange(1),
       this.playerIndexStockCountChange(2),
