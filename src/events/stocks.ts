@@ -13,12 +13,18 @@ interface PercentChange {
   percent: number;
 }
 
+interface StockCountChange {
+  playerIndex: number;
+  stocksRemaining: number;
+}
+
 export class StockEvents {
   protected stream: SlpStream | null = null;
 
   public playerSpawn$: Observable<StockType>;
   public playerDied$: Observable<StockType>;
   public percentChange$: Observable<PercentChange>
+  public stockCountChange$: Observable<StockCountChange>
 
   /**
    * Starts listening to the provided stream for Slippi events
@@ -45,6 +51,12 @@ export class StockEvents {
       this.playerIndexPercentChange(1),
       this.playerIndexPercentChange(2),
       this.playerIndexPercentChange(3),
+    );
+    this.stockCountChange$ = merge(
+      this.playerIndexStockCountChange(0),
+      this.playerIndexStockCountChange(1),
+      this.playerIndexStockCountChange(2),
+      this.playerIndexStockCountChange(3),
     );
   }
 
@@ -93,6 +105,21 @@ export class StockEvents {
       map(percent => ({
         playerIndex: index,
         percent,
+      })),
+    );
+  }
+
+  public playerIndexStockCountChange(index: number): Observable<StockCountChange> {
+    if (!this.stream) {
+      throw new Error("No stream to subscribe to");
+    }
+    return this.stream.playerFrame$.pipe(
+      playerFilter(index),
+      map(f => f.players[index].post.stocksRemaining),
+      distinctUntilChanged(),
+      map(stocksRemaining => ({
+        playerIndex: index,
+        stocksRemaining,
       })),
     );
   }
