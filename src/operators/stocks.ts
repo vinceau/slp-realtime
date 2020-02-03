@@ -1,4 +1,4 @@
-import { GameStartType, PostFrameUpdateType, StockType, FrameEntryType, isDead, didLoseStock } from "slp-parser-js";
+import { GameStartType, PostFrameUpdateType, StockType, FrameEntryType, isDead } from "slp-parser-js";
 import { Observable, OperatorFunction, MonoTypeOperatorFunction, merge } from "rxjs";
 import { withLatestFrom, map, filter } from "rxjs/operators";
 import { filterOnlyFirstFrame, withPreviousFrame, playerFilter } from "./frames";
