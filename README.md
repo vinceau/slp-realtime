@@ -115,6 +115,30 @@ realtime.combo.end$.subscribe(payload => {
 });
 ```
 
+### Make a Custom HUD
+
+Want to make your own HUD?
+
+1. Subscribe to percent and stock changes
+2. Write the data to a file
+3. Add files to OBS
+4. [???](examples/custom-hud)
+5. Profit!!
+
+```javascript
+realtime.stock.percentChange$.subscribe(payload => {
+  const player = payload.playerIndex + 1;
+  console.log(`player ${player} percent: ${payload.percent}`);
+  fs.writeFileSync(`./player${player}Percent.txt`), payload.percent);
+});
+
+realtime.stock.countChange$.subscribe((payload) => {
+  const player = payload.playerIndex + 1;
+  console.log(`player ${player} stocks: ${payload.stocksRemaining}`);
+  fs.writeFileSync(`./player${player}Stocks.txt`), payload.stocksRemaining);
+});
+```
+
 ## Development
 
 To build the library from source:
