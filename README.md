@@ -66,20 +66,9 @@ realtime.game.start$.subscribe(() => {
     console.log("game started");
 });
 
-realtime.stock.percentChange$.subscribe(payload => {
-    // Player index is zero-indexed
-    const { playerIndex, percent } = payload;
-    console.log(`player ${playerIndex + 1}'s new percent: ${percent}`);
-});
-
 realtime.stock.playerSpawn$.subscribe(stock => {
     const { playerIndex, count } = stock;
     console.log(`player ${playerIndex + 1} spawned with ${count} stocks remaining`);
-});
-
-realtime.stock.playerDied$.subscribe(stock => {
-    const { playerIndex } = stock;
-    console.log(`player ${playerIndex + 1} died`);
 });
 
 realtime.combo.end$.subscribe(() => {
