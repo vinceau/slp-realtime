@@ -1,5 +1,76 @@
 # Documentation
 
+## Events
+
+### Game
+
+#### `realtime.game.start$`
+
+Emitted when a game starts.
+
+Returns an `Observable<`[`GameStartType`](#gamestarttype)`>`
+
+#### `realtime.game.end$`
+
+Emitted when a game ends.
+
+Returns an `Observable<`[`GameEndType`](#gameendtype)`>`
+
+### Stock
+
+#### `realtime.stock.playerSpawn$`
+
+Emitted when a player spawns.
+
+Returns an `Observable<`[`StockType`](#stocktype)`>`
+
+#### `realtime.stock.playerDied$`
+
+Emitted when a player dies.
+
+Returns an `Observable<`[`StockType`](#stocktype)`>`
+
+#### `realtime.stock.percentChange$`
+
+Emitted when a player's percent changes.
+
+Returns an `Observable<`[`PercentChange`](#percentchange)`>`
+
+#### `realtime.stock.countChange$`
+
+Emitted when the number of stocks a player has changes.
+
+Returns an `Observable<`[`StockCountChange`](#stockcountchange)`>`
+
+
+### Combo
+
+#### `realtime.combo.start$`
+
+Emitted when a combo starts.
+
+Returns an `Observable<`[`ComboEventPayload`](#comboeventpayload)`>`
+
+#### `realtime.combo.extend$`
+
+Emitted for each additional hit that lands during a combo.
+
+Returns an `Observable<`[`ComboEventPayload`](#comboeventpayload)`>`
+
+#### `realtime.combo.end$`
+
+Emitted when a combo ends.
+
+Returns an `Observable<`[`ComboEventPayload`](#comboeventpayload)`>`
+
+
+#### `realtime.combo.conversion$`
+
+Emitted when a conversion occurs.
+
+Returns an `Observable<`[`ComboEventPayload`](#comboeventpayload)`>`
+
+
 ## Types
 
 ### `GameStartType`
@@ -86,6 +157,27 @@
 | `hitCount` | `number` |
 | `damage`   | `number` |
 
+### `PercentChange
+
+| Key           | Type     |
+| ------------- | -------- |
+| `playerIndex` | `number` |
+| `percent`     | `number` |
+
+### `StockCountChange`
+
+| Key               | Type     |
+| ----------------- | -------- |
+| `playerIndex`     | `number` |
+| `stocksRemaining` | `number` |
+
+
+### `ComboEventPayload`
+
+| Key         | Type                              |
+| ----------- | --------------------------------- |
+| `combo`     | [`ComboType`](#combotype)         |
+| `settings`  | [`GameStartType`](#gamestarttype) |
 
 ### `ComboFilterSettings`
 

@@ -33,6 +33,8 @@ yarn add @vinceau/slp-realtime
 
 ## Usage
 
+For a list of all the subscribable events, [click here](api/README.md#events).
+
 See a [working example](examples) or [check out the docs](https://vince.id.au/slp-realtime/).
 
 ### Subscribing to In-Game Events
