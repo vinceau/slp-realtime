@@ -4,14 +4,7 @@ import { map, filter, distinctUntilChanged } from "rxjs/operators";
 import { Observable, merge } from "rxjs";
 import { playerFilter, withPreviousFrame } from "../operators/frames";
 import { mapFrameToSpawnStockType, mapFramesToDeathStockType, filterJustSpawned } from "../operators/stocks";
-
-// Export the parameter types for events
-export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
-
-interface PercentChange {
-  playerIndex: number;
-  percent: number;
-}
+import { PercentChange, StockCountChange } from "../types";
 
 export class StockEvents {
   protected stream: SlpStream | null = null;
@@ -19,6 +12,7 @@ export class StockEvents {
   public playerSpawn$: Observable<StockType>;
   public playerDied$: Observable<StockType>;
   public percentChange$: Observable<PercentChange>
+  public countChange$: Observable<StockCountChange>
 
   /**
    * Starts listening to the provided stream for Slippi events
@@ -45,6 +39,12 @@ export class StockEvents {
       this.playerIndexPercentChange(1),
       this.playerIndexPercentChange(2),
       this.playerIndexPercentChange(3),
+    );
+    this.countChange$ = merge(
+      this.playerIndexStockCountChange(0),
+      this.playerIndexStockCountChange(1),
+      this.playerIndexStockCountChange(2),
+      this.playerIndexStockCountChange(3),
     );
   }
 
@@ -87,11 +87,27 @@ export class StockEvents {
       throw new Error("No stream to subscribe to");
     }
     return this.stream.playerFrame$.pipe(
+      playerFilter(index),
       map(f => f.players[index].post.percent),
       distinctUntilChanged(),
       map(percent => ({
         playerIndex: index,
         percent,
+      })),
+    );
+  }
+
+  public playerIndexStockCountChange(index: number): Observable<StockCountChange> {
+    if (!this.stream) {
+      throw new Error("No stream to subscribe to");
+    }
+    return this.stream.playerFrame$.pipe(
+      playerFilter(index),
+      map(f => f.players[index].post.stocksRemaining),
+      distinctUntilChanged(),
+      map(stocksRemaining => ({
+        playerIndex: index,
+        stocksRemaining,
       })),
     );
   }

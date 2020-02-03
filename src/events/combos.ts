@@ -4,6 +4,7 @@ import { FrameEntryType, MoveLandedType, ComboType, PlayerIndexedType, PostFrame
   isDamaged, isGrabbed, calcDamageTaken, isTeching, didLoseStock, Timers, isDown, isDead, getSinglesPlayerPermutationsFromSettings, GameStartType } from "slp-parser-js";
 import { Subject, Subscription, Observable } from "rxjs";
 import { SlpStream } from "..";
+import { ComboEventPayload } from "../types";
 import { filter } from "rxjs/operators";
 import { withPreviousFrame } from "../operators/frames";
 import { ConversionEvents } from "./conversion";
@@ -20,11 +21,6 @@ interface ComboState {
   resetCounter: number;
   lastHitAnimation: number | null;
   event: ComboEvent | null;
-}
-
-interface ComboEventPayload {
-  combo: ComboType;
-  settings: GameStartType;
 }
 
 export class ComboEvents {

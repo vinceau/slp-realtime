@@ -11,6 +11,7 @@ module.exports =  {
     "@typescript-eslint/indent": ["error", 2, {"SwitchCase": 0}],
     "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/explicit-member-accessibility": "warn",
-    "quotes": [2, "double", { "avoidEscape": true }]
+    "quotes": [2, "double", { "avoidEscape": true }],
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
   }
 };

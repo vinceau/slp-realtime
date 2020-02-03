@@ -6,16 +6,16 @@
 [![Coverage Status](https://coveralls.io/repos/github/vinceau/slp-realtime/badge.svg?branch=feat/coverage)](https://coveralls.io/github/vinceau/slp-realtime?branch=feat/coverage)
 [![License](https://img.shields.io/npm/l/@vinceau/slp-realtime)](https://github.com/vinceau/slp-realtime/blob/master/LICENSE)
 
-> A real-time Slippi parsing library.
+> The brains *and* the brawn of [Project Clippi](https://github.com/vinceau/project-clippi).
 
-This library provides an easy way to subscribe to real-time [Slippi](https://github.com/project-slippi/project-slippi) game events as they happen.
+This library provides an easy way to subscribe to real-time [Slippi](https://github.com/project-slippi/project-slippi) game events as they happen. Rebuilt from the ground up using [RxJS Observables](https://rxjs-dev.firebaseapp.com/guide/overview), the power to subscribe to any and every event is in your hands.
 
 
 ## Highlights
 
 * Go file-less. Read directly from the relay or console.
 * Custom combos. Easily add combo parameters and output Dolphin-compatible JSON files.
-* Events, Promise, and Stream API.
+* Powerful RxJS Observable and Stream API.
 
 ## Installation
 
@@ -32,6 +32,8 @@ yarn add @vinceau/slp-realtime
 ```
 
 ## Usage
+
+For a list of all the subscribable events, [click here](api/README.md#events).
 
 See a [working example](examples) or [check out the docs](https://vince.id.au/slp-realtime/).
 
@@ -62,30 +64,23 @@ const realtime = new SlpRealTime();
 // Read from the SlpLiveStream object from before
 realtime.setStream(livestream);
 
-realtime.on("gameStart", () => {
+realtime.game.start$.subscribe(() => {
     console.log("game started");
 });
 
-realtime.on("percentChange", (index, percent) => {
-    console.log(`player ${index}'s new percent: ${percent}`);
+realtime.stock.playerSpawn$.subscribe(stock => {
+    const { playerIndex, count } = stock;
+    console.log(`player ${playerIndex + 1} spawned with ${count} stocks remaining`);
 });
 
-realtime.on("spawn", (index, stock) => {
-    console.log(`player ${index} spawned with ${stock.count} stocks remaining`);
-});
-
-realtime.on("death", (i) => {
-    console.log(`player ${i} died`);
-});
-
-realtime.on("comboEnd", () => {
-    console.log("a combo just happened");
+realtime.combo.end$.subscribe(() => {
+    console.log("wombo combooo!!");
 });
 ```
 
 ### Detecting Custom Combos
 
-We can already subscribe to the `comboEnd` event but that gets emitted for *every* combo. We need a way to filter out for specific combos.
+We can subscribe to the end of any and every combo but really what we want is to filter for specific combos.
 
 First, instantiate a `ComboFilter`. For all the possible filtering options, see [ComboFilterSettings](api/README.md#combofiltersettings).
 
@@ -100,16 +95,38 @@ comboFilter.updateSettings({
 });
 ```
 
-`ComboFilter` exposes a handy `isCombo()` method which returns `true` if a given combo matches the specified criteria. We can hook it up to our live stream with the following:
+`ComboFilter` has an `isCombo()` method which returns `true` if a given combo matches the specified criteria. We can hook it up to our live stream with the following:
 
 ```javascript
-realtime.on("comboEnd", (combo, settings) => {
-    if (!comboFilter.isCombo(combo, settings)) {
-        console.log("Combo did not match criteria!");
-        return;
+realtime.combo.end$.subscribe(payload => {
+    const { combo, settings } = payload;
+    if (comboFilter.isCombo(combo, settings)) {
+        console.log("Combo matched!");
     }
+});
+```
 
-    console.log("Combo matched!");
+### Make a Custom HUD
+
+Want to make your own HUD?
+
+1. Subscribe to percent and stock changes
+2. Write the data to a file
+3. Add files to OBS
+4. [???](examples/custom-hud)
+5. Profit!!
+
+```javascript
+realtime.stock.percentChange$.subscribe(payload => {
+  const player = payload.playerIndex + 1;
+  console.log(`player ${player} percent: ${payload.percent}`);
+  fs.writeFileSync(`./player${player}Percent.txt`), payload.percent);
+});
+
+realtime.stock.countChange$.subscribe((payload) => {
+  const player = payload.playerIndex + 1;
+  console.log(`player ${player} stocks: ${payload.stocksRemaining}`);
+  fs.writeFileSync(`./player${player}Stocks.txt`), payload.stocksRemaining);
 });
 ```
 
@@ -145,3 +162,5 @@ This project was made possible by:
 ## License
 
 This software is released under the terms of [MIT license](LICENSE).
+
+Linking back to [this Github repo](https://github.com/vinceau/slp-realtime) is much appreciated.

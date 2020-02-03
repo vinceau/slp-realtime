@@ -1,4 +1,4 @@
-import { GameStartType, PostFrameUpdateType, StockType, FrameEntryType, isDead, didLoseStock } from "slp-parser-js";
+import { GameStartType, PostFrameUpdateType, StockType, FrameEntryType, isDead } from "slp-parser-js";
 import { Observable, OperatorFunction, MonoTypeOperatorFunction, merge } from "rxjs";
 import { withLatestFrom, map, filter } from "rxjs/operators";
 import { filterOnlyFirstFrame, withPreviousFrame, playerFilter } from "./frames";
@@ -36,21 +36,21 @@ export function filterJustSpawned(playerIndex: number): MonoTypeOperatorFunction
 /**
  * Filter only the frames where the player has just spawned
  */
-export function filterJustDied(playerIndex: number): MonoTypeOperatorFunction<FrameEntryType> {
-  return (source$): Observable<FrameEntryType> => {
-    return source$.pipe(
-      playerFilter(playerIndex),
-      withPreviousFrame(),                  // Get previous frame too
-      filter(([prevFrame, latestFrame]) => {
-        const prevPostFrame = prevFrame.players[playerIndex].post;
-        const currPostFrame = latestFrame.players[playerIndex].post;
-        // We only care about the frames where we just spawned
-        return didLoseStock(currPostFrame, prevPostFrame);
-      }),
-      map(([_, latestFrame]) => latestFrame),
-    );
-  }
-}
+// export function filterJustDied(playerIndex: number): MonoTypeOperatorFunction<FrameEntryType> {
+//   return (source$): Observable<FrameEntryType> => {
+//     return source$.pipe(
+//       playerFilter(playerIndex),
+//       withPreviousFrame(),                  // Get previous frame too
+//       filter(([prevFrame, latestFrame]) => {
+//         const prevPostFrame = prevFrame.players[playerIndex].post;
+//         const currPostFrame = latestFrame.players[playerIndex].post;
+//         // We only care about the frames where we just spawned
+//         return didLoseStock(currPostFrame, prevPostFrame);
+//       }),
+//       map(([_, latestFrame]) => latestFrame),
+//     );
+//   }
+// }
 
 export function mapFrameToSpawnStockType(settings$: Observable<GameStartType>, playerIndex: number): OperatorFunction<PostFrameUpdateType, StockType> {
   return (source: Observable<PostFrameUpdateType>): Observable<StockType> => source.pipe(
