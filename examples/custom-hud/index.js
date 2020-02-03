@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /*
-This example script reads live slp files from a folder, automatically
-detects combos, and generates a Dolphin-compatible `combos.json` file
-when the interrupt signal is detected.
+This example script reads live slp files from a folder, and writes
+the players stock count and percentages to a file.
 */
 
 // TODO: Set this folder!!
