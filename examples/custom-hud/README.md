@@ -1,4 +1,4 @@
-# Custom HUD example
+# Custom HUD Example
 
 This is an example demonstrating the real-time capabilities of `slp-realtime` and its ability
 to detect when player percentages change or stock count changes.

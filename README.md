@@ -6,16 +6,16 @@
 [![Coverage Status](https://coveralls.io/repos/github/vinceau/slp-realtime/badge.svg?branch=feat/coverage)](https://coveralls.io/github/vinceau/slp-realtime?branch=feat/coverage)
 [![License](https://img.shields.io/npm/l/@vinceau/slp-realtime)](https://github.com/vinceau/slp-realtime/blob/master/LICENSE)
 
-> A real-time Slippi parsing library.
+> The brains *and* the brawn of [Project Clippi](https://github.com/vinceau/project-clippi).
 
-This library provides an easy way to subscribe to real-time [Slippi](https://github.com/project-slippi/project-slippi) game events as they happen.
+This library provides an easy way to subscribe to real-time [Slippi](https://github.com/project-slippi/project-slippi) game events as they happen. Rebuilt from the ground up using [RxJS Observables](https://rxjs-dev.firebaseapp.com/guide/overview), the power to subscribe to any and every event is in your hands.
 
 
 ## Highlights
 
 * Go file-less. Read directly from the relay or console.
 * Custom combos. Easily add combo parameters and output Dolphin-compatible JSON files.
-* Events, Promise, and Stream API.
+* Powerful RxJS Observable and Stream API.
 
 ## Installation
 
@@ -62,30 +62,34 @@ const realtime = new SlpRealTime();
 // Read from the SlpLiveStream object from before
 realtime.setStream(livestream);
 
-realtime.on("gameStart", () => {
+realtime.game.start$.subscribe(() => {
     console.log("game started");
 });
 
-realtime.on("percentChange", (index, percent) => {
-    console.log(`player ${index}'s new percent: ${percent}`);
+realtime.stock.percentChange$.subscribe(payload => {
+    // Player index is zero-indexed
+    const { playerIndex, percent } = payload;
+    console.log(`player ${playerIndex + 1}'s new percent: ${percent}`);
 });
 
-realtime.on("spawn", (index, stock) => {
-    console.log(`player ${index} spawned with ${stock.count} stocks remaining`);
+realtime.stock.playerSpawn$.subscribe(stock => {
+    const { playerIndex, count } = stock;
+    console.log(`player ${playerIndex + 1} spawned with ${count} stocks remaining`);
 });
 
-realtime.on("death", (i) => {
-    console.log(`player ${i} died`);
+realtime.stock.playerDied$.subscribe(stock => {
+    const { playerIndex } = stock;
+    console.log(`player ${playerIndex + 1} died`);
 });
 
-realtime.on("comboEnd", () => {
-    console.log("a combo just happened");
+realtime.combo.end$.subscribe(() => {
+    console.log("wombo combooo!!");
 });
 ```
 
 ### Detecting Custom Combos
 
-We can already subscribe to the `comboEnd` event but that gets emitted for *every* combo. We need a way to filter out for specific combos.
+We can subscribe to the end of any and every combo but really what we want is to filter for specific combos.
 
 First, instantiate a `ComboFilter`. For all the possible filtering options, see [ComboFilterSettings](api/README.md#combofiltersettings).
 
@@ -100,16 +104,14 @@ comboFilter.updateSettings({
 });
 ```
 
-`ComboFilter` exposes a handy `isCombo()` method which returns `true` if a given combo matches the specified criteria. We can hook it up to our live stream with the following:
+`ComboFilter` has an `isCombo()` method which returns `true` if a given combo matches the specified criteria. We can hook it up to our live stream with the following:
 
 ```javascript
-realtime.on("comboEnd", (combo, settings) => {
-    if (!comboFilter.isCombo(combo, settings)) {
-        console.log("Combo did not match criteria!");
-        return;
+realtime.combo.end$.subscribe(payload => {
+    const { combo, settings } = payload;
+    if (comboFilter.isCombo(combo, settings)) {
+        console.log("Combo matched!");
     }
-
-    console.log("Combo matched!");
 });
 ```
 
@@ -145,3 +147,5 @@ This project was made possible by:
 ## License
 
 This software is released under the terms of [MIT license](LICENSE).
+
+Linking back to [this Github repo](https://github.com/vinceau/slp-realtime) is much appreciated.

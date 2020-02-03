@@ -28,10 +28,11 @@ const stream = new SlpFolderStream();
 // Add the combos to the queue whenever we detect them
 const realtime = new SlpRealTime();
 realtime.setStream(stream);
-realtime.on("gameStart", () => {
+realtime.game.start$.subscribe(() => {
   console.log(`Detected a new game in ${stream.getCurrentFilename()}`);
 });
-realtime.on("comboEnd", (combo, settings) => {
+realtime.combo.end$.subscribe((payload) => {
+  const { combo, settings } = payload;
   if (comboFilter.isCombo(combo, settings)) {
     console.log("Detected combo!");
     const filename = stream.getCurrentFilename();
