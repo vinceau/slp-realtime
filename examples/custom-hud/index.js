@@ -3,31 +3,45 @@ This example script reads live slp files from a folder, and writes
 the players stock count and percentages to a file.
 */
 
-// TODO: Set this folder!!
-const playerInfoFolder = "C:\\Users\\Vince\\Desktop";
-
 const { SlpFolderStream, SlpRealTime } = require("@vinceau/slp-realtime");
-const fs = require("fs");
-const path = require("path");
+const WebSocket = require("ws");
 
 // TODO: Make sure you set this value!
 const slpLiveFolderPath = "C:\\Users\\Vince\\Documents\\FM-v5.9-Slippi-r18-Win\\Slippi";
 console.log(`Monitoring ${slpLiveFolderPath} for new SLP files`);
 
+// Set up the websocket
+const wss = new WebSocket.Server({ port: 8080 });
+
+wss.on("connection", () => {
+  // ws.send("something");
+  console.log("Client connected!");
+});
+
+const sendUpdate = (data) => {
+  wss.clients.forEach((client) => {
+    // const data = `hello world ${counter}!`;
+    if (client !== wss && client.readyState === WebSocket.OPEN) {
+      client.send(data);
+    }
+  });
+};
+
 // Set up the handlers
-
-const errHandler = (err) => {
-  if (err) {
-    console.error(err);
-  }
-}
-
 const setPlayerStock = (player, stock) => {
-  fs.writeFile(path.join(playerInfoFolder, `player${player}Stocks.txt`), stock, errHandler);
+  sendUpdate({
+    playerIndex: player,
+    stock,
+  });
+  // fs.writeFile(path.join(playerInfoFolder, `player${player}Stocks.txt`), stock, errHandler);
 }
 
 const setPlayerPercent = (player, percent) => {
-  fs.writeFile(path.join(playerInfoFolder, `player${player}Percent.txt`), percent, errHandler);
+  sendUpdate({
+    playerIndex, player,
+    percent,
+  });
+  // fs.writeFile(path.join(playerInfoFolder, `player${player}Percent.txt`), percent, errHandler);
 }
 
 // Connect to the relay

@@ -4,7 +4,8 @@
 	"license": "MIT",
 	"main": "index.js",
 	"dependencies": {
-		"@vinceau/slp-realtime": "file:../.."
+		"@vinceau/slp-realtime": "file:../..",
+		"ws": "^7.2.1"
 	},
 	"private": true
 }
