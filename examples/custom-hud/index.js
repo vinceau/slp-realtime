@@ -30,16 +30,18 @@ const sendUpdate = (data) => {
 // Set up the handlers
 const setPlayerStock = (player, stock) => {
   sendUpdate({
-    playerIndex: player,
-    stock,
+    player,
+    event: "stock",
+    payload: stock,
   });
   // fs.writeFile(path.join(playerInfoFolder, `player${player}Stocks.txt`), stock, errHandler);
 }
 
 const setPlayerPercent = (player, percent) => {
   sendUpdate({
-    playerIndex, player,
-    percent,
+    player,
+    event: "percent",
+    payload: percent,
   });
   // fs.writeFile(path.join(playerInfoFolder, `player${player}Percent.txt`), percent, errHandler);
 }

@@ -1,0 +1,48 @@
+<html>
+
+<head>
+</head>
+
+<body>
+    <span id="p1-stock"></span>
+    <span id="p2-stock"></span>
+    <span id="p1-percent"></span>
+    <span id="p2-percent"></span>
+    <script>
+        var ws;
+
+        // Reconnection logic from: https://stackoverflow.com/a/23176223
+        function connect() {
+            ws = new WebSocket('ws://localhost:8080');
+            ws.onopen = function () {
+                // subscribe to some channels
+                // ws.send(JSON.stringify({
+                //.... some message the I must send when I connect ....
+                // }));
+                console.log("connected");
+            };
+
+            ws.onmessage = function (e) {
+                console.log('Message:', e.data);
+                document.querySelector(`#p${e.data.player}-${e.data.event}`).innerHTML = e.data.payload;
+            };
+
+            ws.onclose = function (e) {
+                console.log('Socket is closed. Reconnect will be attempted in 1 second.', e.reason);
+                setTimeout(function () {
+                    connect();
+                }, 1000);
+            };
+
+            ws.onerror = function (err) {
+                console.error('Socket encountered error: ', err.message, 'Closing socket');
+                ws.close();
+            };
+        }
+
+        connect();
+
+    </script>
+</body>
+
+</html>
