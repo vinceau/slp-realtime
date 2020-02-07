@@ -52,8 +52,8 @@ realtime.stock.countChange$.subscribe((payload) => {
 // Reset the text files on game end
 realtime.game.end$.subscribe(() => {
   setPlayerStock(1, "");
-  setPlayerStock(1, "");
-  setPlayerPercent(2, "");
+  setPlayerPercent(1, "");
+  setPlayerStock(2, "");
   setPlayerPercent(2, "");
 });
 
