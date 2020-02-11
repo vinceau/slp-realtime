@@ -1,18 +1,24 @@
 import { StockType, didLoseStock } from "slp-parser-js";
 import { SlpStream } from "../utils/slpStream";
 import { map, filter, distinctUntilChanged } from "rxjs/operators";
-import { Observable, merge } from "rxjs";
+import { Subject, Subscription, Observable, merge } from "rxjs";
 import { playerFilter, withPreviousFrame } from "../operators/frames";
 import { mapFrameToSpawnStockType, mapFramesToDeathStockType, filterJustSpawned } from "../operators/stocks";
 import { PercentChange, StockCountChange } from "../types";
 
 export class StockEvents {
+  private subscriptions = new Array<Subscription>();
   protected stream: SlpStream | null = null;
 
-  public playerSpawn$: Observable<StockType>;
-  public playerDied$: Observable<StockType>;
-  public percentChange$: Observable<PercentChange>
-  public countChange$: Observable<StockCountChange>
+  private playerSpawnSource$ = new Subject<StockType>();
+  private playerDiedSource$ = new Subject<StockType>();
+  private percentChangeSource$ = new Subject<PercentChange>();
+  private countChangeSource$ = new Subject<StockCountChange>();
+
+  public playerSpawn$ = this.playerSpawnSource$.asObservable();
+  public playerDied$ = this.playerDiedSource$.asObservable();
+  public percentChange$ = this.percentChangeSource$.asObservable();
+  public countChange$ = this.countChangeSource$.asObservable();
 
   /**
    * Starts listening to the provided stream for Slippi events
@@ -21,30 +27,50 @@ export class StockEvents {
    * @memberof SlpRealTime
    */
   public setStream(stream: SlpStream): void {
+    // Clear previous subscriptions
+    this.subscriptions.forEach(s => s.unsubscribe());
+    this.subscriptions = [];
+
     this.stream = stream;
-    this.playerSpawn$ = merge(
-      this.playerIndexSpawn(0),
-      this.playerIndexSpawn(1),
-      this.playerIndexSpawn(2),
-      this.playerIndexSpawn(3),
+
+    // Handle player spawn
+    this.subscriptions.push(
+      merge(
+        this.playerIndexSpawn(0),
+        this.playerIndexSpawn(1),
+        this.playerIndexSpawn(2),
+        this.playerIndexSpawn(3),
+      ).subscribe(this.playerSpawnSource$)
     );
-    this.playerDied$ = merge(
-      this.playerIndexDied(0),
-      this.playerIndexDied(1),
-      this.playerIndexDied(2),
-      this.playerIndexDied(3),
+
+    // Handle player death
+    this.subscriptions.push(
+      merge(
+        this.playerIndexDied(0),
+        this.playerIndexDied(1),
+        this.playerIndexDied(2),
+        this.playerIndexDied(3),
+      ).subscribe(this.playerDiedSource$)
     );
-    this.percentChange$ = merge(
-      this.playerIndexPercentChange(0),
-      this.playerIndexPercentChange(1),
-      this.playerIndexPercentChange(2),
-      this.playerIndexPercentChange(3),
+
+    // Handle player percent change
+    this.subscriptions.push(
+      merge(
+        this.playerIndexPercentChange(0),
+        this.playerIndexPercentChange(1),
+        this.playerIndexPercentChange(2),
+        this.playerIndexPercentChange(3),
+      ).subscribe(this.percentChangeSource$)
     );
-    this.countChange$ = merge(
-      this.playerIndexStockCountChange(0),
-      this.playerIndexStockCountChange(1),
-      this.playerIndexStockCountChange(2),
-      this.playerIndexStockCountChange(3),
+
+    // Handle stock count change
+    this.subscriptions.push(
+      merge(
+        this.playerIndexStockCountChange(0),
+        this.playerIndexStockCountChange(1),
+        this.playerIndexStockCountChange(2),
+        this.playerIndexStockCountChange(3),
+      ).subscribe(this.countChangeSource$)
     );
   }
 
