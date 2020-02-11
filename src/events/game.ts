@@ -1,21 +1,36 @@
 import { GameStartType, GameEndType } from "slp-parser-js";
-import { Observable } from "rxjs";
+import { Subject, Subscription } from "rxjs";
 import { SlpStream } from "../utils/slpStream";
 import { withLatestFrom, map } from "rxjs/operators";
 import { findWinner } from "../utils/helpers";
 
 export class GameEvents {
-  public start$: Observable<GameStartType>;
-  public end$: Observable<GameEndType>;
-  public winner$: Observable<number>;
+  private subscriptions = new Array<Subscription>();
+
+  private startSource$ = new Subject<GameStartType>();
+  private endSource$ = new Subject<GameEndType>();
+  private winnerSource$ = new Subject<number>();
+
+  public start$ = this.startSource$.asObservable();
+  public end$ = this.endSource$.asObservable();
+  public winner$ = this.winnerSource$.asObservable();
 
   public setStream(stream: SlpStream): void {
-    this.start$ = stream.gameStart$;
-    this.end$ = stream.gameEnd$;
+    // Clear previous subscriptions
+    this.subscriptions.forEach(s => s.unsubscribe());
+    this.subscriptions = [];
 
-    this.winner$ = stream.gameEnd$.pipe(
-      withLatestFrom(stream.playerFrame$),
-      map(([_, playerFrame]) => findWinner(playerFrame)),
+    // Add new subscriptions
+    this.subscriptions.push(
+      stream.gameStart$.subscribe(this.startSource$),
+      stream.gameEnd$.subscribe(this.endSource$),
+    );
+
+    this.subscriptions.push(
+      stream.gameEnd$.pipe(
+        withLatestFrom(stream.playerFrame$),
+        map(([_, playerFrame]) => findWinner(playerFrame)),
+      ).subscribe(this.winnerSource$),
     );
   }
 }
