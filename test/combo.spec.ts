@@ -1,7 +1,7 @@
 import sinon from "sinon";
 
-import { SlpRealTime, SlpStream, ComboFilter, Character } from "../src";
-import { pipeFileContents }  from "./helpers";
+import { SlippiGame, SlpRealTime, SlpStream, ComboFilter, Character } from "../src";
+import { pipeFileContents } from "./helpers";
 import { Subscription } from "rxjs";
 
 describe("combo calculation", () => {
@@ -111,6 +111,54 @@ describe("combo calculation", () => {
     );
     await pipeFileContents("slp/Game_20190324T113942.slp", slpStream);
     expect(conversionSpy.callCount).toEqual(7);
+  });
+
+  describe("when filtering netplay names", () => {
+    it("can correctly filter netplay names", async () => {
+      const realtime = new SlpRealTime();
+      const comboSpy = sinon.spy();
+
+      const filename = "slp/Game_20190517T164215.slp";
+      const game = new SlippiGame(filename);
+      const metadata = game.getMetadata();
+
+      filter.updateSettings({ minComboPercent: 40, nameTags: ["fizzi"] });
+      const slpStream = new SlpStream({ singleGameMode: true });
+      realtime.setStream(slpStream);
+      subscriptions.push(
+        realtime.combo.end$.subscribe((payload) => {
+          if (filter.isCombo(payload.combo, payload.settings, metadata)) {
+            comboSpy();
+          }
+        })
+      );
+
+      await pipeFileContents(filename, slpStream);
+      expect(comboSpy.callCount).toEqual(0);
+    });
+
+    it("can correctly match netplay names", async () => {
+      const realtime = new SlpRealTime();
+      const comboSpy = sinon.spy();
+
+      const filename = "slp/Game_20190517T164215.slp";
+      const game = new SlippiGame(filename);
+      const metadata = game.getMetadata();
+
+      filter.updateSettings({ minComboPercent: 40, nameTags: ["Fizzi"] });
+      const slpStream = new SlpStream({ singleGameMode: true });
+      realtime.setStream(slpStream);
+      subscriptions.push(
+        realtime.combo.end$.subscribe((payload) => {
+          if (filter.isCombo(payload.combo, payload.settings, metadata)) {
+            comboSpy();
+          }
+        })
+      );
+      await pipeFileContents(filename, slpStream);
+      expect(comboSpy.callCount).toEqual(1);
+    });
+
   });
 
 });
