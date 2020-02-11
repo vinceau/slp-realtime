@@ -21,8 +21,8 @@ export const MatchesPlayerName: Criteria = (combo, settings, options, metadata) 
   const netplayName = _.get(metadata, ["players", player.playerIndex, "names", "netplay"], null) || null;
   const playerTag = player.nametag || null;
 
-  const matchesPlayerTag = options.nameTags.includes(playerTag);
-  const matchesNetplayName = options.nameTags.includes(netplayName);
+  const matchesPlayerTag = playerTag !== null && options.nameTags.includes(playerTag);
+  const matchesNetplayName = netplayName !== null && options.nameTags.includes(netplayName);
   return matchesPlayerTag || matchesNetplayName;
 }
 
