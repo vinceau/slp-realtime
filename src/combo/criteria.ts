@@ -12,14 +12,18 @@ export const MatchesPortNumber: Criteria = (combo, settings, options) => {
   return options.portFilter.includes(player.port);
 }
 
-export const MatchesPlayerName: Criteria = (combo, settings, options) => {
+export const MatchesPlayerName: Criteria = (combo, settings, options, metadata) => {
   if (options.nameTags.length === 0) {
     return true;
   }
 
   const player = settings.players.find(player => player.playerIndex === combo.playerIndex);
+  const netplayName = _.get(metadata, ["players", player.playerIndex, "names", "netplay"], null) || null;
   const playerTag = player.nametag || null;
-  return options.nameTags.includes(playerTag);
+
+  const matchesPlayerTag = playerTag !== null && options.nameTags.includes(playerTag);
+  const matchesNetplayName = netplayName !== null && options.nameTags.includes(netplayName);
+  return matchesPlayerTag || matchesNetplayName;
 }
 
 export const MatchesCharacter: Criteria = (combo, settings, options) => {

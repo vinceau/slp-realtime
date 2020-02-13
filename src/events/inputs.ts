@@ -1,7 +1,8 @@
 import { SlpStream } from "../utils/slpStream";
 import { map, distinctUntilChanged } from "rxjs/operators";
-import { Observable, merge } from "rxjs";
+import { Observable, Subject, Subscription } from "rxjs";
 import { playerFilter } from "../operators/frames";
+import { forAllPlayerIndices } from "../utils/helpers";
 
 // Export the parameter types for events
 export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
@@ -13,8 +14,9 @@ export interface ButtonComboPayload {
 
 export class InputEvents {
   protected stream: SlpStream | null = null;
-
-  public playerButtonCombo$: Observable<ButtonComboPayload>;
+  private subscriptions = new Array<Subscription>();
+  private playerButtonComboSource$ = new Subject<ButtonComboPayload>();
+  public playerButtonCombo$ = this.playerButtonComboSource$.asObservable();
 
   /**
    * Starts listening to the provided stream for Slippi events
@@ -23,12 +25,14 @@ export class InputEvents {
    * @memberof SlpRealTime
    */
   public setStream(stream: SlpStream): void {
+    // Clear previous subscriptions
+    this.subscriptions.forEach(s => s.unsubscribe());
+    this.subscriptions = [];
+
     this.stream = stream;
-    this.playerButtonCombo$ = merge(
-      this.playerIndexButtonCombo(0),
-      this.playerIndexButtonCombo(1),
-      this.playerIndexButtonCombo(2),
-      this.playerIndexButtonCombo(3),
+
+    this.subscriptions.push(
+      forAllPlayerIndices(i => this.playerIndexButtonCombo(i)).subscribe(this.playerButtonComboSource$),
     );
   }
 

@@ -19,7 +19,7 @@ export interface ComboFilterSettings {
   perCharacterMinComboPercent: { [characterId: number]: number };
 }
 
-export type Criteria = (combo: ComboType, settings: GameStartType, options: ComboFilterSettings) => boolean;
+export type Criteria = (combo: ComboType, settings: GameStartType, options: ComboFilterSettings, metadata?: any) => boolean;
 
 export const defaultComboFilterSettings: ComboFilterSettings = {
   chainGrabbers: [Character.MARTH, Character.PEACH, Character.PIKACHU, Character.DR_MARIO],
@@ -78,10 +78,10 @@ export class ComboFilter {
     return this.updateSettings(this.originalSettings);
   }
 
-  public isCombo(combo: ComboType, settings: GameStartType): boolean {
+  public isCombo(combo: ComboType, settings: GameStartType, metadata?: any): boolean {
     // Check if we satisfy all the criteria
     for (const c of this.criteria) {
-      if (!c(combo, settings, this.settings)) {
+      if (!c(combo, settings, this.settings, metadata)) {
         return false;
       }
     }

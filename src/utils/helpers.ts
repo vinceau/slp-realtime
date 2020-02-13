@@ -1,4 +1,5 @@
 import { FrameEntryType } from "slp-parser-js";
+import { Observable, merge } from "rxjs";
 
 /**
  * Given the last frame of the game, determine the winner first based on stock count
@@ -31,4 +32,13 @@ export const findWinner = (lastFrame: FrameEntryType): number => {
   });
 
   return winnerPostFrame.playerIndex;
+}
+
+export const forAllPlayerIndices = <T>(func: (index: number) => Observable<T> ): Observable<T> => {
+  return merge(
+    func(0),
+    func(1),
+    func(2),
+    func(3),
+  );
 }
