@@ -36,22 +36,22 @@ export class StockEvents {
 
     // Handle player spawn
     this.subscriptions.push(
-      forAllPlayerIndices(this.playerIndexSpawn).subscribe(this.playerSpawnSource$)
+      forAllPlayerIndices(i => this.playerIndexSpawn(i)).subscribe(this.playerSpawnSource$)
     );
 
     // Handle player death
     this.subscriptions.push(
-      forAllPlayerIndices(this.playerIndexDied).subscribe(this.playerDiedSource$)
+      forAllPlayerIndices(i => this.playerIndexDied(i)).subscribe(this.playerDiedSource$)
     );
 
     // Handle player percent change
     this.subscriptions.push(
-      forAllPlayerIndices(this.playerIndexPercentChange).subscribe(this.percentChangeSource$)
+      forAllPlayerIndices(i => this.playerIndexPercentChange(i)).subscribe(this.percentChangeSource$)
     );
 
     // Handle stock count change
     this.subscriptions.push(
-      forAllPlayerIndices(this.playerIndexStockCountChange).subscribe(this.countChangeSource$)
+      forAllPlayerIndices(i => this.playerIndexStockCountChange(i)).subscribe(this.countChangeSource$)
     );
   }
 

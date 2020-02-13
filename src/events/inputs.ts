@@ -32,7 +32,7 @@ export class InputEvents {
     this.stream = stream;
 
     this.subscriptions.push(
-      forAllPlayerIndices(this.playerIndexButtonCombo).subscribe(this.playerButtonComboSource$),
+      forAllPlayerIndices(i => this.playerIndexButtonCombo(i)).subscribe(this.playerButtonComboSource$),
     );
   }
 
