@@ -1,10 +1,11 @@
 import { StockType, didLoseStock } from "slp-parser-js";
 import { SlpStream } from "../utils/slpStream";
 import { map, filter, distinctUntilChanged } from "rxjs/operators";
-import { Subject, Subscription, Observable, merge } from "rxjs";
+import { Subject, Subscription, Observable } from "rxjs";
 import { playerFilter, withPreviousFrame } from "../operators/frames";
 import { mapFrameToSpawnStockType, mapFramesToDeathStockType, filterJustSpawned } from "../operators/stocks";
 import { PercentChange, StockCountChange } from "../types";
+import { forAllPlayerIndices } from "../utils/helpers";
 
 export class StockEvents {
   private subscriptions = new Array<Subscription>();
@@ -35,42 +36,22 @@ export class StockEvents {
 
     // Handle player spawn
     this.subscriptions.push(
-      merge(
-        this.playerIndexSpawn(0),
-        this.playerIndexSpawn(1),
-        this.playerIndexSpawn(2),
-        this.playerIndexSpawn(3),
-      ).subscribe(this.playerSpawnSource$)
+      forAllPlayerIndices(this.playerIndexSpawn).subscribe(this.playerSpawnSource$)
     );
 
     // Handle player death
     this.subscriptions.push(
-      merge(
-        this.playerIndexDied(0),
-        this.playerIndexDied(1),
-        this.playerIndexDied(2),
-        this.playerIndexDied(3),
-      ).subscribe(this.playerDiedSource$)
+      forAllPlayerIndices(this.playerIndexDied).subscribe(this.playerDiedSource$)
     );
 
     // Handle player percent change
     this.subscriptions.push(
-      merge(
-        this.playerIndexPercentChange(0),
-        this.playerIndexPercentChange(1),
-        this.playerIndexPercentChange(2),
-        this.playerIndexPercentChange(3),
-      ).subscribe(this.percentChangeSource$)
+      forAllPlayerIndices(this.playerIndexPercentChange).subscribe(this.percentChangeSource$)
     );
 
     // Handle stock count change
     this.subscriptions.push(
-      merge(
-        this.playerIndexStockCountChange(0),
-        this.playerIndexStockCountChange(1),
-        this.playerIndexStockCountChange(2),
-        this.playerIndexStockCountChange(3),
-      ).subscribe(this.countChangeSource$)
+      forAllPlayerIndices(this.playerIndexStockCountChange).subscribe(this.countChangeSource$)
     );
   }
 

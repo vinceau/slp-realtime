@@ -1,7 +1,8 @@
 import { SlpStream } from "../utils/slpStream";
 import { map, distinctUntilChanged } from "rxjs/operators";
-import { Observable, merge, Subject, Subscription } from "rxjs";
+import { Observable, Subject, Subscription } from "rxjs";
 import { playerFilter } from "../operators/frames";
+import { forAllPlayerIndices } from "../utils/helpers";
 
 // Export the parameter types for events
 export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
@@ -31,12 +32,7 @@ export class InputEvents {
     this.stream = stream;
 
     this.subscriptions.push(
-      merge(
-        this.playerIndexButtonCombo(0),
-        this.playerIndexButtonCombo(1),
-        this.playerIndexButtonCombo(2),
-        this.playerIndexButtonCombo(3),
-      ).subscribe(this.playerButtonComboSource$),
+      forAllPlayerIndices(this.playerIndexButtonCombo).subscribe(this.playerButtonComboSource$),
     );
   }
 
