@@ -490,14 +490,12 @@
     lodash.unescape "4.0.1"
     semver "^6.3.0"
 
-"@vinceau/slp-wii-connect@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@vinceau/slp-wii-connect/-/slp-wii-connect-1.0.1.tgz#0c9d4505c13b41d9df5776dc7f45bc2e6f2fc7c1"
-  integrity sha512-JaxkdA9HQAWI17xvwljAU6m1l5axePseFmUkocz5opMYcl0abVFDO0OknIr7AF28+yH6Qv9baYhkve6iejljRg==
+"@vinceau/slp-wii-connect@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@vinceau/slp-wii-connect/-/slp-wii-connect-1.0.2.tgz#bbadf4a52e899e0259d4a7edea61f922e8cba358"
+  integrity sha512-8tskYXEvoO+/igOyx756gToBT6xo0muEbqUKKXzkYBE3vsz/TpkztEttFffC9VEvx0/Hr5I4ZzX8WzE9LUWTZg==
   dependencies:
     "@shelacek/ubjson" "^1.0.1"
-    lodash "^4.17.11"
-    strict-event-emitter-types "^2.0.0"
 
 abab@^2.0.0:
   version "2.0.1"
@@ -4106,11 +4104,6 @@ stealthy-require@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/stealthy-require/-/stealthy-require-1.1.1.tgz#35b09875b4ff49f26a777e509b3090a3226bf24b"
   integrity sha1-NbCYdbT/SfJqd35QmzCQoyJr8ks=
-
-strict-event-emitter-types@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/strict-event-emitter-types/-/strict-event-emitter-types-2.0.0.tgz#05e15549cb4da1694478a53543e4e2f4abcf277f"
-  integrity sha512-Nk/brWYpD85WlOgzw5h173aci0Teyv8YdIAEtV+N88nDB0dLlazZyJMIsN6eo1/AR61l+p6CJTG1JIyFaoNEEA==
 
 string-length@^2.0.0:
   version "2.0.0"
