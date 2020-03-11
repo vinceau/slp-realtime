@@ -12,6 +12,7 @@ module.exports =  {
     "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/explicit-member-accessibility": "warn",
     "quotes": [2, "double", { "avoidEscape": true }],
-    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/no-unused-vars": ["error", { "ignorePattern": "^_" }],
+    "no-unused-variable": [true, {"ignore-pattern": "^_"}],
   }
 };
