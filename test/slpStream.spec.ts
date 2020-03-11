@@ -39,10 +39,7 @@ describe("SlpStream", () => {
 
       const slpStream = new SlpStream({ singleGameMode: false });
       const unsubGameStart = slpStream.gameStart$.subscribe(gameStartSpy);
-      const unsubGameEnd = slpStream.gameEnd$.subscribe((payload) => {
-        gameEndSpy();
-        console.log(payload);
-      });
+      const unsubGameEnd = slpStream.gameEnd$.subscribe(gameEndSpy);
       subscriptions.push(unsubGameStart, unsubGameEnd);
 
       // Pipe the file twice
