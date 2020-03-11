@@ -23,7 +23,7 @@ export type SlpStreamSettings = typeof defaultSettings;
 export class SlpStream extends Writable {
   private settings: SlpStreamSettings;
   private gameReady = false;
-  private payloadSizes = new Map<Command, number>();
+  private payloadSizes: Map<Command, number> | null = null;
   private previousBuffer: Uint8Array = Buffer.from([]);
   private playerFrame: FrameEntryType | null = null;
   private followerFrame: FrameEntryType | null = null;
@@ -90,7 +90,7 @@ export class SlpStream extends Writable {
 
       // Make sure we have enough data to read a full payload
       const command = dataView.getUint8(index);
-      const payloadSize = this.payloadSizes.get(command) || 0;
+      const payloadSize = this.payloadSizes ? this.payloadSizes.get(command) : 0;
       const remainingLen = data.length - index;
       if (remainingLen < payloadSize + 1) {
         // If remaining length is not long enough for full payload, save the remaining
@@ -135,8 +135,16 @@ export class SlpStream extends Writable {
 
   private _processCommand(command: Command, entirePayload: Uint8Array, dataView: DataView): number {
     // Handle the message size command
-    if (command === Command.MESSAGE_SIZES) {
-      const payloadSize =  this._processReceiveCommands(dataView);
+    if (command === Command.MESSAGE_SIZES && this.payloadSizes === null) {
+      const payloadSize = dataView.getUint8(0);
+      // Make sure the payload sizes are valid
+      const payloadSizes = processReceiveCommands(dataView);
+      if (!isValidMessageSizes(payloadSizes)) {
+        return 0;
+      }
+
+      // Set the payload sizes
+      this.payloadSizes = payloadSizes;
       // Emit the message size event
       this.messageSizeSource.next(this.payloadSizes);
       // Emit the raw command event
@@ -151,17 +159,14 @@ export class SlpStream extends Writable {
       return 0;
     }
 
-    const payloadSize = this.payloadSizes.get(command);
-    if (!payloadSize) {
-      throw new Error(`Could not get payload sizes for command: ${command}`);
-    }
+    const payloadSize = this.payloadSizes ? this.payloadSizes.get(command) : 0;
 
     // Fetch the payload and parse it
-    const payload = this._writeCommand(command, entirePayload, payloadSize);
-    const parsedPayload = parseMessage(command, payload);
-    if (!parsedPayload) {
-      // Failed to parse
-      throw new Error(`Failed to parse payload for command: ${command}`);
+    let payload: Uint8Array;
+    let parsedPayload: any;
+    if (payloadSize > 0) {
+      payload = this._writeCommand(command, entirePayload, payloadSize);
+      parsedPayload = parseMessage(command, payload);
     }
 
     switch (command) {
@@ -194,16 +199,6 @@ export class SlpStream extends Writable {
       break;
     }
     return payloadSize;
-  }
-
-  private _processReceiveCommands(dataView: DataView): number {
-    const payloadLen = dataView.getUint8(0);
-    for (let i = 1; i < payloadLen; i += 3) {
-      const commandByte = dataView.getUint8(i);
-      const payloadSize = dataView.getUint16(i + 1);
-      this.payloadSizes.set(commandByte, payloadSize);
-    }
-    return payloadLen;
   }
 
   private _handleFrameUpdate(command: Command, payload: PreFrameUpdateType | PostFrameUpdateType): void {
@@ -267,3 +262,25 @@ export class SlpStream extends Writable {
     return true;
   }
 }
+
+const processReceiveCommands = (dataView: DataView): Map<Command, number> => {
+  const payloadSizes = new Map<Command, number>();
+  const payloadLen = dataView.getUint8(0);
+  for (let i = 1; i < payloadLen; i += 3) {
+    const commandByte = dataView.getUint8(i);
+    const payloadSize = dataView.getUint16(i + 1);
+    payloadSizes.set(commandByte, payloadSize);
+  }
+  return payloadSizes;
+}
+
+const isValidMessageSizes = (sizes: Map<Command, number>): boolean => {
+  const allCommands = Array.from(sizes.keys());
+  const expectedCommands = [Command.GAME_START, Command.GAME_END, Command.PRE_FRAME_UPDATE, Command.POST_FRAME_UPDATE];
+  for (const expected of expectedCommands) {
+    if (!allCommands.includes(expected)) {
+      return false;
+    }
+  }
+  return true;
+};
