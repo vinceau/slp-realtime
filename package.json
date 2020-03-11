@@ -46,7 +46,7 @@
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "rxjs": "^6.5.4",
-    "slp-parser-js": "^4.0.0",
+    "slp-parser-js": "^4.1.0",
     "tailstream": "^0.1.0"
   },
   "devDependencies": {
