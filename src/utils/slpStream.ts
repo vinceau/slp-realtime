@@ -187,39 +187,39 @@ export class SlpStream extends Writable {
     }
 
     switch (command) {
-      case Command.GAME_START:
-        // Filter out the empty players
-        let gameStart = parsedPayload as GameStartType;
-        // Set the players for this current game
-        this.players = gameStart.players.filter(p => p.type !== 3);
-        gameStart = {
-          ...gameStart,
-          players: this.players,
-        };
-        this.gameStartSource.next(gameStart);
-        break;
-      case Command.GAME_END:
-        this.gameEndSource.next(parsedPayload as GameEndType);
+    case Command.GAME_START:
+      // Filter out the empty players
+      let gameStart = parsedPayload as GameStartType;
+      // Set the players for this current game
+      this.players = gameStart.players.filter(p => p.type !== 3);
+      gameStart = {
+        ...gameStart,
+        players: this.players,
+      };
+      this.gameStartSource.next(gameStart);
+      break;
+    case Command.GAME_END:
+      this.gameEndSource.next(parsedPayload as GameEndType);
 
-        // Reset players
-        this.players = [];
-        this.payloadSizes = null;
+      // Reset players
+      this.players = [];
+      this.payloadSizes = null;
 
-        // Emit stream end if single game mode is on
-        if (this.settings.singleGameMode) {
-          this.streamEndedSource.next();
-        }
-        break;
-      case Command.PRE_FRAME_UPDATE:
-        this.preFrameUpdateSource.next(parsedPayload as PreFrameUpdateType);
-        this._handleFrameUpdate(command, parsedPayload as PreFrameUpdateType);
-        break;
-      case Command.POST_FRAME_UPDATE:
-        this.postFrameUpdateSource.next(parsedPayload as PostFrameUpdateType);
-        this._handleFrameUpdate(command, parsedPayload as PostFrameUpdateType);
-        break;
-      default:
-        break;
+      // Emit stream end if single game mode is on
+      if (this.settings.singleGameMode) {
+        this.streamEndedSource.next();
+      }
+      break;
+    case Command.PRE_FRAME_UPDATE:
+      this.preFrameUpdateSource.next(parsedPayload as PreFrameUpdateType);
+      this._handleFrameUpdate(command, parsedPayload as PreFrameUpdateType);
+      break;
+    case Command.POST_FRAME_UPDATE:
+      this.postFrameUpdateSource.next(parsedPayload as PostFrameUpdateType);
+      this._handleFrameUpdate(command, parsedPayload as PostFrameUpdateType);
+      break;
+    default:
+      break;
     }
     return payloadSize;
   }
