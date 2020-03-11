@@ -182,6 +182,9 @@ export class SlpStream extends Writable {
       payload = this._writeCommand(command, entirePayload, payloadSize);
       parsedPayload = parseMessage(command, payload);
     }
+    if (!parsedPayload) {
+      return payloadSize;
+    }
 
     switch (command) {
       case Command.GAME_START:
