@@ -25,6 +25,8 @@ describe("SlpStream", () => {
       const unsubGameEnd = slpStream.gameEnd$.subscribe(gameEndSpy);
       subscriptions.push(unsubGameStart, unsubGameEnd);
 
+      // Pipe the file twice
+      await pipeFileContents("slp/Game_20190810T162904.slp", slpStream, {end: false});
       await pipeFileContents("slp/Game_20190810T162904.slp", slpStream);
 
       expect(gameStartSpy.callCount).toEqual(1);
