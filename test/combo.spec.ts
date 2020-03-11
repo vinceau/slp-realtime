@@ -113,6 +113,26 @@ describe("combo calculation", () => {
     expect(conversionSpy.callCount).toEqual(7);
   });
 
+  it("can support latest patreon build files", async () => {
+    const realtime = new SlpRealTime();
+    const comboSpy = sinon.spy();
+
+    const filename = "slp/200306_2258_Falco_v_Fox_PS.slp";
+    filter.updateSettings({ minComboPercent: 50 });
+
+    const slpStream = new SlpStream({ singleGameMode: true });
+    realtime.setStream(slpStream);
+    subscriptions.push(
+      realtime.combo.conversion$.subscribe((payload) => {
+        if (filter.isCombo(payload.combo, payload.settings)) {
+          comboSpy();
+        }
+      })
+    );
+    await pipeFileContents(filename, slpStream);
+    expect(comboSpy.callCount).toEqual(2);
+  });
+
   describe("when filtering netplay names", () => {
     it("can correctly filter netplay names", async () => {
       const realtime = new SlpRealTime();
