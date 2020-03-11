@@ -3,6 +3,7 @@ import { Writable, WritableOptions } from "stream";
 import { Command, parseMessage, GameStartType, PreFrameUpdateType, PostFrameUpdateType, GameEndType, FrameEntryType } from "slp-parser-js";
 import { Subject } from "rxjs";
 import { PlayerType } from "slp-parser-js/dist/utils/slpReader";
+import { takeUntil } from "rxjs/operators";
 
 const NETWORK_MESSAGE = "HELO\0";
 
@@ -22,7 +23,6 @@ export type SlpStreamSettings = typeof defaultSettings;
  */
 export class SlpStream extends Writable {
   private settings: SlpStreamSettings;
-  private gameReady = false;
   private payloadSizes: Map<Command, number> | null = null;
   private previousBuffer: Uint8Array = Buffer.from([]);
   private playerFrame: FrameEntryType | null = null;
@@ -41,16 +41,33 @@ export class SlpStream extends Writable {
   private playerFrameSource = new Subject<FrameEntryType>()
   private followerFrameSource = new Subject<FrameEntryType>()
   private gameEndSource = new Subject<GameEndType>();
+  private streamEndedSource = new Subject<void>();
 
   // Observables
-  public messageSize$ = this.messageSizeSource.asObservable();
-  public rawCommand$ = this.rawCommandSource.asObservable();
-  public gameStart$ = this.gameStartSource.asObservable();
-  public preFrameUpdate$ = this.preFrameUpdateSource.asObservable();
-  public postFrameUpdate$ = this.postFrameUpdateSource.asObservable();
-  public playerFrame$ = this.playerFrameSource.asObservable()
-  public followerFrame$ = this.followerFrameSource.asObservable()
-  public gameEnd$ = this.gameEndSource.asObservable();
+  public messageSize$ = this.messageSizeSource.asObservable().pipe(
+    takeUntil(this.streamEndedSource),
+  );
+  public rawCommand$ = this.rawCommandSource.asObservable().pipe(
+    takeUntil(this.streamEndedSource),
+  );
+  public gameStart$ = this.gameStartSource.asObservable().pipe(
+    takeUntil(this.streamEndedSource),
+  );
+  public preFrameUpdate$ = this.preFrameUpdateSource.asObservable().pipe(
+    takeUntil(this.streamEndedSource),
+  );
+  public postFrameUpdate$ = this.postFrameUpdateSource.asObservable().pipe(
+    takeUntil(this.streamEndedSource),
+  );
+  public playerFrame$ = this.playerFrameSource.asObservable().pipe(
+    takeUntil(this.streamEndedSource),
+  );
+  public followerFrame$ = this.followerFrameSource.asObservable().pipe(
+    takeUntil(this.streamEndedSource),
+  );
+  public gameEnd$ = this.gameEndSource.asObservable().pipe(
+    takeUntil(this.streamEndedSource),
+  );
 
   /**
    *Creates an instance of SlpStream.
@@ -61,6 +78,10 @@ export class SlpStream extends Writable {
   public constructor(slpOptions?: Partial<SlpStreamSettings>, opts?: WritableOptions) {
     super(opts);
     this.settings = Object.assign({}, defaultSettings, slpOptions);
+    // Complete all the observables
+    this.on("finish", () => {
+      this.streamEndedSource.next();
+    })
   }
 
   public _write(newData: Buffer, encoding: string, callback: (error?: Error | null, data?: any) => void): void {
@@ -149,14 +170,7 @@ export class SlpStream extends Writable {
       this.messageSizeSource.next(this.payloadSizes);
       // Emit the raw command event
       this._writeCommand(command, entirePayload, payloadSize);
-      // Mark this game as ready to process data
-      this.gameReady = true;
       return payloadSize;
-    }
-
-    // If we're only processing a single game and the game is over then stop processing
-    if (this.settings.singleGameMode && !this.gameReady) {
-      return 0;
     }
 
     const payloadSize = this.payloadSizes ? this.payloadSizes.get(command) : 0;
@@ -170,33 +184,39 @@ export class SlpStream extends Writable {
     }
 
     switch (command) {
-    case Command.GAME_START:
-      // Filter out the empty players
-      let gameStart = parsedPayload as GameStartType;
-      // Set the players for this current game
-      this.players = gameStart.players.filter(p => p.type !== 3);
-      gameStart = {
-        ...gameStart,
-        players: this.players,
-      };
-      this.gameStartSource.next(gameStart);
-      break;
-    case Command.GAME_END:
-      this.gameReady = false;
-      this.gameEndSource.next(parsedPayload as GameEndType);
-      // Reset players
-      this.players = [];
-      break;
-    case Command.PRE_FRAME_UPDATE:
-      this.preFrameUpdateSource.next(parsedPayload as PreFrameUpdateType);
-      this._handleFrameUpdate(command, parsedPayload as PreFrameUpdateType);
-      break;
-    case Command.POST_FRAME_UPDATE:
-      this.postFrameUpdateSource.next(parsedPayload as PostFrameUpdateType);
-      this._handleFrameUpdate(command, parsedPayload as PostFrameUpdateType);
-      break;
-    default:
-      break;
+      case Command.GAME_START:
+        // Filter out the empty players
+        let gameStart = parsedPayload as GameStartType;
+        // Set the players for this current game
+        this.players = gameStart.players.filter(p => p.type !== 3);
+        gameStart = {
+          ...gameStart,
+          players: this.players,
+        };
+        this.gameStartSource.next(gameStart);
+        break;
+      case Command.GAME_END:
+        this.gameEndSource.next(parsedPayload as GameEndType);
+
+        // Reset players
+        this.players = [];
+        this.payloadSizes = null;
+
+        // Emit stream end if single game mode is on
+        if (this.settings.singleGameMode) {
+          this.streamEndedSource.next();
+        }
+        break;
+      case Command.PRE_FRAME_UPDATE:
+        this.preFrameUpdateSource.next(parsedPayload as PreFrameUpdateType);
+        this._handleFrameUpdate(command, parsedPayload as PreFrameUpdateType);
+        break;
+      case Command.POST_FRAME_UPDATE:
+        this.postFrameUpdateSource.next(parsedPayload as PostFrameUpdateType);
+        this._handleFrameUpdate(command, parsedPayload as PostFrameUpdateType);
+        break;
+      default:
+        break;
     }
     return payloadSize;
   }
