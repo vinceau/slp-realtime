@@ -3,6 +3,7 @@ import { StockEvents } from "../events/stocks";
 import { InputEvents } from "../events/inputs";
 import { ComboEvents } from "../events/combos";
 import { GameEvents } from "../events/game";
+import { ReplaySubject } from "rxjs";
 
 // Export the parameter types for events
 export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
@@ -16,10 +17,20 @@ export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from
  * @extends {EventEmitter}
  */
 export class SlpRealTime {
-  public game = new GameEvents();
-  public stock = new StockEvents();
-  public input = new InputEvents();
-  public combo = new ComboEvents();
+  private streamSource = new ReplaySubject<SlpStream>();
+  private stream$ = this.streamSource.asObservable();
+
+  public game: GameEvents;
+  public stock: StockEvents;
+  public input: InputEvents;
+  public combo: ComboEvents;
+
+  public constructor() {
+    this.game = new GameEvents(this.stream$);
+    this.stock = new StockEvents(this.stream$);
+    this.input = new InputEvents(this.stream$);
+    this.combo = new ComboEvents(this.stream$);
+  }
 
   /**
    * Starts listening to the provided stream for Slippi events
@@ -28,10 +39,7 @@ export class SlpRealTime {
    * @memberof SlpRealTime
    */
   public setStream(stream: SlpStream): void {
-    this.game.setStream(stream);
-    this.stock.setStream(stream);
-    this.input.setStream(stream);
-    this.combo.setStream(stream);
+    this.streamSource.next(stream);
   }
 
 }
