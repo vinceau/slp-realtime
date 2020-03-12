@@ -43,43 +43,40 @@ export class StockEvents {
    */
   public playerIndexDied(index: number): Observable<StockType> {
     return this.stream$.pipe(
-      switchMap(stream => stream.playerFrame$.pipe(
-        playerFilter(index),                  // We only care about certain player frames
-        map((f) => f.players[index].post),    // Only take the post frame data
-        withPreviousFrame(),                  // Get previous frame too
-        filter(([prevFrame, latestFrame]) =>
-          didLoseStock(latestFrame, prevFrame)     // We only care about the frames where we just died
-        ),
-        mapFramesToDeathStockType(this.playerIndexSpawn(index)), // Map the frame to StockType
-      ))
+      switchMap(stream => stream.playerFrame$),
+      playerFilter(index),                  // We only care about certain player frames
+      map((f) => f.players[index].post),    // Only take the post frame data
+      withPreviousFrame(),                  // Get previous frame too
+      filter(([prevFrame, latestFrame]) =>
+        didLoseStock(latestFrame, prevFrame)     // We only care about the frames where we just died
+      ),
+      mapFramesToDeathStockType(this.playerIndexSpawn(index)), // Map the frame to StockType
     )
   }
 
   public playerIndexPercentChange(index: number): Observable<PercentChange> {
     return this.stream$.pipe(
-      switchMap(stream => stream.playerFrame$.pipe(
-        playerFilter(index),
-        map(f => f.players[index].post.percent),
-        distinctUntilChanged(),
-        map(percent => ({
-          playerIndex: index,
-          percent,
-        })),
-      ))
+      switchMap(stream => stream.playerFrame$),
+      playerFilter(index),
+      map(f => f.players[index].post.percent),
+      distinctUntilChanged(),
+      map(percent => ({
+        playerIndex: index,
+        percent,
+      })),
     );
   }
 
   public playerIndexStockCountChange(index: number): Observable<StockCountChange> {
     return this.stream$.pipe(
-      switchMap(stream => stream.playerFrame$.pipe(
-        playerFilter(index),
-        map(f => f.players[index].post.stocksRemaining),
-        distinctUntilChanged(),
-        map(stocksRemaining => ({
-          playerIndex: index,
-          stocksRemaining,
-        })),
-      ))
+      switchMap(stream => stream.playerFrame$),
+      playerFilter(index),
+      map(f => f.players[index].post.stocksRemaining),
+      distinctUntilChanged(),
+      map(stocksRemaining => ({
+        playerIndex: index,
+        stocksRemaining,
+      })),
     );
   }
 
