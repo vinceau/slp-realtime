@@ -17,8 +17,8 @@ export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from
  * @extends {EventEmitter}
  */
 export class SlpRealTime {
-  private streamSource = new ReplaySubject<SlpStream>();
-  private stream$ = this.streamSource.asObservable();
+  private stream$ = new ReplaySubject<SlpStream>();
+  // private stream$ = this.streamSource.asObservable();
 
   public game: GameEvents;
   public stock: StockEvents;
@@ -39,7 +39,7 @@ export class SlpRealTime {
    * @memberof SlpRealTime
    */
   public setStream(stream: SlpStream): void {
-    this.streamSource.next(stream);
+    this.stream$.next(stream);
   }
 
 }
