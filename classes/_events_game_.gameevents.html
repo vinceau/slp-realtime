@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>GameEvents | @vinceau/slp-realtime - v2.0.2</title>
+	<title>GameEvents | @vinceau/slp-realtime - v2.1.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">@vinceau/slp-realtime - v2.0.2</a>
+					<a href="../index.html" class="title">@vinceau/slp-realtime - v2.1.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -80,6 +80,12 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_events_game_.gameevents.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_events_game_.gameevents.html#end_" class="tsd-kind-icon">end$</a></li>
@@ -87,13 +93,33 @@
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_events_game_.gameevents.html#winner_" class="tsd-kind-icon">winner$</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section ">
-							<h3>Methods</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_events_game_.gameevents.html#setstream" class="tsd-kind-icon">set<wbr>Stream</a></li>
-							</ul>
-						</section>
 					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Game<wbr>Events<span class="tsd-signature-symbol">(</span>stream<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><a href="_utils_slpstream_.slpstream.html" class="tsd-signature-type">SlpStream</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_events_game_.gameevents.html" class="tsd-signature-type">GameEvents</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/7887d84/src/events/game.ts#L12">src/events/game.ts:12</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>stream: <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><a href="_utils_slpstream_.slpstream.html" class="tsd-signature-type">SlpStream</a><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_events_game_.gameevents.html" class="tsd-signature-type">GameEvents</a></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -101,58 +127,32 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="end_" class="tsd-anchor"></a>
 					<h3>end$</h3>
-					<div class="tsd-signature tsd-kind-icon">end$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;this.endSource$.asObservable()</span></div>
+					<div class="tsd-signature tsd-kind-icon">end$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">GameEndType</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/a76efa2/src/events/game.ts#L15">src/events/game.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/7887d84/src/events/game.ts#L11">src/events/game.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="start_" class="tsd-anchor"></a>
 					<h3>start$</h3>
-					<div class="tsd-signature tsd-kind-icon">start$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;this.startSource$.asObservable()</span></div>
+					<div class="tsd-signature tsd-kind-icon">start$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">GameStartType</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/a76efa2/src/events/game.ts#L14">src/events/game.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/7887d84/src/events/game.ts#L10">src/events/game.ts:10</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="winner_" class="tsd-anchor"></a>
 					<h3>winner$</h3>
-					<div class="tsd-signature tsd-kind-icon">winner$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;this.winnerSource$.asObservable()</span></div>
+					<div class="tsd-signature tsd-kind-icon">winner$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/a76efa2/src/events/game.ts#L16">src/events/game.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/7887d84/src/events/game.ts#L12">src/events/game.ts:12</a></li>
 						</ul>
 					</aside>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="setstream" class="tsd-anchor"></a>
-					<h3>set<wbr>Stream</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Stream<span class="tsd-signature-symbol">(</span>stream<span class="tsd-signature-symbol">: </span><a href="_utils_slpstream_.slpstream.html" class="tsd-signature-type">SlpStream</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/a76efa2/src/events/game.ts#L18">src/events/game.ts:18</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>stream: <a href="_utils_slpstream_.slpstream.html" class="tsd-signature-type">SlpStream</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
 				</section>
 			</section>
 		</div>
@@ -174,6 +174,9 @@
 					<li class="current tsd-kind-class tsd-parent-kind-external-module">
 						<a href="_events_game_.gameevents.html" class="tsd-kind-icon">Game<wbr>Events</a>
 						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="_events_game_.gameevents.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_events_game_.gameevents.html#end_" class="tsd-kind-icon">end$</a>
 							</li>
@@ -182,9 +185,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_events_game_.gameevents.html#winner_" class="tsd-kind-icon">winner$</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_events_game_.gameevents.html#setstream" class="tsd-kind-icon">set<wbr>Stream</a>
 							</li>
 						</ul>
 					</li>
