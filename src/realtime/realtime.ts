@@ -1,8 +1,5 @@
 import { SlpStream } from "../utils/slpStream";
-import { StockEvents } from "../events/stocks";
-import { InputEvents } from "../events/inputs";
-import { ComboEvents } from "../events/combos";
-import { GameEvents } from "../events/game";
+import { StockEvents, InputEvents, ComboEvents, GameEvents } from "../events";
 import { ReplaySubject } from "rxjs";
 
 // Export the parameter types for events
@@ -18,7 +15,6 @@ export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from
  */
 export class SlpRealTime {
   private stream$ = new ReplaySubject<SlpStream>();
-  // private stream$ = this.streamSource.asObservable();
 
   public game: GameEvents;
   public stock: StockEvents;
