@@ -1,11 +1,13 @@
 import _ from "lodash";
 
-import { FrameEntryType, MoveLandedType, ComboType, PlayerIndexedType, PostFrameUpdateType,
-  isDamaged, isGrabbed, calcDamageTaken, isTeching, didLoseStock, Timers, isDown, isDead, getSinglesPlayerPermutationsFromSettings, GameStartType } from "slp-parser-js";
-import { Subject, Subscription, Observable } from "rxjs";
+import {
+  FrameEntryType, MoveLandedType, ComboType, PlayerIndexedType, PostFrameUpdateType,
+  isDamaged, isGrabbed, calcDamageTaken, isTeching, didLoseStock, Timers, isDown, isDead, getSinglesPlayerPermutationsFromSettings, GameStartType
+} from "slp-parser-js";
+import { Subject, Observable } from "rxjs";
 import { SlpStream } from "..";
 import { ComboEventPayload } from "../types";
-import { filter } from "rxjs/operators";
+import { filter, switchMap } from "rxjs/operators";
 import { withPreviousFrame } from "../operators/frames";
 import { ConversionEvents } from "./conversion";
 
@@ -24,10 +26,8 @@ interface ComboState {
 }
 
 export class ComboEvents {
-  private stream: SlpStream | null = null;
-  private subscriptions = new Array<Subscription>();
+  private stream$: Observable<SlpStream>;
 
-  private conversionEvents = new ConversionEvents();
   private settings: GameStartType;
   private playerPermutations = new Array<PlayerIndexedType>();
   private state = new Map<PlayerIndexedType, ComboState>();
@@ -40,7 +40,7 @@ export class ComboEvents {
   public start$ = this.comboStartSource.asObservable();
   public extend$ = this.comboExtendSource.asObservable();
   public end$ = this.comboEndSource.asObservable();
-  public conversion$: Observable<ComboEventPayload> = this.conversionEvents.end$;
+  public conversion$: Observable<ComboEventPayload>;
 
   private resetState(): void {
     this.playerPermutations = new Array<PlayerIndexedType>();
@@ -48,39 +48,37 @@ export class ComboEvents {
     this.combos = new Array<ComboType>();
   }
 
-  public setStream(stream: SlpStream): void {
-    // Clean up old subscriptions
-    this.subscriptions.forEach(s => s.unsubscribe());
-    this.stream = stream;
-    this.conversionEvents.setStream(stream);
+  public constructor(stream: Observable<SlpStream>) {
+    this.stream$ = stream;
+
+    const conversionEvents = new ConversionEvents(stream);
+    this.conversion$ = conversionEvents.end$;
 
     // Reset the state on game start
-    this.subscriptions.push(
-      this.stream.gameStart$.subscribe((settings) => {
-        this.resetState();
-        // We only care about the 2 player games
-        if (settings.players.length === 2) {
-          const perms = getSinglesPlayerPermutationsFromSettings(settings);
-          this.setPlayerPermutations(perms);
-          this.settings = settings;
-        }
-      })
-    );
+    this.stream$.pipe(
+      switchMap(s => s.gameStart$),
+    ).subscribe((settings) => {
+      this.resetState();
+      // We only care about the 2 player games
+      if (settings.players.length === 2) {
+        const perms = getSinglesPlayerPermutationsFromSettings(settings);
+        this.setPlayerPermutations(perms);
+        this.settings = settings;
+      }
+    });
 
     // Handle the frame processing
-    this.subscriptions.push(
-      // Pipe the frames onwards
-      this.stream.playerFrame$.pipe(
-        // We only want the frames for two player games
-        filter(frame => {
-          const players = Object.keys(frame.players);
-          return players.length === 2;
-        }),
-        withPreviousFrame(),
-      ).subscribe(([prevFrame, latestFrame]) => {
-        this.processFrame(prevFrame, latestFrame);
+    this.stream$.pipe(
+      switchMap(s => s.playerFrame$),
+      // We only want the frames for two player games
+      filter(frame => {
+        const players = Object.keys(frame.players);
+        return players.length === 2;
       }),
-    );
+      withPreviousFrame(),
+    ).subscribe(([prevFrame, latestFrame]) => {
+      this.processFrame(prevFrame, latestFrame);
+    });
   }
 
   private setPlayerPermutations(playerPermutations: PlayerIndexedType[]): void {

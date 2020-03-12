@@ -1,9 +1,9 @@
 import _ from "lodash";
 
 import { ConversionType, MoveLandedType, PlayerIndexedType, FrameEntryType, PostFrameUpdateType, isDamaged, isGrabbed, calcDamageTaken, isInControl, didLoseStock, Timers, GameStartType, getSinglesPlayerPermutationsFromSettings } from "slp-parser-js";
-import { Subscription, Subject } from "rxjs";
+import { Subject, Observable } from "rxjs";
 import { SlpStream } from "../utils/slpStream";
-import { filter } from "rxjs/operators";
+import { filter, switchMap } from "rxjs/operators";
 import { withPreviousFrame } from "../operators/frames";
 
 interface PlayerConversionState {
@@ -13,28 +13,18 @@ interface PlayerConversionState {
   lastHitAnimation: number | null;
 }
 
-// interface MetadataType {
-//   lastEndFrameByOppIdx: {
-//     [oppIdx: number]: number;
-//   };
-// }
-
 interface ConversionEventPayload {
   combo: ConversionType;
   settings: GameStartType;
 };
 
 export class ConversionEvents {
-  private stream: SlpStream | null = null;
-  private subscriptions = new Array<Subscription>();
+  private stream$: Observable<SlpStream>;
   private settings: GameStartType;
 
   private playerPermutations = new Array<PlayerIndexedType>();
   private conversions = new Array<ConversionType>();
   private state = new Map<PlayerIndexedType, PlayerConversionState>();
-  // private metadata: MetadataType = {
-  //   lastEndFrameByOppIdx: {},
-  // };
 
   private conversionSource = new Subject<ConversionEventPayload>();
   public end$ = this.conversionSource.asObservable();
@@ -43,45 +33,37 @@ export class ConversionEvents {
     this.playerPermutations = new Array<PlayerIndexedType>();
     this.state = new Map<PlayerIndexedType, PlayerConversionState>();
     this.conversions = new Array<ConversionType>();
-    // this.metadata = {
-    //   lastEndFrameByOppIdx: {},
-    // };
   }
 
-  public setStream(stream: SlpStream): void {
-    // Clean up old subscriptions
-    this.subscriptions.forEach(s => s.unsubscribe());
-    this.stream = stream;
+  public constructor(stream: Observable<SlpStream>) {
+    this.stream$ = stream;
 
     // Reset the state on game start
-    this.subscriptions.push(
-      this.stream.gameStart$.subscribe((settings) => {
-        this.resetState();
-        // We only care about the 2 player games
-        if (settings.players.length === 2) {
-          const perms = getSinglesPlayerPermutationsFromSettings(settings);
-          this.setPlayerPermutations(perms);
-          this.settings = settings;
-        }
-      })
-    );
+    this.stream$.pipe(
+      switchMap(s => s.gameStart$),
+    ).subscribe((settings) => {
+      this.resetState();
+      // We only care about the 2 player games
+      if (settings.players.length === 2) {
+        const perms = getSinglesPlayerPermutationsFromSettings(settings);
+        this.setPlayerPermutations(perms);
+        this.settings = settings;
+      }
+    });
 
     // Handle the frame processing
-    this.subscriptions.push(
-      // Pipe the frames onwards
-      this.stream.playerFrame$.pipe(
-        // We only want the frames for two player games
-        filter(frame => {
-          const players = Object.keys(frame.players);
-          return players.length === 2;
-        }),
-        withPreviousFrame(),
-      ).subscribe(([prevFrame, latestFrame]) => {
-        this.processFrame(prevFrame, latestFrame);
+    this.stream$.pipe(
+      switchMap(s => s.playerFrame$),
+      // We only want the frames for two player games
+      filter(frame => {
+        const players = Object.keys(frame.players);
+        return players.length === 2;
       }),
-    );
+      withPreviousFrame(),
+    ).subscribe(([prevFrame, latestFrame]) => {
+      this.processFrame(prevFrame, latestFrame);
+    });
   }
-
 
   public setPlayerPermutations(playerPermutations: PlayerIndexedType[]): void {
     this.playerPermutations = playerPermutations;
