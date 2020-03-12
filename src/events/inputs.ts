@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { playerFilter } from "../operators/frames";
 import { ControllerInput } from "../types";
 import { generateControllerBitmask } from "../utils";
+import { forAllPlayerIndices } from "../utils/helpers";
 
 // Export the parameter types for events
 export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
@@ -13,6 +14,10 @@ export class InputEvents {
 
   public constructor(stream: Observable<SlpStream>) {
     this.stream$ = stream;
+  }
+
+  public buttonCombo(buttons: ControllerInput[], duration?: number): Observable<number> {
+    return forAllPlayerIndices(i => this.playerIndexButtonCombo(i, buttons, duration));
   }
 
   /**
