@@ -10,9 +10,9 @@ export enum GameEvent {
 }
 
 export const readGameStartEvents = (events: EventConfig[], gameStart$: Observable<GameStartType>): Observable<EventEmit> => {
-  let base$: Observable<GameStartType> = gameStart$;
   // Handle game start events
   const observables: Observable<EventEmit>[] = events.filter(event => event.type === GameEvent.GAME_START).map(event => {
+    let base$: Observable<GameStartType> = gameStart$;
     if (event.filter) {
       // Handle num players filter
       for (const [key, value] of Object.entries(event.filter)) {

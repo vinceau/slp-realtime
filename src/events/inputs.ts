@@ -2,9 +2,11 @@ import { SlpStream } from "../utils/slpStream";
 import { map, scan, filter, mapTo, switchMap } from "rxjs/operators";
 import { Observable } from "rxjs";
 import { playerFilter } from "../operators/frames";
-import { ControllerInput } from "../types";
-import { generateControllerBitmask } from "../utils";
+import { Input, InputButtonCombo } from "../types";
+import { generateInputBitmask } from "../utils";
 import { forAllPlayerIndices } from "../utils/helpers";
+import { EventConfig, EventEmit } from "../manager";
+import { readButtonComboEvents } from "../filters/inputs";
 
 // Export the parameter types for events
 export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
@@ -16,7 +18,7 @@ export class InputEvents {
     this.stream$ = stream;
   }
 
-  public buttonCombo(buttons: ControllerInput[], duration?: number): Observable<number> {
+  public buttonCombo(buttons: Input[], duration?: number): Observable<InputButtonCombo> {
     return forAllPlayerIndices(i => this.playerIndexButtonCombo(i, buttons, duration));
   }
 
@@ -29,8 +31,8 @@ export class InputEvents {
    * @returns {Observable<number>}
    * @memberof InputEvents
    */
-  public playerIndexButtonCombo(index: number, buttons: ControllerInput[], duration = 1): Observable<number> {
-    const controlBitMask = generateControllerBitmask(...buttons);
+  public playerIndexButtonCombo(index: number, buttons: Input[], duration = 1): Observable<InputButtonCombo> {
+    const controlBitMask = generateInputBitmask(...buttons);
     return this.stream$.pipe(
       switchMap(stream => stream.playerFrame$),
       playerFilter(index),
@@ -50,8 +52,18 @@ export class InputEvents {
       // Filter to be the exact frame when we pressed the combination for sufficient frames
       filter(n => n === duration),
       // Return the player index which triggered the button press
-      mapTo(index),
+      mapTo({
+        playerIndex: index,
+        combo: buttons,
+        duration,
+      }),
     );
+  }
+
+  public readConfig(events: EventConfig[]): Observable<EventEmit> {
+    return readButtonComboEvents(events, (buttons, duration) => {
+      return this.buttonCombo(buttons, duration);
+    });
   }
 
 }
