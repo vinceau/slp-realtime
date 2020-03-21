@@ -1,6 +1,8 @@
-import { SlpStream } from "../utils/slpStream";
-import { map, scan, filter, mapTo, switchMap } from "rxjs/operators";
 import { Observable } from "rxjs";
+import { map, scan, filter, switchMap } from "rxjs/operators";
+import { Frames } from "slp-parser-js";
+
+import { SlpStream } from "../utils/slpStream";
 import { playerFilter } from "../operators/frames";
 import { Input, InputButtonCombo } from "../types";
 import { generateInputBitmask } from "../utils";
@@ -34,29 +36,43 @@ export class InputEvents {
   public playerIndexButtonCombo(index: number, buttons: Input[], duration = 1): Observable<InputButtonCombo> {
     const controlBitMask = generateInputBitmask(...buttons);
     return this.stream$.pipe(
+      // Get the player frames
       switchMap(stream => stream.playerFrame$),
+      // Filter for the specific player
       playerFilter(index),
       // Map the frames to whether the button combination was pressed or not
-      map(f => {
+      // while tracking the frame number
+      map((f): {
+        frame: number;
+        buttonPressed: boolean;
+      } => {
         const buttonCombo = f.players[index].pre.physicalButtons;
         const buttonComboPressed = (buttonCombo & controlBitMask) === controlBitMask;
-        return buttonComboPressed;
+        return {
+          frame: f.frame,
+          buttonPressed: buttonComboPressed,
+        };
       }),
       // Count the number of consecutively pressed frames
-      scan((acc, pressed) => {
-        if (pressed) {
-          return acc + 1;
-        }
-        return 0;
-      }, 0),
+      scan((acc, data) => {
+        const count = data.buttonPressed ? acc.count + 1 : 0;
+        return {
+          count,
+          frame: data.frame,
+        };
+      }, {
+        count: 0,
+        frame: Frames.FIRST,
+      }),
       // Filter to be the exact frame when we pressed the combination for sufficient frames
-      filter(n => n === duration),
+      filter(n => n.count === duration),
       // Return the player index which triggered the button press
-      mapTo({
+      map(data => ({
         playerIndex: index,
         combo: buttons,
+        frame: data.frame,
         duration,
-      }),
+      })),
     );
   }
 
