@@ -1,7 +1,8 @@
 import { Observable, merge } from "rxjs";
 import { InputButtonCombo, Input } from "../types";
 import { EventEmit, EventConfig } from "../manager/config";
-import { filter, map } from "rxjs/operators";
+import { map } from "rxjs/operators";
+import { playerIndexFilter } from "../operators";
 
 export enum InputEvent {
   BUTTON_COMBO = "button-combo",
@@ -27,10 +28,7 @@ export const readButtonComboEvents = (
       for (const [key, value] of Object.entries(event.filter)) {
         switch (key) {
         case "playerIndex":
-          const playerIndex = value as number;
-          base$ = base$.pipe(
-            filter(payload => payload.playerIndex === playerIndex),
-          );
+          base$ = base$.pipe(playerIndexFilter(value));
           break;
         }
       }

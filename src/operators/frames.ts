@@ -15,6 +15,15 @@ export function playerFilter(index: number): MonoTypeOperatorFunction<FrameEntry
 }
 
 /**
+ * Filter the payloads that belong to the player {playerIndex}.
+ */
+export function playerIndexFilter<T extends { playerIndex: number }> (playerIndex: number): MonoTypeOperatorFunction<T> {
+  return (source: Observable<T>): Observable<T> => source.pipe(
+    filter(payload => payload.playerIndex === playerIndex),
+  );
+}
+
+/**
  * Return the previous frame of the game and the current frame
  */
 export function withPreviousFrame<T extends { frame: number }>(): OperatorFunction<T, [T, T]> {
