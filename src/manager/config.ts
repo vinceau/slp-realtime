@@ -1,7 +1,7 @@
 export interface EventConfig {
   id: string;
   type: string;
-  filter?: any;
+  filter?: Record<string, any>;
 }
 
 export interface EventManagerConfig {
