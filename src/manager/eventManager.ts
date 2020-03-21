@@ -23,6 +23,7 @@ export class EventManager {
         const observables = new Array<Observable<EventEmit>>();
         observables.push(this.realtime.game.readConfig(config.events));
         observables.push(this.realtime.input.readConfig(config.events));
+        observables.push(this.realtime.stock.readConfig(config.events));
         return merge(...observables);
       }),
     );
