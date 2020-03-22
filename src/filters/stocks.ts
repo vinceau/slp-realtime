@@ -19,12 +19,14 @@ export const readPlayerSpawnEvents = (
     .map(event => {
       let base$ = playerSpawn$;
 
-      // Handle num players filter
-      for (const [key, value] of Object.entries(event.filter)) {
-        switch (key) {
-        case "playerIndex":
-          base$ = base$.pipe(playerFilter(value, eventConfig.variables));
-          break;
+      if (event.filter) {
+        // Handle num players filter
+        for (const [key, value] of Object.entries(event.filter)) {
+          switch (key) {
+          case "playerIndex":
+            base$ = base$.pipe(playerFilter(value, eventConfig.variables));
+            break;
+          }
         }
       }
 
@@ -48,12 +50,14 @@ export const readPlayerDiedEvents = (
     .map(event => {
       let base$ = playerDied$;
 
-      // Handle num players filter
-      for (const [key, value] of Object.entries(event.filter)) {
-        switch (key) {
-        case "playerIndex":
-          base$ = base$.pipe(playerFilter(value, eventConfig.variables));
-          break;
+      if (event.filter) {
+        // Handle num players filter
+        for (const [key, value] of Object.entries(event.filter)) {
+          switch (key) {
+          case "playerIndex":
+            base$ = base$.pipe(playerFilter(value, eventConfig.variables));
+            break;
+          }
         }
       }
 
