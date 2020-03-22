@@ -3,7 +3,7 @@ import { map, scan, filter, switchMap } from "rxjs/operators";
 import { Frames } from "slp-parser-js";
 
 import { SlpStream } from "../utils/slpStream";
-import { playerFilter } from "../operators/frames";
+import { playerFrameFilter } from "../operators/frames";
 import { Input, InputButtonCombo } from "../types";
 import { generateInputBitmask } from "../utils";
 import { forAllPlayerIndices } from "../utils/helpers";
@@ -40,7 +40,7 @@ export class InputEvents implements EventsContainer {
       // Get the player frames
       switchMap(stream => stream.playerFrame$),
       // Filter for the specific player
-      playerFilter(index),
+      playerFrameFilter(index),
       // Map the frames to whether the button combination was pressed or not
       // while tracking the frame number
       map((f): {
@@ -78,7 +78,7 @@ export class InputEvents implements EventsContainer {
   }
 
   public readConfig(config: EventManagerConfig): Observable<EventEmit> {
-    return readButtonComboEvents(config.events, (buttons, duration) => {
+    return readButtonComboEvents(config, (buttons, duration) => {
       return this.buttonCombo(buttons, duration);
     });
   }

@@ -5,21 +5,12 @@ import { filter, pairwise } from "rxjs/operators";
 /**
  * Filter the frames to only those that belong to the player {index}.
  */
-export function playerFilter(index: number): MonoTypeOperatorFunction<FrameEntryType> {
+export function playerFrameFilter(index: number): MonoTypeOperatorFunction<FrameEntryType> {
   return (source: Observable<FrameEntryType>): Observable<FrameEntryType> => source.pipe(
     filter((frame) => {
       const playerIndices = Object.keys(frame.players);
       return playerIndices.includes(index.toString());
     }),
-  );
-}
-
-/**
- * Filter the payloads that belong to the player {playerIndex}.
- */
-export function playerIndexFilter<T extends { playerIndex: number }> (playerIndex: number): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>): Observable<T> => source.pipe(
-    filter(payload => payload.playerIndex === playerIndex),
   );
 }
 

@@ -2,7 +2,6 @@ import { Observable, merge } from "rxjs";
 import { StockType } from "../types";
 import { EventEmit, EventManagerConfig } from "../manager/config";
 import { map } from "rxjs/operators";
-import { playerIndexFilter } from "../operators";
 import { playerFilter } from "../operators/player";
 
 export enum StockEvent {
@@ -24,7 +23,7 @@ export const readPlayerSpawnEvents = (
       for (const [key, value] of Object.entries(event.filter)) {
         switch (key) {
         case "playerIndex":
-          base$ = base$.pipe(playerIndexFilter(value));
+          base$ = base$.pipe(playerFilter(value, eventConfig.variables));
           break;
         }
       }

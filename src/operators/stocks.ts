@@ -1,7 +1,7 @@
 import { GameStartType, PostFrameUpdateType, StockType, FrameEntryType, isDead } from "slp-parser-js";
 import { Observable, OperatorFunction, MonoTypeOperatorFunction, merge } from "rxjs";
 import { withLatestFrom, map, filter } from "rxjs/operators";
-import { filterOnlyFirstFrame, withPreviousFrame, playerFilter } from "./frames";
+import { filterOnlyFirstFrame, withPreviousFrame, playerFrameFilter } from "./frames";
 
 
 /**
@@ -10,12 +10,12 @@ import { filterOnlyFirstFrame, withPreviousFrame, playerFilter } from "./frames"
 export function filterJustSpawned(playerIndex: number): MonoTypeOperatorFunction<FrameEntryType> {
   return (source$): Observable<FrameEntryType> => {
     const initialSpawn$ = source$.pipe(
-      playerFilter(playerIndex),
+      playerFrameFilter(playerIndex),
       filterOnlyFirstFrame(),
     );
 
     const normalSpawns$ = source$.pipe(
-      playerFilter(playerIndex),
+      playerFrameFilter(playerIndex),
       withPreviousFrame(),                  // Get previous frame too
       filter(([prevFrame, latestFrame]) => {
         const prevActionState = prevFrame.players[playerIndex].post.actionStateId;

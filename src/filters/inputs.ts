@@ -1,19 +1,19 @@
 import { Observable, merge } from "rxjs";
 import { InputButtonCombo, Input } from "../types";
-import { EventEmit, EventConfig } from "../manager/config";
+import { EventEmit, EventManagerConfig } from "../manager/config";
 import { map } from "rxjs/operators";
-import { playerIndexFilter } from "../operators";
+import { playerFilter } from "../operators";
 
 export enum InputEvent {
   BUTTON_COMBO = "button-combo",
 }
 
 export const readButtonComboEvents = (
-  events: EventConfig[],
+  eventConfig: EventManagerConfig,
   playerInput: (buttons: Input[], duration?: number) => Observable<InputButtonCombo>,
 ): Observable<EventEmit> => {
   // Handle game start events
-  const observables: Observable<EventEmit>[] = events
+  const observables: Observable<EventEmit>[] = eventConfig.events
     .filter(event => event.type === InputEvent.BUTTON_COMBO)
     .filter(event => event.filter && event.filter.combo && event.filter.combo.length > 0)  // We must have a valid filter
     .map(event => {
@@ -28,7 +28,7 @@ export const readButtonComboEvents = (
       for (const [key, value] of Object.entries(event.filter)) {
         switch (key) {
         case "playerIndex":
-          base$ = base$.pipe(playerIndexFilter(value));
+          base$ = base$.pipe(playerFilter(value, eventConfig.variables));
           break;
         }
       }
