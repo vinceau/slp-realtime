@@ -6,7 +6,7 @@ import { playerFilter, withPreviousFrame } from "../operators/frames";
 import { mapFrameToSpawnStockType, mapFramesToDeathStockType, filterJustSpawned } from "../operators/stocks";
 import { PercentChange, StockCountChange } from "../types";
 import { forAllPlayerIndices } from "../utils/helpers";
-import { EventConfig, EventEmit } from "../manager";
+import { EventEmit, EventManagerConfig } from "../manager";
 import { readPlayerSpawnEvents, readPlayerDiedEvents } from "../filters/stocks";
 
 export class StockEvents {
@@ -82,10 +82,10 @@ export class StockEvents {
     );
   }
 
-  public readConfig(events: EventConfig[]): Observable<EventEmit> {
+  public readConfig(config: EventManagerConfig): Observable<EventEmit> {
     return merge(
-      readPlayerSpawnEvents(events, this.playerSpawn$),
-      readPlayerDiedEvents(events, this.playerDied$),
+      readPlayerSpawnEvents(config, this.playerSpawn$),
+      readPlayerDiedEvents(config, this.playerDied$),
     );
   }
 

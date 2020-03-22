@@ -4,7 +4,12 @@ export interface EventConfig {
   filter?: Record<string, any>;
 }
 
+export type EventManagerVariables = Partial<{
+  playerIndex: number;
+}>;
+
 export interface EventManagerConfig {
+  variables?: EventManagerVariables;
   events: EventConfig[];
 }
 

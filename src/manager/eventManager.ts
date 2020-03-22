@@ -21,9 +21,9 @@ export class EventManager {
     return this.config$.pipe(
       switchMap(config => {
         const observables = new Array<Observable<EventEmit>>();
-        observables.push(this.realtime.game.readConfig(config.events));
-        observables.push(this.realtime.input.readConfig(config.events));
-        observables.push(this.realtime.stock.readConfig(config.events));
+        observables.push(this.realtime.game.readConfig(config));
+        observables.push(this.realtime.input.readConfig(config));
+        observables.push(this.realtime.stock.readConfig(config));
         return merge(...observables);
       }),
     );

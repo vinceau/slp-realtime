@@ -1,8 +1,9 @@
 import { Observable, merge } from "rxjs";
 import { StockType } from "../types";
-import { EventEmit, EventConfig } from "../manager/config";
+import { EventEmit, EventManagerConfig } from "../manager/config";
 import { map } from "rxjs/operators";
 import { playerIndexFilter } from "../operators";
+import { playerFilter } from "../operators/player";
 
 export enum StockEvent {
   PLAYER_SPAWN = "player-spawn",
@@ -10,11 +11,11 @@ export enum StockEvent {
 }
 
 export const readPlayerSpawnEvents = (
-  events: EventConfig[],
+  eventConfig: EventManagerConfig,
   playerSpawn$: Observable<StockType>,
 ): Observable<EventEmit> => {
   // Handle game start events
-  const observables: Observable<EventEmit>[] = events
+  const observables: Observable<EventEmit>[] = eventConfig.events
     .filter(event => event.type === StockEvent.PLAYER_SPAWN)
     .map(event => {
       let base$ = playerSpawn$;
@@ -39,11 +40,11 @@ export const readPlayerSpawnEvents = (
 }
 
 export const readPlayerDiedEvents = (
-  events: EventConfig[],
+  eventConfig: EventManagerConfig,
   playerDied$: Observable<StockType>,
 ): Observable<EventEmit> => {
   // Handle game end events
-  const observables: Observable<EventEmit>[] = events
+  const observables: Observable<EventEmit>[] = eventConfig.events
     .filter(event => event.type === StockEvent.PLAYER_DIED)
     .map(event => {
       let base$ = playerDied$;
@@ -52,7 +53,7 @@ export const readPlayerDiedEvents = (
       for (const [key, value] of Object.entries(event.filter)) {
         switch (key) {
         case "playerIndex":
-          base$ = base$.pipe(playerIndexFilter(value));
+          base$ = base$.pipe(playerFilter(value, eventConfig.variables));
           break;
         }
       }
