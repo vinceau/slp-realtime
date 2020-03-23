@@ -7,14 +7,11 @@ import { playerFrameFilter } from "../operators/frames";
 import { Input, InputButtonCombo } from "../types";
 import { generateInputBitmask } from "../utils";
 import { forAllPlayerIndices } from "../utils/helpers";
-import { EventEmit, EventManagerConfig } from "../manager";
-import { readButtonComboEvents } from "../filters/inputs";
-import { EventsContainer } from "./types";
 
 // Export the parameter types for events
 export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
 
-export class InputEvents implements EventsContainer {
+export class InputEvents {
   private stream$: Observable<SlpStream>;
 
   public constructor(stream: Observable<SlpStream>) {
@@ -76,11 +73,4 @@ export class InputEvents implements EventsContainer {
       })),
     );
   }
-
-  public readConfig(config: EventManagerConfig): Observable<EventEmit> {
-    return readButtonComboEvents(config, (buttons, duration) => {
-      return this.buttonCombo(buttons, duration);
-    });
-  }
-
 }

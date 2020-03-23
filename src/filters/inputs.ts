@@ -3,12 +3,17 @@ import { InputButtonCombo, Input } from "../types";
 import { EventEmit, EventManagerConfig } from "../manager/config";
 import { map } from "rxjs/operators";
 import { playerFilter } from "../operators";
+import { InputEvents } from "../events/inputs";
 
 export enum InputEvent {
   BUTTON_COMBO = "button-combo",
 }
 
-export const readButtonComboEvents = (
+export const readInputsConfig = (inputs: InputEvents, config: EventManagerConfig): Observable<EventEmit> => {
+  return readButtonComboEvents(config, (buttons, duration) => inputs.buttonCombo(buttons, duration));
+}
+
+const readButtonComboEvents = (
   eventConfig: EventManagerConfig,
   playerInput: (buttons: Input[], duration?: number) => Observable<InputButtonCombo>,
 ): Observable<EventEmit> => {

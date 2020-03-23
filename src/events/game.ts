@@ -1,13 +1,10 @@
 import { GameStartType, GameEndType } from "slp-parser-js";
-import { Observable, merge } from "rxjs";
+import { Observable } from "rxjs";
 import { SlpStream } from "../utils/slpStream";
 import { withLatestFrom, map, switchMap } from "rxjs/operators";
 import { findWinner } from "../utils/helpers";
-import { EventEmit, EventManagerConfig } from "../manager/config";
-import { readGameStartEvents, readGameEndEvents } from "../filters/game";
-import { EventsContainer } from "./types";
 
-export class GameEvents implements EventsContainer {
+export class GameEvents {
   private stream$: Observable<SlpStream>;
 
   public start$: Observable<GameStartType>;
@@ -29,13 +26,6 @@ export class GameEvents implements EventsContainer {
         withLatestFrom(s.playerFrame$),
         map(([_, playerFrame]) => findWinner(playerFrame)),
       )),
-    );
-  }
-
-  public readConfig(config: EventManagerConfig): Observable<EventEmit> {
-    return merge(
-      readGameStartEvents(config.events, this.start$),
-      readGameEndEvents(config.events, this.end$),
     );
   }
 }

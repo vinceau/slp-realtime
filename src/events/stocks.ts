@@ -1,13 +1,11 @@
 import { StockType, didLoseStock } from "slp-parser-js";
 import { SlpStream } from "../utils/slpStream";
 import { map, filter, distinctUntilChanged, switchMap } from "rxjs/operators";
-import { Observable, merge } from "rxjs";
+import { Observable } from "rxjs";
 import { playerFrameFilter, withPreviousFrame } from "../operators/frames";
 import { mapFrameToSpawnStockType, mapFramesToDeathStockType, filterJustSpawned } from "../operators/stocks";
 import { PercentChange, StockCountChange } from "../types";
 import { forAllPlayerIndices } from "../utils/helpers";
-import { EventEmit, EventManagerConfig } from "../manager";
-import { readPlayerSpawnEvents, readPlayerDiedEvents } from "../filters/stocks";
 
 export class StockEvents {
   private stream$: Observable<SlpStream>;
@@ -79,13 +77,6 @@ export class StockEvents {
         playerIndex: index,
         stocksRemaining,
       })),
-    );
-  }
-
-  public readConfig(config: EventManagerConfig): Observable<EventEmit> {
-    return merge(
-      readPlayerSpawnEvents(config, this.playerSpawn$),
-      readPlayerDiedEvents(config, this.playerDied$),
     );
   }
 
