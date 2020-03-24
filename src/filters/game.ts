@@ -1,9 +1,10 @@
 import { Observable, merge } from "rxjs";
 import { GameStartType, GameEndPayload } from "../types";
-import { EventEmit, EventConfig, EventManagerConfig } from "../manager/config";
+import { EventEmit, EventManagerConfig } from "../manager/config";
 import { filter, map } from "rxjs/operators";
 import { mapGameStartToContext } from "../operators/game";
 import { GameEvents } from "../events";
+import { playerFilterMatches } from "../operators/player";
 
 export enum GameEvent {
   GAME_START = "game-start",
@@ -12,14 +13,14 @@ export enum GameEvent {
 
 export const readGameConfig = (game: GameEvents, config: EventManagerConfig): Observable<EventEmit> => {
   return merge(
-    readGameStartEvents(config.events, game.start$),
-    readGameEndEvents(config.events, game.end$),
+    readGameStartEvents(config, game.start$),
+    readGameEndEvents(config, game.end$),
   );
 }
 
-const readGameStartEvents = (events: EventConfig[], gameStart$: Observable<GameStartType>): Observable<EventEmit> => {
+const readGameStartEvents = (config: EventManagerConfig, gameStart$: Observable<GameStartType>): Observable<EventEmit> => {
   // Handle game start events
-  const observables: Observable<EventEmit>[] = events.filter(event => event.type === GameEvent.GAME_START).map(event => {
+  const observables: Observable<EventEmit>[] = config.events.filter(event => event.type === GameEvent.GAME_START).map(event => {
     let base$: Observable<GameStartType> = gameStart$;
     if (event.filter) {
       // Handle num players filter
@@ -51,10 +52,10 @@ const readGameStartEvents = (events: EventConfig[], gameStart$: Observable<GameS
   return merge(...observables);
 }
 
-const readGameEndEvents = (events: EventConfig[], gameEnd$: Observable<GameEndPayload>): Observable<EventEmit> => {
+const readGameEndEvents = (config: EventManagerConfig, gameEnd$: Observable<GameEndPayload>): Observable<EventEmit> => {
   let base$: Observable<GameEndPayload> = gameEnd$;
   // Handle game end events
-  const observables: Observable<EventEmit>[] = events.filter(event => event.type === GameEvent.GAME_END).map(event => {
+  const observables: Observable<EventEmit>[] = config.events.filter(event => event.type === GameEvent.GAME_END).map(event => {
     if (event.filter) {
     // Handle end method filter
       for (const [key, value] of Object.entries(event.filter)) {
@@ -63,6 +64,11 @@ const readGameEndEvents = (events: EventConfig[], gameEnd$: Observable<GameEndPa
           const method = value as number;
           base$ = base$.pipe(
             filter(end => end.gameEndMethod === method),
+          );
+          break;
+        case "winnerPlayerIndex":
+          base$ = base$.pipe(
+            filter(payload => playerFilterMatches(payload.winnerPlayerIndex, value, config.variables)),
           );
           break;
         }
