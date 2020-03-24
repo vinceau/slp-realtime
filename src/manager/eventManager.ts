@@ -2,7 +2,7 @@ import { SlpRealTime } from "../realtime";
 import { ReplaySubject, Observable, merge } from "rxjs";
 import { EventManagerConfig, EventEmit } from "./config";
 import { switchMap } from "rxjs/operators";
-import { readGameConfig, readInputsConfig, readStocksConfig } from "../filters";
+import { readGameConfig, readInputsConfig, readStocksConfig, readComboConfig } from "../filters";
 
 export class EventManager {
   public realtime: SlpRealTime;
@@ -21,11 +21,12 @@ export class EventManager {
   private setupSubscriptions(): Observable<EventEmit> {
     return this.config$.pipe(
       switchMap(config => {
-        const observables = new Array<Observable<EventEmit>>();
-        observables.push(readGameConfig(this.realtime.game, config));
-        observables.push(readInputsConfig(this.realtime.input, config));
-        observables.push(readStocksConfig(this.realtime.stock, config));
-        return merge(...observables);
+        return merge(
+          readGameConfig(this.realtime.game, config),
+          readInputsConfig(this.realtime.input, config),
+          readStocksConfig(this.realtime.stock, config),
+          readComboConfig(this.realtime.combo, config),
+        );
       }),
     );
   }

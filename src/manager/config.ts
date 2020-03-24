@@ -6,7 +6,7 @@ export interface EventConfig {
 
 export type EventManagerVariables = Partial<{
   playerIndex: number;
-}>;
+}> & Record<string, any>;
 
 export interface EventManagerConfig {
   variables?: EventManagerVariables;
