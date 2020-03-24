@@ -1,4 +1,4 @@
-import { ComboType, GameStartType } from "slp-parser-js";
+import { ComboType, GameStartType, GameEndType } from "slp-parser-js";
 
 // Export the parameter types for events
 export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
@@ -48,4 +48,8 @@ export interface InputButtonCombo {
   playerIndex: number;
   combo:  Input[];
   duration: number;
+}
+
+export interface GameEndPayload extends GameEndType {
+  winnerPlayerIndex: number;
 }

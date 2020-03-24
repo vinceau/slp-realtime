@@ -1,8 +1,8 @@
 import { Observable, merge } from "rxjs";
-import { GameStartType, GameEndType } from "../types";
+import { GameStartType, GameEndPayload } from "../types";
 import { EventEmit, EventConfig, EventManagerConfig } from "../manager/config";
 import { filter, map } from "rxjs/operators";
-import { mapGameStartToContext, mapGameEndToContext } from "../operators/game";
+import { mapGameStartToContext } from "../operators/game";
 import { GameEvents } from "../events";
 
 export enum GameEvent {
@@ -51,8 +51,8 @@ const readGameStartEvents = (events: EventConfig[], gameStart$: Observable<GameS
   return merge(...observables);
 }
 
-const readGameEndEvents = (events: EventConfig[], gameEnd$: Observable<GameEndType>): Observable<EventEmit> => {
-  let base$: Observable<GameEndType> = gameEnd$;
+const readGameEndEvents = (events: EventConfig[], gameEnd$: Observable<GameEndPayload>): Observable<EventEmit> => {
+  let base$: Observable<GameEndPayload> = gameEnd$;
   // Handle game end events
   const observables: Observable<EventEmit>[] = events.filter(event => event.type === GameEvent.GAME_END).map(event => {
     if (event.filter) {
@@ -69,7 +69,7 @@ const readGameEndEvents = (events: EventConfig[], gameEnd$: Observable<GameEndTy
       }
     }
     return base$.pipe(
-      mapGameEndToContext(),
+      // mapGameEndToContext(),
       map(context => ({
         id: event.id,
         payload: context,
