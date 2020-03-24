@@ -1,11 +1,10 @@
 import sinon from "sinon";
 
-import { SlippiGame, SlpRealTime, SlpStream, ComboFilter, Character, EventManager, EventManagerConfig, ComboEvent } from "../../src";
+import { SlpRealTime, SlpStream, Character, EventManager, EventManagerConfig, ComboEvent } from "../../src";
 import { pipeFileContents } from "../helpers";
 import { Subscription } from "rxjs";
 
 describe("combo config", () => {
-  const filter = new ComboFilter();
   let subscriptions: Array<Subscription>;
 
   beforeAll(() => {
@@ -14,11 +13,6 @@ describe("combo config", () => {
 
   afterAll(() => {
     subscriptions.forEach(s => s.unsubscribe());
-  });
-
-  beforeEach(() => {
-    // Reset settings before each test
-    filter.resetSettings();
   });
 
   it("correctly matches default combo config criteria", async () => {
@@ -152,17 +146,29 @@ describe("combo config", () => {
     expect(comboSpy.callCount).toEqual(3);
   });
 
-  /*
   it("emits the correct number of conversions", async () => {
     const conversionSpy = sinon.spy();
-    filter.updateSettings({ minComboPercent: 20 });
     const slpStream = new SlpStream({ singleGameMode: true });
     const realtime = new SlpRealTime();
+    const eventManager = new EventManager(realtime);
+    eventManager.updateConfig({
+      events: [
+        {
+          id: "min-combo-event",
+          type: ComboEvent.CONVERSION_MATCH,
+          filter: {
+            comboCriteria: { minComboPercent: 20 },
+          },
+        },
+      ],
+    });
     realtime.setStream(slpStream);
     subscriptions.push(
-      realtime.combo.conversion$.subscribe((payload) => {
-        if (filter.isCombo(payload.combo, payload.settings)) {
+      eventManager.events$.subscribe(event => {
+        switch (event.id) {
+        case "min-combo-event":
           conversionSpy();
+          break;
         }
       })
     );
@@ -171,72 +177,38 @@ describe("combo config", () => {
   });
 
   it("can support latest patreon build files", async () => {
-    const realtime = new SlpRealTime();
     const comboSpy = sinon.spy();
 
     const filename = "slp/200306_2258_Falco_v_Fox_PS.slp";
-    filter.updateSettings({ minComboPercent: 50 });
-
     const slpStream = new SlpStream({ singleGameMode: true });
+
+    const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
+    const eventManager = new EventManager(realtime);
+    eventManager.updateConfig({
+      events: [
+        {
+          id: "min-combo-event",
+          type: ComboEvent.CONVERSION_MATCH,
+          filter: {
+            comboCriteria: { minComboPercent: 50 },
+          }
+        },
+      ]
+    });
+
+
     subscriptions.push(
-      realtime.combo.conversion$.subscribe((payload) => {
-        if (filter.isCombo(payload.combo, payload.settings)) {
+      eventManager.events$.subscribe(event => {
+        switch (event.id) {
+        case "min-combo-event":
           comboSpy();
+          break;
         }
       })
     );
     await pipeFileContents(filename, slpStream);
     expect(comboSpy.callCount).toEqual(2);
   });
-
-  describe("when filtering netplay names", () => {
-    it("can correctly filter netplay names", async () => {
-      const realtime = new SlpRealTime();
-      const comboSpy = sinon.spy();
-
-      const filename = "slp/Game_20190517T164215.slp";
-      const game = new SlippiGame(filename);
-      const metadata = game.getMetadata();
-
-      filter.updateSettings({ minComboPercent: 40, nameTags: ["fizzi"] });
-      const slpStream = new SlpStream({ singleGameMode: true });
-      realtime.setStream(slpStream);
-      subscriptions.push(
-        realtime.combo.end$.subscribe((payload) => {
-          if (filter.isCombo(payload.combo, payload.settings, metadata)) {
-            comboSpy();
-          }
-        })
-      );
-
-      await pipeFileContents(filename, slpStream);
-      expect(comboSpy.callCount).toEqual(0);
-    });
-
-    it("can correctly match netplay names", async () => {
-      const realtime = new SlpRealTime();
-      const comboSpy = sinon.spy();
-
-      const filename = "slp/Game_20190517T164215.slp";
-      const game = new SlippiGame(filename);
-      const metadata = game.getMetadata();
-
-      filter.updateSettings({ minComboPercent: 40, nameTags: ["Fizzi"] });
-      const slpStream = new SlpStream({ singleGameMode: true });
-      realtime.setStream(slpStream);
-      subscriptions.push(
-        realtime.combo.end$.subscribe((payload) => {
-          if (filter.isCombo(payload.combo, payload.settings, metadata)) {
-            comboSpy();
-          }
-        })
-      );
-      await pipeFileContents(filename, slpStream);
-      expect(comboSpy.callCount).toEqual(1);
-    });
-
-  });
-  */
 
 });
