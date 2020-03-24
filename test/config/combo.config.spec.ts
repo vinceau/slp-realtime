@@ -65,29 +65,48 @@ describe("combo config", () => {
     expect(comboSpy.callCount).toEqual(1);
   });
 
-  /*
   it("can filter by character", async () => {
     const bowserOnlySpy = sinon.spy();
-    const bowserOnlyFilter = new ComboFilter();
 
     const excludesBowserSpy = sinon.spy();
-    const excludesBowserFilter = new ComboFilter();
 
-    bowserOnlyFilter.updateSettings({ characterFilter: [Character.BOWSER] });
-    excludesBowserFilter.updateSettings({ characterFilter: [Character.CAPTAIN_FALCON] });
+    const config: EventManagerConfig = {
+      variables: {
+        $onlyBowser: { characterFilter: [Character.BOWSER] },
+        $onlyFalcon: { characterFilter: [Character.CAPTAIN_FALCON] },
+      },
+      events: [
+        {
+          id: "only-bowser-events",
+          type: ComboEvent.MATCH,
+          filter: {
+            comboCriteria: "$onlyBowser",
+          },
+        },
+        {
+          id: "only-falcon-events",
+          type: ComboEvent.MATCH,
+          filter: {
+            comboCriteria: "$onlyFalcon",
+          },
+        },
+      ]
+    };
     const slpStream = new SlpStream({ singleGameMode: true });
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
+    const eventManager = new EventManager(realtime);
+    eventManager.updateConfig(config);
 
     subscriptions.push(
-      realtime.combo.end$.subscribe(payload => {
-        const c = payload.combo;
-        const s = payload.settings;
-        if (bowserOnlyFilter.isCombo(c, s)) {
+      eventManager.events$.subscribe(event => {
+        switch (event.id) {
+        case "only-bowser-events":
           bowserOnlySpy();
-        }
-        if (excludesBowserFilter.isCombo(c, s)) {
+          break;
+        case "only-falcon-events":
           excludesBowserSpy();
+          break;
         }
       }),
     );
@@ -98,18 +117,31 @@ describe("combo config", () => {
     expect(excludesBowserSpy.callCount).toEqual(1);
   });
 
-  it("can update combo settings", async () => {
+  it("can filter by min combo percent config", async () => {
     const comboSpy = sinon.spy();
 
-    filter.updateSettings({ minComboPercent: 20 });
     const slpStream = new SlpStream({ singleGameMode: true });
     const realtime = new SlpRealTime();
+    const eventManager = new EventManager(realtime);
+    eventManager.updateConfig({
+      events: [
+        {
+          id: "min-combo-event",
+          type: ComboEvent.MATCH,
+          filter: {
+            comboCriteria: { minComboPercent: 20 },
+          },
+        }
+      ],
+    });
     realtime.setStream(slpStream);
 
     subscriptions.push(
-      realtime.combo.end$.subscribe((payload) => {
-        if (filter.isCombo(payload.combo, payload.settings)) {
+      eventManager.events$.subscribe(event => {
+        switch (event.id) {
+        case "min-combo-event":
           comboSpy();
+          break;
         }
       })
     );
@@ -120,6 +152,7 @@ describe("combo config", () => {
     expect(comboSpy.callCount).toEqual(3);
   });
 
+  /*
   it("emits the correct number of conversions", async () => {
     const conversionSpy = sinon.spy();
     filter.updateSettings({ minComboPercent: 20 });
