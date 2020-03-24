@@ -8,6 +8,16 @@ export function playerFilter<T extends { playerIndex: number }>(
   indices: number | number[] | string,
   variables?: EventManagerVariables,
 ): MonoTypeOperatorFunction<T> {
+  return (source: Observable<T>): Observable<T> => source.pipe(
+    filter((payload) => playerFilterMatches(payload.playerIndex, indices, variables)),
+  );
+}
+
+export const playerFilterMatches = (
+  playerIndex: number,
+  indices: number | number[] | string,
+  variables?: EventManagerVariables,
+): boolean => {
   // Default to all the indices
   let filterIndices: number[] = [ ...ALL_PLAYER_INDICES ];
   if (typeof indices === "number") {
@@ -27,8 +37,6 @@ export function playerFilter<T extends { playerIndex: number }>(
     // indices is an array of numbers
     filterIndices = indices;
   }
-  return (source: Observable<T>): Observable<T> => source.pipe(
-    filter((payload) => filterIndices.includes(payload.playerIndex)),
-  );
-}
+  return filterIndices.includes(playerIndex);
+};
 
