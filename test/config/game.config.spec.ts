@@ -87,4 +87,71 @@ describe("game config", () => {
     expect(isTeamsGameStartSpy.callCount).toEqual(0);
   });
 
+  it("can can match game end winner", async () => {
+    const playerWinSpy = sinon.spy();
+    const player2WinSpy = sinon.spy();
+    const player4WinSpy = sinon.spy();
+
+    const slpStream = new SlpStream({ singleGameMode: false });
+    const realtime = new SlpRealTime();
+    const eventManager = new EventManager(realtime);
+    realtime.setStream(slpStream);
+
+    const config: EventManagerConfig = {
+      variables: {
+        playerIndex: 0,  // Let's pretend that we're player 1
+      },
+      events: [
+        {
+          id: "player-won-id",
+          type: "game-end",
+          filter: {
+            winnerPlayerIndex: "player",  // Track which games "we" won
+          },
+        },
+        {
+          id: "player-2-won-id",
+          type: "game-end",
+          filter: {
+            winnerPlayerIndex: 1,
+          },
+        },
+        {
+          id: "player-4-won-id",
+          type: "game-end",
+          filter: {
+            winnerPlayerIndex: 3,
+          },
+        },
+      ]
+    };
+
+    subscriptions.push(
+      eventManager.events$.subscribe(event => {
+        switch (event.id) {
+        case "player-won-id":
+          playerWinSpy();
+          break;
+        case "player-2-won-id":
+          player2WinSpy();
+          break;
+        case "player-4-won-id":
+          player4WinSpy();
+          break;
+        }
+      }),
+    );
+
+    eventManager.updateConfig(config);
+
+    await pipeFileContents("slp/Game_20190810T162904.slp", slpStream, { end: false });
+    await pipeFileContents("slp/Game_20190517T164215.slp", slpStream, { end: false });
+    await pipeFileContents("slp/Game_20190324T113942.slp", slpStream, { end: false });
+    await pipeFileContents("slp/200306_2258_Falco_v_Fox_PS.slp", slpStream, { end: true });
+
+    expect(playerWinSpy.callCount).toEqual(1);
+    expect(player2WinSpy.callCount).toEqual(2);
+    expect(player4WinSpy.callCount).toEqual(1);
+  });
+
 });
