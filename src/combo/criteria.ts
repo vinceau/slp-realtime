@@ -115,3 +115,17 @@ export const IsOneVsOne: Criteria = (combo, settings) => {
 export const ComboDidKill: Criteria = (combo, settings, options) => {
   return !options.comboMustKill || combo.didKill;
 }
+
+export const ALL_CRITERIA: Criteria[] = [
+  MatchesPortNumber,
+  MatchesPlayerName,
+  MatchesCharacter,
+  ExcludesChainGrabs,
+  ExcludesWobbles,
+  SatisfiesMinComboLength,
+  SatisfiesMinComboPercent,
+  ExcludesLargeSingleHit,
+  ExcludesCPUs,
+  IsOneVsOne,
+  ComboDidKill,
+];
