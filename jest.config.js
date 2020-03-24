@@ -1,6 +1,6 @@
 module.exports = {
   roots: ['<rootDir>/test'],
-  testTimeout: 120000,
+  testTimeout: 600000,
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
