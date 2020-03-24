@@ -7,54 +7,78 @@ import { ComboEvents } from "../events/combos";
 import { checkCombo, defaultComboFilterSettings } from "../combo/filter";
 
 export enum ComboEvent {
-  START = "combo-start",
-  EXTEND = "combo-extend",
-  END = "combo-end",
-  CONVERSION = "conversion",
+  START = "combo-start",                  // Emitted for the start of all "combos"
+  EXTEND = "combo-extend",                // Emitted for the extension of all "combos"
+  END = "combo-end",                      // Emitted for the end of all "combos"
+  MATCH = "combo-match",                  // Emitted for all combos matching criteria
+  CONVERSION = "conversion",              // Emitted for all "conversions"
+  CONVERSION_MATCH = "conversion-match",  // Emitted for all conversions that match criteria
 }
 
-export const readComboConfig = (stocks: ComboEvents, config: EventManagerConfig): Observable<EventEmit> => {
+export const readComboConfig = (combo: ComboEvents, config: EventManagerConfig): Observable<EventEmit> => {
   const startObservables = config.events.filter(event => event.type === ComboEvent.START).map(event => {
-    return handlePlayerIndexFilter(stocks.start$, event, config.variables).pipe(
+    return handlePlayerIndexFilter(combo.start$, event, config.variables).pipe(
       map(payload => ({
         id: event.id,
         payload,
       })),
-    )
+    );
   });
   const extendObservables = config.events.filter(event => event.type === ComboEvent.EXTEND).map(event => {
-    return handlePlayerIndexFilter(stocks.extend$, event, config.variables).pipe(
+    return handlePlayerIndexFilter(combo.extend$, event, config.variables).pipe(
       map(payload => ({
         id: event.id,
         payload,
       })),
-    )
+    );
   });
   const endObservables = config.events.filter(event => event.type === ComboEvent.END).map(event => {
-    const base$ = handlePlayerIndexFilter(stocks.end$, event, config.variables);
-    return handleComboFilter(base$, event, config.variables).pipe(
+    const base$ = handlePlayerIndexFilter(combo.end$, event, config.variables);
+    return base$.pipe(
       map(payload => ({
         id: event.id,
         payload,
       })),
-    )
+    );
   });
-  const conversionObservables = config.events.filter(event => event.type === ComboEvent.CONVERSION).map(event => {
-    const base$ = handlePlayerIndexFilter(stocks.conversion$, event, config.variables);
+  const comboObservables = config.events.filter(event => event.type === ComboEvent.MATCH).map(event => {
+    const base$ = handlePlayerIndexFilter(combo.end$, event, config.variables);
     return handleComboFilter(base$, event, config.variables).pipe(
       map(payload => ({
         id: event.id,
         payload,
       })),
-    )
+    );
+  });
+  const conversionObservables = config.events.filter(event => event.type === ComboEvent.CONVERSION_MATCH).map(event => {
+    const base$ = handlePlayerIndexFilter(combo.conversion$, event, config.variables);
+    return base$.pipe(
+      map(payload => ({
+        id: event.id,
+        payload,
+      })),
+    );
+  });
+  const conversionMatchObservables = config.events.filter(event => event.type === ComboEvent.CONVERSION_MATCH).map(event => {
+    const base$ = handlePlayerIndexFilter(combo.conversion$, event, config.variables);
+    return handleComboFilter(base$, event, config.variables).pipe(
+      map(payload => ({
+        id: event.id,
+        payload,
+      })),
+    );
   });
 
-  return merge(
+  const observables: Observable<EventEmit>[] = [
     ...startObservables,
     ...extendObservables,
     ...endObservables,
+    ...comboObservables,
     ...conversionObservables,
-  );
+    ...conversionMatchObservables,
+  ];
+
+  return merge(...observables);
 }
 
 const handlePlayerIndexFilter = (
@@ -82,8 +106,8 @@ const handleComboFilter = (
   event: EventConfig,
   variables?: EventManagerVariables,
 ): Observable<ComboEventPayload> => {
+  let comboSettings = Object.assign({}, defaultComboFilterSettings);
   if (event.filter && event.filter.comboCriteria) {
-    let comboSettings = Object.assign({}, defaultComboFilterSettings);
     const options = event.filter.comboCriteria;
     if (typeof options === "string") {
       if (options.charAt(0) === "$" && variables[options]) {
@@ -92,9 +116,8 @@ const handleComboFilter = (
     } else {
       comboSettings = Object.assign(comboSettings, options);
     }
-    base$ = base$.pipe(
-      filter(payload => checkCombo(comboSettings, payload.combo, payload.settings)),
-    );
   }
-  return base$;
+  return base$.pipe(
+    filter(payload => checkCombo(comboSettings, payload.combo, payload.settings)),
+  );
 };
