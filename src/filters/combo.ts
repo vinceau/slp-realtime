@@ -50,7 +50,7 @@ export const readComboConfig = (combo: ComboEvents, config: EventManagerConfig):
       })),
     );
   });
-  const conversionObservables = config.events.filter(event => event.type === ComboEvent.CONVERSION_MATCH).map(event => {
+  const conversionObservables = config.events.filter(event => event.type === ComboEvent.CONVERSION).map(event => {
     const base$ = handlePlayerIndexFilter(combo.conversion$, event, config.variables);
     return base$.pipe(
       map(payload => ({
