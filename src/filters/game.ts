@@ -53,11 +53,11 @@ const readGameStartEvents = (config: EventManagerConfig, gameStart$: Observable<
 }
 
 const readGameEndEvents = (config: EventManagerConfig, gameEnd$: Observable<GameEndPayload>): Observable<EventEmit> => {
-  let base$: Observable<GameEndPayload> = gameEnd$;
   // Handle game end events
   const observables: Observable<EventEmit>[] = config.events.filter(event => event.type === GameEvent.GAME_END).map(event => {
+    let base$: Observable<GameEndPayload> = gameEnd$;
     if (event.filter) {
-    // Handle end method filter
+      // Handle end method filter
       for (const [key, value] of Object.entries(event.filter)) {
         switch (key) {
         case "endMethod":
