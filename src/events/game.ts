@@ -1,6 +1,6 @@
 import { GameStartType } from "slp-parser-js";
 import { Observable } from "rxjs";
-import { SlpStream } from "../utils/slpStream";
+import { SlpStream } from "../stream";
 import { withLatestFrom, map, switchMap } from "rxjs/operators";
 import { findWinner } from "../utils/helpers";
 import { GameEndPayload } from "../types";

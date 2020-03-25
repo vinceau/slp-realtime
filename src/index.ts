@@ -9,6 +9,7 @@ export * from "./utils";
 export * from "./realtime";
 export * from "./combo";
 export * from "./types";
+export * from "./stream";
 export * from "./operators";
 export * from "./manager";
 

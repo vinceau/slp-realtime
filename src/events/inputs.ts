@@ -2,7 +2,7 @@ import { Observable } from "rxjs";
 import { map, scan, filter, switchMap } from "rxjs/operators";
 import { Frames } from "slp-parser-js";
 
-import { SlpStream } from "../utils/slpStream";
+import { SlpStream } from "../stream";
 import { playerFrameFilter } from "../operators/frames";
 import { Input, InputButtonCombo } from "../types";
 import { generateInputBitmask } from "../utils";

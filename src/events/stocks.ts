@@ -1,5 +1,5 @@
 import { StockType, didLoseStock } from "slp-parser-js";
-import { SlpStream } from "../utils/slpStream";
+import { SlpStream } from "../stream";
 import { map, filter, distinctUntilChanged, switchMap } from "rxjs/operators";
 import { Observable } from "rxjs";
 import { playerFrameFilter, withPreviousFrame } from "../operators/frames";
