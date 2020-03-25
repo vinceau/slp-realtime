@@ -24,9 +24,6 @@ interface DolphinCombo {
 
 export type DolphinComboQueueOptions = typeof defaultSettings;
 
-// Games are 8 minutes long, at 60fps.
-const MAX_END_FRAME = 28800;
-
 export class DolphinComboQueue {
   private options: DolphinComboQueueOptions;
   private combos: DolphinCombo[];
@@ -38,10 +35,8 @@ export class DolphinComboQueue {
 
   public addCombo(path: string, combo: ComboType): void {
     const startFrame = Math.max(Frames.FIRST, combo.startFrame - this.options.startBuffer);
-    // Ideally we use the end frame specified in the game, but we don't actually have
-    // access to that information in a realtime environment.
-    // So instead, if endFrame is undefined, we use the max possible end frame.
-    const endFrame = combo.endFrame ? combo.endFrame + this.options.endBuffer : MAX_END_FRAME;
+    // If endFrame is undefined it will just play to the end
+    const endFrame = combo.endFrame ? combo.endFrame + this.options.endBuffer : undefined;
     this.combos.push({
       path,
       startFrame,
