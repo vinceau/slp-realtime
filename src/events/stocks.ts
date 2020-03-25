@@ -1,8 +1,8 @@
 import { StockType, didLoseStock } from "slp-parser-js";
-import { SlpStream } from "../utils/slpStream";
+import { SlpStream } from "../stream";
 import { map, filter, distinctUntilChanged, switchMap } from "rxjs/operators";
 import { Observable } from "rxjs";
-import { playerFilter, withPreviousFrame } from "../operators/frames";
+import { playerFrameFilter, withPreviousFrame } from "../operators/frames";
 import { mapFrameToSpawnStockType, mapFramesToDeathStockType, filterJustSpawned } from "../operators/stocks";
 import { PercentChange, StockCountChange } from "../types";
 import { forAllPlayerIndices } from "../utils/helpers";
@@ -44,7 +44,7 @@ export class StockEvents {
   public playerIndexDied(index: number): Observable<StockType> {
     return this.stream$.pipe(
       switchMap(stream => stream.playerFrame$),
-      playerFilter(index),                  // We only care about certain player frames
+      playerFrameFilter(index),                  // We only care about certain player frames
       map((f) => f.players[index].post),    // Only take the post frame data
       withPreviousFrame(),                  // Get previous frame too
       filter(([prevFrame, latestFrame]) =>
@@ -57,7 +57,7 @@ export class StockEvents {
   public playerIndexPercentChange(index: number): Observable<PercentChange> {
     return this.stream$.pipe(
       switchMap(stream => stream.playerFrame$),
-      playerFilter(index),
+      playerFrameFilter(index),
       map(f => f.players[index].post.percent),
       distinctUntilChanged(),
       map(percent => ({
@@ -70,7 +70,7 @@ export class StockEvents {
   public playerIndexStockCountChange(index: number): Observable<StockCountChange> {
     return this.stream$.pipe(
       switchMap(stream => stream.playerFrame$),
-      playerFilter(index),
+      playerFrameFilter(index),
       map(f => f.players[index].post.stocksRemaining),
       distinctUntilChanged(),
       map(stocksRemaining => ({

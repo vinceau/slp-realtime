@@ -2,7 +2,7 @@ import _ from "lodash";
 
 import { ConversionType, MoveLandedType, PlayerIndexedType, FrameEntryType, PostFrameUpdateType, isDamaged, isGrabbed, calcDamageTaken, isInControl, didLoseStock, Timers, GameStartType, getSinglesPlayerPermutationsFromSettings } from "slp-parser-js";
 import { Subject, Observable } from "rxjs";
-import { SlpStream } from "../utils/slpStream";
+import { SlpStream } from "../stream";
 import { filter, switchMap } from "rxjs/operators";
 import { withPreviousFrame } from "../operators/frames";
 
