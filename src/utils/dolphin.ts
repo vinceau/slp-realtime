@@ -18,8 +18,8 @@ const defaultSettings = {
 
 interface DolphinCombo {
   path: string;
-  startFrame: number;
-  endFrame: number;
+  startFrame?: number;
+  endFrame?: number;
 }
 
 export type DolphinComboQueueOptions = typeof defaultSettings;
