@@ -7,12 +7,10 @@ import { ComboEvents } from "../events/combos";
 import { checkCombo, defaultComboFilterSettings } from "../combo/filter";
 
 export enum ComboEvent {
-  START = "combo-start",                  // Emitted for the start of all "combos"
-  EXTEND = "combo-extend",                // Emitted for the extension of all "combos"
-  END = "combo-end",                      // Emitted for the end of all "combos"
-  MATCH = "combo-match",                  // Emitted for all combos matching criteria
-  CONVERSION = "conversion",              // Emitted for all "conversions"
-  CONVERSION_MATCH = "conversion-match",  // Emitted for all conversions that match criteria
+  START = "combo-start",                  // Emitted at the start of a combo
+  EXTEND = "combo-extend",                // Emitted at the extension of a combo
+  END = "combo-end",                      // Emitted at the end of a combo
+  CONVERSION = "conversion",              // Emitted at the end of a conversion
 }
 
 export const readComboConfig = (combo: ComboEvents, config: EventManagerConfig): Observable<EventEmit> => {
@@ -34,15 +32,6 @@ export const readComboConfig = (combo: ComboEvents, config: EventManagerConfig):
   });
   const endObservables = config.events.filter(event => event.type === ComboEvent.END).map(event => {
     const base$ = handlePlayerIndexFilter(combo.end$, event, config.variables);
-    return base$.pipe(
-      map(payload => ({
-        id: event.id,
-        payload,
-      })),
-    );
-  });
-  const comboObservables = config.events.filter(event => event.type === ComboEvent.MATCH).map(event => {
-    const base$ = handlePlayerIndexFilter(combo.end$, event, config.variables);
     return handleComboFilter(base$, event, config.variables).pipe(
       map(payload => ({
         id: event.id,
@@ -51,15 +40,6 @@ export const readComboConfig = (combo: ComboEvents, config: EventManagerConfig):
     );
   });
   const conversionObservables = config.events.filter(event => event.type === ComboEvent.CONVERSION).map(event => {
-    const base$ = handlePlayerIndexFilter(combo.conversion$, event, config.variables);
-    return base$.pipe(
-      map(payload => ({
-        id: event.id,
-        payload,
-      })),
-    );
-  });
-  const conversionMatchObservables = config.events.filter(event => event.type === ComboEvent.CONVERSION_MATCH).map(event => {
     const base$ = handlePlayerIndexFilter(combo.conversion$, event, config.variables);
     return handleComboFilter(base$, event, config.variables).pipe(
       map(payload => ({
@@ -73,9 +53,7 @@ export const readComboConfig = (combo: ComboEvents, config: EventManagerConfig):
     ...startObservables,
     ...extendObservables,
     ...endObservables,
-    ...comboObservables,
     ...conversionObservables,
-    ...conversionMatchObservables,
   ];
 
   return merge(...observables);
@@ -112,6 +90,9 @@ const handleComboFilter = (
     if (typeof options === "string") {
       if (options.charAt(0) === "$" && variables[options]) {
         comboSettings = Object.assign(comboSettings, variables[options]);
+      } else if (options === "none") {
+        // Require explicit specification for no criteria matching
+        return base$;
       }
     } else {
       comboSettings = Object.assign(comboSettings, options);

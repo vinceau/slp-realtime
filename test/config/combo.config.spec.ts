@@ -29,10 +29,13 @@ describe("combo config", () => {
         {
           id: "combo-end-id",
           type: ComboEvent.END,
+          filter: {
+            comboCriteria: "none",
+          },
         },
         {
           id: "combo-match-id",
-          type: ComboEvent.MATCH,
+          type: ComboEvent.END,
         },
       ]
     };
@@ -72,14 +75,14 @@ describe("combo config", () => {
       events: [
         {
           id: "only-bowser-events",
-          type: ComboEvent.MATCH,
+          type: ComboEvent.END,
           filter: {
             comboCriteria: "$onlyBowser",
           },
         },
         {
           id: "only-falcon-events",
-          type: ComboEvent.MATCH,
+          type: ComboEvent.END,
           filter: {
             comboCriteria: "$onlyFalcon",
           },
@@ -121,7 +124,7 @@ describe("combo config", () => {
       events: [
         {
           id: "min-combo-event",
-          type: ComboEvent.MATCH,
+          type: ComboEvent.END,
           filter: {
             comboCriteria: { minComboPercent: 20 },
           },
@@ -155,7 +158,7 @@ describe("combo config", () => {
       events: [
         {
           id: "min-combo-event",
-          type: ComboEvent.CONVERSION_MATCH,
+          type: ComboEvent.CONVERSION,
           filter: {
             comboCriteria: { minComboPercent: 20 },
           },
@@ -189,7 +192,7 @@ describe("combo config", () => {
       events: [
         {
           id: "min-combo-event",
-          type: ComboEvent.CONVERSION_MATCH,
+          type: ComboEvent.CONVERSION,
           filter: {
             comboCriteria: { minComboPercent: 50 },
           }
