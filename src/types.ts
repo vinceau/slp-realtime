@@ -3,7 +3,7 @@ import { ComboType, GameStartType, GameEndType } from "slp-parser-js";
 // Export the parameter types for events
 export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
 
-export { ComboEvent, GameEvent, InputEvent, StockEvent } from "./filters";
+export { ComboEvent, GameEvent, InputEvent, StockEvent } from "./config";
 
 export enum GameEndMethod {
   UNRESOLVED = 0,
