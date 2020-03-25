@@ -1,19 +1,13 @@
 import { SlpRealTime } from "./realtime";
 
-export * from "./melee/characters";
-export * from "./melee/moves";
-export * from "./melee/stages";
-
+export * from "./combo";
+export * from "./manager";
+export * from "./melee";
+export * from "./operators";
+export * from "./realtime";
+export * from "./stream";
 export * from "./utils";
 
-export * from "./realtime";
-export * from "./combo";
 export * from "./types";
-export * from "./stream";
-export * from "./operators";
-export * from "./manager";
-
-// Re-export SlippiGame for convenience
-export { SlippiGame } from "slp-parser-js";
 
 export default SlpRealTime;
