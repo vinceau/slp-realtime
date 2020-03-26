@@ -1,6 +1,10 @@
 
 # `slp-realtime`
 
+
+[![slp-realtime is magic - Nikki](https://i.imgur.com/qnfI6c5.png)](https://i.imgur.com/qnfI6c5.png)
+
+
 [![npm version](https://img.shields.io/npm/v/@vinceau/slp-realtime.svg?style=flat)](https://npmjs.org/package/@vinceau/slp-realtime "View this project on npm")
 [![Build Status](https://github.com/vinceau/slp-realtime/workflows/build/badge.svg)](https://github.com/vinceau/slp-realtime/actions?workflow=build)
 [![Coverage Status](https://coveralls.io/repos/github/vinceau/slp-realtime/badge.svg)](https://coveralls.io/github/vinceau/slp-realtime)
@@ -9,7 +13,6 @@
 > The brains *and* the brawn of [Project Clippi](https://github.com/vinceau/project-clippi).
 
 This library provides an easy way to subscribe to real-time [Slippi](https://github.com/project-slippi/project-slippi) game events as they happen. Rebuilt from the ground up using [RxJS Observables](https://rxjs-dev.firebaseapp.com/guide/overview), the power to subscribe to any and every event is in your hands.
-
 
 ## Highlights
 
