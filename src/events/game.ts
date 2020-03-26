@@ -1,15 +1,15 @@
-import { GameStartType, GameEndType } from "slp-parser-js";
+import { GameStartType } from "slp-parser-js";
 import { Observable } from "rxjs";
-import { SlpStream } from "../utils/slpStream";
+import { SlpStream } from "../stream";
 import { withLatestFrom, map, switchMap } from "rxjs/operators";
 import { findWinner } from "../utils/helpers";
+import { GameEndPayload } from "../types";
 
 export class GameEvents {
   private stream$: Observable<SlpStream>;
 
   public start$: Observable<GameStartType>;
-  public end$: Observable<GameEndType>;
-  public winner$: Observable<number>;
+  public end$: Observable<GameEndPayload>;
 
   public constructor(stream: Observable<SlpStream>) {
     this.stream$ = stream;
@@ -18,13 +18,12 @@ export class GameEvents {
       switchMap(s => s.gameStart$),
     );
     this.end$ = this.stream$.pipe(
-      switchMap(s => s.gameEnd$),
-    );
-
-    this.winner$ = this.stream$.pipe(
       switchMap(s => s.gameEnd$.pipe(
         withLatestFrom(s.playerFrame$),
-        map(([_, playerFrame]) => findWinner(playerFrame)),
+        map(([gameEnd, playerFrame]) => ({
+          ...gameEnd,
+          winnerPlayerIndex: findWinner(playerFrame)
+        })),
       )),
     );
   }

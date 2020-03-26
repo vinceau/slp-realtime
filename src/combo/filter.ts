@@ -1,6 +1,6 @@
 import { Character } from "../melee/characters";
 import { ComboType, GameStartType } from "slp-parser-js";
-import { MatchesPlayerName, ExcludesChainGrabs, ExcludesWobbles, SatisfiesMinComboPercent, ExcludesLargeSingleHit, ExcludesCPUs, IsOneVsOne, ComboDidKill, MatchesCharacter, MatchesPortNumber, SatisfiesMinComboLength } from "./criteria";
+import { ALL_CRITERIA } from "./criteria";
 
 export interface ComboFilterSettings {
   chainGrabbers: Character[];
@@ -48,20 +48,7 @@ export class ComboFilter {
   public constructor(options?: Partial<ComboFilterSettings>) {
     this.settings = Object.assign({}, defaultComboFilterSettings, options);
     this.originalSettings = Object.assign({}, this.settings);
-    this.criteria = new Array<Criteria>();
-    this.criteria.push(
-      MatchesPortNumber,
-      MatchesPlayerName,
-      MatchesCharacter,
-      ExcludesChainGrabs,
-      ExcludesWobbles,
-      SatisfiesMinComboLength,
-      SatisfiesMinComboPercent,
-      ExcludesLargeSingleHit,
-      ExcludesCPUs,
-      IsOneVsOne,
-      ComboDidKill,
-    );
+    this.criteria = [ ...ALL_CRITERIA ];
   }
 
   public updateSettings(options: Partial<ComboFilterSettings>): ComboFilterSettings {
@@ -79,15 +66,27 @@ export class ComboFilter {
   }
 
   public isCombo(combo: ComboType, settings: GameStartType, metadata?: any): boolean {
-    // Check if we satisfy all the criteria
-    for (const c of this.criteria) {
-      if (!c(combo, settings, this.settings, metadata)) {
-        return false;
-      }
-    }
-
-    // If we made it through all the criteria then it was a valid combo
-    return true;
+    return checkCombo(this.settings, combo, settings, this.criteria, metadata);
   }
 }
+
+export const checkCombo = (
+  comboSettings: ComboFilterSettings,
+  combo: ComboType,
+  gameSettings: GameStartType,
+  criteria?: Criteria[],
+  metadata?: any,
+): boolean => {
+  const criteriaToCheck = criteria && criteria.length > 0 ? criteria : [ ...ALL_CRITERIA ];
+
+  // Check if we satisfy all the criteria
+  for (const c of criteriaToCheck) {
+    if (!c(combo, gameSettings, comboSettings, metadata)) {
+      return false;
+    }
+  }
+
+  // If we made it through all the criteria then it was a valid combo
+  return true;
+};
 
