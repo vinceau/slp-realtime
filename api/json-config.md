@@ -188,5 +188,3 @@ Filters:
 * `playerIndex` (`number`) - the index of the player doing the button combination
 * `combo` ([`Input`](./types.md#input)[]) - a list of button inputs
 * `duration` (`number`) - the duration in frames the button(s) are held for e.g. 2 seconds = 120 frames. The default is 1 frame.
-
-## Config Types
