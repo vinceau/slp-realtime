@@ -16,7 +16,7 @@ This library provides an easy way to subscribe to real-time [Slippi](https://git
 
 * Go file-less. Read directly from the relay or console.
 * Custom combos. Easily add combo parameters and output Dolphin-compatible JSON files.
-* Powerful RxJS Observable and Stream API.
+* Powerful [RxJS Observable](https://rxjs-dev.firebaseapp.com/guide/overview) and Stream API.
 
 ## Installation
 
@@ -38,8 +38,8 @@ For a list of all the subscribable events, [click here](api/observables.md#event
 
 See a [working example](examples) or [check out the docs](api/README.md).
 
-The following usage examples use the more complex [RxJS Observable API](api/observables). For a more
-simplified usage, check out the [JSON Config API](api/json-config) and the [accompanying working example](examples/json-config).
+The following usage examples use the more complex [RxJS Observable API](api/observables.md). For a more
+simplified usage, check out the [JSON Config API](api/json-config.md) and the [accompanying working example](examples/json-config).
 
 ### Subscribing to In-Game Events
 
