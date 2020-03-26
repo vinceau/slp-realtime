@@ -8,9 +8,6 @@ import { Input, InputButtonCombo } from "../types";
 import { generateInputBitmask } from "../utils";
 import { forAllPlayerIndices } from "../utils/helpers";
 
-// Export the parameter types for events
-export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
-
 export class InputEvents {
   private stream$: Observable<SlpStream>;
 
