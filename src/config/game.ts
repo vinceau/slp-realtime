@@ -2,7 +2,6 @@ import { Observable, merge } from "rxjs";
 import { GameStartType, GameEndPayload } from "../types";
 import { EventEmit, EventManagerConfig } from "../manager/config";
 import { filter, map } from "rxjs/operators";
-import { mapGameStartToContext } from "../operators/game";
 import { GameEvents } from "../events";
 import { playerFilterMatches } from "../operators/player";
 
@@ -42,7 +41,6 @@ const readGameStartEvents = (config: EventManagerConfig, gameStart$: Observable<
       }
     }
     return base$.pipe(
-      mapGameStartToContext(),
       map(context => ({
         id: event.id,
         payload: context,
@@ -75,7 +73,6 @@ const readGameEndEvents = (config: EventManagerConfig, gameEnd$: Observable<Game
       }
     }
     return base$.pipe(
-      // mapGameEndToContext(),
       map(context => ({
         id: event.id,
         payload: context,
