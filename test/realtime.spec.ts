@@ -27,7 +27,7 @@ describe("SlpRealTime", () => {
 
     subscriptions.push(
       realtime.game.start$.subscribe(gameStartSpy),
-      realtime.game.start$.subscribe(gameEndSpy),
+      realtime.game.end$.subscribe(gameEndSpy),
       realtime.stock.playerSpawn$.subscribe(stockSpawnSpy),
       realtime.stock.playerDied$.subscribe(stockDeathSpy),
     );

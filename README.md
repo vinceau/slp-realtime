@@ -1,6 +1,8 @@
 
 # `slp-realtime`
 
+[![slp-realtime is magic - Nikki](https://i.imgur.com/qnfI6c5.png)](https://i.imgur.com/qnfI6c5.png)
+
 [![npm version](https://img.shields.io/npm/v/@vinceau/slp-realtime.svg?style=flat)](https://npmjs.org/package/@vinceau/slp-realtime "View this project on npm")
 [![Build Status](https://github.com/vinceau/slp-realtime/workflows/build/badge.svg)](https://github.com/vinceau/slp-realtime/actions?workflow=build)
 [![Coverage Status](https://coveralls.io/repos/github/vinceau/slp-realtime/badge.svg)](https://coveralls.io/github/vinceau/slp-realtime)
@@ -10,12 +12,11 @@
 
 This library provides an easy way to subscribe to real-time [Slippi](https://github.com/project-slippi/project-slippi) game events as they happen. Rebuilt from the ground up using [RxJS Observables](https://rxjs-dev.firebaseapp.com/guide/overview), the power to subscribe to any and every event is in your hands.
 
-
 ## Highlights
 
 * Go file-less. Read directly from the relay or console.
 * Custom combos. Easily add combo parameters and output Dolphin-compatible JSON files.
-* Powerful RxJS Observable and Stream API.
+* Powerful [RxJS Observable](https://rxjs-dev.firebaseapp.com/guide/overview) and Stream API.
 
 ## Installation
 
@@ -33,9 +34,12 @@ yarn add @vinceau/slp-realtime
 
 ## Usage
 
-For a list of all the subscribable events, [click here](api/README.md#events).
+For a list of all the subscribable events, [click here](api/observables.md#events).
 
-See a [working example](examples) or [check out the docs](https://vince.id.au/slp-realtime/).
+See a [working example](examples) or [check out the docs](api/README.md).
+
+The following usage examples use the more complex [RxJS Observable API](api/observables.md). For a more
+simplified usage, check out the [JSON Config API](api/json-config.md) and the [accompanying working example](examples/json-config).
 
 ### Subscribing to In-Game Events
 

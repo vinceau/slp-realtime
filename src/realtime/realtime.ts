@@ -1,9 +1,6 @@
-import { SlpStream } from "../utils/slpStream";
+import { SlpStream } from "../stream";
 import { StockEvents, InputEvents, ComboEvents, GameEvents } from "../events";
 import { ReplaySubject } from "rxjs";
-
-// Export the parameter types for events
-export { GameStartType, GameEndType, ComboType, StockType, ConversionType } from "slp-parser-js";
 
 /**
  * SlpRealTime is solely responsible for detecting notable in-game events

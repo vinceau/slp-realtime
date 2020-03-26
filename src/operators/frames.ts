@@ -5,7 +5,7 @@ import { filter, pairwise } from "rxjs/operators";
 /**
  * Filter the frames to only those that belong to the player {index}.
  */
-export function playerFilter(index: number): MonoTypeOperatorFunction<FrameEntryType> {
+export function playerFrameFilter(index: number): MonoTypeOperatorFunction<FrameEntryType> {
   return (source: Observable<FrameEntryType>): Observable<FrameEntryType> => source.pipe(
     filter((frame) => {
       const playerIndices = Object.keys(frame.players);

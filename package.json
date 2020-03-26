@@ -14,8 +14,8 @@
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "jest --verbose --testTimeout=120000",
-    "coverage": "yarn run test -- --coverage",
+    "test": "jest --verbose",
+    "coverage": "yarn run test --coverage",
     "postcoverage": "open-cli coverage/lcov-report/index.html",
     "lint": "eslint \"src/**/*.ts\"",
     "clean": "rimraf dist",
