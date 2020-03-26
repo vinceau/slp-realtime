@@ -194,7 +194,6 @@ Filters:
 | Key | Type |
 | --- | ---- |
 | `events` | [`EventConfig`](#eventconfig)[] |
-| `variables` | `any \| undefined` |
 
 
 ### `EventConfig`
