@@ -173,7 +173,7 @@ Payload: `ComboEventPayload`
 Filters:
 
 * `playerIndex` (`number`) - the index of the player performing the combo
-* `comboCriteria` ([`ComboFilterSettings`](./types.md#combofiltersettings)) - any combination of the different combo filter settings, or `"none"` to match every possible combos. If omitted, it will match against the default combo parameter settings.
+* `comboCriteria` ([`ComboFilterSettings`](./types.md#combofiltersettings)) - any combination of the different combo filter settings, or `"none"` to match every possible conversion. If omitted, it will match against the default combo parameter settings.
 
 Please note: `playerIndex` and the `portFilter` cannot be used together! If you provide a player index that doesn't match a player port, you will not find any combos!
 
@@ -187,7 +187,7 @@ Filters:
 * `combo` ([`Input`](./types.md#input)[]) - a list of button inputs
 * `duration` (`number`) - the duration in frames the button(s) are held for e.g. 2 seconds = 120 frames. The default is 1 frame.
 
-## Types
+## Config Types
 
 ### `EventManagerConfig`
 

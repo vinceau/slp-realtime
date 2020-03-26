@@ -17,7 +17,7 @@ Returns an `Observable<`[`GameStartType`](./types.md#gamestarttype)`>`
 
 Emitted when a game ends.
 
-Returns an `Observable<`[`GameEndType`](./types.md#gameendtype)`>`
+Returns an `Observable<`[`GameEndPayload`](./types.md#gameendpayload)`>`
 
 ### Stock
 

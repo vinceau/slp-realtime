@@ -11,12 +11,13 @@
 | `players` | [`PlayerType`](#playertype)[] |
 
 
-## `GameEndType`
+## `GameEndPayload`
 
 | Key | Type |
 | --- | ---- |
 | `gameEndMethod` | `number \| null` |
 | `lrasInitiatorIndex` | `number \| null` |
+| `winnerPlayerIndex` | `number` |
 
 ## `ComboType`
 
@@ -113,6 +114,23 @@
 | 1  | Time |
 | 2  | Game |
 | 7  | No Contest |
+
+## `Input`
+
+| String | Description |
+| ---- | ----------- |
+| `"D_LEFT"` | D-pad left |
+| `"D_RIGHT"` | D-pad right |
+| `"D_UP"` | D-pad up |
+| `"D_DOWN"` | D-pad down |
+| `"Z"`| Z trigger |
+| `"R"` | R trigger |
+| `"L"` | L trigger |
+| `"A"` | A button |
+| `"B"` | B button |
+| `"X"` | X button |
+| `"Y"` | Y button |
+| `"START"` | Start button |
 
 ## `ComboFilterSettings`
 
