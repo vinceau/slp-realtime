@@ -28,30 +28,30 @@ realtime.setStream(livestream);
 const eventManager = new EventManager(realtime);
 const config = {
   events: [
-  {
+    {
       id: "event-1-game-start",
       type: "game-start",
-  },
-  {
+    },
+    {
       id: "event-2-player-1-combo",
       type: "combo-end",
       filter: {
-          playerIndex: 0,  // Index 0 means player 1
-          minComboPercent: 40,
-          excludeCPUs: false,
-          excludeChainGrabs: false,
-          comboMustKill: false,
+        playerIndex: 0,  // Index 0 means player 1
+        minComboPercent: 40,
+        excludeCPUs: false,
+        excludeChainGrabs: false,
+        comboMustKill: false,
       },
-  },
-  {
+    },
+    {
       id: "event-3-player-4-button-press",
       type: "button-combo",
       filter: {
-          playerIndex: 3, // Index 3 means player 4
-          combo: ["A", "B"],
-          duration: 120, // 60 fps * 2 seconds
+        playerIndex: 3, // Index 3 means player 4
+        combo: ["A", "B"],
+        duration: 120, // 60 fps * 2 seconds
       },
-  },
+    },
   ]
 };
 
@@ -60,13 +60,13 @@ eventManager.updateConfig(config);
 
 eventManager.events$.subscribe(event => {
   switch (event.id) {
-  case "event-1-game-start":
+    case "event-1-game-start":
       console.log("A new game is starting!");
       break;
-  case "event-2-player-1-combo":
+    case "event-2-player-1-combo":
       console.log("Player 1 did a combo!");
       break;
-  case "event-3-player-4-button-press":
+    case "event-3-player-4-button-press":
       console.log("Player 4 held A+B for 2 seconds!");
       break;
   }
