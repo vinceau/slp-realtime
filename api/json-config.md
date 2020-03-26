@@ -17,11 +17,11 @@ const eventManager = new EventManager(realtime);
 
 The [`EventManagerConfig`](./types.md#eventmanagerconfig) object contains the list of events that you want to subscribe to.
 
-For example, let's say we were interested in when 3 events.
+For example, let's say we were interested in the following 3 events:
 
-1. When the game starts
-2. When player 1 does a combo of at least 45%
-3. When player 4 holds the buttons A and B for 2 seconds
+1. when the game starts
+2. when player 1 does a combo of at least 45%
+3. when player 4 holds the buttons A and B for 2 seconds
 
 Then our config object might look a little something like this:
 
