@@ -62,12 +62,13 @@ describe("game config", () => {
         switch (event.id) {
         case "game-start-id":
           gameStartSpy();
-          expect(event.payload.numPlayers).toEqual(2);
+          expect(event.payload.players.length).toEqual(2);
           break;
         case "game-end-id":
           gameEndSpy();
           break;
         case "3p-game-start-id":
+          expect(event.payload.players.length).toEqual(3);
           threePlayerGameStartSpy();
           break;
         case "is-teams-game-start-id":
