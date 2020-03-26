@@ -20,6 +20,8 @@ interface DolphinCombo {
   path: string;
   startFrame: number;
   endFrame: number;
+  gameStation?: string;
+  gameStartAt?: string;
 }
 
 export type DolphinComboQueueOptions = typeof defaultSettings;
@@ -36,7 +38,7 @@ export class DolphinComboQueue {
     this.combos = new Array<DolphinCombo>();
   }
 
-  public addCombo(path: string, combo: ComboType): void {
+  public addCombo(path: string, combo: ComboType, gameStation?: string, gameStartAt?: string): void {
     const startFrame = Math.max(Frames.FIRST, combo.startFrame - this.options.startBuffer);
     // Ideally we use the end frame specified in the game, but we don't actually have
     // access to that information in a realtime environment.
@@ -46,6 +48,8 @@ export class DolphinComboQueue {
       path,
       startFrame,
       endFrame,
+      gameStation,
+      gameStartAt,
     });
   }
 
