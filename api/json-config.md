@@ -1,6 +1,8 @@
 # JSON Config API
 
-To interface with this API you first instantiate an `EventManager` object and you pass a configuration object which defines what kind of events you are interested in subscribing for.
+To interface with this API you first instantiate an [`EventManager`](./types.md#eventmanager) object and you pass a configuration object which defines what kind of events you are interested in subscribing for.
+
+[Click here](../examples/json-config) for the working example.
 
 ```javascript
 const { SlpRealTime, EventManager } = require("@vinceau/slp-realtime");
@@ -13,7 +15,7 @@ const eventManager = new EventManager(realtime);
 
 ## The Config Object
 
-The [`EventManagerConfig`](#eventmanagerconfig) object contains the list of events that you want to subscribe to.
+The [`EventManagerConfig`](./types.md#eventmanagerconfig) object contains the list of events that you want to subscribe to.
 
 For example, let's say we were interested in when 3 events.
 
@@ -95,7 +97,7 @@ Here is the list of event types which you can subscribe to:
 
 Emitted when the game starts.
 
-Payload: `GameStartType`
+Payload: [`GameStartType`](./types.md#gamestarttype)
 
 Filters:
 
@@ -106,7 +108,7 @@ Filters:
 
 Emitted when the game ends.
 
-Payload: `GameEndPayload`
+Payload: [`GameEndPayload`](./types.md#gameendpayload)
 
 Filters:
 
@@ -117,7 +119,7 @@ Filters:
 
 Emitted when a player spawns.
 
-Payload: `StockType`
+Payload: [`StockType`](./types.md#stocktype)
 
 Filters:
 
@@ -127,7 +129,7 @@ Filters:
 
 Emitted when a player dies.
 
-Payload: `StockType`
+Payload: [`StockType`](./types.md#stocktype)
 
 Filters:
 
@@ -137,7 +139,7 @@ Filters:
 
 Emitted when a combo is starting.
 
-Payload: `ComboEventPayload`
+Payload: [`ComboEventPayload`](./types.md#comboeventpayload)
 
 Filters:
 
@@ -147,7 +149,7 @@ Filters:
 
 Emitted for each hit that extends a combo.
 
-Payload: `ComboEventPayload`
+Payload: [`ComboEventPayload`](./types.md#comboeventpayload)
 
 Filters:
 
@@ -157,18 +159,18 @@ Filters:
 
 Emitted at the end of the combo.
 
-Payload: `ComboEventPayload`
+Payload: [`ComboEventPayload`](./types.md#comboeventpayload)
 
 Filters:
 
 * `playerIndex` (`number`) - the index of the player performing the combo
 * `comboCriteria` ([`ComboFilterSettings`](./types.md#combofiltersettings)) - any combination of the different combo filter settings, or `"none"` to match every possible combos. If omitted, it will match against the default combo parameter settings.
 
-Please note: `playerIndex` and the `portFilter` cannot be used together! If you provide a player index that doesn't match a player port, you will not find any combos!
+Please note: `playerIndex` and the [`portFilter`](./types.md#portfilter) cannot be used together! If you provide a player index that doesn't match a player port, you will not find any combos!
 
 ### `conversion`
 
-Payload: `ComboEventPayload`
+Payload: [`ComboEventPayload`](./types.md#comboeventpayload)
 
 Filters:
 
@@ -179,7 +181,7 @@ Please note: `playerIndex` and the `portFilter` cannot be used together! If you 
 
 ### `button-combo`
 
-Payload: `InputButtonCombo`
+Payload: [`InputButtonCombo`](./types.md#inputbuttoncombo)
 
 Filters:
 
@@ -188,17 +190,3 @@ Filters:
 * `duration` (`number`) - the duration in frames the button(s) are held for e.g. 2 seconds = 120 frames. The default is 1 frame.
 
 ## Config Types
-
-### `EventManagerConfig`
-
-| Key | Type |
-| --- | ---- |
-| `events` | [`EventConfig`](#eventconfig)[] |
-
-
-### `EventConfig`
-| Key | Type |
-| --- | ---- |
-| `id` | `string` |
-| `type` | `string` |
-| `filter` | `any \| undefined` |

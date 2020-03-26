@@ -1,5 +1,18 @@
 # Types
 
+## `EventManagerConfig`
+
+| Key | Type |
+| --- | ---- |
+| `events` | [`EventConfig`](#eventconfig)[] |
+
+## `EventConfig`
+| Key | Type |
+| --- | ---- |
+| `id` | `string` |
+| `type` | `string` |
+| `filter` | `any \| undefined` |
+
 ## `GameStartType`
 
 | Key | Type |
@@ -114,6 +127,15 @@
 | 1  | Time |
 | 2  | Game |
 | 7  | No Contest |
+
+## InputButtonCombo
+
+| Key         | Type                              |
+| ----------- | --------------------------------- |
+| `frame` | `number` |
+| `playerIndex` | `number` |
+| `combo` |  [`Input`](#input)[] |
+| `duration` | `number` |
 
 ## `Input`
 
