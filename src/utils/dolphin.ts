@@ -22,6 +22,8 @@ interface DolphinCombo {
   endFrame?: number;
   gameStation?: string;
   gameStartAt?: string;
+  damageDone?: number;
+  comboingCharacter?: number;
 }
 
 export type DolphinComboQueueOptions = typeof defaultSettings;
@@ -35,7 +37,7 @@ export class DolphinComboQueue {
     this.combos = new Array<DolphinCombo>();
   }
 
-  public addCombo(path: string, combo: ComboType, gameStation?: string, gameStartAt?: string): void {
+  public addCombo(path: string, combo: ComboType, gameStation?: string, gameStartAt?: string, damageDone?: number, comboingCharacter?: number): void {
     const startFrame = Math.max(Frames.FIRST, combo.startFrame - this.options.startBuffer);
     // If endFrame is undefined it will just play to the end
     const endFrame = combo.endFrame ? combo.endFrame + this.options.endBuffer : undefined;
@@ -45,6 +47,8 @@ export class DolphinComboQueue {
       endFrame,
       gameStation,
       gameStartAt,
+      damageDone,
+      comboingCharacter,
     });
   }
 
