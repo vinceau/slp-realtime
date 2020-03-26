@@ -1,9 +1,7 @@
 
 # `slp-realtime`
 
-
 [![slp-realtime is magic - Nikki](https://i.imgur.com/qnfI6c5.png)](https://i.imgur.com/qnfI6c5.png)
-
 
 [![npm version](https://img.shields.io/npm/v/@vinceau/slp-realtime.svg?style=flat)](https://npmjs.org/package/@vinceau/slp-realtime "View this project on npm")
 [![Build Status](https://github.com/vinceau/slp-realtime/workflows/build/badge.svg)](https://github.com/vinceau/slp-realtime/actions?workflow=build)
@@ -36,9 +34,12 @@ yarn add @vinceau/slp-realtime
 
 ## Usage
 
-For a list of all the subscribable events, [click here](api/README.md#events).
+For a list of all the subscribable events, [click here](api/observables.md#events).
 
-See a [working example](examples) or [check out the docs](https://vince.id.au/slp-realtime/).
+See a [working example](examples) or [check out the docs](api/README.md).
+
+The following usage examples use the more complex [RxJS Observable API](api/observables). For a more
+simplified usage, check out the [JSON Config API](api/json-config) and the [accompanying working example](examples/json-config).
 
 ### Subscribing to In-Game Events
 
