@@ -19,6 +19,8 @@ export default {
     "stream",
     "path",
     "events",
+    "rxjs",
+    "rxjs/operators",
     ...Object.keys(pkg.dependencies || {}),
     ...Object.keys(pkg.peerDependencies || {}),
   ],
