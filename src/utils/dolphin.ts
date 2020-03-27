@@ -1,6 +1,6 @@
 import fs from "fs-extra";
 import { ComboType, Frames } from "slp-parser-js";
-import { shuffle } from "lodash";
+import { shuffle, sortBy, orderBy, without } from "lodash";
 
 interface DolphinQueue {
   mode: string;
@@ -68,6 +68,28 @@ export class DolphinComboQueue {
     const data = this._dataToWrite();
     fs.writeFileSync(filePath, data);
     return this.length();
+  }
+
+  public limitToTime(minutes: number): void {
+    let currentTotal = 0;
+    const frameTime = minutes*60*60;
+    const combos = orderBy(this.combos, (combo) => combo.damageDone, "asc");
+    combos.filter((value) => {
+      while (currentTotal < frameTime) {
+        currentTotal += value.endFrame - value.startFrame;
+        return true;
+      }
+      return false;
+    });
+    this.combos = sortBy(this.combos, (combo) => combo.gameStartAt);
+  }
+
+  public limitCharacterCombos(charId: number, maxCombos: number): void {
+    const charCombos = [...this.combos];
+    charCombos.sort((a, b) => a.damageDone - b.damageDone);
+    charCombos.filter((combo) => combo.comboingCharacter === charId);
+    charCombos.slice(0, maxCombos);
+    this.combos = without(this.combos, ...charCombos)
   }
 
   /**
