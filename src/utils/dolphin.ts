@@ -2,14 +2,14 @@ import fs from "fs-extra";
 import { ComboType, Frames } from "slp-parser-js";
 import { shuffle } from "lodash";
 
-interface DolphinPlaybackItem {
+export interface DolphinPlaybackItem {
   path: string;
   combo?: ComboType;
   gameStation?: string;
   gameStartAt?: string;
 }
 
-interface DolphinQueue {
+interface DolphinQueueFormat {
   mode: string;
   replay: string;
   isRealTimeMode: boolean;
@@ -36,13 +36,13 @@ interface DolphinEntry {
   gameStartAt?: string;
 }
 
-export type DolphinEntryQueueOptions = typeof defaultSettings;
+export type DolphinPlaybackQueueOptions = typeof defaultSettings;
 
-export class DolphinEntryQueue implements Iterable<DolphinPlaybackItem>{
+export class DolphinPlaybackQueue implements Iterable<DolphinPlaybackItem>{
   private items = new Array<DolphinPlaybackItem>();
 
-  public push(entry: DolphinPlaybackItem): void {
-    this.items.push(entry);
+  public push(item: DolphinPlaybackItem): void {
+    this.items.push(item);
   }
 
   public entries(): IterableIterator<[number, DolphinPlaybackItem]> {
@@ -57,7 +57,7 @@ export class DolphinEntryQueue implements Iterable<DolphinPlaybackItem>{
     this.items = [];
   }
 
-  public writeFileSync(filePath: string, options?: Partial<DolphinEntryQueueOptions>): number {
+  public writeFileSync(filePath: string, options?: Partial<DolphinPlaybackQueueOptions>): number {
     const data = this._dataToWrite(options);
     fs.writeFileSync(filePath, data);
     return this.length();
@@ -68,9 +68,9 @@ export class DolphinEntryQueue implements Iterable<DolphinPlaybackItem>{
    *
    * @param {string} filePath The name of the combos file
    * @returns {Promise<number>} The number of combos written out to the file
-   * @memberof DolphinEntryQueue
+   * @memberof DolphinPlaybackQueue
    */
-  public async writeFile(filePath: string, options?: Partial<DolphinEntryQueueOptions>): Promise<number> {
+  public async writeFile(filePath: string, options?: Partial<DolphinPlaybackQueueOptions>): Promise<number> {
     const data = this._dataToWrite(options);
     await fs.writeFile(filePath, data);
     return this.length();
@@ -97,11 +97,11 @@ export class DolphinEntryQueue implements Iterable<DolphinPlaybackItem>{
     }
   }
 
-  private _dataToWrite(options: Partial<DolphinEntryQueueOptions>): string {
-    const opts: DolphinEntryQueueOptions = Object.assign({}, defaultSettings, options);
-    const entries = (opts.shuffle) ? shuffle(this.items) : this.items;
+  private _dataToWrite(options: Partial<DolphinPlaybackQueueOptions>): string {
+    const opts: DolphinPlaybackQueueOptions = Object.assign({}, defaultSettings, options);
+    const entries = opts.shuffle ? shuffle(this.items) : this.items;
     const queue = entries.map(entry => mapDolphinEntry(entry, opts.startBuffer, opts.endBuffer));
-    const dolphinQueue: DolphinQueue = {
+    const dolphinQueue: DolphinQueueFormat = {
       mode: opts.mode,
       replay: opts.replay,
       isRealTimeMode: opts.isRealTimeMode,
