@@ -1,22 +1,33 @@
-import fs from "fs-extra";
 import { ComboType, Frames } from "slp-parser-js";
 import { shuffle } from "lodash";
 
-interface DolphinQueue {
+export interface DolphinPlaybackItem {
+  path: string;
+  combo?: ComboType;
+  gameStation?: string;
+  gameStartAt?: string;
+}
+
+interface DolphinQueueFormat {
   mode: string;
   replay: string;
   isRealTimeMode: boolean;
   outputOverlayFiles: boolean;
-  queue: DolphinCombo[];
+  queue: DolphinEntry[];
 }
 
 const defaultSettings = {
   shuffle: true,
+  mode: "queue",
+  replay: "",
+  isRealTimeMode: false,
+  outputOverlayFiles: true,
   startBuffer: 240,
   endBuffer: 180,
+  prettify: true,
 };
 
-interface DolphinCombo {
+interface DolphinEntry {
   path: string;
   startFrame?: number;
   endFrame?: number;
@@ -24,70 +35,36 @@ interface DolphinCombo {
   gameStartAt?: string;
 }
 
-export type DolphinComboQueueOptions = typeof defaultSettings;
+export type DolphinPlaybackQueueOptions = typeof defaultSettings;
 
-export class DolphinComboQueue {
-  private options: DolphinComboQueueOptions;
-  private combos: DolphinCombo[];
-
-  public constructor(options?: Partial<DolphinComboQueueOptions>) {
-    this.options = Object.assign({}, defaultSettings, options);
-    this.combos = new Array<DolphinCombo>();
-  }
-
-  public addCombo(path: string, combo: ComboType, gameStation?: string, gameStartAt?: string): void {
-    const startFrame = Math.max(Frames.FIRST, combo.startFrame - this.options.startBuffer);
-    // If endFrame is undefined it will just play to the end
-    const endFrame = combo.endFrame ? combo.endFrame + this.options.endBuffer : undefined;
-    this.combos.push({
-      path,
-      startFrame,
-      endFrame,
-      gameStation,
-      gameStartAt,
-    });
-  }
-
-  public length(): number {
-    return this.combos.length;
-  }
-
-  public clear(): void {
-    this.combos = [];
-  }
-
-  public updateSettings(settings: Partial<DolphinComboQueueOptions>): void {
-    this.options = Object.assign({}, this.options, settings);
-  }
-
-  public writeFileSync(filePath: string): number {
-    const data = this._dataToWrite();
-    fs.writeFileSync(filePath, data);
-    return this.length();
-  }
-
-  /**
-   * Asynchronously writes out the combos to a JSON file
-   *
-   * @param {string} filePath The name of the combos file
-   * @returns {Promise<number>} The number of combos written out to the file
-   * @memberof DolphinComboQueue
-   */
-  public async writeFile(filePath: string): Promise<number> {
-    const data = this._dataToWrite();
-    await fs.writeFile(filePath, data);
-    return this.length();
-  }
-
-  private _dataToWrite(): string {
-    const combos = (this.options.shuffle) ? shuffle(this.combos) : this.combos;
-    const queue: DolphinQueue = {
-      mode: "queue",
-      replay: "",
-      isRealTimeMode: false,
-      outputOverlayFiles: true,
-      queue: combos,
-    };
-    return JSON.stringify(queue, null, 2);
-  }
+export const generateDolphinQueuePayload = (items: DolphinPlaybackItem[], options?: Partial<DolphinPlaybackQueueOptions>): string => {
+  const opts: DolphinPlaybackQueueOptions = Object.assign({}, defaultSettings, options);
+  const entries = opts.shuffle ? shuffle(items) : items;
+  const queue = entries.map(entry => mapDolphinEntry(entry, opts.startBuffer, opts.endBuffer));
+  const dolphinQueue: DolphinQueueFormat = {
+    mode: opts.mode,
+    replay: opts.replay,
+    isRealTimeMode: opts.isRealTimeMode,
+    outputOverlayFiles: opts.outputOverlayFiles,
+    queue,
+  };
+  const spaces = opts.prettify ? 2 : undefined;
+  return JSON.stringify(dolphinQueue, undefined, spaces);
 }
+
+const mapDolphinEntry = (entry: DolphinPlaybackItem, startBuffer: number, endBuffer: number): DolphinEntry => {
+  const { path, gameStation, gameStartAt, combo } = entry;
+  const dolphinEntry: DolphinEntry = {
+    path,
+    gameStation,
+    gameStartAt,
+  };
+  if (combo) {
+    dolphinEntry.startFrame = Math.max(Frames.FIRST, combo.startFrame - startBuffer);
+    // If endFrame is undefined it will just play to the end
+    if (combo.endFrame) {
+      dolphinEntry.endFrame = combo.endFrame + endBuffer;
+    }
+  }
+  return dolphinEntry;
+};
