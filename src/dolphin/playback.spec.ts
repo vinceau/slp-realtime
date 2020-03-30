@@ -6,14 +6,10 @@ import { Subscription } from "rxjs";
 import { observableDolphinProcess } from "./playback";
 
 describe("when reading dolphin playback stdout", () => {
-    let subscriptions: Array<Subscription>;
-
-    beforeAll(() => {
-        subscriptions = [];
-    });
+    const subscription = new Subscription();
 
     afterAll(() => {
-        subscriptions.forEach(s => s.unsubscribe());
+        subscription.unsubscribe();
     });
 
     it("can parse command messages", async (finishJest) => {
@@ -23,10 +19,12 @@ describe("when reading dolphin playback stdout", () => {
         const spy = sinon.spy();
 
         const dolphin$ = observableDolphinProcess(inoutStream);
-        dolphin$.subscribe(data => {
-            // console.log(data);
-            spy();
-        });
+        subscription.add(
+            dolphin$.subscribe(data => {
+                // console.log(data);
+                spy();
+            })
+        );
 
         const payloadToWrite = [
             "[PLAYBACK_START_FRAME] 0",

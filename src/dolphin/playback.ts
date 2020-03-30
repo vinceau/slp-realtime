@@ -4,7 +4,7 @@ import { Observable, fromEventPattern, of } from "rxjs";
 import { Readable } from "stream";
 import { concatMap, map, filter } from "rxjs/operators";
 
-interface DolphinPlaybackInfo {
+export interface DolphinPlaybackInfo {
     command: string;
     value: string;
 }
