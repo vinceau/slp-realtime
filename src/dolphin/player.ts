@@ -67,8 +67,10 @@ export class DolphinLauncher {
 
     public constructor(options: Partial<DolphinLauncherOptions>) {
         this.options = Object.assign({}, defaultDolphinLauncherOptions, options);
-        const comboFilePath = "C:\\Users:\\Vince\\conversions_combos.json";
-        this.dolphin = execFile(this.options.dolphinPath, ["-i", comboFilePath], { maxBuffer: MAX_BUFFER });
+    }
+
+    public loadJSON(comboFilePath: string) {
+        this.dolphin = this._executeFile(comboFilePath);
         if (this.dolphin.stdout) {
             const dolphin$ = observableDolphinProcess(this.dolphin.stdout);
             dolphin$.subscribe(payload => {
@@ -95,6 +97,17 @@ export class DolphinLauncher {
                 }
             });
         }
+    }
+
+    private _executeFile(comboFilePath: string): ChildProcess {
+        const params = ["-i", comboFilePath];
+        if (this.options.meleeIsoPath) {
+            params.push("-e", this.options.meleeIsoPath)
+        }
+        if (this.options.batch) {
+            params.push("-b")
+        }
+        return execFile(this.options.dolphinPath, params, { maxBuffer: MAX_BUFFER });
     }
 
     /*
@@ -128,14 +141,14 @@ export class DolphinLauncher {
 
     private _handlePlaybackStartFrame(commandValue: number) {
         this.startRecordingFrame = commandValue;
-        this.startRecordingFrame += START_RECORDING_BUFFER;
+        this.startRecordingFrame += this.options.startBuffer;
         console.log(`StartFrame: ${this.startRecordingFrame}`);
     }
 
     private _handlePlaybackEndFrame(commandValue: number) {
         this.endRecordingFrame = commandValue;
         if (this.endRecordingFrame < this.lastGameFrame) {
-            this.endRecordingFrame -= END_RECORDING_BUFFER;
+            this.endRecordingFrame += this.options.endBuffer;
         } else {
             this.waitForGAME = true;
             this.endRecordingFrame = this.lastGameFrame;
