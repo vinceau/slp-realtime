@@ -10,10 +10,13 @@
  * [NO_GAME] no more files in the queue
  */
 
-import { Observable, ReplaySubject } from "rxjs";
+import { Observable, ReplaySubject, from } from "rxjs";
+import fs from "fs-extra";
 
 import { ChildProcess, execFile } from "child_process";
-import { observableDolphinProcess } from "./playback";
+import { observableDolphinProcess, DolphinPlaybackInfo } from "./playback";
+import { DolphinEntry, DolphinQueueFormat } from "../utils/dolphin";
+import { tap, switchMap, map } from "rxjs/operators";
 
 const MAX_BUFFER = 2 ** 20;
 const DELAY_AMOUNT_MS = 1000;
@@ -44,6 +47,10 @@ const defaultDolphinLauncherOptions = {
     endBuffer: 0,
 }
 
+export interface GamePlaybackEndPayload {
+    gameEnded: boolean;
+}
+
 export class DolphinLauncher {
     private options: DolphinLauncherOptions;
     private dolphin: ChildProcess | null = null;
@@ -56,20 +63,37 @@ export class DolphinLauncher {
     private jsonFileSource = new ReplaySubject<string>();
 
     // private dolphinCommandSource = new ReplaySubject<DolphinPlaybackInfo>();
-    // private currentFileSource = new ReplaySubject<string>();
-    private gameStartSource = new ReplaySubject<string>();
-    private gameEndSource = new ReplaySubject<string>();
+    private currentSlpFileSource = new ReplaySubject<string>();
+    private currentJSONFileSource = new ReplaySubject<string>();
+    private gameStartSource = new ReplaySubject<DolphinEntry>();
+    private gameEndSource = new ReplaySubject<GamePlaybackEndPayload>();
 
     // public dolphinCommands$ = this.dolphinCommandSource.asObservable();
     // public currentFile$ = this.currentFileSource.asObservable();
     public gameStart$ = this.gameStartSource.asObservable();
     public gameEnd$ = this.gameEndSource.asObservable();
+    public currentJSONFile$: Observable<{
+        filename: string;
+        contents: DolphinQueueFormat;
+    }>;
+    public dolphinPlaybackCommands$: Observable<DolphinPlaybackInfo>;
 
     public constructor(options: Partial<DolphinLauncherOptions>) {
         this.options = Object.assign({}, defaultDolphinLauncherOptions, options);
+
+        this.currentJSONFile$ = this.currentJSONFileSource.pipe(
+            switchMap(filename => from<Promise<DolphinQueueFormat>>(fs.readJSON(filename)).pipe(
+                map(contents => ({
+                    filename,
+                    contents,
+                })),
+            )),
+        );
+        // this.dolphinPlaybackCommands$ = this.currentJSONFileSource
     }
 
     public loadJSON(comboFilePath: string) {
+        this.currentJSONFileSource.next(comboFilePath);
         this.dolphin = this._executeFile(comboFilePath);
         if (this.dolphin.stdout) {
             const dolphin$ = observableDolphinProcess(this.dolphin.stdout);
@@ -135,6 +159,9 @@ export class DolphinLauncher {
             console.log("game start");
         } else if (this.currentFrame === this.endRecordingFrame) {
             console.log("game end");
+            this.gameEndSource.next({
+                gameEnded: this.waitForGAME,
+            });
             this._resetState();
         }
     }

@@ -8,7 +8,7 @@ export interface DolphinPlaybackItem {
   gameStartAt?: string;
 }
 
-interface DolphinQueueFormat {
+export interface DolphinQueueFormat {
   mode: string;
   replay: string;
   isRealTimeMode: boolean;
@@ -27,7 +27,7 @@ const defaultSettings = {
   prettify: true,
 };
 
-interface DolphinEntry {
+export interface DolphinEntry {
   path: string;
   startFrame?: number;
   endFrame?: number;
