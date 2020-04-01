@@ -9,6 +9,7 @@ export interface DolphinPlaybackItem {
 }
 
 export interface DolphinQueueFormat {
+  commandId?: string;
   mode: string;
   replay: string;
   isRealTimeMode: boolean;
