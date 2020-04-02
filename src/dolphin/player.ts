@@ -44,8 +44,8 @@ const defaultDolphinLauncherOptions = {
     dolphinPath: "",
     meleeIsoPath: "",
     batch: true,
-    startBuffer: 0,
-    endBuffer: 0,
+    startBuffer: 1,   // Sometimes Dolphin misses the start frame so start from the following frame
+    endBuffer: 1,     // Match the start frame because why not
 }
 
 export interface GamePlaybackEndPayload {
