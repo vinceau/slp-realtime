@@ -10,13 +10,14 @@
  * [NO_GAME] no more files in the queue
  */
 
-import { Observable, ReplaySubject, from } from "rxjs";
+import { Observable, ReplaySubject, from, Subscription, fromEventPattern } from "rxjs";
 import fs from "fs-extra";
 
 import { ChildProcess, execFile } from "child_process";
 import { observableDolphinProcess, DolphinPlaybackInfo } from "./playback";
 import { DolphinEntry, DolphinQueueFormat } from "../utils/dolphin";
-import { tap, switchMap, map } from "rxjs/operators";
+import { tap, switchMap, map, takeUntil } from "rxjs/operators";
+import { Frames } from "slp-parser-js";
 
 const MAX_BUFFER = 2 ** 20;
 const DELAY_AMOUNT_MS = 1000;
@@ -60,16 +61,11 @@ export class DolphinLauncher {
     private startRecordingFrame = -124;
     private endRecordingFrame = -124;
 
-    private jsonFileSource = new ReplaySubject<string>();
-
-    // private dolphinCommandSource = new ReplaySubject<DolphinPlaybackInfo>();
     private currentSlpFileSource = new ReplaySubject<string>();
     private currentJSONFileSource = new ReplaySubject<string>();
     private gameStartSource = new ReplaySubject<DolphinEntry>();
     private gameEndSource = new ReplaySubject<GamePlaybackEndPayload>();
 
-    // public dolphinCommands$ = this.dolphinCommandSource.asObservable();
-    // public currentFile$ = this.currentFileSource.asObservable();
     public gameStart$ = this.gameStartSource.asObservable();
     public gameEnd$ = this.gameEndSource.asObservable();
     public currentJSONFile$: Observable<{
@@ -81,6 +77,7 @@ export class DolphinLauncher {
     public constructor(options: Partial<DolphinLauncherOptions>) {
         this.options = Object.assign({}, defaultDolphinLauncherOptions, options);
 
+        /*
         this.currentJSONFile$ = this.currentJSONFileSource.pipe(
             switchMap(filename => from<Promise<DolphinQueueFormat>>(fs.readJSON(filename)).pipe(
                 map(contents => ({
@@ -89,35 +86,44 @@ export class DolphinLauncher {
                 })),
             )),
         );
-        // this.dolphinPlaybackCommands$ = this.currentJSONFileSource
+        */
     }
 
     public loadJSON(comboFilePath: string) {
-        this.currentJSONFileSource.next(comboFilePath);
+        this._resetState();
+        // this.currentJSONFileSource.next(comboFilePath);
         this.dolphin = this._executeFile(comboFilePath);
         if (this.dolphin.stdout) {
             const dolphin$ = observableDolphinProcess(this.dolphin.stdout);
-            dolphin$.subscribe(payload => {
+            // This observable returns the exit code
+            const finished$ = fromEventPattern<number>(
+                handler => this.dolphin.addListener("close", handler),
+                handler => this.dolphin.removeListener("close", handler),
+            );
+            dolphin$.pipe(
+                // Stop emitting on process close
+                takeUntil(finished$),
+            ).subscribe(payload => {
                 const value = parseInt(payload.value);
-            switch (payload.command) {
-                case "[CURRENT_FRAME]":
-                    this._handleCurrentFrame(value);
-                    break;
-                case "[PLAYBACK_START_FRAME]":
-                    this._handlePlaybackStartFrame(value);
-                    break;
-                case "[PLAYBACK_END_FRAME]":
-                    this._handlePlaybackEndFrame(value);
-                    break;
-                case "[GAME_END_FRAME]":
-                    this._handleGameEndFrame(value);
-                    break;
-                case "[NO_GAME]":
-                    this._handleNoGame();
-                    break;
-                default:
-                    console.log(`Unknown command ${payload.command} with value ${payload.value}`);
-                    break;
+                switch (payload.command) {
+                    case "[CURRENT_FRAME]":
+                        this._handleCurrentFrame(value);
+                        break;
+                    case "[PLAYBACK_START_FRAME]":
+                        this._handlePlaybackStartFrame(value);
+                        break;
+                    case "[PLAYBACK_END_FRAME]":
+                        this._handlePlaybackEndFrame(value);
+                        break;
+                    case "[GAME_END_FRAME]":
+                        this._handleGameEndFrame(value);
+                        break;
+                    case "[NO_GAME]":
+                        this._handleNoGame();
+                        break;
+                    default:
+                        console.log(`Unknown command ${payload.command} with value ${payload.value}`);
+                        break;
                 }
             });
         }
@@ -167,19 +173,18 @@ export class DolphinLauncher {
     }
 
     private _handlePlaybackStartFrame(commandValue: number) {
-        this.startRecordingFrame = commandValue;
-        this.startRecordingFrame += this.options.startBuffer;
+        // Ensure the start frame is at least bigger than the intital playback start frame
+        this.startRecordingFrame = Math.max(commandValue, commandValue + this.options.startBuffer);
         console.log(`StartFrame: ${this.startRecordingFrame}`);
     }
 
     private _handlePlaybackEndFrame(commandValue: number) {
         this.endRecordingFrame = commandValue;
-        if (this.endRecordingFrame < this.lastGameFrame) {
-            this.endRecordingFrame += this.options.endBuffer;
-        } else {
-            this.waitForGAME = true;
-            this.endRecordingFrame = this.lastGameFrame;
-        }
+        // Play the game until the end
+        this.waitForGAME = this.endRecordingFrame >= this.lastGameFrame;
+        // Ensure the adjusted frame is between the start and end frames
+        const adjustedEndFrame = Math.max(this.startRecordingFrame, this.endRecordingFrame - this.options.endBuffer);
+        this.endRecordingFrame = Math.min(adjustedEndFrame, this.lastGameFrame);
         console.log(`EndFrame: ${this.endRecordingFrame}`);
     }
 
