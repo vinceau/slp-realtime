@@ -6,7 +6,7 @@ import { concatMap, map, filter } from "rxjs/operators";
 
 export interface DolphinPlaybackInfo {
     command: string;
-    value: string;
+    value?: string;
 }
 
 export const observableDolphinProcess = (dolphinStdout: Readable): Observable<DolphinPlaybackInfo> => {
@@ -23,8 +23,6 @@ export const observableDolphinProcess = (dolphinStdout: Readable): Observable<Do
         concatMap(lines => of(...lines)),
         // Split the line into chunks
         map(line => line.split(" ")),
-        // We must have at least 2 chunks
-        filter(chunks => chunks.length >= 2),
         // Map to the playback payload
         map(([command, value]) => {
             const payload: DolphinPlaybackInfo = {
