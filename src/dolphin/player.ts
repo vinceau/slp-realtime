@@ -10,7 +10,7 @@
  * [NO_GAME] no more files in the queue
  */
 
-import { Observable, ReplaySubject, from, Subscription, fromEventPattern } from "rxjs";
+import { Observable, ReplaySubject, from, Subscription, fromEventPattern, Subject, merge } from "rxjs";
 import fs from "fs-extra";
 
 import { ChildProcess, execFile } from "child_process";
@@ -61,22 +61,18 @@ export class DolphinLauncher {
     private startRecordingFrame = -124;
     private endRecordingFrame = -124;
 
-    private currentSlpFileSource = new ReplaySubject<string>();
-    private currentJSONFileSource = new ReplaySubject<string>();
-    private gameStartSource = new ReplaySubject<DolphinEntry>();
+    private gameStartSource = new Subject<void>();
     private gameEndSource = new ReplaySubject<GamePlaybackEndPayload>();
+    private queueEmptySource = new Subject<void>();
+    private dolphinExitSource = new Subject<void>();
 
     public gameStart$ = this.gameStartSource.asObservable();
     public gameEnd$ = this.gameEndSource.asObservable();
-    public currentJSONFile$: Observable<{
-        filename: string;
-        contents: DolphinQueueFormat;
-    }>;
-    public dolphinPlaybackCommands$: Observable<DolphinPlaybackInfo>;
+    public queueEmpty$ = this.queueEmptySource.asObservable();
+    public dolphinExit$ = this.queueEmptySource.asObservable();
 
     public constructor(options: Partial<DolphinLauncherOptions>) {
         this.options = Object.assign({}, defaultDolphinLauncherOptions, options);
-
         /*
         this.currentJSONFile$ = this.currentJSONFileSource.pipe(
             switchMap(filename => from<Promise<DolphinQueueFormat>>(fs.readJSON(filename)).pipe(
@@ -89,21 +85,30 @@ export class DolphinLauncher {
         */
     }
 
-    public loadJSON(comboFilePath: string) {
+    public loadJSON(comboFilePath: string): ChildProcess {
+        if (this.dolphin) {
+            // Kill process if already running
+            this.dolphin.kill();
+        }
         this._resetState();
+
         // this.currentJSONFileSource.next(comboFilePath);
         this.dolphin = this._executeFile(comboFilePath);
+
+        this.dolphin.on("close", () => {
+            this.dolphinExitSource.next();
+        });
+
         if (this.dolphin.stdout) {
             const dolphin$ = observableDolphinProcess(this.dolphin.stdout);
-            // This observable returns the exit code
-            const finished$ = fromEventPattern<number>(
-                handler => this.dolphin.addListener("close", handler),
-                handler => this.dolphin.removeListener("close", handler),
-            );
             dolphin$.pipe(
                 // Stop emitting on process close
-                takeUntil(finished$),
+                takeUntil(merge(
+                    this.dolphinExit$,
+                    this.queueEmpty$,
+                )),
             ).subscribe(payload => {
+                // console.log(`got command: ${payload.command} with value: ${payload.value}`);
                 const value = parseInt(payload.value);
                 switch (payload.command) {
                     case "[CURRENT_FRAME]":
@@ -127,6 +132,7 @@ export class DolphinLauncher {
                 }
             });
         }
+        return this.dolphin;
     }
 
     private _executeFile(comboFilePath: string): ChildProcess {
@@ -162,9 +168,10 @@ export class DolphinLauncher {
     private _handleCurrentFrame(commandValue: number) {
         this.currentFrame = commandValue;
         if (this.currentFrame === this.startRecordingFrame) {
-            console.log("game start");
+            this.gameStartSource.next();
+            // console.log("game start");
         } else if (this.currentFrame === this.endRecordingFrame) {
-            console.log("game end");
+            // console.log("game end");
             this.gameEndSource.next({
                 gameEnded: this.waitForGAME,
             });
@@ -175,7 +182,7 @@ export class DolphinLauncher {
     private _handlePlaybackStartFrame(commandValue: number) {
         // Ensure the start frame is at least bigger than the intital playback start frame
         this.startRecordingFrame = Math.max(commandValue, commandValue + this.options.startBuffer);
-        console.log(`StartFrame: ${this.startRecordingFrame}`);
+        // console.log(`StartFrame: ${this.startRecordingFrame}`);
     }
 
     private _handlePlaybackEndFrame(commandValue: number) {
@@ -185,17 +192,18 @@ export class DolphinLauncher {
         // Ensure the adjusted frame is between the start and end frames
         const adjustedEndFrame = Math.max(this.startRecordingFrame, this.endRecordingFrame - this.options.endBuffer);
         this.endRecordingFrame = Math.min(adjustedEndFrame, this.lastGameFrame);
-        console.log(`EndFrame: ${this.endRecordingFrame}`);
+        // console.log(`EndFrame: ${this.endRecordingFrame}`);
     }
 
     private _handleGameEndFrame(commandValue: number) {
         this.lastGameFrame = commandValue;
-        console.log(`LastFrame: ${this.lastGameFrame}`);
+        // console.log(`LastFrame: ${this.lastGameFrame}`);
     }
 
     private _handleNoGame() {
-        console.log("No games remaining in queue");
-        console.log("Stopping Recording");
+        this.queueEmptySource.next();
+        // console.log("No games remaining in queue");
+        // console.log("Stopping Recording");
     }
 
     private _resetState() {
