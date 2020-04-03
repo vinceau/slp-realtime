@@ -1,6 +1,5 @@
 /**
  * We can tap into the Dolphin state by reading the log printed to stdout.
- * This will let us automate the recording.
  *
  * Dolphin will emit the following messages in following order:
  * [PLAYBACK_START_FRAME]: the frame playback will commence (defaults to -123 if omitted)
@@ -44,8 +43,8 @@ export class DolphinLauncher {
     private waitForGAME = false;
     private currentFrame = -124;
     private lastGameFrame = -124;
-    private startRecordingFrame = -124;
-    private endRecordingFrame = -124;
+    private startPlaybackFrame = -124;
+    private endPlaybackFrame = -124;
 
     private gameStartSource = new Subject<void>();
     private gameEndSource = new ReplaySubject<GamePlaybackEndPayload>();
@@ -123,9 +122,9 @@ export class DolphinLauncher {
 
     private _handleCurrentFrame(commandValue: number) {
         this.currentFrame = commandValue;
-        if (this.currentFrame === this.startRecordingFrame) {
+        if (this.currentFrame === this.startPlaybackFrame) {
             this.gameStartSource.next();
-        } else if (this.currentFrame === this.endRecordingFrame) {
+        } else if (this.currentFrame === this.endPlaybackFrame) {
             this.gameEndSource.next({
                 gameEnded: this.waitForGAME,
             });
@@ -135,16 +134,16 @@ export class DolphinLauncher {
 
     private _handlePlaybackStartFrame(commandValue: number) {
         // Ensure the start frame is at least bigger than the intital playback start frame
-        this.startRecordingFrame = Math.max(commandValue, commandValue + this.options.startBuffer);
+        this.startPlaybackFrame = Math.max(commandValue, commandValue + this.options.startBuffer);
     }
 
     private _handlePlaybackEndFrame(commandValue: number) {
-        this.endRecordingFrame = commandValue;
+        this.endPlaybackFrame = commandValue;
         // Play the game until the end
-        this.waitForGAME = this.endRecordingFrame >= this.lastGameFrame;
+        this.waitForGAME = this.endPlaybackFrame >= this.lastGameFrame;
         // Ensure the adjusted frame is between the start and end frames
-        const adjustedEndFrame = Math.max(this.startRecordingFrame, this.endRecordingFrame - this.options.endBuffer);
-        this.endRecordingFrame = Math.min(adjustedEndFrame, this.lastGameFrame);
+        const adjustedEndFrame = Math.max(this.startPlaybackFrame, this.endPlaybackFrame - this.options.endBuffer);
+        this.endPlaybackFrame = Math.min(adjustedEndFrame, this.lastGameFrame);
     }
 
     private _handleGameEndFrame(commandValue: number) {
@@ -158,8 +157,8 @@ export class DolphinLauncher {
     private _resetState() {
         this.currentFrame = -124;
         this.lastGameFrame = -124;
-        this.startRecordingFrame = -124;
-        this.endRecordingFrame = -124;
+        this.startPlaybackFrame = -124;
+        this.endPlaybackFrame = -124;
         this.waitForGAME = false;
     }
 }
