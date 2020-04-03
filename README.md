@@ -86,7 +86,7 @@ realtime.combo.end$.subscribe(() => {
 
 We can subscribe to the end of any and every combo but really what we want is to filter for specific combos.
 
-First, instantiate a `ComboFilter`. For all the possible filtering options, see [ComboFilterSettings](api/README.md#combofiltersettings).
+First, instantiate a `ComboFilter`. For all the possible filtering options, see [ComboFilterSettings](api/types.md#combofiltersettings).
 
 ```javascript
 const { ComboFilter } = require("@vinceau/slp-realtime");
