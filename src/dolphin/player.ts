@@ -15,10 +15,12 @@ import { ChildProcess, execFile } from "child_process";
 import { observableDolphinProcess } from "./playback";
 import { takeUntil } from "rxjs/operators";
 
+// Node child processes crash if too much data has been sent to stdout.
+// We set the max buffer to a really large number to avoid crashing Dolphin.
 const MAX_BUFFER = 2 ** 20;
 
+// Configurable options
 interface DolphinLauncherOptions {
-    dolphinPath: string;
     meleeIsoPath: string;
     batch: boolean;
     startBuffer: number;
@@ -26,7 +28,6 @@ interface DolphinLauncherOptions {
 }
 
 const defaultDolphinLauncherOptions = {
-    dolphinPath: "",
     meleeIsoPath: "",
     batch: true,
     startBuffer: 1,   // Sometimes Dolphin misses the start frame so start from the following frame
@@ -38,6 +39,7 @@ export interface GamePlaybackEndPayload {
 }
 
 export class DolphinLauncher {
+    private dolphinPath: string;
     private options: DolphinLauncherOptions;
     private dolphin: ChildProcess | null = null;
     private gameEnded = false;
@@ -56,14 +58,16 @@ export class DolphinLauncher {
     public queueEmpty$ = this.queueEmptySource.asObservable();
     public dolphinExit$ = this.queueEmptySource.asObservable();
 
-    public constructor(options: Partial<DolphinLauncherOptions>) {
+    public constructor(dolphinPath: string, options?: Partial<DolphinLauncherOptions>) {
+        this.dolphinPath = dolphinPath;
         this.options = Object.assign({}, defaultDolphinLauncherOptions, options);
     }
 
     public loadJSON(comboFilePath: string): ChildProcess {
+        // Kill process if already running
         if (this.dolphin) {
-            // Kill process if already running
             this.dolphin.kill();
+            this.dolphin = null;
         }
         this._resetState();
 
@@ -117,7 +121,7 @@ export class DolphinLauncher {
         if (this.options.batch) {
             params.push("-b")
         }
-        return execFile(this.options.dolphinPath, params, { maxBuffer: MAX_BUFFER });
+        return execFile(this.dolphinPath, params, { maxBuffer: MAX_BUFFER });
     }
 
     private _handleCurrentFrame(commandValue: number) {
