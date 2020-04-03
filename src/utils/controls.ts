@@ -15,6 +15,20 @@ enum InputBit {
   START = 0x1000,
 };
 
+const inputBitMap = new Map<Input, InputBit>()
+  .set(Input.D_LEFT, InputBit.D_LEFT)
+  .set(Input.D_RIGHT, InputBit.D_RIGHT)
+  .set(Input.D_DOWN, InputBit.D_DOWN)
+  .set(Input.D_UP, InputBit.D_UP)
+  .set(Input.Z, InputBit.Z)
+  .set(Input.R, InputBit.R)
+  .set(Input.L, InputBit.L)
+  .set(Input.A, InputBit.A)
+  .set(Input.B, InputBit.B)
+  .set(Input.X, InputBit.X)
+  .set(Input.Y, InputBit.Y)
+  .set(Input.START, InputBit.START);
+
 const generateInputBitmaskFromBit = (...buttons: InputBit[]): number => {
   return buttons.reduce((a, b) => (a | b));
 };
@@ -25,32 +39,9 @@ export const generateInputBitmask = (...buttons: Input[]): number => {
 };
 
 const mapInputToBits = (button: Input): InputBit => {
-  switch (button) {
-  case Input.D_LEFT:
-    return InputBit.D_LEFT;
-  case Input.D_RIGHT:
-    return InputBit.D_RIGHT;
-  case Input.D_DOWN:
-    return InputBit.D_DOWN;
-  case Input.D_UP:
-    return InputBit.D_UP;
-  case Input.Z:
-    return InputBit.Z;
-  case Input.R:
-    return InputBit.R;
-  case Input.L:
-    return InputBit.L;
-  case Input.A:
-    return InputBit.A;
-  case Input.B:
-    return InputBit.B;
-  case Input.X:
-    return InputBit.X;
-  case Input.Y:
-    return InputBit.Y;
-  case Input.START:
-    return InputBit.START;
-  default:
+  const b = inputBitMap.get(button);
+  if (!b) {
     throw new Error(`Unknown input: ${button}`);
-  };
+  }
+  return b;
 };
