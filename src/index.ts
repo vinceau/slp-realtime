@@ -10,6 +10,4 @@ export * from "./utils";
 
 export * from "./types";
 
-export * from "./dolphin/player"
-
 export default SlpRealTime;

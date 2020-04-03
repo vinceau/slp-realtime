@@ -31,7 +31,7 @@ describe("when reading dolphin playback stdout", () => {
       "[GAME_END_FRAME] 1",
       "[PLAYBACK_END_FRAME] 2",
       "[CURRENT_FRAME] 3",
-      "[NO_GAME] 4",
+      "[NO_GAME]",
     ].join(os.EOL);
     inoutStream.push(payloadToWrite);
     inoutStream.end();
