@@ -2,7 +2,7 @@ import os from "os";
 import { Observable, fromEventPattern, of } from "rxjs"; 
 
 import { Readable } from "stream";
-import { concatMap, map, filter } from "rxjs/operators";
+import { concatMap, map } from "rxjs/operators";
 
 export interface DolphinPlaybackInfo {
     command: string;
@@ -10,6 +10,7 @@ export interface DolphinPlaybackInfo {
 }
 
 export const observableDolphinProcess = (dolphinStdout: Readable): Observable<DolphinPlaybackInfo> => {
+    // Convert the data event into an observable
     const lines$ = fromEventPattern(
         handler => dolphinStdout.addListener("data", handler),
         handler => dolphinStdout.removeListener("data", handler),

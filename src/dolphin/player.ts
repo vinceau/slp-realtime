@@ -101,7 +101,7 @@ export class DolphinLauncher {
                         this._handleNoGame();
                         break;
                     default:
-                        console.log(`Unknown command ${payload.command} with value ${payload.value}`);
+                        console.error(`Unknown command ${payload.command} with value ${payload.value}`);
                         break;
                 }
             });
