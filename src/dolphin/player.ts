@@ -40,7 +40,7 @@ export interface GamePlaybackEndPayload {
 export class DolphinLauncher {
     private options: DolphinLauncherOptions;
     private dolphin: ChildProcess | null = null;
-    private waitForGAME = false;
+    private gameEnded = false;
     private currentFrame = -124;
     private lastGameFrame = -124;
     private startPlaybackFrame = -124;
@@ -126,7 +126,7 @@ export class DolphinLauncher {
             this.playbackStartSource.next();
         } else if (this.currentFrame === this.endPlaybackFrame) {
             this.playbackEndSource.next({
-                gameEnded: this.waitForGAME,
+                gameEnded: this.gameEnded,
             });
             this._resetState();
         }
@@ -140,7 +140,7 @@ export class DolphinLauncher {
     private _handlePlaybackEndFrame(commandValue: number) {
         this.endPlaybackFrame = commandValue;
         // Play the game until the end
-        this.waitForGAME = this.endPlaybackFrame >= this.lastGameFrame;
+        this.gameEnded = this.endPlaybackFrame >= this.lastGameFrame;
         // Ensure the adjusted frame is between the start and end frames
         const adjustedEndFrame = Math.max(this.startPlaybackFrame, this.endPlaybackFrame - this.options.endBuffer);
         this.endPlaybackFrame = Math.min(adjustedEndFrame, this.lastGameFrame);
@@ -159,6 +159,6 @@ export class DolphinLauncher {
         this.lastGameFrame = -124;
         this.startPlaybackFrame = -124;
         this.endPlaybackFrame = -124;
-        this.waitForGAME = false;
+        this.gameEnded = false;
     }
 }
