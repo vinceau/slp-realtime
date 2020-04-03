@@ -56,7 +56,7 @@ export class DolphinLauncher {
   public playbackStart$ = this.playbackStartSource.asObservable();
   public playbackEnd$ = this.playbackEndSource.asObservable();
   public queueEmpty$ = this.queueEmptySource.asObservable();
-  public dolphinExit$ = this.queueEmptySource.asObservable();
+  public dolphinExit$ = this.dolphinExitSource.asObservable();
 
   public constructor(dolphinPath: string, options?: Partial<DolphinLauncherOptions>) {
     this.dolphinPath = dolphinPath;
