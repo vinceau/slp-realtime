@@ -30,10 +30,6 @@
     "docs": "yarn typedoc --excludePrivate --excludeNotExported",
     "postdocs": "touch docs/.nojekyll"
   },
-  "jest": {
-    "testRegex": "/test/.*",
-    "testEnvironment": "node"
-  },
   "keywords": [
     "slp",
     "slippi",
