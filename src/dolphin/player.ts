@@ -46,13 +46,13 @@ export class DolphinLauncher {
     private startPlaybackFrame = -124;
     private endPlaybackFrame = -124;
 
-    private gameStartSource = new Subject<void>();
-    private gameEndSource = new ReplaySubject<GamePlaybackEndPayload>();
+    private playbackStartSource = new Subject<void>();
+    private playbackEndSource = new ReplaySubject<GamePlaybackEndPayload>();
     private queueEmptySource = new Subject<void>();
     private dolphinExitSource = new Subject<void>();
 
-    public gameStart$ = this.gameStartSource.asObservable();
-    public gameEnd$ = this.gameEndSource.asObservable();
+    public playbackStart$ = this.playbackStartSource.asObservable();
+    public playbackEnd$ = this.playbackEndSource.asObservable();
     public queueEmpty$ = this.queueEmptySource.asObservable();
     public dolphinExit$ = this.queueEmptySource.asObservable();
 
@@ -95,7 +95,7 @@ export class DolphinLauncher {
                         this._handlePlaybackEndFrame(value);
                         break;
                     case "[GAME_END_FRAME]":
-                        this._handleGameEndFrame(value);
+                        this._handleplaybackEndFrame(value);
                         break;
                     case "[NO_GAME]":
                         this._handleNoGame();
@@ -123,9 +123,9 @@ export class DolphinLauncher {
     private _handleCurrentFrame(commandValue: number) {
         this.currentFrame = commandValue;
         if (this.currentFrame === this.startPlaybackFrame) {
-            this.gameStartSource.next();
+            this.playbackStartSource.next();
         } else if (this.currentFrame === this.endPlaybackFrame) {
-            this.gameEndSource.next({
+            this.playbackEndSource.next({
                 gameEnded: this.waitForGAME,
             });
             this._resetState();
@@ -146,7 +146,7 @@ export class DolphinLauncher {
         this.endPlaybackFrame = Math.min(adjustedEndFrame, this.lastGameFrame);
     }
 
-    private _handleGameEndFrame(commandValue: number) {
+    private _handleplaybackEndFrame(commandValue: number) {
         this.lastGameFrame = commandValue;
     }
 
