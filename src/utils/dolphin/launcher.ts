@@ -47,9 +47,10 @@ export interface DolphinPlaybackPayload {
 }
 
 export class DolphinLauncher {
+  public dolphin: ChildProcess | null = null;
+  protected options: DolphinLauncherOptions;
+
   private dolphinPath: string;
-  private options: DolphinLauncherOptions;
-  private dolphin: ChildProcess | null = null;
   private gameEnded = false;
   private currentFrame = -124;
   private lastGameFrame = -124;
@@ -64,7 +65,7 @@ export class DolphinLauncher {
     this.options = Object.assign({}, defaultDolphinLauncherOptions, options);
   }
 
-  public loadJSON(comboFilePath: string): ChildProcess {
+  public loadJSON(comboFilePath: string): void {
     // Kill process if already running
     if (this.dolphin) {
       this.dolphin.kill();
@@ -110,7 +111,6 @@ export class DolphinLauncher {
         }
       });
     }
-    return this.dolphin;
   }
 
   private _executeFile(comboFilePath: string): ChildProcess {
