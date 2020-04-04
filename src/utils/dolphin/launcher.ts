@@ -29,7 +29,7 @@ interface DolphinLauncherOptions {
 
 const defaultDolphinLauncherOptions = {
   meleeIsoPath: "",
-  batch: true,
+  batch: false,
   startBuffer: 1,   // Sometimes Dolphin misses the start frame so start from the following frame
   endBuffer: 1,     // Match the start frame because why not
 }
