@@ -65,6 +65,10 @@ export class DolphinLauncher {
     this.options = Object.assign({}, defaultDolphinLauncherOptions, options);
   }
 
+  public updateSettings(options: Partial<DolphinLauncherOptions>) {
+    this.options = Object.assign(this.options, options);
+  }
+
   public loadJSON(comboFilePath: string): void {
     // Kill process if already running
     if (this.dolphin) {
