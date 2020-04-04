@@ -42,7 +42,7 @@ export enum DolphinPlaybackStatus {
 }
 
 export interface DolphinPlaybackPayload {
-  status: DolphinPlaybackStatus,
+  status: DolphinPlaybackStatus;
   data?: any;
 }
 
@@ -124,7 +124,7 @@ export class DolphinLauncher {
     return execFile(this.dolphinPath, params, { maxBuffer: MAX_BUFFER });
   }
 
-  private _handleCurrentFrame(commandValue: number) {
+  private _handleCurrentFrame(commandValue: number): void {
     this.currentFrame = commandValue;
     if (this.currentFrame === this.startPlaybackFrame) {
       this.playbackStatusSource.next({
@@ -139,12 +139,12 @@ export class DolphinLauncher {
     }
   }
 
-  private _handlePlaybackStartFrame(commandValue: number) {
+  private _handlePlaybackStartFrame(commandValue: number): void {
     // Ensure the start frame is at least bigger than the intital playback start frame
     this.startPlaybackFrame = Math.max(commandValue, commandValue + this.options.startBuffer);
   }
 
-  private _handlePlaybackEndFrame(commandValue: number) {
+  private _handlePlaybackEndFrame(commandValue: number): void {
     this.endPlaybackFrame = commandValue;
     // Play the game until the end
     this.gameEnded = this.endPlaybackFrame >= this.lastGameFrame;
@@ -153,17 +153,17 @@ export class DolphinLauncher {
     this.endPlaybackFrame = Math.min(adjustedEndFrame, this.lastGameFrame);
   }
 
-  private _handleplaybackEndFrame(commandValue: number) {
+  private _handleplaybackEndFrame(commandValue: number): void {
     this.lastGameFrame = commandValue;
   }
 
-  private _handleNoGame() {
+  private _handleNoGame(): void {
     this.playbackStatusSource.next({
       status: DolphinPlaybackStatus.QUEUE_EMPTY,
     });
   }
 
-  private _resetState() {
+  private _resetState(): void {
     this.currentFrame = -124;
     this.lastGameFrame = -124;
     this.startPlaybackFrame = -124;
