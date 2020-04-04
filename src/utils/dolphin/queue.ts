@@ -18,7 +18,7 @@ export interface DolphinQueueFormat {
 }
 
 const defaultSettings = {
-  shuffle: true,
+  shuffle: false,
   mode: "queue",
   replay: "",
   isRealTimeMode: false,
