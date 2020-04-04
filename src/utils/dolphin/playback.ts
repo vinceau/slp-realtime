@@ -1,5 +1,5 @@
 import os from "os";
-import { Observable, fromEventPattern, of } from "rxjs"; 
+import { Observable, fromEventPattern, from } from "rxjs";
 
 import { Readable } from "stream";
 import { concatMap, map } from "rxjs/operators";
@@ -21,7 +21,7 @@ export const observableDolphinProcess = (dolphinStdout: Readable): Observable<Do
   );
   return lines$.pipe(
     // Split each line into its own event
-    concatMap(lines => of(...lines)),
+    concatMap(lines => from(lines)),
     // Split the line into chunks
     map(line => line.split(" ")),
     // Map to the playback payload
