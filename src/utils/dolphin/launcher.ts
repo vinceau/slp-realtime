@@ -9,11 +9,11 @@
  * [NO_GAME] no more files in the queue
  */
 
-import { ReplaySubject, Subject, merge } from "rxjs";
-
 import { ChildProcess, execFile } from "child_process";
+import { Subject } from "rxjs";
+import { takeUntil, filter } from "rxjs/operators";
+
 import { observableDolphinProcess } from "./playback";
-import { takeUntil } from "rxjs/operators";
 
 // Node child processes crash if too much data has been sent to stdout.
 // We set the max buffer to a really large number to avoid crashing Dolphin.
@@ -34,8 +34,16 @@ const defaultDolphinLauncherOptions = {
   endBuffer: 1,     // Match the start frame because why not
 }
 
-export interface GamePlaybackEndPayload {
-  gameEnded: boolean;
+export enum DolphinPlaybackStatus {
+  PLAYBACK_START = "PLAYBACK_START",
+  PLAYBACK_END = "PLAYBACK_END",
+  QUEUE_EMPTY = "QUEUE_EMPTY",
+  DOLPHIN_QUIT = "DOLPHIN_QUIT",
+}
+
+export interface DolphinPlaybackPayload {
+  status: DolphinPlaybackStatus,
+  data?: any;
 }
 
 export class DolphinLauncher {
@@ -48,15 +56,8 @@ export class DolphinLauncher {
   private startPlaybackFrame = -124;
   private endPlaybackFrame = -124;
 
-  private playbackStartSource = new Subject<void>();
-  private playbackEndSource = new ReplaySubject<GamePlaybackEndPayload>();
-  private queueEmptySource = new Subject<void>();
-  private dolphinExitSource = new Subject<void>();
-
-  public playbackStart$ = this.playbackStartSource.asObservable();
-  public playbackEnd$ = this.playbackEndSource.asObservable();
-  public queueEmpty$ = this.queueEmptySource.asObservable();
-  public dolphinExit$ = this.dolphinExitSource.asObservable();
+  private playbackStatusSource = new Subject<DolphinPlaybackPayload>();
+  public playbackStatus$ = this.playbackStatusSource.asObservable();
 
   public constructor(dolphinPath: string, options?: Partial<DolphinLauncherOptions>) {
     this.dolphinPath = dolphinPath;
@@ -74,17 +75,16 @@ export class DolphinLauncher {
     this.dolphin = this._executeFile(comboFilePath);
 
     this.dolphin.on("close", () => {
-      this.dolphinExitSource.next();
+      this.playbackStatusSource.next({
+        status: DolphinPlaybackStatus.DOLPHIN_QUIT,
+      });
     });
 
     if (this.dolphin.stdout) {
       const dolphin$ = observableDolphinProcess(this.dolphin.stdout);
       dolphin$.pipe(
         // Stop emitting on process close
-        takeUntil(merge(
-          this.dolphinExit$,
-          this.queueEmpty$,
-        )),
+        takeUntil(this.playbackStatus$.pipe(filter(({status}) => status === DolphinPlaybackStatus.DOLPHIN_QUIT || status === DolphinPlaybackStatus.QUEUE_EMPTY))),
       ).subscribe(payload => {
         // console.log(`got command: ${payload.command} with value: ${payload.value}`);
         const value = parseInt(payload.value);
@@ -127,10 +127,13 @@ export class DolphinLauncher {
   private _handleCurrentFrame(commandValue: number) {
     this.currentFrame = commandValue;
     if (this.currentFrame === this.startPlaybackFrame) {
-      this.playbackStartSource.next();
+      this.playbackStatusSource.next({
+        status: DolphinPlaybackStatus.PLAYBACK_START,
+      });
     } else if (this.currentFrame === this.endPlaybackFrame) {
-      this.playbackEndSource.next({
-        gameEnded: this.gameEnded,
+      this.playbackStatusSource.next({
+        status: DolphinPlaybackStatus.PLAYBACK_END,
+        data: { gameEnded: this.gameEnded },
       });
       this._resetState();
     }
@@ -155,7 +158,9 @@ export class DolphinLauncher {
   }
 
   private _handleNoGame() {
-    this.queueEmptySource.next();
+    this.playbackStatusSource.next({
+      status: DolphinPlaybackStatus.QUEUE_EMPTY,
+    });
   }
 
   private _resetState() {
