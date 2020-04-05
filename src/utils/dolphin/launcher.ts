@@ -1,19 +1,12 @@
-/**
- * We can tap into the Dolphin state by reading the log printed to stdout.
- *
- * Dolphin will emit the following messages in following order:
- * [PLAYBACK_START_FRAME]: the frame playback will commence (defaults to -123 if omitted)
- * [GAME_END_FRAME]: the last frame of the game
- * [PLAYBACK_END_FRAME] this frame playback will end at (defaults to MAX_INT if omitted)
- * [CURRENT_FRAME] the current frame being played back
- * [NO_GAME] no more files in the queue
- */
+import fs from "fs-extra";
 
 import { ChildProcess, execFile } from "child_process";
-import { Subject } from "rxjs";
-import { takeUntil, filter } from "rxjs/operators";
+import { Subject, Observable, zip, from, merge } from "rxjs";
+import { filter, mapTo } from "rxjs/operators";
 
-import { observableDolphinProcess } from "./playback";
+import { DolphinQueueFormat } from "./queue";
+import { DolphinOutput, DolphinPlaybackStatus } from "./process";
+
 
 // Node child processes crash if too much data has been sent to stdout.
 // We set the max buffer to a really large number to avoid crashing Dolphin.
@@ -34,86 +27,63 @@ const defaultDolphinLauncherOptions = {
   endBuffer: 1,     // Match the start frame because why not
 }
 
-export enum DolphinPlaybackStatus {
-  PLAYBACK_START = "PLAYBACK_START",
-  PLAYBACK_END = "PLAYBACK_END",
-  QUEUE_EMPTY = "QUEUE_EMPTY",
-  DOLPHIN_QUIT = "DOLPHIN_QUIT",
-}
-
-export interface DolphinPlaybackPayload {
-  status: DolphinPlaybackStatus;
-  data?: any;
-}
 
 export class DolphinLauncher {
   public dolphin: ChildProcess | null = null;
   protected options: DolphinLauncherOptions;
 
+  public output: DolphinOutput;
   private dolphinPath: string;
-  private gameEnded = false;
-  private currentFrame = -124;
-  private lastGameFrame = -124;
-  private startPlaybackFrame = -124;
-  private endPlaybackFrame = -124;
 
-  private playbackStatusSource = new Subject<DolphinPlaybackPayload>();
-  public playbackStatus$ = this.playbackStatusSource.asObservable();
+  // We load all the filenames at the beginning
+  private playbackFilenameSource = new Subject<string>();
+  // This will only be emitted when playback starts
+  public playbackFilename$: Observable<string>;
+
+  private dolphinQuitSource = new Subject<void>();
+  public dolphinQuit$ = this.dolphinQuitSource.asObservable();
+
+  public playbackEnd$: Observable<void>;
 
   public constructor(dolphinPath: string, options?: Partial<DolphinLauncherOptions>) {
     this.dolphinPath = dolphinPath;
     this.options = Object.assign({}, defaultDolphinLauncherOptions, options);
+    this.output = new DolphinOutput();
+    this.playbackFilename$ = zip(
+        this.playbackFilenameSource,
+        this.output.playbackStatus$.pipe(filter(payload => payload.status === DolphinPlaybackStatus.FILE_LOADED)),
+        (val, _) => val,
+    );
+    this.playbackEnd$ = merge(
+      this.output.playbackStatus$.pipe(filter(payload => payload.status === DolphinPlaybackStatus.QUEUE_EMPTY)),
+      this.dolphinQuit$,
+    ).pipe(
+      mapTo(undefined),
+    );
   }
 
   public updateSettings(options: Partial<DolphinLauncherOptions>) {
     this.options = Object.assign(this.options, options);
   }
 
-  public loadJSON(comboFilePath: string): void {
+  public async loadJSON(comboFilePath: string): Promise<void> {
     // Kill process if already running
     if (this.dolphin) {
       this.dolphin.kill();
       this.dolphin = null;
     }
-    this._resetState();
 
+    const dolphinQueue: DolphinQueueFormat = await fs.readJSON(comboFilePath);
+    // console.log(dolphinQueue);
+    const fileNames$ = from(dolphinQueue.queue.map(f => f.path));
+    fileNames$.subscribe(this.playbackFilenameSource);
     this.dolphin = this._executeFile(comboFilePath);
 
-    this.dolphin.on("close", () => {
-      this.playbackStatusSource.next({
-        status: DolphinPlaybackStatus.DOLPHIN_QUIT,
-      });
-    });
+    this.dolphin.on("close", () => this.dolphinQuitSource.next());
 
     if (this.dolphin.stdout) {
-      const dolphin$ = observableDolphinProcess(this.dolphin.stdout);
-      dolphin$.pipe(
-        // Stop emitting on process close
-        takeUntil(this.playbackStatus$.pipe(filter(({status}) => status === DolphinPlaybackStatus.DOLPHIN_QUIT || status === DolphinPlaybackStatus.QUEUE_EMPTY))),
-      ).subscribe(payload => {
-        // console.log(`got command: ${payload.command} with value: ${payload.value}`);
-        const value = parseInt(payload.value);
-        switch (payload.command) {
-        case "[CURRENT_FRAME]":
-          this._handleCurrentFrame(value);
-          break;
-        case "[PLAYBACK_START_FRAME]":
-          this._handlePlaybackStartFrame(value);
-          break;
-        case "[PLAYBACK_END_FRAME]":
-          this._handlePlaybackEndFrame(value);
-          break;
-        case "[GAME_END_FRAME]":
-          this._handleplaybackEndFrame(value);
-          break;
-        case "[NO_GAME]":
-          this._handleNoGame();
-          break;
-        default:
-          console.error(`Unknown command ${payload.command} with value ${payload.value}`);
-          break;
-        }
-      });
+      // Pipe to the dolphin output but don't end
+      this.dolphin.stdout.pipe(this.output, { end: false });
     }
   }
 
@@ -128,50 +98,4 @@ export class DolphinLauncher {
     return execFile(this.dolphinPath, params, { maxBuffer: MAX_BUFFER });
   }
 
-  private _handleCurrentFrame(commandValue: number): void {
-    this.currentFrame = commandValue;
-    if (this.currentFrame === this.startPlaybackFrame) {
-      this.playbackStatusSource.next({
-        status: DolphinPlaybackStatus.PLAYBACK_START,
-      });
-    } else if (this.currentFrame === this.endPlaybackFrame) {
-      this.playbackStatusSource.next({
-        status: DolphinPlaybackStatus.PLAYBACK_END,
-        data: { gameEnded: this.gameEnded },
-      });
-      this._resetState();
-    }
-  }
-
-  private _handlePlaybackStartFrame(commandValue: number): void {
-    // Ensure the start frame is at least bigger than the intital playback start frame
-    this.startPlaybackFrame = Math.max(commandValue, commandValue + this.options.startBuffer);
-  }
-
-  private _handlePlaybackEndFrame(commandValue: number): void {
-    this.endPlaybackFrame = commandValue;
-    // Play the game until the end
-    this.gameEnded = this.endPlaybackFrame >= this.lastGameFrame;
-    // Ensure the adjusted frame is between the start and end frames
-    const adjustedEndFrame = Math.max(this.startPlaybackFrame, this.endPlaybackFrame - this.options.endBuffer);
-    this.endPlaybackFrame = Math.min(adjustedEndFrame, this.lastGameFrame);
-  }
-
-  private _handleplaybackEndFrame(commandValue: number): void {
-    this.lastGameFrame = commandValue;
-  }
-
-  private _handleNoGame(): void {
-    this.playbackStatusSource.next({
-      status: DolphinPlaybackStatus.QUEUE_EMPTY,
-    });
-  }
-
-  private _resetState(): void {
-    this.currentFrame = -124;
-    this.lastGameFrame = -124;
-    this.startPlaybackFrame = -124;
-    this.endPlaybackFrame = -124;
-    this.gameEnded = false;
-  }
 }

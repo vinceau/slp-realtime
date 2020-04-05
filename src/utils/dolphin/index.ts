@@ -1,3 +1,3 @@
 export * from "./launcher";
-export * from "./playback";
+export * from "./process";
 export * from "./queue";
