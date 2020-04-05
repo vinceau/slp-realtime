@@ -5,7 +5,7 @@ import { Subject, Observable, zip, from, merge } from "rxjs";
 import { filter, mapTo } from "rxjs/operators";
 
 import { DolphinQueueFormat } from "./queue";
-import { DolphinOutput, DolphinPlaybackStatus } from "./process";
+import { DolphinOutput, DolphinPlaybackStatus } from "./output";
 
 
 // Node child processes crash if too much data has been sent to stdout.
