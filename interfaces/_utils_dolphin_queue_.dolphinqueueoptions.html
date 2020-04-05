@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>InputButtonCombo | @vinceau/slp-realtime</title>
+	<title>DolphinQueueOptions | @vinceau/slp-realtime</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,13 +54,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_types_.html">&quot;types&quot;</a>
+					<a href="../modules/_utils_dolphin_queue_.html">&quot;utils/dolphin/queue&quot;</a>
 				</li>
 				<li>
-					<a href="_types_.inputbuttoncombo.html">InputButtonCombo</a>
+					<a href="_utils_dolphin_queue_.dolphinqueueoptions.html">DolphinQueueOptions</a>
 				</li>
 			</ul>
-			<h1>Interface InputButtonCombo</h1>
+			<h1>Interface DolphinQueueOptions</h1>
 		</div>
 	</div>
 </header>
@@ -71,7 +71,12 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">InputButtonCombo</span>
+						<span class="target">DolphinQueueOptions</span>
+						<ul class="tsd-hierarchy">
+							<li>
+								<a href="_utils_dolphin_queue_.dolphinqueueformat.html" class="tsd-signature-type">DolphinQueueFormat</a>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
@@ -82,10 +87,11 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.inputbuttoncombo.html#combo" class="tsd-kind-icon">combo</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.inputbuttoncombo.html#duration" class="tsd-kind-icon">duration</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.inputbuttoncombo.html#frame" class="tsd-kind-icon">frame</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_types_.inputbuttoncombo.html#playerindex" class="tsd-kind-icon">player<wbr>Index</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_utils_dolphin_queue_.dolphinqueueoptions.html#commandid" class="tsd-kind-icon">command<wbr>Id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_utils_dolphin_queue_.dolphinqueueoptions.html#isrealtimemode" class="tsd-kind-icon">is<wbr>Real<wbr>Time<wbr>Mode</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_utils_dolphin_queue_.dolphinqueueoptions.html#mode" class="tsd-kind-icon">mode</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_utils_dolphin_queue_.dolphinqueueoptions.html#outputoverlayfiles" class="tsd-kind-icon">output<wbr>Overlay<wbr>Files</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_utils_dolphin_queue_.dolphinqueueoptions.html#replay" class="tsd-kind-icon">replay</a></li>
 							</ul>
 						</section>
 					</div>
@@ -94,42 +100,52 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="combo" class="tsd-anchor"></a>
-					<h3>combo</h3>
-					<div class="tsd-signature tsd-kind-icon">combo<span class="tsd-signature-symbol">:</span> <a href="../enums/_types_.input.html" class="tsd-signature-type">Input</a><span class="tsd-signature-symbol">[]</span></div>
+					<a name="commandid" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> command<wbr>Id</h3>
+					<div class="tsd-signature tsd-kind-icon">command<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/4b1a2ed/src/types.ts#L49">src/types.ts:49</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/4b1a2ed/src/utils/dolphin/queue.ts#L12">src/utils/dolphin/queue.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="duration" class="tsd-anchor"></a>
-					<h3>duration</h3>
-					<div class="tsd-signature tsd-kind-icon">duration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="isrealtimemode" class="tsd-anchor"></a>
+					<h3>is<wbr>Real<wbr>Time<wbr>Mode</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Real<wbr>Time<wbr>Mode<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/4b1a2ed/src/types.ts#L50">src/types.ts:50</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/4b1a2ed/src/utils/dolphin/queue.ts#L15">src/utils/dolphin/queue.ts:15</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="frame" class="tsd-anchor"></a>
-					<h3>frame</h3>
-					<div class="tsd-signature tsd-kind-icon">frame<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="mode" class="tsd-anchor"></a>
+					<h3>mode</h3>
+					<div class="tsd-signature tsd-kind-icon">mode<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/4b1a2ed/src/types.ts#L47">src/types.ts:47</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/4b1a2ed/src/utils/dolphin/queue.ts#L13">src/utils/dolphin/queue.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="playerindex" class="tsd-anchor"></a>
-					<h3>player<wbr>Index</h3>
-					<div class="tsd-signature tsd-kind-icon">player<wbr>Index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="outputoverlayfiles" class="tsd-anchor"></a>
+					<h3>output<wbr>Overlay<wbr>Files</h3>
+					<div class="tsd-signature tsd-kind-icon">output<wbr>Overlay<wbr>Files<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/4b1a2ed/src/types.ts#L48">src/types.ts:48</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/4b1a2ed/src/utils/dolphin/queue.ts#L16">src/utils/dolphin/queue.ts:16</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="replay" class="tsd-anchor"></a>
+					<h3>replay</h3>
+					<div class="tsd-signature tsd-kind-icon">replay<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/4b1a2ed/src/utils/dolphin/queue.ts#L14">src/utils/dolphin/queue.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -142,80 +158,53 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-module">
-						<a href="../modules/_types_.html">&quot;types&quot;</a>
+						<a href="../modules/_utils_dolphin_queue_.html">&quot;utils/dolphin/queue&quot;</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/_types_.html#comboevent" class="tsd-kind-icon">Combo<wbr>Event</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/_types_.html#combotype" class="tsd-kind-icon">Combo<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/_types_.html#conversiontype" class="tsd-kind-icon">Conversion<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/_types_.html#gameendtype" class="tsd-kind-icon">Game<wbr>End<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/_types_.html#gameevent" class="tsd-kind-icon">Game<wbr>Event</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/_types_.html#gamestarttype" class="tsd-kind-icon">Game<wbr>Start<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/_types_.html#inputevent" class="tsd-kind-icon">Input<wbr>Event</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/_types_.html#slippigame" class="tsd-kind-icon">Slippi<wbr>Game</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/_types_.html#stockevent" class="tsd-kind-icon">Stock<wbr>Event</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/_types_.html#stocktype" class="tsd-kind-icon">Stock<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-enum tsd-parent-kind-module">
-						<a href="../enums/_types_.gameendmethod.html" class="tsd-kind-icon">Game<wbr>End<wbr>Method</a>
-					</li>
-					<li class=" tsd-kind-enum tsd-parent-kind-module">
-						<a href="../enums/_types_.input.html" class="tsd-kind-icon">Input</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_utils_dolphin_queue_.dolphinentry.html" class="tsd-kind-icon">Dolphin<wbr>Entry</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="_types_.comboeventpayload.html" class="tsd-kind-icon">Combo<wbr>Event<wbr>Payload</a>
+						<a href="_utils_dolphin_queue_.dolphinplaybackitem.html" class="tsd-kind-icon">Dolphin<wbr>Playback<wbr>Item</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="_types_.gameendpayload.html" class="tsd-kind-icon">Game<wbr>End<wbr>Payload</a>
+						<a href="_utils_dolphin_queue_.dolphinqueueformat.html" class="tsd-kind-icon">Dolphin<wbr>Queue<wbr>Format</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="_types_.inputbuttoncombo.html" class="tsd-kind-icon">Input<wbr>Button<wbr>Combo</a>
+						<a href="_utils_dolphin_queue_.dolphinqueueoptions.html" class="tsd-kind-icon">Dolphin<wbr>Queue<wbr>Options</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_.inputbuttoncombo.html#combo" class="tsd-kind-icon">combo</a>
+								<a href="_utils_dolphin_queue_.dolphinqueueoptions.html#commandid" class="tsd-kind-icon">command<wbr>Id</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_.inputbuttoncombo.html#duration" class="tsd-kind-icon">duration</a>
+								<a href="_utils_dolphin_queue_.dolphinqueueoptions.html#isrealtimemode" class="tsd-kind-icon">is<wbr>Real<wbr>Time<wbr>Mode</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_.inputbuttoncombo.html#frame" class="tsd-kind-icon">frame</a>
+								<a href="_utils_dolphin_queue_.dolphinqueueoptions.html#mode" class="tsd-kind-icon">mode</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_types_.inputbuttoncombo.html#playerindex" class="tsd-kind-icon">player<wbr>Index</a>
+								<a href="_utils_dolphin_queue_.dolphinqueueoptions.html#outputoverlayfiles" class="tsd-kind-icon">output<wbr>Overlay<wbr>Files</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_utils_dolphin_queue_.dolphinqueueoptions.html#replay" class="tsd-kind-icon">replay</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="_types_.percentchange.html" class="tsd-kind-icon">Percent<wbr>Change</a>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="../modules/_utils_dolphin_queue_.html#dolphinplaybackqueueoptions" class="tsd-kind-icon">Dolphin<wbr>Playback<wbr>Queue<wbr>Options</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="_types_.stockcountchange.html" class="tsd-kind-icon">Stock<wbr>Count<wbr>Change</a>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/_utils_dolphin_queue_.html#generatedolphinqueue" class="tsd-kind-icon">generate<wbr>Dolphin<wbr>Queue</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/_utils_dolphin_queue_.html#generatedolphinqueuepayload" class="tsd-kind-icon">generate<wbr>Dolphin<wbr>Queue<wbr>Payload</a>
 					</li>
 				</ul>
 			</nav>
