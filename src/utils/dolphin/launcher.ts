@@ -2,7 +2,7 @@ import fs from "fs-extra";
 
 import { ChildProcess, execFile } from "child_process";
 import { Subject, Observable, zip, from, merge } from "rxjs";
-import { filter, mapTo } from "rxjs/operators";
+import { filter, mapTo, takeUntil } from "rxjs/operators";
 
 import { DolphinQueueFormat } from "./queue";
 import { DolphinOutput, DolphinPlaybackStatus } from "./output";
@@ -35,10 +35,8 @@ export class DolphinLauncher {
   public output: DolphinOutput;
   private dolphinPath: string;
 
-  // We load all the filenames at the beginning
   private playbackFilenameSource = new Subject<string>();
-  // This will only be emitted when playback starts
-  public playbackFilename$: Observable<string>;
+  public playbackFilename$ = this.playbackFilenameSource.asObservable();
 
   private dolphinQuitSource = new Subject<void>();
   public dolphinQuit$ = this.dolphinQuitSource.asObservable();
@@ -49,11 +47,6 @@ export class DolphinLauncher {
     this.dolphinPath = dolphinPath;
     this.options = Object.assign({}, defaultDolphinLauncherOptions, options);
     this.output = new DolphinOutput(this.options);
-    this.playbackFilename$ = zip(
-        this.playbackFilenameSource,
-        this.output.playbackStatus$.pipe(filter(payload => payload.status === DolphinPlaybackStatus.FILE_LOADED)),
-        (val, _) => val,
-    );
     this.playbackEnd$ = merge(
       this.output.playbackStatus$.pipe(filter(payload => payload.status === DolphinPlaybackStatus.QUEUE_EMPTY)),
       this.dolphinQuit$,
@@ -75,14 +68,23 @@ export class DolphinLauncher {
     }
 
     const dolphinQueue: DolphinQueueFormat = await fs.readJSON(comboFilePath);
-    // console.log(dolphinQueue);
-    const fileNames$ = from(dolphinQueue.queue.map(f => f.path));
-    fileNames$.subscribe(this.playbackFilenameSource);
-    this.dolphin = this._executeFile(comboFilePath);
 
+    this.dolphin = this._executeFile(comboFilePath);
     this.dolphin.on("close", () => this.dolphinQuitSource.next());
 
     if (this.dolphin.stdout) {
+      const fileNames$ = from(dolphinQueue.queue.map(f => f.path));
+      // We have to handle the filenames here because if we pipe all the filenames
+      // immediately and then zip them up later, we may end up with the filenames
+      // out of sync.
+      zip(
+        fileNames$,
+        this.output.playbackStatus$.pipe(filter(payload => payload.status === DolphinPlaybackStatus.FILE_LOADED)),
+        (val, _) => val,
+      ).pipe(
+        takeUntil(this.playbackEnd$),
+      ).subscribe(this.playbackFilenameSource);
+
       // Pipe to the dolphin output but don't end
       this.dolphin.stdout.pipe(this.output, { end: false });
     }
