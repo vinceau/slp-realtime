@@ -25,7 +25,6 @@ const defaultSettings = {
   outputOverlayFiles: true,
   startBuffer: 240,
   endBuffer: 180,
-  prettify: true,
 };
 
 export interface DolphinEntry {
@@ -38,7 +37,7 @@ export interface DolphinEntry {
 
 export type DolphinPlaybackQueueOptions = typeof defaultSettings;
 
-export const generateDolphinQueuePayload = (items: DolphinPlaybackItem[], options?: Partial<DolphinPlaybackQueueOptions>): string => {
+export const generateDolphinQueue = (items: DolphinPlaybackItem[], options?: Partial<DolphinPlaybackQueueOptions>): DolphinQueueFormat => {
   const opts: DolphinPlaybackQueueOptions = Object.assign({}, defaultSettings, options);
   const entries = opts.shuffle ? shuffle(items) : items;
   const queue = entries.map(entry => mapDolphinEntry(entry, opts.startBuffer, opts.endBuffer));
@@ -49,7 +48,12 @@ export const generateDolphinQueuePayload = (items: DolphinPlaybackItem[], option
     outputOverlayFiles: opts.outputOverlayFiles,
     queue,
   };
-  const spaces = opts.prettify ? 2 : undefined;
+  return dolphinQueue;
+}
+
+export const generateDolphinQueuePayload = (items: DolphinPlaybackItem[], options?: Partial<DolphinPlaybackQueueOptions>, prettify=true): string => {
+  const dolphinQueue = generateDolphinQueue(items, options);
+  const spaces = prettify ? 2 : undefined;
   return JSON.stringify(dolphinQueue, undefined, spaces);
 }
 
