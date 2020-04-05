@@ -8,12 +8,15 @@ export interface DolphinPlaybackItem {
   gameStartAt?: string;
 }
 
-export interface DolphinQueueFormat {
+export interface DolphinQueueOptions {
   commandId?: string;
   mode: string;
   replay: string;
   isRealTimeMode: boolean;
   outputOverlayFiles: boolean;
+}
+
+export interface DolphinQueueFormat extends DolphinQueueOptions {
   queue: DolphinEntry[];
 }
 
