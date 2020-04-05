@@ -4,8 +4,10 @@ detects combos, and generates a Dolphin-compatible `combos.json` file
 when the interrupt signal is detected.
 */
 
+const fs = require("fs");
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { SlpFolderStream, SlpRealTime, ComboFilter, DolphinComboQueue } = require("@vinceau/slp-realtime");
+const { SlpFolderStream, SlpRealTime, ComboFilter, generateDolphinQueuePayload } = require("@vinceau/slp-realtime");
 
 // TODO: Make sure you set this value!
 const slpLiveFolderPath = "C:\\Users\\Vince\\Documents\\FM-v5.9-Slippi-r18-Win\\Slippi";
@@ -13,7 +15,7 @@ console.log(`Monitoring ${slpLiveFolderPath} for new SLP files`);
 
 const outputCombosFile = "combos.json";   // The json file to write combos to
 
-const comboQueue = new DolphinComboQueue();  // Tracks the combos to be written
+const comboQueue = [];  // Tracks the combos to be written
 
 const comboFilter = new ComboFilter();  // Used to find specific combos
 comboFilter.updateSettings({
@@ -37,21 +39,18 @@ realtime.combo.end$.subscribe((payload) => {
     console.log("Detected combo!");
     const filename = stream.getCurrentFilename();
     if (filename) {
-      comboQueue.addCombo(filename, combo);
+      comboQueue.push({path: filename, combo});
     }
   }
 });
 
 // Write out combos when we detect an interrupt
 process.on("SIGINT", function() {
-  comboQueue.writeFile(outputCombosFile).then(() => {
-    console.log(`Wrote ${comboQueue.length()} combos to ${outputCombosFile}`);
-    stream.stop();
-    process.exit();
-  }).catch(err => {
-    console.error(err);
-    process.exit();
-  })
+  const payload = generateDolphinQueuePayload(comboQueue);
+  fs.writeFileSync(outputCombosFile, payload);
+  console.log(`Wrote ${comboQueue.length} combos to ${outputCombosFile}`);
+  stream.stop();
+  process.exit();
 });
 
 // Start monitoring the folder for changes
