@@ -48,7 +48,7 @@ export class DolphinLauncher {
   public constructor(dolphinPath: string, options?: Partial<DolphinLauncherOptions>) {
     this.dolphinPath = dolphinPath;
     this.options = Object.assign({}, defaultDolphinLauncherOptions, options);
-    this.output = new DolphinOutput();
+    this.output = new DolphinOutput(this.options);
     this.playbackFilename$ = zip(
         this.playbackFilenameSource,
         this.output.playbackStatus$.pipe(filter(payload => payload.status === DolphinPlaybackStatus.FILE_LOADED)),
@@ -64,6 +64,7 @@ export class DolphinLauncher {
 
   public updateSettings(options: Partial<DolphinLauncherOptions>) {
     this.options = Object.assign(this.options, options);
+    this.output.setBuffer(this.options);
   }
 
   public async loadJSON(comboFilePath: string): Promise<void> {
