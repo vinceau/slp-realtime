@@ -20,10 +20,10 @@ export const findWinner = (lastFrame: FrameEntryType): number => {
     }
 
     // Stocks are the same so determine winner based off remaining percent
-    if (a.percent > b.percent) {
+    if (a.percent < b.percent) {
       return a;
     }
-    if (a.percent < b.percent) {
+    if (a.percent > b.percent) {
       return b;
     }
 
