@@ -39,14 +39,23 @@ export interface DolphinPlaybackInfo {
   value?: string;
 }
 
+interface BufferOptions {
+  startBuffer: number;
+  endBuffer: number;
+}
+
+const defaultBufferOptions = {
+  startBuffer: 1,
+  endBuffer: 1,
+}
+
 export class DolphinOutput extends Writable {
   private gameEnded = false;
   private currentFrame = -124;
   private lastGameFrame = -124;
   private startPlaybackFrame = -124;
   private endPlaybackFrame = -124;
-  private startBuffer = 1;
-  private endBuffer = 1;
+  private buffers: BufferOptions;
 
   private streamEndedSource = new Subject<void>();
   private playbackStatusSource = new Subject<DolphinPlaybackPayload>();
@@ -55,12 +64,17 @@ export class DolphinOutput extends Writable {
     takeUntil(this.streamEndedSource),
   );
 
-  public constructor(opts?: WritableOptions) {
+  public constructor(bufferOptions?: Partial<BufferOptions>, opts?: WritableOptions) {
     super(opts);
+    this.buffers = Object.assign({}, defaultBufferOptions, bufferOptions);
     // Complete all the observables
     this.on("finish", () => {
       this.streamEndedSource.next();
     })
+  }
+
+  public setBuffer(bufferOptions: Partial<BufferOptions>) {
+    this.buffers = Object.assign(this.buffers, bufferOptions);
   }
 
   public _write(newData: Buffer, encoding: string, callback: (error?: Error | null, data?: any) => void): void {
@@ -125,7 +139,7 @@ export class DolphinOutput extends Writable {
 
   private _handlePlaybackStartFrame(commandValue: number): void {
     // Ensure the start frame is at least bigger than the intital playback start frame
-    this.startPlaybackFrame = Math.max(commandValue, commandValue + this.startBuffer);
+    this.startPlaybackFrame = Math.max(commandValue, commandValue + this.buffers.startBuffer);
   }
 
   private _handlePlaybackEndFrame(commandValue: number): void {
@@ -133,7 +147,7 @@ export class DolphinOutput extends Writable {
     // Play the game until the end
     this.gameEnded = this.endPlaybackFrame >= this.lastGameFrame;
     // Ensure the adjusted frame is between the start and end frames
-    const adjustedEndFrame = Math.max(this.startPlaybackFrame, this.endPlaybackFrame - this.endBuffer);
+    const adjustedEndFrame = Math.max(this.startPlaybackFrame, this.endPlaybackFrame - this.buffers.endBuffer);
     this.endPlaybackFrame = Math.min(adjustedEndFrame, this.lastGameFrame);
   }
 
