@@ -83,7 +83,11 @@ export class DolphinLauncher {
         (val, _) => val,
       ).pipe(
         takeUntil(this.playbackEnd$),
-      ).subscribe(this.playbackFilenameSource);
+      ).subscribe((filename) => {
+        // We want to manually call the next function otherwise the subject will
+        // complete when playback ends, stopping all further events.
+        this.playbackFilenameSource.next(filename);
+      });
 
       // Pipe to the dolphin output but don't end
       this.dolphin.stdout.pipe(this.output, { end: false });
