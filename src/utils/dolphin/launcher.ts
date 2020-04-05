@@ -55,7 +55,7 @@ export class DolphinLauncher {
     );
   }
 
-  public updateSettings(options: Partial<DolphinLauncherOptions>) {
+  public updateSettings(options: Partial<DolphinLauncherOptions>): void {
     this.options = Object.assign(this.options, options);
     this.output.setBuffer(this.options);
   }

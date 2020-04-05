@@ -73,7 +73,7 @@ export class DolphinOutput extends Writable {
     })
   }
 
-  public setBuffer(bufferOptions: Partial<BufferOptions>) {
+  public setBuffer(bufferOptions: Partial<BufferOptions>): void {
     this.buffers = Object.assign(this.buffers, bufferOptions);
   }
 
@@ -93,32 +93,32 @@ export class DolphinOutput extends Writable {
     callback();
   }
 
-  private _processCommand(command: string, val?: string) {
+  private _processCommand(command: string, val?: string): void {
     const value = parseInt(val);
     switch (command) {
-      case PlaybackCommand.CURRENT_FRAME:
-        this._handleCurrentFrame(value);
-        break;
-      case PlaybackCommand.PLAYBACK_START_FRAME:
-        // We just started playing back a new file so we should reset the state
-        this._resetState();
-        this.playbackStatusSource.next({
-          status: DolphinPlaybackStatus.FILE_LOADED,
-        });
-        this._handlePlaybackStartFrame(value);
-        break;
-      case PlaybackCommand.PLAYBACK_END_FRAME:
-        this._handlePlaybackEndFrame(value);
-        break;
-      case PlaybackCommand.GAME_END_FRAME:
-        this._handleplaybackEndFrame(value);
-        break;
-      case PlaybackCommand.NO_GAME:
-        this._handleNoGame();
-        break;
-      default:
-        console.error(`Unknown command ${command} with value ${val}`);
-        break;
+    case PlaybackCommand.CURRENT_FRAME:
+      this._handleCurrentFrame(value);
+      break;
+    case PlaybackCommand.PLAYBACK_START_FRAME:
+      // We just started playing back a new file so we should reset the state
+      this._resetState();
+      this.playbackStatusSource.next({
+        status: DolphinPlaybackStatus.FILE_LOADED,
+      });
+      this._handlePlaybackStartFrame(value);
+      break;
+    case PlaybackCommand.PLAYBACK_END_FRAME:
+      this._handlePlaybackEndFrame(value);
+      break;
+    case PlaybackCommand.GAME_END_FRAME:
+      this._handleplaybackEndFrame(value);
+      break;
+    case PlaybackCommand.NO_GAME:
+      this._handleNoGame();
+      break;
+    default:
+      console.error(`Unknown command ${command} with value ${val}`);
+      break;
     }
   }
 
