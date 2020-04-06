@@ -1,11 +1,16 @@
 import { ComboType, Frames } from "slp-parser-js";
 import { shuffle } from "lodash";
 
-export interface DolphinPlaybackItem {
+export interface DolphinEntry {
   path: string;
-  combo?: ComboType;
+  startFrame?: number;
+  endFrame?: number;
   gameStation?: string;
   gameStartAt?: string;
+}
+
+export interface DolphinPlaybackItem extends DolphinEntry {
+  combo?: ComboType;
 }
 
 export interface DolphinQueueOptions {
@@ -30,14 +35,6 @@ const defaultSettings = {
   endBuffer: 180,
 };
 
-export interface DolphinEntry {
-  path: string;
-  startFrame?: number;
-  endFrame?: number;
-  gameStation?: string;
-  gameStartAt?: string;
-}
-
 export type DolphinPlaybackQueueOptions = typeof defaultSettings;
 
 export const generateDolphinQueue = (items: DolphinPlaybackItem[], options?: Partial<DolphinPlaybackQueueOptions>): DolphinQueueFormat => {
@@ -61,12 +58,7 @@ export const generateDolphinQueuePayload = (items: DolphinPlaybackItem[], option
 }
 
 const mapDolphinEntry = (entry: DolphinPlaybackItem, startBuffer: number, endBuffer: number): DolphinEntry => {
-  const { path, gameStation, gameStartAt, combo } = entry;
-  const dolphinEntry: DolphinEntry = {
-    path,
-    gameStation,
-    gameStartAt,
-  };
+  const { combo, ...dolphinEntry } = entry;
   if (combo) {
     dolphinEntry.startFrame = Math.max(Frames.FIRST, combo.startFrame - startBuffer);
     // If endFrame is undefined it will just play to the end
