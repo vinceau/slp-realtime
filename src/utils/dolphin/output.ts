@@ -13,6 +13,7 @@ import os from "os";
 import { Writable, WritableOptions } from "stream";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
+import { Frames } from "../../types";
 
 enum PlaybackCommand {
   PLAYBACK_START_FRAME = "[PLAYBACK_START_FRAME]",
@@ -49,17 +50,25 @@ const defaultBufferOptions = {
   endBuffer: 1,
 }
 
+const PRE_FIRST_FRAME = Frames.FIRST - 1;
+
+const initialGamePlaybackState = {
+  gameEnded: false,
+  currentFrame: PRE_FIRST_FRAME,
+  lastGameFrame: PRE_FIRST_FRAME,
+  startPlaybackFrame: PRE_FIRST_FRAME,
+  endPlaybackFrame: PRE_FIRST_FRAME,
+};
+
+type GamePlaybackState = typeof initialGamePlaybackState;
+
 export class DolphinOutput extends Writable {
-  private gameEnded = false;
-  private currentFrame = -124;
-  private lastGameFrame = -124;
-  private startPlaybackFrame = -124;
-  private endPlaybackFrame = -124;
   private buffers: BufferOptions;
+  private state: GamePlaybackState;
 
   private streamEndedSource = new Subject<void>();
-  private playbackStatusSource = new Subject<DolphinPlaybackPayload>();
 
+  private playbackStatusSource = new Subject<DolphinPlaybackPayload>();
   public playbackStatus$ = this.playbackStatusSource.asObservable().pipe(
     takeUntil(this.streamEndedSource),
   );
@@ -67,6 +76,7 @@ export class DolphinOutput extends Writable {
   public constructor(bufferOptions?: Partial<BufferOptions>, opts?: WritableOptions) {
     super(opts);
     this.buffers = Object.assign({}, defaultBufferOptions, bufferOptions);
+    this.state = Object.assign({}, initialGamePlaybackState);
     // Complete all the observables
     this.on("finish", () => {
       this.streamEndedSource.next();
@@ -123,15 +133,15 @@ export class DolphinOutput extends Writable {
   }
 
   private _handleCurrentFrame(commandValue: number): void {
-    this.currentFrame = commandValue;
-    if (this.currentFrame === this.startPlaybackFrame) {
+    this.state.currentFrame = commandValue;
+    if (this.state.currentFrame === this.state.startPlaybackFrame) {
       this.playbackStatusSource.next({
         status: DolphinPlaybackStatus.PLAYBACK_START,
       });
-    } else if (this.currentFrame === this.endPlaybackFrame) {
+    } else if (this.state.currentFrame === this.state.endPlaybackFrame) {
       this.playbackStatusSource.next({
         status: DolphinPlaybackStatus.PLAYBACK_END,
-        data: { gameEnded: this.gameEnded },
+        data: { gameEnded: this.state.gameEnded },
       });
       this._resetState();
     }
@@ -139,20 +149,20 @@ export class DolphinOutput extends Writable {
 
   private _handlePlaybackStartFrame(commandValue: number): void {
     // Ensure the start frame is at least bigger than the intital playback start frame
-    this.startPlaybackFrame = Math.max(commandValue, commandValue + this.buffers.startBuffer);
+    this.state.startPlaybackFrame = Math.max(commandValue, commandValue + this.buffers.startBuffer);
   }
 
   private _handlePlaybackEndFrame(commandValue: number): void {
-    this.endPlaybackFrame = commandValue;
+    this.state.endPlaybackFrame = commandValue;
     // Play the game until the end
-    this.gameEnded = this.endPlaybackFrame >= this.lastGameFrame;
+    this.state.gameEnded = this.state.endPlaybackFrame >= this.state.lastGameFrame;
     // Ensure the adjusted frame is between the start and end frames
-    const adjustedEndFrame = Math.max(this.startPlaybackFrame, this.endPlaybackFrame - this.buffers.endBuffer);
-    this.endPlaybackFrame = Math.min(adjustedEndFrame, this.lastGameFrame);
+    const adjustedEndFrame = Math.max(this.state.startPlaybackFrame, this.state.endPlaybackFrame - this.buffers.endBuffer);
+    this.state.endPlaybackFrame = Math.min(adjustedEndFrame, this.state.lastGameFrame);
   }
 
   private _handleplaybackEndFrame(commandValue: number): void {
-    this.lastGameFrame = commandValue;
+    this.state.lastGameFrame = commandValue;
   }
 
   private _handleNoGame(): void {
@@ -162,11 +172,7 @@ export class DolphinOutput extends Writable {
   }
 
   private _resetState(): void {
-    this.currentFrame = -124;
-    this.lastGameFrame = -124;
-    this.startPlaybackFrame = -124;
-    this.endPlaybackFrame = -124;
-    this.gameEnded = false;
+    this.state = Object.assign({}, initialGamePlaybackState);
   }
 
 };
