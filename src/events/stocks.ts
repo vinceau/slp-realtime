@@ -1,10 +1,10 @@
-import { StockType, didLoseStock } from "slp-parser-js";
+import { didLoseStock } from "slp-parser-js";
 import { SlpStream } from "../stream";
 import { map, filter, distinctUntilChanged, switchMap } from "rxjs/operators";
 import { Observable } from "rxjs";
 import { playerFrameFilter, withPreviousFrame } from "../operators/frames";
 import { mapFrameToSpawnStockType, mapFramesToDeathStockType, filterJustSpawned } from "../operators/stocks";
-import { PercentChange, StockCountChange } from "../types";
+import { StockType, PercentChange, StockCountChange } from "../types";
 import { forAllPlayerIndices } from "../utils/helpers";
 
 export class StockEvents {

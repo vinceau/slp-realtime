@@ -1,6 +1,7 @@
 import { Writable, WritableOptions } from "stream";
 
-import { Command, parseMessage, GameStartType, PreFrameUpdateType, PostFrameUpdateType, GameEndType, FrameEntryType } from "slp-parser-js";
+import { Command, parseMessage } from "slp-parser-js";
+import { GameStartType, PreFrameUpdateType, PostFrameUpdateType, GameEndType, FrameEntryType } from "../types";
 import { Subject } from "rxjs";
 import { PlayerType } from "slp-parser-js/dist/utils/slpReader";
 import { takeUntil } from "rxjs/operators";

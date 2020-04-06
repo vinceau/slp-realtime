@@ -1,4 +1,4 @@
-import { ComboType, Frames } from "slp-parser-js";
+import { ComboType, Frames } from "../../types";
 import { shuffle } from "lodash";
 
 export interface DolphinEntry {

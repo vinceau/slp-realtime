@@ -1,12 +1,12 @@
 import _ from "lodash";
 
+import { ComboEventPayload, FrameEntryType, ComboType, PostFrameUpdateType, GameStartType } from "../types";
 import {
-  FrameEntryType, MoveLandedType, ComboType, PlayerIndexedType, PostFrameUpdateType,
-  isDamaged, isGrabbed, calcDamageTaken, isTeching, didLoseStock, Timers, isDown, isDead, getSinglesPlayerPermutationsFromSettings, GameStartType
+  MoveLandedType, PlayerIndexedType, isDamaged, isGrabbed, calcDamageTaken, isTeching, didLoseStock, Timers,
+  isDown, isDead, getSinglesPlayerPermutationsFromSettings
 } from "slp-parser-js";
 import { Subject, Observable } from "rxjs";
 import { SlpStream } from "..";
-import { ComboEventPayload } from "../types";
 import { filter, switchMap } from "rxjs/operators";
 import { withPreviousFrame } from "../operators/frames";
 import { ConversionEvents } from "./conversion";

@@ -1,6 +1,7 @@
 import _ from "lodash";
 
-import { ConversionType, MoveLandedType, PlayerIndexedType, FrameEntryType, PostFrameUpdateType, isDamaged, isGrabbed, calcDamageTaken, isInControl, didLoseStock, Timers, GameStartType, getSinglesPlayerPermutationsFromSettings } from "slp-parser-js";
+import { MoveLandedType, PlayerIndexedType, isDamaged, isGrabbed, calcDamageTaken, isInControl, didLoseStock, Timers, getSinglesPlayerPermutationsFromSettings } from "slp-parser-js";
+import { ConversionType, PostFrameUpdateType, FrameEntryType, GameStartType } from "../types";
 import { Subject, Observable } from "rxjs";
 import { SlpStream } from "../stream";
 import { filter, switchMap } from "rxjs/operators";
