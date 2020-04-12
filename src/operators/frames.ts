@@ -1,4 +1,4 @@
-import { FrameEntryType, Frames } from "slp-parser-js";
+import { FrameEntryType, Frames } from "../types";
 import { Observable, MonoTypeOperatorFunction, OperatorFunction } from "rxjs";
 import { filter, pairwise } from "rxjs/operators";
 

@@ -1,4 +1,4 @@
-import { FrameEntryType } from "slp-parser-js";
+import { FrameEntryType } from "../types";
 import { Observable, merge } from "rxjs";
 
 /**

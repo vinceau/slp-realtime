@@ -1,5 +1,4 @@
-import { FrameEntryType } from "slp-parser-js";
-
+import { FrameEntryType } from "../types";
 import { findWinner } from "./helpers";
 
 describe("when calculating the game winner", () => {
