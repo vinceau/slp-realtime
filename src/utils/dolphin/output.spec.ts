@@ -3,7 +3,8 @@ import sinon from "sinon";
 
 import { Transform } from "stream";
 import { Subscription } from "rxjs";
-import { DolphinOutput } from "./output";
+import { DolphinOutput, DolphinPlaybackStatus } from "./output";
+import { filter, map } from "rxjs/operators";
 
 describe("when reading dolphin playback stdout", () => {
   const subscription = new Subscription();
@@ -30,8 +31,13 @@ describe("when reading dolphin playback stdout", () => {
     const statusSpy = sinon.spy();
     const filenameSpy = sinon.spy();
     const dolphinOutput = new DolphinOutput();
+
+    const filenames$ = dolphinOutput.playbackStatus$.pipe(
+        filter(playback => playback.status === DolphinPlaybackStatus.FILE_LOADED),
+        map(playback => playback.data.path),
+    );
     subscription.add(
-      dolphinOutput.playbackFilename$.subscribe(name => {
+      filenames$.subscribe(name => {
         expect(name).toEqual(filepath);
         filenameSpy();
       }),

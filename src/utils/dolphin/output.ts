@@ -70,11 +70,6 @@ export class DolphinOutput extends Writable {
 
   private streamEndedSource = new Subject<void>();
 
-  private playbackFilenameSource = new Subject<string>();
-  public playbackFilename$ = this.playbackFilenameSource.asObservable().pipe(
-    takeUntil(this.streamEndedSource),
-  );
-
   private playbackStatusSource = new Subject<DolphinPlaybackPayload>();
   public playbackStatus$ = this.playbackStatusSource.asObservable().pipe(
     takeUntil(this.streamEndedSource),
@@ -114,17 +109,19 @@ export class DolphinOutput extends Writable {
     const value = parseInt(val);
     switch (command) {
     case PlaybackCommand.FILE_PATH:
-      this.playbackFilenameSource.next(val);
+      // We just started playing back a new file so we should reset the state
+      this._resetState();
+      this.playbackStatusSource.next({
+        status: DolphinPlaybackStatus.FILE_LOADED,
+        data: {
+          path: val,
+        },
+      });
       break;
     case PlaybackCommand.CURRENT_FRAME:
       this._handleCurrentFrame(value);
       break;
     case PlaybackCommand.PLAYBACK_START_FRAME:
-      // We just started playing back a new file so we should reset the state
-      this._resetState();
-      this.playbackStatusSource.next({
-        status: DolphinPlaybackStatus.FILE_LOADED,
-      });
       this._handlePlaybackStartFrame(value);
       break;
     case PlaybackCommand.PLAYBACK_END_FRAME:
