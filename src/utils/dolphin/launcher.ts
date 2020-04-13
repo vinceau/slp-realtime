@@ -1,16 +1,8 @@
-import fs from "fs-extra";
-
 import { ChildProcess, execFile } from "child_process";
-import { Subject, Observable, zip, from, merge } from "rxjs";
-import { filter, mapTo, takeUntil } from "rxjs/operators";
+import { Subject, Observable, merge } from "rxjs";
+import { filter, mapTo } from "rxjs/operators";
 
-import { DolphinQueueFormat } from "./queue";
 import { DolphinOutput, DolphinPlaybackStatus } from "./output";
-
-
-// Node child processes crash if too much data has been sent to stdout.
-// We set the max buffer to a really large number to avoid crashing Dolphin.
-const MAX_BUFFER = 2 ** 20;
 
 // Configurable options
 interface DolphinLauncherOptions {
@@ -18,15 +10,16 @@ interface DolphinLauncherOptions {
   batch: boolean;
   startBuffer: number;
   endBuffer: number;
+  maxNodeBuffer: number;
 }
 
 const defaultDolphinLauncherOptions = {
   meleeIsoPath: "",
   batch: false,
-  startBuffer: 1,   // Sometimes Dolphin misses the start frame so start from the following frame
-  endBuffer: 1,     // Match the start frame because why not
+  startBuffer: 1,           // Sometimes Dolphin misses the start frame so start from the following frame
+  endBuffer: 1,             // Match the start frame because why not
+  maxNodeBuffer: Infinity,  // This is the max amount of data that can be processed through stdout
 }
-
 
 export class DolphinLauncher {
   public dolphin: ChildProcess | null = null;
@@ -81,7 +74,7 @@ export class DolphinLauncher {
     if (this.options.batch) {
       params.push("-b")
     }
-    return execFile(this.dolphinPath, params, { maxBuffer: MAX_BUFFER });
+    return execFile(this.dolphinPath, params, { maxBuffer: this.options.maxNodeBuffer });
   }
 
 }
