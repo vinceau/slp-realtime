@@ -1,5 +1,5 @@
 import { FrameEntryType } from "../types";
-import { findWinner } from "./helpers";
+import { findWinner } from "./winner";
 
 describe("when calculating the game winner", () => {
 

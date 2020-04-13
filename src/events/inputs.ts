@@ -4,8 +4,7 @@ import { map, scan, filter, switchMap } from "rxjs/operators";
 import { SlpStream } from "../stream";
 import { playerFrameFilter } from "../operators/frames";
 import { Frames, Input, InputButtonCombo } from "../types";
-import { generateInputBitmask } from "../utils";
-import { forAllPlayerIndices } from "../utils/helpers";
+import { generateInputBitmask, forAllPlayerIndices } from "../utils";
 
 export class InputEvents {
   private stream$: Observable<SlpStream>;

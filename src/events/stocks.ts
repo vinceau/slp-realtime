@@ -5,7 +5,7 @@ import { Observable } from "rxjs";
 import { playerFrameFilter, withPreviousFrame } from "../operators/frames";
 import { mapFrameToSpawnStockType, mapFramesToDeathStockType, filterJustSpawned } from "../operators/stocks";
 import { StockType, PercentChange, StockCountChange } from "../types";
-import { forAllPlayerIndices } from "../utils/helpers";
+import { forAllPlayerIndices } from "../utils";
 
 export class StockEvents {
   private stream$: Observable<SlpStream>;

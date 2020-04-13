@@ -1,9 +1,8 @@
 
 import sinon from "sinon";
 
-import { pipeFileContents } from "../helpers";
 import { Subscription } from "rxjs";
-import SlpRealTime, { SlpStream, EventManager, EventManagerConfig } from "../../src";
+import { pipeFileContents, SlpRealTime, SlpStream, EventManager, EventManagerConfig } from "../../src";
 
 describe("game config", () => {
   let subscriptions: Array<Subscription>;

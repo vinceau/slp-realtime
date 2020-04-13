@@ -1,6 +1,5 @@
 
-import { SlpRealTime, SlpStream } from "../src";
-import { pipeFileContents } from "./helpers";
+import { pipeFileContents, SlpRealTime, SlpStream } from "../src";
 import { Subscription } from "rxjs";
 
 describe("when determining the winner", () => {

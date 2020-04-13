@@ -1,7 +1,6 @@
 import sinon from "sinon";
 
-import { SlpRealTime, SlpStream, Character, EventManager, EventManagerConfig, ComboEvent } from "../../src";
-import { pipeFileContents } from "../helpers";
+import { pipeFileContents, SlpRealTime, SlpStream, Character, EventManager, EventManagerConfig, ComboEvent } from "../../src";
 import { Subscription } from "rxjs";
 
 describe("combo config", () => {

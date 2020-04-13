@@ -1,7 +1,7 @@
 import { Observable } from "rxjs";
 import { SlpStream } from "../stream";
 import { withLatestFrom, map, switchMap } from "rxjs/operators";
-import { findWinner } from "../utils/helpers";
+import { findWinner } from "../utils";
 import { GameStartType, GameEndPayload } from "../types";
 
 export class GameEvents {

@@ -1,7 +1,6 @@
 import sinon from "sinon";
 
-import { SlpStream } from "../src";
-import { pipeFileContents } from "./helpers";
+import { pipeFileContents, SlpStream } from "../src";
 import { Subscription } from "rxjs";
 
 describe("SlpStream", () => {
