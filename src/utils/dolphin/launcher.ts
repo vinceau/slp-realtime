@@ -35,9 +35,6 @@ export class DolphinLauncher {
   public output: DolphinOutput;
   private dolphinPath: string;
 
-  private playbackFilenameSource = new Subject<string>();
-  public playbackFilename$ = this.playbackFilenameSource.asObservable();
-
   private dolphinQuitSource = new Subject<void>();
   public dolphinQuit$ = this.dolphinQuitSource.asObservable();
 
@@ -67,28 +64,10 @@ export class DolphinLauncher {
       this.dolphin = null;
     }
 
-    const dolphinQueue: DolphinQueueFormat = await fs.readJSON(comboFilePath);
-
     this.dolphin = this._executeFile(comboFilePath);
     this.dolphin.on("close", () => this.dolphinQuitSource.next());
 
     if (this.dolphin.stdout) {
-      const fileNames$ = from(dolphinQueue.queue.map(f => f.path));
-      // We have to handle the filenames here because if we pipe all the filenames
-      // immediately and then zip them up later, we may end up with the filenames
-      // out of sync.
-      zip(
-        fileNames$,
-        this.output.playbackStatus$.pipe(filter(payload => payload.status === DolphinPlaybackStatus.FILE_LOADED)),
-        (val, _) => val,
-      ).pipe(
-        takeUntil(this.playbackEnd$),
-      ).subscribe((filename) => {
-        // We want to manually call the next function otherwise the subject will
-        // complete when playback ends, stopping all further events.
-        this.playbackFilenameSource.next(filename);
-      });
-
       // Pipe to the dolphin output but don't end
       this.dolphin.stdout.pipe(this.output, { end: false });
     }

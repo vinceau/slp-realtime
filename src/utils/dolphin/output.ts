@@ -2,6 +2,7 @@
  * We can tap into the Dolphin state by reading the log printed to stdout.
  *
  * Dolphin will emit the following messages in following order:
+ * [FILE_PATH]: the filepath of the slp file about to be played
  * [PLAYBACK_START_FRAME]: the frame playback will commence (defaults to -123 if omitted)
  * [GAME_END_FRAME]: the last frame of the game
  * [PLAYBACK_END_FRAME] this frame playback will end at (defaults to MAX_INT if omitted)
@@ -16,6 +17,7 @@ import { takeUntil } from "rxjs/operators";
 import { Frames } from "../../types";
 
 enum PlaybackCommand {
+  FILE_PATH = "[FILE_PATH]",
   PLAYBACK_START_FRAME = "[PLAYBACK_START_FRAME]",
   GAME_END_FRAME = "[GAME_END_FRAME]",
   PLAYBACK_END_FRAME = "[PLAYBACK_END_FRAME]",
@@ -68,6 +70,11 @@ export class DolphinOutput extends Writable {
 
   private streamEndedSource = new Subject<void>();
 
+  private playbackFilenameSource = new Subject<string>();
+  public playbackFilename$ = this.playbackFilenameSource.asObservable().pipe(
+    takeUntil(this.streamEndedSource),
+  );
+
   private playbackStatusSource = new Subject<DolphinPlaybackPayload>();
   public playbackStatus$ = this.playbackStatusSource.asObservable().pipe(
     takeUntil(this.streamEndedSource),
@@ -106,6 +113,9 @@ export class DolphinOutput extends Writable {
   private _processCommand(command: string, val?: string): void {
     const value = parseInt(val);
     switch (command) {
+    case PlaybackCommand.FILE_PATH:
+      this.playbackFilenameSource.next(val);
+      break;
     case PlaybackCommand.CURRENT_FRAME:
       this._handleCurrentFrame(value);
       break;
