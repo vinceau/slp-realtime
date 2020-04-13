@@ -48,7 +48,7 @@ describe("when reading dolphin playback stdout", () => {
       }),
     );
 
-    inoutStream.once("finish", () => {
+    dolphinOutput.once("finish", () => {
         expect(filenameSpy.callCount).toEqual(1);
         expect(statusSpy.callCount).toEqual(4);
         finishJest();
