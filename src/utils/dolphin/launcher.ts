@@ -50,7 +50,7 @@ export class DolphinLauncher {
     this.output.setBuffer(this.options);
   }
 
-  public async loadJSON(comboFilePath: string): Promise<void> {
+  public loadJSON(comboFilePath: string): void {
     // Kill process if already running
     if (this.dolphin) {
       this.dolphin.kill();
