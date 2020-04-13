@@ -71,8 +71,8 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_utils_helpers_.html#findwinner" class="tsd-kind-icon">find<wbr>Winner</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter"><a href="_utils_helpers_.html#forallplayerindices" class="tsd-kind-icon">for<wbr>All<wbr>Player<wbr>Indices</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_utils_helpers_.html#pipefilecontents" class="tsd-kind-icon">pipe<wbr>File<wbr>Contents</a></li>
 							</ul>
 						</section>
 					</div>
@@ -80,37 +80,6 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="findwinner" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> find<wbr>Winner</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">find<wbr>Winner<span class="tsd-signature-symbol">(</span>lastFrame<span class="tsd-signature-symbol">: </span><a href="_types_.html#frameentrytype" class="tsd-signature-type">FrameEntryType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/53e28cf/src/utils/helpers.ts#L11">src/utils/helpers.ts:11</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Given the last frame of the game, determine the winner first based on stock count
-										then based on remaining percent.
-									If percents are tied, return the player with the lower port number by default.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>lastFrame: <a href="_types_.html#frameentrytype" class="tsd-signature-type">FrameEntryType</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-							<p>the player index of the winner</p>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
 					<a name="forallplayerindices" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> for<wbr>All<wbr>Player<wbr>Indices</h3>
@@ -121,7 +90,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/53e28cf/src/utils/helpers.ts#L37">src/utils/helpers.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/cf15382/src/utils/helpers.ts#L6">src/utils/helpers.ts:6</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -158,6 +127,35 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="pipefilecontents" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> pipe<wbr>File<wbr>Contents</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">pipe<wbr>File<wbr>Contents<span class="tsd-signature-symbol">(</span>filename<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, destination<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Writable</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/cf15382/src/utils/helpers.ts#L15">src/utils/helpers.ts:15</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>filename: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>destination: <span class="tsd-signature-type">Writable</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -173,11 +171,11 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="_utils_helpers_.html#findwinner" class="tsd-kind-icon">find<wbr>Winner</a>
-					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="_utils_helpers_.html#forallplayerindices" class="tsd-kind-icon">for<wbr>All<wbr>Player<wbr>Indices</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="_utils_helpers_.html#pipefilecontents" class="tsd-kind-icon">pipe<wbr>File<wbr>Contents</a>
 					</li>
 				</ul>
 			</nav>
