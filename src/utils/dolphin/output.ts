@@ -18,6 +18,7 @@ import { Frames } from "../../types";
 
 enum PlaybackCommand {
   FILE_PATH = "[FILE_PATH]",
+  LRAS = "[LRAS]",
   PLAYBACK_START_FRAME = "[PLAYBACK_START_FRAME]",
   GAME_END_FRAME = "[GAME_END_FRAME]",
   PLAYBACK_END_FRAME = "[PLAYBACK_END_FRAME]",
@@ -56,6 +57,7 @@ const PRE_FIRST_FRAME = Frames.FIRST - 1;
 
 const initialGamePlaybackState = {
   gameEnded: false,
+  forceQuit: false,
   currentFrame: PRE_FIRST_FRAME,
   lastGameFrame: PRE_FIRST_FRAME,
   startPlaybackFrame: PRE_FIRST_FRAME,
@@ -118,6 +120,9 @@ export class DolphinOutput extends Writable {
         },
       });
       break;
+    case PlaybackCommand.LRAS:
+      this.state.forceQuit = true;
+      break;
     case PlaybackCommand.CURRENT_FRAME:
       this._handleCurrentFrame(value);
       break;
@@ -148,7 +153,10 @@ export class DolphinOutput extends Writable {
     } else if (this.state.currentFrame === this.state.endPlaybackFrame) {
       this.playbackStatusSource.next({
         status: DolphinPlaybackStatus.PLAYBACK_END,
-        data: { gameEnded: this.state.gameEnded },
+        data: {
+          gameEnded: this.state.gameEnded,
+          forceQuit: this.state.forceQuit,
+        },
       });
       this._resetState();
     }
