@@ -4,7 +4,7 @@ import { EventEmit, EventManagerConfig, EventConfig, EventManagerVariables } fro
 import { map, filter } from "rxjs/operators";
 import { playerFilterMatches } from "../operators/player";
 import { ComboEvents } from "../events/combos";
-import { checkCombo, defaultComboFilterSettings } from "../combo/filter";
+import { checkCombo, defaultComboFilterSettings } from "../utils";
 
 export enum ComboEvent {
   START = "combo-start",                  // Emitted at the start of a combo

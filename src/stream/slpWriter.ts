@@ -2,7 +2,7 @@ import path from "path";
 import _ from "lodash";
 import moment, { Moment } from "moment";
 
-import { SlpFile, SlpFileMetadata } from "../utils/slpFile";
+import { SlpFile, SlpFileMetadata } from "./slpFile";
 import { SlpStream } from "./slpStream";
 import { Command } from "slp-parser-js";
 import { PostFrameUpdateType } from "../types";
