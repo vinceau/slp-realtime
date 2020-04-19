@@ -2,12 +2,14 @@
  * We can tap into the Dolphin state by reading the log printed to stdout.
  *
  * Dolphin will emit the following messages in following order:
- * [FILE_PATH]: the filepath of the slp file about to be played
- * [PLAYBACK_START_FRAME]: the frame playback will commence (defaults to -123 if omitted)
- * [GAME_END_FRAME]: the last frame of the game
- * [PLAYBACK_END_FRAME] this frame playback will end at (defaults to MAX_INT if omitted)
- * [CURRENT_FRAME] the current frame being played back
- * [NO_GAME] no more files in the queue
+ *
+ * [FILE_PATH]             - path of the slp file about to be played
+ * [LRAS]                  - emitted only if the game was force quit before game end
+ * [PLAYBACK_START_FRAME]  - the frame playback will commence (defaults to -123 if omitted)
+ * [GAME_END_FRAME]        - the last frame of the game
+ * [PLAYBACK_END_FRAME]    - this frame playback will end at (defaults to MAX_INT if omitted)
+ * [CURRENT_FRAME]         - the current frame being played back
+ * [NO_GAME]               - no more files in the queue
  */
 
 import os from "os";
