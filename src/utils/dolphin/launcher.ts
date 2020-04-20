@@ -5,36 +5,29 @@ import { filter, mapTo } from "rxjs/operators";
 import { DolphinOutput, DolphinPlaybackStatus } from "./output";
 
 // Configurable options
-interface DolphinLauncherOptions {
-  meleeIsoPath: string;
-  batch: boolean;
-  startBuffer: number;
-  endBuffer: number;
-  maxNodeBuffer: number;
-}
-
 const defaultDolphinLauncherOptions = {
-  meleeIsoPath: "",
-  batch: false,
+  dolphinPath: "",          // Path to Dolphin executable
+  meleeIsoPath: "",         // Path to Melee iso
+  batch: false,             // Quit Dolphin when playback queue ends
   startBuffer: 1,           // Sometimes Dolphin misses the start frame so start from the following frame
   endBuffer: 1,             // Match the start frame because why not
   maxNodeBuffer: Infinity,  // This is the max amount of data that can be processed through stdout
 }
+
+type DolphinLauncherOptions = typeof defaultDolphinLauncherOptions;
 
 export class DolphinLauncher {
   public dolphin: ChildProcess | null = null;
   protected options: DolphinLauncherOptions;
 
   public output: DolphinOutput;
-  private dolphinPath: string;
 
   private dolphinQuitSource = new Subject<void>();
   public dolphinQuit$ = this.dolphinQuitSource.asObservable();
 
   public playbackEnd$: Observable<void>;
 
-  public constructor(dolphinPath: string, options?: Partial<DolphinLauncherOptions>) {
-    this.dolphinPath = dolphinPath;
+  public constructor(options?: Partial<DolphinLauncherOptions>) {
     this.options = Object.assign({}, defaultDolphinLauncherOptions, options);
     this.output = new DolphinOutput(this.options);
     this.playbackEnd$ = merge(
@@ -67,6 +60,10 @@ export class DolphinLauncher {
   }
 
   private _executeFile(comboFilePath: string): ChildProcess {
+    if (!this.options.dolphinPath) {
+      throw new Error("Dolphin path is not set!");
+    }
+
     const params = ["-i", comboFilePath];
     if (this.options.meleeIsoPath) {
       params.push("-e", this.options.meleeIsoPath)
@@ -74,7 +71,7 @@ export class DolphinLauncher {
     if (this.options.batch) {
       params.push("-b")
     }
-    return execFile(this.dolphinPath, params, { maxBuffer: this.options.maxNodeBuffer });
+    return execFile(this.options.dolphinPath, params, { maxBuffer: this.options.maxNodeBuffer });
   }
 
 }

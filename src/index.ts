@@ -1,8 +1,6 @@
 import { SlpRealTime } from "./realtime";
 
-export * from "./combo";
 export * from "./manager";
-export * from "./melee";
 export * from "./operators";
 export * from "./realtime";
 export * from "./stream";

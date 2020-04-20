@@ -27,7 +27,7 @@
     "major": "npm version major && npm publish",
     "prepublishOnly": "yarn run lint && yarn run test && yarn run build",
     "postpublish": "git push origin master --follow-tags",
-    "docs": "yarn typedoc --excludePrivate --excludeNotExported",
+    "docs": "yarn typedoc --excludePrivate --excludeNotExported --exclude \"**/*+(.spec).ts\"",
     "postdocs": "touch docs/.nojekyll"
   },
   "keywords": [
@@ -61,7 +61,7 @@
     "rollup-plugin-typescript2": "^0.26.0",
     "sinon": "^7.5.0",
     "ts-jest": "^25.2.1",
-    "typedoc": "^0.17.3",
+    "typedoc": "^0.17.4",
     "typescript": "^3.6.2"
   }
 }

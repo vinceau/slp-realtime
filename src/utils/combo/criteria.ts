@@ -1,8 +1,7 @@
 import _ from "lodash";
 
 import { Criteria } from "./filter";
-import { MoveID } from "../melee/moves";
-import { Character } from "../melee/characters";
+import { MoveID, Character } from "../melee";
 
 /**
  * MatchesPortNumber ensures the player performing the combo is a specific port.
