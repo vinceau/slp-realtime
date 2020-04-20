@@ -135,7 +135,7 @@ export class DolphinOutput extends Writable {
       this._handlePlaybackEndFrame(value);
       break;
     case PlaybackCommand.GAME_END_FRAME:
-      this._handleplaybackEndFrame(value);
+      this.state.lastGameFrame = value;
       break;
     case PlaybackCommand.NO_GAME:
       this._handleNoGame();
@@ -176,10 +176,6 @@ export class DolphinOutput extends Writable {
     // Ensure the adjusted frame is between the start and end frames
     const adjustedEndFrame = Math.max(this.state.startPlaybackFrame, this.state.endPlaybackFrame - this.buffers.endBuffer);
     this.state.endPlaybackFrame = Math.min(adjustedEndFrame, this.state.lastGameFrame);
-  }
-
-  private _handleplaybackEndFrame(commandValue: number): void {
-    this.state.lastGameFrame = commandValue;
   }
 
   private _handleNoGame(): void {
