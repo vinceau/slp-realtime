@@ -188,16 +188,41 @@ describe("combo calculation", () => {
       comboMustKill: false,
       minComboPercent: 40,
     });
+    const playerComboSpy = sinon.spy();
+    const playerFilter = new ComboFilter();
+    playerFilter.updateSettings({
+      minComboPercent: 40,
+      comboMustKill: false,
+      nameTags: ["a_bird"],
+    });
+    const opponentComboSpy = sinon.spy();
+    const opponentFilter = new ComboFilter();
+    opponentFilter.updateSettings({
+      minComboPercent: 40,
+      comboMustKill: false,
+      nameTags: ["CptPiplup"],
+    });
 
     const slpStream = new SlpStream({ singleGameMode: true, logErrors: true });
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 
+    const slippiGame = new SlippiGame(
+      "slp/Smashladder_200517_1613_Falcon_v_Falcon_PS.slp"
+    );
+    const metadata = slippiGame.getMetadata();
+
     subscriptions.push(
       realtime.game.end$.subscribe(gameEndSpy),
       realtime.combo.conversion$.subscribe((payload) => {
-        if (customFilter.isCombo(payload.combo, payload.settings)) {
+        if (customFilter.isCombo(payload.combo, payload.settings, metadata)) {
           customComboSpy();
+        }
+        if (playerFilter.isCombo(payload.combo, payload.settings, metadata)) {
+          playerComboSpy();
+        }
+        if (opponentFilter.isCombo(payload.combo, payload.settings, metadata)) {
+          opponentComboSpy();
         }
       })
     );
