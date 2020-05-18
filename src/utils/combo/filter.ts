@@ -20,7 +20,9 @@ export interface ComboFilterSettings {
   fuzzyNameTagMatching: boolean;
 }
 
-export type Criteria = (combo: ComboType, settings: GameStartType, options: ComboFilterSettings, metadata?: any) => boolean;
+export type Metadata = Record<string, any>;
+
+export type Criteria = (combo: ComboType, settings: GameStartType, options: ComboFilterSettings, metadata?: Metadata) => boolean;
 
 export const defaultComboFilterSettings: ComboFilterSettings = {
   chainGrabbers: [Character.MARTH, Character.PEACH, Character.PIKACHU, Character.DR_MARIO],
@@ -67,7 +69,7 @@ export class ComboFilter {
     return this.updateSettings(this.originalSettings);
   }
 
-  public isCombo(combo: ComboType, settings: GameStartType, metadata?: any): boolean {
+  public isCombo(combo: ComboType, settings: GameStartType, metadata?: Metadata): boolean {
     return checkCombo(this.settings, combo, settings, this.criteria, metadata);
   }
 }
@@ -77,7 +79,7 @@ export const checkCombo = (
   combo: ComboType,
   gameSettings: GameStartType,
   criteria?: Criteria[],
-  metadata?: any,
+  metadata?: Metadata,
 ): boolean => {
   const criteriaToCheck = criteria && criteria.length > 0 ? criteria : [ ...ALL_CRITERIA ];
 
