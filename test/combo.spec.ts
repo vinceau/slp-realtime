@@ -211,5 +211,74 @@ describe("combo calculation", () => {
     expect(gameEndSpy.callCount).toEqual(1);
     // We should have exactly 3 combos that matched the criteria
     expect(customComboSpy.callCount).toEqual(3);
+    // The combos should belong to either the player or the opponent
+    expect(customComboSpy.callCount).toEqual(
+      playerComboSpy.callCount + opponentComboSpy.callCount
+    );
+    expect(playerComboSpy.callCount).toEqual(2);
+    expect(opponentComboSpy.callCount).toEqual(1);
+  });
+
+  it("can do fuzzy nametag matching", async () => {
+    const gameEndSpy = sinon.spy();
+    const strictMatch = sinon.spy();
+    const strictFilter = new ComboFilter();
+    strictFilter.updateSettings({
+      minComboPercent: 40,
+      comboMustKill: false,
+      nameTags: ["a bird", "cptpiplup"],
+      fuzzyNameTagMatching: false,
+    });
+    const underscoreMatch = sinon.spy();
+    const underscoreFilter = new ComboFilter();
+    underscoreFilter.updateSettings({
+      minComboPercent: 40,
+      comboMustKill: false,
+      nameTags: ["a bird"],
+      fuzzyNameTagMatching: true,
+    });
+    const caseInsensitiveMatch = sinon.spy();
+    const caseInsensitiveFilter = new ComboFilter();
+    caseInsensitiveFilter.updateSettings({
+      minComboPercent: 40,
+      comboMustKill: false,
+      nameTags: ["cptpiplup"],
+      fuzzyNameTagMatching: true,
+    });
+
+    const slpStream = new SlpStream({ singleGameMode: true, logErrors: true });
+    const realtime = new SlpRealTime();
+    realtime.setStream(slpStream);
+
+    const slippiGame = new SlippiGame(
+      "slp/Smashladder_200517_1613_Falcon_v_Falcon_PS.slp"
+    );
+    const metadata = slippiGame.getMetadata();
+
+    subscriptions.push(
+      realtime.game.end$.subscribe(gameEndSpy),
+      realtime.combo.conversion$.subscribe((payload) => {
+        if (strictFilter.isCombo(payload.combo, payload.settings, metadata)) {
+          strictMatch();
+        }
+        if (underscoreFilter.isCombo(payload.combo, payload.settings, metadata)) {
+          underscoreMatch();
+        }
+        if (caseInsensitiveFilter.isCombo(payload.combo, payload.settings, metadata)) {
+          caseInsensitiveMatch();
+        }
+      })
+    );
+
+    await pipeFileContents(
+      "slp/Smashladder_200517_1613_Falcon_v_Falcon_PS.slp",
+      slpStream
+    );
+
+    // If we successfully parsed the entire file, we should get a game end payload
+    expect(gameEndSpy.callCount).toEqual(1);
+    expect(strictMatch.callCount).toEqual(0);
+    expect(underscoreMatch.callCount).toEqual(2);
+    expect(caseInsensitiveMatch.callCount).toEqual(1);
   });
 });

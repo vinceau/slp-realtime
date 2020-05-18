@@ -17,6 +17,7 @@ export interface ComboFilterSettings {
   wobbleThreshold: number; // The number of pummels before it's considered a wobble
   chainGrabThreshold: number; // proportion of up throw / pummels to other moves to be considered a chain grab
   perCharacterMinComboPercent: { [characterId: number]: number };
+  fuzzyNameTagMatching: boolean;
 }
 
 export type Criteria = (combo: ComboType, settings: GameStartType, options: ComboFilterSettings, metadata?: any) => boolean;
@@ -38,6 +39,7 @@ export const defaultComboFilterSettings: ComboFilterSettings = {
   perCharacterMinComboPercent: {
     [Character.JIGGLYPUFF]: 85,
   },
+  fuzzyNameTagMatching: true,
 }
 
 export class ComboFilter {
