@@ -180,4 +180,36 @@ describe("combo calculation", () => {
 
   });
 
+  it("can match combos from Smashladder SLP files", async () => {
+    const gameEndSpy = sinon.spy();
+    const customComboSpy = sinon.spy();
+    const customFilter = new ComboFilter();
+    customFilter.updateSettings({
+      comboMustKill: false,
+      minComboPercent: 40,
+    });
+
+    const slpStream = new SlpStream({ singleGameMode: true, logErrors: true });
+    const realtime = new SlpRealTime();
+    realtime.setStream(slpStream);
+
+    subscriptions.push(
+      realtime.game.end$.subscribe(gameEndSpy),
+      realtime.combo.conversion$.subscribe((payload) => {
+        if (customFilter.isCombo(payload.combo, payload.settings)) {
+          customComboSpy();
+        }
+      })
+    );
+
+    await pipeFileContents(
+      "slp/Smashladder_200517_1613_Falcon_v_Falcon_PS.slp",
+      slpStream
+    );
+
+    // If we successfully parsed the entire file, we should get a game end payload
+    expect(gameEndSpy.callCount).toEqual(1);
+    // We should have exactly 3 combos that matched the criteria
+    expect(customComboSpy.callCount).toEqual(3);
+  });
 });
