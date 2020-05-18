@@ -70,7 +70,7 @@ export class ComboFilter {
   }
 
   public isCombo(combo: ComboType, settings: GameStartType, metadata?: Metadata): boolean {
-    return checkCombo(this.settings, combo, settings, this.criteria, metadata);
+    return checkCombo(this.settings, combo, settings, metadata, this.criteria);
   }
 }
 
@@ -78,8 +78,8 @@ export const checkCombo = (
   comboSettings: ComboFilterSettings,
   combo: ComboType,
   gameSettings: GameStartType,
-  criteria?: Criteria[],
   metadata?: Metadata,
+  criteria?: Criteria[],
 ): boolean => {
   const criteriaToCheck = criteria && criteria.length > 0 ? criteria : [ ...ALL_CRITERIA ];
 
