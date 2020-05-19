@@ -9,6 +9,7 @@ const defaultDolphinLauncherOptions = {
   dolphinPath: "",          // Path to Dolphin executable
   meleeIsoPath: "",         // Path to Melee iso
   batch: false,             // Quit Dolphin when playback queue ends
+  disableSeekBar: false,    // Disable the Dolphin seek bar
   startBuffer: 1,           // Sometimes Dolphin misses the start frame so start from the following frame
   endBuffer: 1,             // Match the start frame because why not
   maxNodeBuffer: Infinity,  // This is the max amount of data that can be processed through stdout
@@ -70,6 +71,9 @@ export class DolphinLauncher {
     }
     if (this.options.batch) {
       params.push("-b")
+    }
+    if (this.options.disableSeekBar) {
+      params.push("-hs")
     }
     return execFile(this.options.dolphinPath, params, { maxBuffer: this.options.maxNodeBuffer });
   }

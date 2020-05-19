@@ -16,14 +16,36 @@ export const MatchesPlayerName: Criteria = (combo, settings, options, metadata) 
     return true;
   }
 
-  const player = settings.players.find(player => player.playerIndex === combo.playerIndex);
-  const netplayName = _.get(metadata, ["players", player.playerIndex, "names", "netplay"], null) || null;
+  const player = settings.players.find(
+    (player) => player.playerIndex === combo.playerIndex
+  );
+  const netplayName: string | null =
+    _.get(
+      metadata,
+      ["players", player.playerIndex, "names", "netplay"],
+      null
+    ) || null;
   const playerTag = player.nametag || null;
 
-  const matchesPlayerTag = playerTag !== null && options.nameTags.includes(playerTag);
-  const matchesNetplayName = netplayName !== null && options.nameTags.includes(netplayName);
-  return matchesPlayerTag || matchesNetplayName;
-}
+  const matchesPlayerTag =
+    playerTag !== null && options.nameTags.includes(playerTag);
+  const matchesNetplayName =
+    netplayName !== null && options.nameTags.includes(netplayName);
+  const exactMatch = matchesPlayerTag || matchesNetplayName;
+  if (!options.fuzzyNameTagMatching || netplayName === null) {
+    return exactMatch;
+  }
+
+  // Replace the netplay names with underscores and coerce to lowercase
+  // Smashladder internally represents spaces as underscores when writing SLP files
+  const fuzzyNetplayName = netplayName.toLowerCase();
+  const matchedFuzzyTag = options.nameTags.find(tag => {
+    const lowerSearch = tag.toLowerCase();
+    const fuzzySearch = tag.split(" ").join("_").toLowerCase();
+    return lowerSearch === fuzzyNetplayName || fuzzySearch === fuzzyNetplayName;
+  });
+  return matchedFuzzyTag !== undefined;
+};
 
 export const MatchesCharacter: Criteria = (combo, settings, options) => {
   if (options.characterFilter.length === 0) {

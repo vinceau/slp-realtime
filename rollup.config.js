@@ -16,6 +16,8 @@ export default {
   ],
   external: [
     "fs",
+    "os",
+    "child_process",
     "stream",
     "path",
     "events",

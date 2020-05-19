@@ -17,9 +17,12 @@ export interface ComboFilterSettings {
   wobbleThreshold: number; // The number of pummels before it's considered a wobble
   chainGrabThreshold: number; // proportion of up throw / pummels to other moves to be considered a chain grab
   perCharacterMinComboPercent: { [characterId: number]: number };
+  fuzzyNameTagMatching: boolean;
 }
 
-export type Criteria = (combo: ComboType, settings: GameStartType, options: ComboFilterSettings, metadata?: any) => boolean;
+export type Metadata = Record<string, any>;
+
+export type Criteria = (combo: ComboType, settings: GameStartType, options: ComboFilterSettings, metadata?: Metadata) => boolean;
 
 export const defaultComboFilterSettings: ComboFilterSettings = {
   chainGrabbers: [Character.MARTH, Character.PEACH, Character.PIKACHU, Character.DR_MARIO],
@@ -38,6 +41,7 @@ export const defaultComboFilterSettings: ComboFilterSettings = {
   perCharacterMinComboPercent: {
     [Character.JIGGLYPUFF]: 85,
   },
+  fuzzyNameTagMatching: true,
 }
 
 export class ComboFilter {
@@ -65,8 +69,8 @@ export class ComboFilter {
     return this.updateSettings(this.originalSettings);
   }
 
-  public isCombo(combo: ComboType, settings: GameStartType, metadata?: any): boolean {
-    return checkCombo(this.settings, combo, settings, this.criteria, metadata);
+  public isCombo(combo: ComboType, settings: GameStartType, metadata?: Metadata): boolean {
+    return checkCombo(this.settings, combo, settings, metadata, this.criteria);
   }
 }
 
@@ -74,8 +78,8 @@ export const checkCombo = (
   comboSettings: ComboFilterSettings,
   combo: ComboType,
   gameSettings: GameStartType,
+  metadata?: Metadata,
   criteria?: Criteria[],
-  metadata?: any,
 ): boolean => {
   const criteriaToCheck = criteria && criteria.length > 0 ? criteria : [ ...ALL_CRITERIA ];
 
