@@ -50,13 +50,13 @@ export class DolphinLauncher {
       this.dolphin = null;
     }
 
-    this.dolphin = this._executeFile(comboFilePath);
+    this.dolphin = this._startDolphin(comboFilePath);
     this.dolphin.on("exit", () => this.dolphinQuitSource.next());
     // Pipe to the dolphin output but don't end
     this.dolphin.stdout.pipe(this.output, { end: false });
   }
 
-  private _executeFile(comboFilePath: string): ChildProcessWithoutNullStreams {
+  private _startDolphin(comboFilePath: string): ChildProcessWithoutNullStreams {
     if (!this.options.dolphinPath) {
       throw new Error("Dolphin path is not set!");
     }
