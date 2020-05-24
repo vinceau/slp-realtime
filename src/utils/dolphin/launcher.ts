@@ -22,8 +22,8 @@ export class DolphinLauncher {
 
   public output: DolphinOutput;
 
-  private dolphinQuitSource = new Subject<void>();
-  public dolphinQuit$ = this.dolphinQuitSource.asObservable();
+  private dolphinExitSource = new Subject<number>();
+  public dolphinExit$ = this.dolphinExitSource.asObservable();
 
   public playbackEnd$: Observable<void>;
 
@@ -32,7 +32,7 @@ export class DolphinLauncher {
     this.output = new DolphinOutput(this.options);
     this.playbackEnd$ = merge(
       this.output.playbackStatus$.pipe(filter(payload => payload.status === DolphinPlaybackStatus.QUEUE_EMPTY)),
-      this.dolphinQuit$,
+      this.dolphinExit$,
     ).pipe(
       mapTo(undefined),
     );
@@ -51,7 +51,7 @@ export class DolphinLauncher {
     }
 
     this.dolphin = this._startDolphin(comboFilePath);
-    this.dolphin.on("exit", () => this.dolphinQuitSource.next());
+    this.dolphin.on("exit", (exitCode) => this.dolphinExitSource.next(exitCode));
     // Pipe to the dolphin output but don't end
     this.dolphin.stdout.pipe(this.output, { end: false });
   }
