@@ -51,7 +51,7 @@ export class DolphinLauncher {
     }
 
     this.dolphin = this._executeFile(comboFilePath);
-    this.dolphin.on("close", () => this.dolphinQuitSource.next());
+    this.dolphin.on("exit", () => this.dolphinQuitSource.next());
     // Pipe to the dolphin output but don't end
     this.dolphin.stdout.pipe(this.output, { end: false });
   }
