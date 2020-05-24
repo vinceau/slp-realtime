@@ -1,8 +1,7 @@
-import { ChildProcess, execFile } from "child_process";
-import { Subject, Observable, merge } from "rxjs";
-import { filter, mapTo } from "rxjs/operators";
+import { spawn, ChildProcessWithoutNullStreams } from "child_process";
+import { BehaviorSubject } from "rxjs";
 
-import { DolphinOutput, DolphinPlaybackStatus } from "./output";
+import { DolphinOutput } from "./output";
 
 // Configurable options
 const defaultDolphinLauncherOptions = {
@@ -12,31 +11,22 @@ const defaultDolphinLauncherOptions = {
   disableSeekBar: false,    // Disable the Dolphin seek bar
   startBuffer: 1,           // Sometimes Dolphin misses the start frame so start from the following frame
   endBuffer: 1,             // Match the start frame because why not
-  maxNodeBuffer: Infinity,  // This is the max amount of data that can be processed through stdout
 }
 
 type DolphinLauncherOptions = typeof defaultDolphinLauncherOptions;
 
 export class DolphinLauncher {
-  public dolphin: ChildProcess | null = null;
+  public output: DolphinOutput;
+  public dolphin: ChildProcessWithoutNullStreams | null = null;
   protected options: DolphinLauncherOptions;
 
-  public output: DolphinOutput;
-
-  private dolphinQuitSource = new Subject<void>();
-  public dolphinQuit$ = this.dolphinQuitSource.asObservable();
-
-  public playbackEnd$: Observable<void>;
+  // Indicates whether dolphin is currently running or not
+  private dolphinRunningSource = new BehaviorSubject<boolean>(false);
+  public dolphinRunning$ = this.dolphinRunningSource.asObservable();
 
   public constructor(options?: Partial<DolphinLauncherOptions>) {
     this.options = Object.assign({}, defaultDolphinLauncherOptions, options);
     this.output = new DolphinOutput(this.options);
-    this.playbackEnd$ = merge(
-      this.output.playbackStatus$.pipe(filter(payload => payload.status === DolphinPlaybackStatus.QUEUE_EMPTY)),
-      this.dolphinQuit$,
-    ).pipe(
-      mapTo(undefined),
-    );
   }
 
   public updateSettings(options: Partial<DolphinLauncherOptions>): void {
@@ -51,16 +41,19 @@ export class DolphinLauncher {
       this.dolphin = null;
     }
 
-    this.dolphin = this._executeFile(comboFilePath);
-    this.dolphin.on("close", () => this.dolphinQuitSource.next());
-
-    if (this.dolphin.stdout) {
-      // Pipe to the dolphin output but don't end
-      this.dolphin.stdout.pipe(this.output, { end: false });
-    }
+    this.dolphin = this._startDolphin(comboFilePath);
+    this.dolphin.on("exit", (exitCode) => {
+      if (exitCode !== 0) {
+        console.warn(`Dolphin terminated with exit code: ${exitCode}`);
+      }
+      this.dolphinRunningSource.next(false);
+    });
+    // Pipe to the dolphin output but don't end
+    this.dolphin.stdout.pipe(this.output, { end: false });
+    this.dolphinRunningSource.next(true);
   }
 
-  private _executeFile(comboFilePath: string): ChildProcess {
+  private _startDolphin(comboFilePath: string): ChildProcessWithoutNullStreams {
     if (!this.options.dolphinPath) {
       throw new Error("Dolphin path is not set!");
     }
@@ -75,7 +68,7 @@ export class DolphinLauncher {
     if (this.options.disableSeekBar) {
       params.push("-hs")
     }
-    return execFile(this.options.dolphinPath, params, { maxBuffer: this.options.maxNodeBuffer });
+    return spawn(this.options.dolphinPath, params);
   }
 
 }
