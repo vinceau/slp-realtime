@@ -1,8 +1,7 @@
 import { spawn, ChildProcessWithoutNullStreams } from "child_process";
-import { Subject, Observable, merge } from "rxjs";
-import { filter, mapTo } from "rxjs/operators";
+import { Subject } from "rxjs";
 
-import { DolphinOutput, DolphinPlaybackStatus } from "./output";
+import { DolphinOutput } from "./output";
 
 // Configurable options
 const defaultDolphinLauncherOptions = {
@@ -17,25 +16,16 @@ const defaultDolphinLauncherOptions = {
 type DolphinLauncherOptions = typeof defaultDolphinLauncherOptions;
 
 export class DolphinLauncher {
+  public output: DolphinOutput;
   public dolphin: ChildProcessWithoutNullStreams | null = null;
   protected options: DolphinLauncherOptions;
-
-  public output: DolphinOutput;
 
   private dolphinExitSource = new Subject<number>();
   public dolphinExit$ = this.dolphinExitSource.asObservable();
 
-  public playbackEnd$: Observable<void>;
-
   public constructor(options?: Partial<DolphinLauncherOptions>) {
     this.options = Object.assign({}, defaultDolphinLauncherOptions, options);
     this.output = new DolphinOutput(this.options);
-    this.playbackEnd$ = merge(
-      this.output.playbackStatus$.pipe(filter(payload => payload.status === DolphinPlaybackStatus.QUEUE_EMPTY)),
-      this.dolphinExit$,
-    ).pipe(
-      mapTo(undefined),
-    );
   }
 
   public updateSettings(options: Partial<DolphinLauncherOptions>): void {
