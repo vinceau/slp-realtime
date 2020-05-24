@@ -1,5 +1,5 @@
 import { spawn, ChildProcessWithoutNullStreams } from "child_process";
-import { Subject } from "rxjs";
+import { BehaviorSubject } from "rxjs";
 
 import { DolphinOutput } from "./output";
 
@@ -20,8 +20,9 @@ export class DolphinLauncher {
   public dolphin: ChildProcessWithoutNullStreams | null = null;
   protected options: DolphinLauncherOptions;
 
-  private dolphinExitSource = new Subject<number>();
-  public dolphinExit$ = this.dolphinExitSource.asObservable();
+  // Indicates whether dolphin is currently running or not
+  private dolphinRunningSource = new BehaviorSubject<boolean>(false);
+  public dolphinRunning$ = this.dolphinRunningSource.asObservable();
 
   public constructor(options?: Partial<DolphinLauncherOptions>) {
     this.options = Object.assign({}, defaultDolphinLauncherOptions, options);
@@ -41,9 +42,15 @@ export class DolphinLauncher {
     }
 
     this.dolphin = this._startDolphin(comboFilePath);
-    this.dolphin.on("exit", (exitCode) => this.dolphinExitSource.next(exitCode));
+    this.dolphin.on("exit", (exitCode) => {
+      if (exitCode !== 0) {
+        console.warn(`Dolphin terminated with exit code: ${exitCode}`);
+      }
+      this.dolphinRunningSource.next(false);
+    });
     // Pipe to the dolphin output but don't end
     this.dolphin.stdout.pipe(this.output, { end: false });
+    this.dolphinRunningSource.next(true);
   }
 
   private _startDolphin(comboFilePath: string): ChildProcessWithoutNullStreams {
