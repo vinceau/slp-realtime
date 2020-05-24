@@ -1,4 +1,4 @@
-import { ChildProcess, execFile } from "child_process";
+import { spawn, ChildProcessWithoutNullStreams } from "child_process";
 import { Subject, Observable, merge } from "rxjs";
 import { filter, mapTo } from "rxjs/operators";
 
@@ -12,13 +12,12 @@ const defaultDolphinLauncherOptions = {
   disableSeekBar: false,    // Disable the Dolphin seek bar
   startBuffer: 1,           // Sometimes Dolphin misses the start frame so start from the following frame
   endBuffer: 1,             // Match the start frame because why not
-  maxNodeBuffer: Infinity,  // This is the max amount of data that can be processed through stdout
 }
 
 type DolphinLauncherOptions = typeof defaultDolphinLauncherOptions;
 
 export class DolphinLauncher {
-  public dolphin: ChildProcess | null = null;
+  public dolphin: ChildProcessWithoutNullStreams | null = null;
   protected options: DolphinLauncherOptions;
 
   public output: DolphinOutput;
@@ -53,14 +52,11 @@ export class DolphinLauncher {
 
     this.dolphin = this._executeFile(comboFilePath);
     this.dolphin.on("close", () => this.dolphinQuitSource.next());
-
-    if (this.dolphin.stdout) {
-      // Pipe to the dolphin output but don't end
-      this.dolphin.stdout.pipe(this.output, { end: false });
-    }
+    // Pipe to the dolphin output but don't end
+    this.dolphin.stdout.pipe(this.output, { end: false });
   }
 
-  private _executeFile(comboFilePath: string): ChildProcess {
+  private _executeFile(comboFilePath: string): ChildProcessWithoutNullStreams {
     if (!this.options.dolphinPath) {
       throw new Error("Dolphin path is not set!");
     }
@@ -75,7 +71,7 @@ export class DolphinLauncher {
     if (this.options.disableSeekBar) {
       params.push("-hs")
     }
-    return execFile(this.options.dolphinPath, params, { maxBuffer: this.options.maxNodeBuffer });
+    return spawn(this.options.dolphinPath, params);
   }
 
 }
