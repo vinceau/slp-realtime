@@ -55,7 +55,7 @@ export interface ComboEventPayload {
 export interface InputButtonCombo {
   frame: number;
   playerIndex: number;
-  combo:  Input[];
+  combo:  string[];
   duration: number;
 }
 

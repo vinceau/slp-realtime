@@ -3,7 +3,7 @@ import { map, scan, filter, switchMap } from "rxjs/operators";
 
 import { SlpStream } from "../stream";
 import { playerFrameFilter } from "../operators/frames";
-import { Frames, Input, InputButtonCombo } from "../types";
+import { Frames, InputButtonCombo } from "../types";
 import { generateInputBitmask, forAllPlayerIndices } from "../utils";
 
 export class InputEvents {
@@ -13,7 +13,7 @@ export class InputEvents {
     this.stream$ = stream;
   }
 
-  public buttonCombo(buttons: Input[], duration?: number): Observable<InputButtonCombo> {
+  public buttonCombo(buttons: string[], duration?: number): Observable<InputButtonCombo> {
     return forAllPlayerIndices(i => this.playerIndexButtonCombo(i, buttons, duration));
   }
 
@@ -26,7 +26,7 @@ export class InputEvents {
    * @returns {Observable<number>}
    * @memberof InputEvents
    */
-  public playerIndexButtonCombo(index: number, buttons: Input[], duration = 1): Observable<InputButtonCombo> {
+  public playerIndexButtonCombo(index: number, buttons: string[], duration = 1): Observable<InputButtonCombo> {
     const controlBitMask = generateInputBitmask(...buttons);
     return this.stream$.pipe(
       // Get the player frames
