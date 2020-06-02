@@ -1,5 +1,5 @@
 import path from "path";
-import _ from "lodash";
+import { get } from "lodash";
 import moment, { Moment } from "moment";
 
 import { SlpFile, SlpFileMetadata } from "./slpFile";
@@ -104,7 +104,7 @@ export class SlpFileWriter extends SlpStream {
     // Update character usage
     const playerIndex = payload.playerIndex;
     const internalCharacterId = payload.internalCharacterId;
-    const prevPlayer = _.get(this.currentFile, ["metadata", "players", `${playerIndex}`]) || {};
+    const prevPlayer = get(this.currentFile, ["metadata", "players", `${playerIndex}`]) || {};
     const characterUsage = prevPlayer.characterUsage || {};
     const curCharFrames = characterUsage[internalCharacterId] || 0;
     const player = {

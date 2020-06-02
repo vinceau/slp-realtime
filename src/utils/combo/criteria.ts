@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { get, sumBy } from "lodash";
 
 import { Criteria } from "./filter";
 import { MoveID, Character } from "../melee";
@@ -17,7 +17,7 @@ export const MatchesPlayerName: Criteria = (combo, settings, options, metadata) 
   }
 
   const player = settings.players.find((player) => player.playerIndex === combo.playerIndex);
-  const netplayName: string | null = _.get(metadata, ["players", player.playerIndex, "names", "netplay"], null) || null;
+  const netplayName: string | null = get(metadata, ["players", player.playerIndex, "names", "netplay"], null) || null;
   const playerTag = player.nametag || null;
 
   const matchesPlayerTag = playerTag !== null && options.nameTags.includes(playerTag);
@@ -109,7 +109,7 @@ export const SatisfiesMinComboPercent: Criteria = (combo, settings, options) => 
 };
 
 export const ExcludesLargeSingleHit: Criteria = (combo, settings, options) => {
-  const totalDmg = _.sumBy(combo.moves, ({ damage }) => damage);
+  const totalDmg = sumBy(combo.moves, ({ damage }) => damage);
   const largeSingleHit = combo.moves.some(({ damage }) => damage / totalDmg >= options.largeHitThreshold);
   return !largeSingleHit;
 };

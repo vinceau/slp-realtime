@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { last } from "lodash";
 
 import {
   MoveLandedType,
@@ -95,7 +95,7 @@ export class ConversionEvents {
       const terminated = handleConversionCompute(state, indices, prevFrame, latestFrame, this.conversions);
       if (terminated) {
         this.conversionSource.next({
-          combo: _.last(this.conversions),
+          combo: last(this.conversions),
           settings: this.settings,
         });
       }
