@@ -37,10 +37,13 @@ const defaultSettings = {
 
 export type DolphinPlaybackQueueOptions = typeof defaultSettings;
 
-export const generateDolphinQueue = (items: DolphinPlaybackItem[], options?: Partial<DolphinPlaybackQueueOptions>): DolphinQueueFormat => {
+export const generateDolphinQueue = (
+  items: DolphinPlaybackItem[],
+  options?: Partial<DolphinPlaybackQueueOptions>,
+): DolphinQueueFormat => {
   const opts: DolphinPlaybackQueueOptions = Object.assign({}, defaultSettings, options);
   const entries = opts.shuffle ? shuffle(items) : items;
-  const queue = entries.map(entry => mapDolphinEntry(entry, opts.startBuffer, opts.endBuffer));
+  const queue = entries.map((entry) => mapDolphinEntry(entry, opts.startBuffer, opts.endBuffer));
   const dolphinQueue: DolphinQueueFormat = {
     mode: opts.mode,
     replay: opts.replay,
@@ -49,13 +52,17 @@ export const generateDolphinQueue = (items: DolphinPlaybackItem[], options?: Par
     queue,
   };
   return dolphinQueue;
-}
+};
 
-export const generateDolphinQueuePayload = (items: DolphinPlaybackItem[], options?: Partial<DolphinPlaybackQueueOptions>, prettify=true): string => {
+export const generateDolphinQueuePayload = (
+  items: DolphinPlaybackItem[],
+  options?: Partial<DolphinPlaybackQueueOptions>,
+  prettify = true,
+): string => {
   const dolphinQueue = generateDolphinQueue(items, options);
   const spaces = prettify ? 2 : undefined;
   return JSON.stringify(dolphinQueue, undefined, spaces);
-}
+};
 
 const mapDolphinEntry = (entry: DolphinPlaybackItem, startBuffer: number, endBuffer: number): DolphinEntry => {
   const { combo, ...dolphinEntry } = entry;

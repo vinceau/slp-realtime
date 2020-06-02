@@ -3,7 +3,7 @@ import { map, scan, filter, switchMap } from "rxjs/operators";
 
 import { SlpStream } from "../stream";
 import { playerFrameFilter } from "../operators/frames";
-import { Frames, Input, InputButtonCombo } from "../types";
+import { Frames, InputButtonCombo } from "../types";
 import { generateInputBitmask, forAllPlayerIndices } from "../utils";
 
 export class InputEvents {
@@ -13,8 +13,8 @@ export class InputEvents {
     this.stream$ = stream;
   }
 
-  public buttonCombo(buttons: Input[], duration?: number): Observable<InputButtonCombo> {
-    return forAllPlayerIndices(i => this.playerIndexButtonCombo(i, buttons, duration));
+  public buttonCombo(buttons: string[], duration?: number): Observable<InputButtonCombo> {
+    return forAllPlayerIndices((i) => this.playerIndexButtonCombo(i, buttons, duration));
   }
 
   /**
@@ -26,11 +26,11 @@ export class InputEvents {
    * @returns {Observable<number>}
    * @memberof InputEvents
    */
-  public playerIndexButtonCombo(index: number, buttons: Input[], duration = 1): Observable<InputButtonCombo> {
+  public playerIndexButtonCombo(index: number, buttons: string[], duration = 1): Observable<InputButtonCombo> {
     const controlBitMask = generateInputBitmask(...buttons);
     return this.stream$.pipe(
       // Get the player frames
-      switchMap(stream => stream.playerFrame$),
+      switchMap((stream) => stream.playerFrame$),
       // Filter for the specific player
       playerFrameFilter(index),
       // Map the frames to whether the button combination was pressed or not
@@ -47,20 +47,23 @@ export class InputEvents {
         };
       }),
       // Count the number of consecutively pressed frames
-      scan((acc, data) => {
-        const count = data.buttonPressed ? acc.count + 1 : 0;
-        return {
-          count,
-          frame: data.frame,
-        };
-      }, {
-        count: 0,
-        frame: Frames.FIRST,
-      }),
+      scan(
+        (acc, data) => {
+          const count = data.buttonPressed ? acc.count + 1 : 0;
+          return {
+            count,
+            frame: data.frame,
+          };
+        },
+        {
+          count: 0,
+          frame: Frames.FIRST,
+        },
+      ),
       // Filter to be the exact frame when we pressed the combination for sufficient frames
-      filter(n => n.count === duration),
+      filter((n) => n.count === duration),
       // Return the player index which triggered the button press
-      map(data => ({
+      map((data) => ({
         playerIndex: index,
         combo: buttons,
         frame: data.frame,

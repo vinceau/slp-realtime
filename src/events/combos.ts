@@ -2,8 +2,17 @@ import _ from "lodash";
 
 import { ComboEventPayload, FrameEntryType, ComboType, PostFrameUpdateType, GameStartType } from "../types";
 import {
-  MoveLandedType, PlayerIndexedType, isDamaged, isGrabbed, calcDamageTaken, isTeching, didLoseStock, Timers,
-  isDown, isDead, getSinglesPlayerPermutationsFromSettings
+  MoveLandedType,
+  PlayerIndexedType,
+  isDamaged,
+  isGrabbed,
+  calcDamageTaken,
+  isTeching,
+  didLoseStock,
+  Timers,
+  isDown,
+  isDead,
+  getSinglesPlayerPermutationsFromSettings,
 } from "slp-parser-js";
 import { Subject, Observable } from "rxjs";
 import { SlpStream } from "..";
@@ -55,9 +64,7 @@ export class ComboEvents {
     this.conversion$ = conversionEvents.end$;
 
     // Reset the state on game start
-    this.stream$.pipe(
-      switchMap(s => s.gameStart$),
-    ).subscribe((settings) => {
+    this.stream$.pipe(switchMap((s) => s.gameStart$)).subscribe((settings) => {
       this.resetState();
       // We only care about the 2 player games
       if (settings.players.length === 2) {
@@ -68,17 +75,19 @@ export class ComboEvents {
     });
 
     // Handle the frame processing
-    this.stream$.pipe(
-      switchMap(s => s.playerFrame$),
-      // We only want the frames for two player games
-      filter(frame => {
-        const players = Object.keys(frame.players);
-        return players.length === 2;
-      }),
-      withPreviousFrame(),
-    ).subscribe(([prevFrame, latestFrame]) => {
-      this.processFrame(prevFrame, latestFrame);
-    });
+    this.stream$
+      .pipe(
+        switchMap((s) => s.playerFrame$),
+        // We only want the frames for two player games
+        filter((frame) => {
+          const players = Object.keys(frame.players);
+          return players.length === 2;
+        }),
+        withPreviousFrame(),
+      )
+      .subscribe(([prevFrame, latestFrame]) => {
+        this.processFrame(prevFrame, latestFrame);
+      });
   }
 
   private setPlayerPermutations(playerPermutations: PlayerIndexedType[]): void {
@@ -92,7 +101,7 @@ export class ComboEvents {
         event: null,
       };
       this.state.set(indices, playerState);
-    })
+    });
   }
 
   private processFrame(prevFrame: FrameEntryType, latestFrame: FrameEntryType): void {
@@ -100,34 +109,39 @@ export class ComboEvents {
       const state = this.state.get(indices);
       handleComboCompute(state, indices, prevFrame, latestFrame, this.combos);
       switch (state.event) {
-      case ComboEvent.Start:
-        this.comboStartSource.next({
-          combo: state.combo,
-          settings: this.settings
-        });
-        break;
-      case ComboEvent.Extend:
-        this.comboExtendSource.next({
-          combo: state.combo,
-          settings: this.settings,
-        });
-        break;
-      case ComboEvent.End:
-        this.comboEndSource.next({
-          combo: _.last(this.combos),
-          settings: this.settings,
-        });
-        break;
+        case ComboEvent.Start:
+          this.comboStartSource.next({
+            combo: state.combo,
+            settings: this.settings,
+          });
+          break;
+        case ComboEvent.Extend:
+          this.comboExtendSource.next({
+            combo: state.combo,
+            settings: this.settings,
+          });
+          break;
+        case ComboEvent.End:
+          this.comboEndSource.next({
+            combo: _.last(this.combos),
+            settings: this.settings,
+          });
+          break;
       }
       if (state.event !== null) {
         state.event = null;
       }
     });
   }
-
 }
 
-function handleComboCompute(state: ComboState, indices: PlayerIndexedType, prevFrame: FrameEntryType, latestFrame: FrameEntryType, combos: ComboType[]): void {
+function handleComboCompute(
+  state: ComboState,
+  indices: PlayerIndexedType,
+  prevFrame: FrameEntryType,
+  latestFrame: FrameEntryType,
+  combos: ComboType[],
+): void {
   const playerFrame: PostFrameUpdateType = latestFrame.players[indices.playerIndex].post;
   const prevPlayerFrame: PostFrameUpdateType = prevFrame.players[indices.playerIndex].post;
   const opponentFrame: PostFrameUpdateType = latestFrame.players[indices.opponentIndex].post;

@@ -1,6 +1,16 @@
 import _ from "lodash";
 
-import { MoveLandedType, PlayerIndexedType, isDamaged, isGrabbed, calcDamageTaken, isInControl, didLoseStock, Timers, getSinglesPlayerPermutationsFromSettings } from "slp-parser-js";
+import {
+  MoveLandedType,
+  PlayerIndexedType,
+  isDamaged,
+  isGrabbed,
+  calcDamageTaken,
+  isInControl,
+  didLoseStock,
+  Timers,
+  getSinglesPlayerPermutationsFromSettings,
+} from "slp-parser-js";
 import { ConversionType, PostFrameUpdateType, FrameEntryType, GameStartType } from "../types";
 import { Subject, Observable } from "rxjs";
 import { SlpStream } from "../stream";
@@ -17,7 +27,7 @@ interface PlayerConversionState {
 interface ConversionEventPayload {
   combo: ConversionType;
   settings: GameStartType;
-};
+}
 
 export class ConversionEvents {
   private stream$: Observable<SlpStream>;
@@ -40,9 +50,7 @@ export class ConversionEvents {
     this.stream$ = stream;
 
     // Reset the state on game start
-    this.stream$.pipe(
-      switchMap(s => s.gameStart$),
-    ).subscribe((settings) => {
+    this.stream$.pipe(switchMap((s) => s.gameStart$)).subscribe((settings) => {
       this.resetState();
       // We only care about the 2 player games
       if (settings.players.length === 2) {
@@ -53,17 +61,19 @@ export class ConversionEvents {
     });
 
     // Handle the frame processing
-    this.stream$.pipe(
-      switchMap(s => s.playerFrame$),
-      // We only want the frames for two player games
-      filter(frame => {
-        const players = Object.keys(frame.players);
-        return players.length === 2;
-      }),
-      withPreviousFrame(),
-    ).subscribe(([prevFrame, latestFrame]) => {
-      this.processFrame(prevFrame, latestFrame);
-    });
+    this.stream$
+      .pipe(
+        switchMap((s) => s.playerFrame$),
+        // We only want the frames for two player games
+        filter((frame) => {
+          const players = Object.keys(frame.players);
+          return players.length === 2;
+        }),
+        withPreviousFrame(),
+      )
+      .subscribe(([prevFrame, latestFrame]) => {
+        this.processFrame(prevFrame, latestFrame);
+      });
   }
 
   public setPlayerPermutations(playerPermutations: PlayerIndexedType[]): void {
@@ -74,9 +84,9 @@ export class ConversionEvents {
         move: null,
         resetCounter: 0,
         lastHitAnimation: null,
-      }
+      };
       this.state.set(indices, playerState);
-    })
+    });
   }
 
   public processFrame(prevFrame: FrameEntryType, latestFrame: FrameEntryType): void {
@@ -93,7 +103,13 @@ export class ConversionEvents {
   }
 }
 
-function handleConversionCompute(state: PlayerConversionState, indices: PlayerIndexedType, prevFrame: FrameEntryType, latestFrame: FrameEntryType, conversions: ConversionType[]): boolean {
+function handleConversionCompute(
+  state: PlayerConversionState,
+  indices: PlayerIndexedType,
+  prevFrame: FrameEntryType,
+  latestFrame: FrameEntryType,
+  conversions: ConversionType[],
+): boolean {
   const playerFrame: PostFrameUpdateType = latestFrame.players[indices.playerIndex].post;
   const prevPlayerFrame: PostFrameUpdateType = prevFrame.players[indices.playerIndex].post;
   const opponentFrame: PostFrameUpdateType = latestFrame.players[indices.opponentIndex].post;

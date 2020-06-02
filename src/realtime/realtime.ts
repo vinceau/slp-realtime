@@ -34,5 +34,4 @@ export class SlpRealTime {
   public setStream(stream: SlpStream): void {
     this.stream$.next(stream);
   }
-
 }

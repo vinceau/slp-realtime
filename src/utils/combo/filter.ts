@@ -22,7 +22,12 @@ export interface ComboFilterSettings {
 
 export type Metadata = Record<string, any>;
 
-export type Criteria = (combo: ComboType, settings: GameStartType, options: ComboFilterSettings, metadata?: Metadata) => boolean;
+export type Criteria = (
+  combo: ComboType,
+  settings: GameStartType,
+  options: ComboFilterSettings,
+  metadata?: Metadata,
+) => boolean;
 
 export const defaultComboFilterSettings: ComboFilterSettings = {
   chainGrabbers: [Character.MARTH, Character.PEACH, Character.PIKACHU, Character.DR_MARIO],
@@ -42,7 +47,7 @@ export const defaultComboFilterSettings: ComboFilterSettings = {
     [Character.JIGGLYPUFF]: 85,
   },
   fuzzyNameTagMatching: true,
-}
+};
 
 export class ComboFilter {
   public criteria: Criteria[];
@@ -52,7 +57,7 @@ export class ComboFilter {
   public constructor(options?: Partial<ComboFilterSettings>) {
     this.settings = Object.assign({}, defaultComboFilterSettings, options);
     this.originalSettings = Object.assign({}, this.settings);
-    this.criteria = [ ...ALL_CRITERIA ];
+    this.criteria = [...ALL_CRITERIA];
   }
 
   public updateSettings(options: Partial<ComboFilterSettings>): ComboFilterSettings {
@@ -81,7 +86,7 @@ export const checkCombo = (
   metadata?: Metadata,
   criteria?: Criteria[],
 ): boolean => {
-  const criteriaToCheck = criteria && criteria.length > 0 ? criteria : [ ...ALL_CRITERIA ];
+  const criteriaToCheck = criteria && criteria.length > 0 ? criteria : [...ALL_CRITERIA];
 
   // Check if we satisfy all the criteria
   for (const c of criteriaToCheck) {
@@ -93,4 +98,3 @@ export const checkCombo = (
   // If we made it through all the criteria then it was a valid combo
   return true;
 };
-

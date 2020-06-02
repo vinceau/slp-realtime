@@ -11,7 +11,7 @@ export enum InputEvent {
 
 export const readInputsConfig = (inputs: InputEvents, config: EventManagerConfig): Observable<EventEmit> => {
   return readButtonComboEvents(config, (buttons, duration) => inputs.buttonCombo(buttons, duration));
-}
+};
 
 const readButtonComboEvents = (
   eventConfig: EventManagerConfig,
@@ -19,9 +19,9 @@ const readButtonComboEvents = (
 ): Observable<EventEmit> => {
   // Handle game start events
   const observables: Observable<EventEmit>[] = eventConfig.events
-    .filter(event => event.type === InputEvent.BUTTON_COMBO)
-    .filter(event => event.filter && event.filter.combo && event.filter.combo.length > 0)  // We must have a valid filter
-    .map(event => {
+    .filter((event) => event.type === InputEvent.BUTTON_COMBO)
+    .filter((event) => event.filter && event.filter.combo && event.filter.combo.length > 0) // We must have a valid filter
+    .map((event) => {
       let duration = 1;
       if (event.filter.duration && event.filter.duration > 1) {
         duration = Math.floor(event.filter.duration);
@@ -32,18 +32,18 @@ const readButtonComboEvents = (
       // Handle num players filter
       for (const [key, value] of Object.entries(event.filter)) {
         switch (key) {
-        case "playerIndex":
-          base$ = base$.pipe(playerFilter(value, eventConfig.variables));
-          break;
+          case "playerIndex":
+            base$ = base$.pipe(playerFilter(value, eventConfig.variables));
+            break;
         }
       }
 
       return base$.pipe(
-        map(context => ({
+        map((context) => ({
           id: event.id,
           payload: context,
         })),
       );
-    })
+    });
   return merge(...observables);
-}
+};

@@ -20,7 +20,7 @@ export enum GameEndMethod {
   GAME = 2,
   RESOLVED = 3,
   NO_CONTEST = 7,
-};
+}
 
 export enum Input {
   D_LEFT = "D_LEFT",
@@ -35,7 +35,7 @@ export enum Input {
   X = "X",
   Y = "Y",
   START = "START",
-};
+}
 
 export interface PercentChange {
   playerIndex: number;
@@ -55,7 +55,7 @@ export interface ComboEventPayload {
 export interface InputButtonCombo {
   frame: number;
   playerIndex: number;
-  combo:  Input[];
+  combo: string[];
   duration: number;
 }
 

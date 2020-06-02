@@ -8,9 +8,8 @@ export function playerFilter<T extends { playerIndex: number }>(
   indices: number | number[] | string,
   variables?: EventManagerVariables,
 ): MonoTypeOperatorFunction<T> {
-  return (source: Observable<T>): Observable<T> => source.pipe(
-    filter((payload) => playerFilterMatches(payload.playerIndex, indices, variables)),
-  );
+  return (source: Observable<T>): Observable<T> =>
+    source.pipe(filter((payload) => playerFilterMatches(payload.playerIndex, indices, variables)));
 }
 
 export const playerFilterMatches = (
@@ -19,18 +18,18 @@ export const playerFilterMatches = (
   variables?: EventManagerVariables,
 ): boolean => {
   // Default to all the indices
-  let filterIndices: number[] = [ ...ALL_PLAYER_INDICES ];
+  let filterIndices: number[] = [...ALL_PLAYER_INDICES];
   if (typeof indices === "number") {
     filterIndices = [indices];
   } else if (typeof indices === "string") {
     if (variables && variables.playerIndex !== undefined) {
       switch (indices) {
-      case "player":
-        filterIndices = [variables.playerIndex];
-        break;
-      case "opponents":
-        filterIndices = ALL_PLAYER_INDICES.filter(n => n !== variables.playerIndex);
-        break;
+        case "player":
+          filterIndices = [variables.playerIndex];
+          break;
+        case "opponents":
+          filterIndices = ALL_PLAYER_INDICES.filter((n) => n !== variables.playerIndex);
+          break;
       }
     }
   } else {
@@ -39,4 +38,3 @@ export const playerFilterMatches = (
   }
   return filterIndices.includes(playerIndex);
 };
-
