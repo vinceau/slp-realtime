@@ -15,7 +15,7 @@ enum InputBit {
   START = 0x1000,
 };
 
-const inputBitMap = new Map<Input, InputBit>()
+const inputBitMap = new Map<string, InputBit>()
   .set(Input.D_LEFT, InputBit.D_LEFT)
   .set(Input.D_RIGHT, InputBit.D_RIGHT)
   .set(Input.D_DOWN, InputBit.D_DOWN)
@@ -33,12 +33,12 @@ const generateInputBitmaskFromBit = (...buttons: InputBit[]): number => {
   return buttons.reduce((a, b) => (a | b));
 };
 
-export const generateInputBitmask = (...buttons: Input[]): number => {
+export const generateInputBitmask = (...buttons: string[]): number => {
   const mappedButtons = buttons.map(b => mapInputToBits(b));
   return generateInputBitmaskFromBit(...mappedButtons);
 };
 
-const mapInputToBits = (button: Input): InputBit => {
+const mapInputToBits = (button: string): InputBit => {
   const b = inputBitMap.get(button);
   if (!b) {
     throw new Error(`Unknown input: ${button}`);

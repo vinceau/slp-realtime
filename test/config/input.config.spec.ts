@@ -111,4 +111,38 @@ describe("input config", () => {
     expect(p4Spy.callCount).toEqual(26);
   });
 
+  it("can find the correct number of combos", async () => {
+    const buttonPresses = sinon.spy();
+
+    const slpStream = new SlpStream({ singleGameMode: true });
+    const realtime = new SlpRealTime();
+    const eventManager = new EventManager(realtime);
+    realtime.setStream(slpStream);
+
+    const config: EventManagerConfig = {
+      events: [
+        {
+          id: "x-button-combo",
+          type: "button-combo",
+          filter: {
+            combo: ["X"],
+          },
+        },
+      ]
+    };
+
+    subscriptions.push(
+      eventManager.events$.subscribe(event => {
+        buttonPresses();
+      }),
+    );
+
+    eventManager.updateConfig(config);
+
+    // P1 vs P4
+    await pipeFileContents("slp/button-combination-test.slp", slpStream);
+
+    expect(buttonPresses.callCount).toEqual(2);
+  });
+
 });
