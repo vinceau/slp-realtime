@@ -37,17 +37,17 @@ export class SlpFolderStream extends SlpStream {
   public async start(slpFolder: string): Promise<void> {
     let initialFiles = await fs.readdir(slpFolder);
     // Convert file paths into absolute paths
-    initialFiles = initialFiles.map(file => {
-      return path.resolve(path.join(slpFolder, file))
+    initialFiles = initialFiles.map((file) => {
+      return path.resolve(path.join(slpFolder, file));
     });
 
     // Initialize watcher.
     const slpGlob = path.join(slpFolder, "*.slp");
     this.watcher = chokidar.watch(slpGlob, {
       ignored: /(^|[\/\\])\../, // ignore dotfiles
-      persistent: true
+      persistent: true,
     });
-    this.watcher.on("add", filePath => {
+    this.watcher.on("add", (filePath) => {
       if (initialFiles.includes(filePath)) {
         return;
       }

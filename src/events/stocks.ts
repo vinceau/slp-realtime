@@ -18,10 +18,10 @@ export class StockEvents {
   public constructor(stream: Observable<SlpStream>) {
     this.stream$ = stream;
 
-    this.playerSpawn$ = forAllPlayerIndices(i => this.playerIndexSpawn(i));
-    this.playerDied$ = forAllPlayerIndices(i => this.playerIndexDied(i));
-    this.percentChange$ = forAllPlayerIndices(i => this.playerIndexPercentChange(i));
-    this.countChange$ = forAllPlayerIndices(i => this.playerIndexStockCountChange(i));
+    this.playerSpawn$ = forAllPlayerIndices((i) => this.playerIndexSpawn(i));
+    this.playerDied$ = forAllPlayerIndices((i) => this.playerIndexDied(i));
+    this.percentChange$ = forAllPlayerIndices((i) => this.playerIndexPercentChange(i));
+    this.countChange$ = forAllPlayerIndices((i) => this.playerIndexStockCountChange(i));
   }
 
   /**
@@ -29,11 +29,12 @@ export class StockEvents {
    */
   public playerIndexSpawn(index: number): Observable<StockType> {
     return this.stream$.pipe(
-      switchMap(stream => stream.playerFrame$.pipe(
-        filterJustSpawned(index),                           // Only take the spawn frames
-        map((f) => f.players[index].post),                  // Only take the post frame data
-        mapFrameToSpawnStockType(stream.gameStart$, index), // Map the frame to StockType
-      )
+      switchMap((stream) =>
+        stream.playerFrame$.pipe(
+          filterJustSpawned(index), // Only take the spawn frames
+          map((f) => f.players[index].post), // Only take the post frame data
+          mapFrameToSpawnStockType(stream.gameStart$, index), // Map the frame to StockType
+        ),
       ),
     );
   }
@@ -43,24 +44,24 @@ export class StockEvents {
    */
   public playerIndexDied(index: number): Observable<StockType> {
     return this.stream$.pipe(
-      switchMap(stream => stream.playerFrame$),
-      playerFrameFilter(index),                  // We only care about certain player frames
-      map((f) => f.players[index].post),    // Only take the post frame data
-      withPreviousFrame(),                  // Get previous frame too
-      filter(([prevFrame, latestFrame]) =>
-        didLoseStock(latestFrame, prevFrame)     // We only care about the frames where we just died
+      switchMap((stream) => stream.playerFrame$),
+      playerFrameFilter(index), // We only care about certain player frames
+      map((f) => f.players[index].post), // Only take the post frame data
+      withPreviousFrame(), // Get previous frame too
+      filter(
+        ([prevFrame, latestFrame]) => didLoseStock(latestFrame, prevFrame), // We only care about the frames where we just died
       ),
       mapFramesToDeathStockType(this.playerIndexSpawn(index)), // Map the frame to StockType
-    )
+    );
   }
 
   public playerIndexPercentChange(index: number): Observable<PercentChange> {
     return this.stream$.pipe(
-      switchMap(stream => stream.playerFrame$),
+      switchMap((stream) => stream.playerFrame$),
       playerFrameFilter(index),
-      map(f => f.players[index].post.percent),
+      map((f) => f.players[index].post.percent),
       distinctUntilChanged(),
-      map(percent => ({
+      map((percent) => ({
         playerIndex: index,
         percent,
       })),
@@ -69,15 +70,14 @@ export class StockEvents {
 
   public playerIndexStockCountChange(index: number): Observable<StockCountChange> {
     return this.stream$.pipe(
-      switchMap(stream => stream.playerFrame$),
+      switchMap((stream) => stream.playerFrame$),
       playerFrameFilter(index),
-      map(f => f.players[index].post.stocksRemaining),
+      map((f) => f.players[index].post.stocksRemaining),
       distinctUntilChanged(),
-      map(stocksRemaining => ({
+      map((stocksRemaining) => ({
         playerIndex: index,
         stocksRemaining,
       })),
     );
   }
-
 }

@@ -9,7 +9,7 @@ export interface SlpFileMetadata {
   consoleNickname?: string;
   lastFrame: number;
   players: any;
-};
+}
 
 /**
  * SlpFile is a class that wraps a Writable stream. It handles the writing of the binary
@@ -94,11 +94,7 @@ export class SlpFile extends Writable {
   }
 
   public _final(callback: (error?: Error | null) => void): void {
-    let footer = Buffer.concat([
-      Buffer.from("U"),
-      Buffer.from([8]),
-      Buffer.from("metadata{"),
-    ]);
+    let footer = Buffer.concat([Buffer.from("U"), Buffer.from([8]), Buffer.from("metadata{")]);
 
     // Write game start time
     const startTimeStr = this.startTime.toISOString();
@@ -134,29 +130,14 @@ export class SlpFile extends Writable {
     ]);
 
     // Start writting player specific data
-    footer = Buffer.concat([
-      footer,
-      Buffer.from("U"),
-      Buffer.from([7]),
-      Buffer.from("players{"),
-    ]);
+    footer = Buffer.concat([footer, Buffer.from("U"), Buffer.from([7]), Buffer.from("players{")]);
     const players = this.metadata.players;
     _.forEach(players, (player, index) => {
       // Start player obj with index being the player index
-      footer = Buffer.concat([
-        footer,
-        Buffer.from("U"),
-        Buffer.from([index.length]),
-        Buffer.from(`${index}{`),
-      ]);
+      footer = Buffer.concat([footer, Buffer.from("U"), Buffer.from([index.length]), Buffer.from(`${index}{`)]);
 
       // Start characters key for this player
-      footer = Buffer.concat([
-        footer,
-        Buffer.from("U"),
-        Buffer.from([10]),
-        Buffer.from("characters{"),
-      ]);
+      footer = Buffer.concat([footer, Buffer.from("U"), Buffer.from([10]), Buffer.from("characters{")]);
 
       // Write character usage
       _.forEach(player.characterUsage, (usage, internalId) => {
@@ -171,17 +152,11 @@ export class SlpFile extends Writable {
       });
 
       // Close characters and player
-      footer = Buffer.concat([
-        footer,
-        Buffer.from("}}"),
-      ]);
+      footer = Buffer.concat([footer, Buffer.from("}}")]);
     });
 
     // Close players
-    footer = Buffer.concat([
-      footer,
-      Buffer.from("}"),
-    ]);
+    footer = Buffer.concat([footer, Buffer.from("}")]);
 
     // Write played on
     footer = Buffer.concat([
@@ -192,12 +167,9 @@ export class SlpFile extends Writable {
       Buffer.from([7]),
       Buffer.from("network"),
     ]);
-    
+
     // Close metadata and file
-    footer = Buffer.concat([
-      footer,
-      Buffer.from("}}"),
-    ]);
+    footer = Buffer.concat([footer, Buffer.from("}}")]);
 
     // End the stream
     this.fileStream.write(footer, callback);
@@ -208,10 +180,10 @@ const createInt32Buffer = (number: number): Buffer => {
   const buf = Buffer.alloc(4);
   buf.writeInt32BE(number, 0);
   return buf;
-}
+};
 
 const createUInt32Buffer = (number: number): Buffer => {
   const buf = Buffer.alloc(4);
   buf.writeUInt32BE(number, 0);
   return buf;
-}
+};

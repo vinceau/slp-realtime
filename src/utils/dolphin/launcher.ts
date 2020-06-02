@@ -5,13 +5,13 @@ import { DolphinOutput } from "./output";
 
 // Configurable options
 const defaultDolphinLauncherOptions = {
-  dolphinPath: "",          // Path to Dolphin executable
-  meleeIsoPath: "",         // Path to Melee iso
-  batch: false,             // Quit Dolphin when playback queue ends
-  disableSeekBar: false,    // Disable the Dolphin seek bar
-  startBuffer: 1,           // Sometimes Dolphin misses the start frame so start from the following frame
-  endBuffer: 1,             // Match the start frame because why not
-}
+  dolphinPath: "", // Path to Dolphin executable
+  meleeIsoPath: "", // Path to Melee iso
+  batch: false, // Quit Dolphin when playback queue ends
+  disableSeekBar: false, // Disable the Dolphin seek bar
+  startBuffer: 1, // Sometimes Dolphin misses the start frame so start from the following frame
+  endBuffer: 1, // Match the start frame because why not
+};
 
 type DolphinLauncherOptions = typeof defaultDolphinLauncherOptions;
 
@@ -60,15 +60,14 @@ export class DolphinLauncher {
 
     const params = ["-i", comboFilePath];
     if (this.options.meleeIsoPath) {
-      params.push("-e", this.options.meleeIsoPath)
+      params.push("-e", this.options.meleeIsoPath);
     }
     if (this.options.batch) {
-      params.push("-b")
+      params.push("-b");
     }
     if (this.options.disableSeekBar) {
-      params.push("-hs")
+      params.push("-hs");
     }
     return spawn(this.options.dolphinPath, params);
   }
-
 }

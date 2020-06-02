@@ -4,20 +4,16 @@ import { Observable, OperatorFunction, MonoTypeOperatorFunction, merge } from "r
 import { withLatestFrom, map, filter } from "rxjs/operators";
 import { filterOnlyFirstFrame, withPreviousFrame, playerFrameFilter } from "./frames";
 
-
 /**
  * Filter only the frames where the player has just spawned
  */
 export function filterJustSpawned(playerIndex: number): MonoTypeOperatorFunction<FrameEntryType> {
   return (source$): Observable<FrameEntryType> => {
-    const initialSpawn$ = source$.pipe(
-      playerFrameFilter(playerIndex),
-      filterOnlyFirstFrame(),
-    );
+    const initialSpawn$ = source$.pipe(playerFrameFilter(playerIndex), filterOnlyFirstFrame());
 
     const normalSpawns$ = source$.pipe(
       playerFrameFilter(playerIndex),
-      withPreviousFrame(),                  // Get previous frame too
+      withPreviousFrame(), // Get previous frame too
       filter(([prevFrame, latestFrame]) => {
         const prevActionState = prevFrame.players[playerIndex].post.actionStateId;
         const currActionState = latestFrame.players[playerIndex].post.actionStateId;
@@ -27,11 +23,8 @@ export function filterJustSpawned(playerIndex: number): MonoTypeOperatorFunction
       map(([_, latestFrame]) => latestFrame),
     );
 
-    return merge(
-      initialSpawn$,
-      normalSpawns$,
-    );
-  }
+    return merge(initialSpawn$, normalSpawns$);
+  };
 }
 
 /**
@@ -53,37 +46,44 @@ export function filterJustSpawned(playerIndex: number): MonoTypeOperatorFunction
 //   }
 // }
 
-export function mapFrameToSpawnStockType(settings$: Observable<GameStartType>, playerIndex: number): OperatorFunction<PostFrameUpdateType, StockType> {
-  return (source: Observable<PostFrameUpdateType>): Observable<StockType> => source.pipe(
-    withLatestFrom(settings$),
-    map(([frame, settings]) => {
-      const player = settings.players.find(player => player.playerIndex === playerIndex);
-      const opponent = settings.players.find(player => player.playerIndex !== playerIndex);
-      const stock: StockType = {
-        playerIndex: player.playerIndex,
-        opponentIndex: opponent.playerIndex,
-        startFrame: frame.frame,
-        endFrame: null,
-        startPercent: 0,
-        endPercent: null,
-        currentPercent: 0,
-        count: frame.stocksRemaining,
-        deathAnimation: null,
-      };
-      return stock;
-    }),
-  );
+export function mapFrameToSpawnStockType(
+  settings$: Observable<GameStartType>,
+  playerIndex: number,
+): OperatorFunction<PostFrameUpdateType, StockType> {
+  return (source: Observable<PostFrameUpdateType>): Observable<StockType> =>
+    source.pipe(
+      withLatestFrom(settings$),
+      map(([frame, settings]) => {
+        const player = settings.players.find((player) => player.playerIndex === playerIndex);
+        const opponent = settings.players.find((player) => player.playerIndex !== playerIndex);
+        const stock: StockType = {
+          playerIndex: player.playerIndex,
+          opponentIndex: opponent.playerIndex,
+          startFrame: frame.frame,
+          endFrame: null,
+          startPercent: 0,
+          endPercent: null,
+          currentPercent: 0,
+          count: frame.stocksRemaining,
+          deathAnimation: null,
+        };
+        return stock;
+      }),
+    );
 }
 
-export function mapFramesToDeathStockType(playerSpawned$: Observable<StockType>): OperatorFunction<[PostFrameUpdateType, PostFrameUpdateType], StockType> {
-  return (source: Observable<[PostFrameUpdateType, PostFrameUpdateType]>): Observable<StockType> => source.pipe(
-    withLatestFrom(playerSpawned$),
-    map(([[prevPlayerFrame, playerFrame], spawnStock]) => ({
-      ...spawnStock,
-      endFrame: playerFrame.frame,
-      endPercent: prevPlayerFrame.percent || 0,
-      currentPercent: prevPlayerFrame.percent || 0,
-      deathAnimation: playerFrame.actionStateId,
-    })),
-  );
+export function mapFramesToDeathStockType(
+  playerSpawned$: Observable<StockType>,
+): OperatorFunction<[PostFrameUpdateType, PostFrameUpdateType], StockType> {
+  return (source: Observable<[PostFrameUpdateType, PostFrameUpdateType]>): Observable<StockType> =>
+    source.pipe(
+      withLatestFrom(playerSpawned$),
+      map(([[prevPlayerFrame, playerFrame], spawnStock]) => ({
+        ...spawnStock,
+        endFrame: playerFrame.frame,
+        endPercent: prevPlayerFrame.percent || 0,
+        currentPercent: prevPlayerFrame.percent || 0,
+        deathAnimation: playerFrame.actionStateId,
+      })),
+    );
 }
