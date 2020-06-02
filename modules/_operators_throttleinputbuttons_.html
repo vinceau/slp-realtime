@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;config/game&quot; | @vinceau/slp-realtime</title>
+	<title>&quot;operators/throttleInputButtons&quot; | @vinceau/slp-realtime</title>
 	<meta name="description" content="Documentation for @vinceau/slp-realtime">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_config_game_.html">&quot;config/game&quot;</a>
+					<a href="_operators_throttleinputbuttons_.html">&quot;operators/throttleInputButtons&quot;</a>
 				</li>
 			</ul>
-			<h1>Module &quot;config/game&quot;</h1>
+			<h1>Module &quot;operators/throttleInputButtons&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -69,15 +69,9 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Enumerations</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-enum tsd-parent-kind-module"><a href="../enums/_config_game_.gameevent.html" class="tsd-kind-icon">Game<wbr>Event</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_config_game_.html#readgameconfig" class="tsd-kind-icon">read<wbr>Game<wbr>Config</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_operators_throttleinputbuttons_.html#throttleinputbuttons" class="tsd-kind-icon">throttle<wbr>Input<wbr>Buttons</a></li>
 							</ul>
 						</section>
 					</div>
@@ -86,28 +80,30 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="readgameconfig" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> read<wbr>Game<wbr>Config</h3>
+					<a name="throttleinputbuttons" class="tsd-anchor"></a>
+					<h3>throttle<wbr>Input<wbr>Buttons</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">read<wbr>Game<wbr>Config<span class="tsd-signature-symbol">(</span>game<span class="tsd-signature-symbol">: </span><a href="../classes/_events_game_.gameevents.html" class="tsd-signature-type">GameEvents</a>, config<span class="tsd-signature-symbol">: </span><a href="../interfaces/_manager_config_.eventmanagerconfig.html" class="tsd-signature-type">EventManagerConfig</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_manager_config_.eventemit.html" class="tsd-signature-type">EventEmit</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">throttle<wbr>Input<wbr>Buttons<span class="tsd-signature-symbol">(</span>frames<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MonoTypeOperatorFunction</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_types_.inputbuttoncombo.html" class="tsd-signature-type">InputButtonCombo</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/b1b289a/src/config/game.ts#L13">src/config/game.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/b1b289a/src/operators/throttleInputButtons.ts#L8">src/operators/throttleInputButtons.ts:8</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Throttle inputs for a number of frames</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>game: <a href="../classes/_events_game_.gameevents.html" class="tsd-signature-type">GameEvents</a></h5>
-								</li>
-								<li>
-									<h5>config: <a href="../interfaces/_manager_config_.eventmanagerconfig.html" class="tsd-signature-type">EventManagerConfig</a></h5>
+									<h5>frames: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_manager_config_.eventemit.html" class="tsd-signature-type">EventEmit</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">MonoTypeOperatorFunction</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/_types_.inputbuttoncombo.html" class="tsd-signature-type">InputButtonCombo</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -120,17 +116,14 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-module">
-						<a href="_config_game_.html">&quot;config/game&quot;</a>
+						<a href="_operators_throttleinputbuttons_.html">&quot;operators/throttle<wbr>Input<wbr>Buttons&quot;</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum tsd-parent-kind-module">
-						<a href="../enums/_config_game_.gameevent.html" class="tsd-kind-icon">Game<wbr>Event</a>
-					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="_config_game_.html#readgameconfig" class="tsd-kind-icon">read<wbr>Game<wbr>Config</a>
+						<a href="_operators_throttleinputbuttons_.html#throttleinputbuttons" class="tsd-kind-icon">throttle<wbr>Input<wbr>Buttons</a>
 					</li>
 				</ul>
 			</nav>
