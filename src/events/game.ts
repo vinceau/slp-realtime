@@ -13,17 +13,17 @@ export class GameEvents {
   public constructor(stream: Observable<SlpStream>) {
     this.stream$ = stream;
 
-    this.start$ = this.stream$.pipe(
-      switchMap(s => s.gameStart$),
-    );
+    this.start$ = this.stream$.pipe(switchMap((s) => s.gameStart$));
     this.end$ = this.stream$.pipe(
-      switchMap(s => s.gameEnd$.pipe(
-        withLatestFrom(s.playerFrame$),
-        map(([gameEnd, playerFrame]) => ({
-          ...gameEnd,
-          winnerPlayerIndex: findWinner(playerFrame)
-        })),
-      )),
+      switchMap((s) =>
+        s.gameEnd$.pipe(
+          withLatestFrom(s.playerFrame$),
+          map(([gameEnd, playerFrame]) => ({
+            ...gameEnd,
+            winnerPlayerIndex: findWinner(playerFrame),
+          })),
+        ),
+      ),
     );
   }
 }

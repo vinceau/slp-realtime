@@ -11,7 +11,7 @@ const defaultSettings = {
   outputFiles: false,
   folderPath: ".",
   consoleNick: "unknown",
-}
+};
 
 export type SlpFileWriterOptions = typeof defaultSettings;
 
@@ -43,13 +43,13 @@ export class SlpFileWriter extends SlpStream {
       players: {},
     };
     // this.on(SlpEvent.RAW_COMMAND, (command: Command, buffer: Uint8Array) => {
-    this.rawCommand$.subscribe(data => {
+    this.rawCommand$.subscribe((data) => {
       if (this.currentFile) {
         this.currentFile.write(data.payload);
       }
     });
     // this.on(SlpEvent.POST_FRAME_UPDATE, (command: Command, payload: PostFrameUpdateType) => {
-    this.postFrameUpdate$.subscribe(payload => {
+    this.postFrameUpdate$.subscribe((payload) => {
       this._handlePostFrameUpdate(Command.POST_FRAME_UPDATE, payload);
     });
     this.messageSize$.subscribe(() => {
@@ -109,7 +109,7 @@ export class SlpFileWriter extends SlpStream {
     const curCharFrames = characterUsage[internalCharacterId] || 0;
     const player = {
       ...prevPlayer,
-      "characterUsage": {
+      characterUsage: {
         ...characterUsage,
         [internalCharacterId]: curCharFrames + 1,
       },
@@ -129,9 +129,8 @@ export class SlpFileWriter extends SlpStream {
       this.currentFile = null;
     }
   }
-
 }
 
 const getNewFilePath = (folder: string, m: Moment): string => {
   return path.join(folder, `Game_${m.format("YYYYMMDD")}T${m.format("HHmmss")}.slp`);
-}
+};

@@ -47,12 +47,12 @@ export class SlpLiveStream extends SlpFileWriter {
         });
         this.connection.once("statusChange", (status: ConnectionStatus) => {
           switch (status) {
-          case ConnectionStatus.CONNECTED:
-            resolve();
-            break;
-          case ConnectionStatus.DISCONNECTED:
-            reject(new Error(`Failed to connect to: ${address}:${port}`));
-            break;
+            case ConnectionStatus.CONNECTED:
+              resolve();
+              break;
+            case ConnectionStatus.DISCONNECTED:
+              reject(new Error(`Failed to connect to: ${address}:${port}`));
+              break;
           }
         });
       } catch (err) {
@@ -71,10 +71,10 @@ const promiseTimeout = <T>(ms: number, promise: Promise<T>): Promise<T> => {
   const timeout = new Promise((resolve, reject): void => {
     const id = setTimeout(() => {
       clearTimeout(id);
-      reject(new Error(`Timed out after ${ms}ms.`))
-    }, ms)
-  })
+      reject(new Error(`Timed out after ${ms}ms.`));
+    }, ms);
+  });
 
   // Returns a race between our timeout and the passed in promise
   return Promise.race([promise, timeout]) as Promise<T>;
-}
+};

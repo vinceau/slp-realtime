@@ -29,7 +29,7 @@ export enum Stage {
   KONGO_JUNGLE_N64 = 30,
   BATTLEFIELD = 31,
   FINAL_DESTINATION = 32,
-};
+}
 
 export interface StageInfo {
   id: Stage;
@@ -46,7 +46,7 @@ const stagesMap = new Map<Stage, StageInfo>()
   .set(Stage.POKEMON_STADIUM, {
     id: Stage.POKEMON_STADIUM,
     name: "Pokémon Stadium",
-    shortName: "PS"
+    shortName: "PS",
   })
   .set(Stage.PEACHS_CASTLE, {
     id: Stage.PEACHS_CASTLE,
@@ -168,9 +168,9 @@ const stagesMap = new Map<Stage, StageInfo>()
 export function getStageInfo(stageId: number): StageInfo {
   const s = stagesMap.get(stageId);
   if (!s) {
-    throw new Error(`Invalid stage with id ${stageId}`)
+    throw new Error(`Invalid stage with id ${stageId}`);
   }
-  return s
+  return s;
 }
 
 export function getStageName(stageId: number): string {

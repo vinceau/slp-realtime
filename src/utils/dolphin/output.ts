@@ -53,7 +53,7 @@ interface BufferOptions {
 const defaultBufferOptions = {
   startBuffer: 1,
   endBuffer: 1,
-}
+};
 
 const PRE_FIRST_FRAME = Frames.FIRST - 1;
 
@@ -75,9 +75,7 @@ export class DolphinOutput extends Writable {
   private streamEndedSource = new Subject<void>();
 
   private playbackStatusSource = new Subject<DolphinPlaybackPayload>();
-  public playbackStatus$ = this.playbackStatusSource.asObservable().pipe(
-    takeUntil(this.streamEndedSource),
-  );
+  public playbackStatus$ = this.playbackStatusSource.asObservable().pipe(takeUntil(this.streamEndedSource));
 
   public constructor(bufferOptions?: Partial<BufferOptions>, opts?: WritableOptions) {
     super(opts);
@@ -86,7 +84,7 @@ export class DolphinOutput extends Writable {
     // Complete all the observables
     this.on("finish", () => {
       this.streamEndedSource.next();
-    })
+    });
   }
 
   public setBuffer(bufferOptions: Partial<BufferOptions>): void {
@@ -100,8 +98,8 @@ export class DolphinOutput extends Writable {
 
     // Process data here
     const dataString = newData.toString();
-    const lines = dataString.split(os.EOL).filter(line => Boolean(line))
-    lines.forEach(line => {
+    const lines = dataString.split(os.EOL).filter((line) => Boolean(line));
+    lines.forEach((line) => {
       const [command, value] = line.split(" ");
       this._processCommand(command, value);
     });
@@ -112,37 +110,37 @@ export class DolphinOutput extends Writable {
   private _processCommand(command: string, val?: string): void {
     const value = parseInt(val);
     switch (command) {
-    case PlaybackCommand.FILE_PATH:
-      // We just started playing back a new file so we should reset the state
-      this._resetState();
-      this.playbackStatusSource.next({
-        status: DolphinPlaybackStatus.FILE_LOADED,
-        data: {
-          path: val,
-        },
-      });
-      break;
-    case PlaybackCommand.LRAS:
-      this.state.forceQuit = true;
-      break;
-    case PlaybackCommand.CURRENT_FRAME:
-      this._handleCurrentFrame(value);
-      break;
-    case PlaybackCommand.PLAYBACK_START_FRAME:
-      this._handlePlaybackStartFrame(value);
-      break;
-    case PlaybackCommand.PLAYBACK_END_FRAME:
-      this._handlePlaybackEndFrame(value);
-      break;
-    case PlaybackCommand.GAME_END_FRAME:
-      this.state.lastGameFrame = value;
-      break;
-    case PlaybackCommand.NO_GAME:
-      this._handleNoGame();
-      break;
-    default:
-      console.error(`Unknown command ${command} with value ${val}`);
-      break;
+      case PlaybackCommand.FILE_PATH:
+        // We just started playing back a new file so we should reset the state
+        this._resetState();
+        this.playbackStatusSource.next({
+          status: DolphinPlaybackStatus.FILE_LOADED,
+          data: {
+            path: val,
+          },
+        });
+        break;
+      case PlaybackCommand.LRAS:
+        this.state.forceQuit = true;
+        break;
+      case PlaybackCommand.CURRENT_FRAME:
+        this._handleCurrentFrame(value);
+        break;
+      case PlaybackCommand.PLAYBACK_START_FRAME:
+        this._handlePlaybackStartFrame(value);
+        break;
+      case PlaybackCommand.PLAYBACK_END_FRAME:
+        this._handlePlaybackEndFrame(value);
+        break;
+      case PlaybackCommand.GAME_END_FRAME:
+        this.state.lastGameFrame = value;
+        break;
+      case PlaybackCommand.NO_GAME:
+        this._handleNoGame();
+        break;
+      default:
+        console.error(`Unknown command ${command} with value ${val}`);
+        break;
     }
   }
 
@@ -174,7 +172,10 @@ export class DolphinOutput extends Writable {
     // Play the game until the end
     this.state.gameEnded = this.state.endPlaybackFrame >= this.state.lastGameFrame;
     // Ensure the adjusted frame is between the start and end frames
-    const adjustedEndFrame = Math.max(this.state.startPlaybackFrame, this.state.endPlaybackFrame - this.buffers.endBuffer);
+    const adjustedEndFrame = Math.max(
+      this.state.startPlaybackFrame,
+      this.state.endPlaybackFrame - this.buffers.endBuffer,
+    );
     this.state.endPlaybackFrame = Math.min(adjustedEndFrame, this.state.lastGameFrame);
   }
 
@@ -187,5 +188,4 @@ export class DolphinOutput extends Writable {
   private _resetState(): void {
     this.state = Object.assign({}, initialGamePlaybackState);
   }
-
-};
+}

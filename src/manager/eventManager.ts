@@ -22,7 +22,7 @@ export class EventManager {
 
   private setupSubscriptions(): Observable<EventEmit> {
     return this.config$.pipe(
-      switchMap(config => {
+      switchMap((config) => {
         return merge(
           readGameConfig(this.realtime.game, config),
           readInputsConfig(this.realtime.input, config),
@@ -32,5 +32,4 @@ export class EventManager {
       }),
     );
   }
-
 }

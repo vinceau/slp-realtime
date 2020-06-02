@@ -8,7 +8,7 @@ export const UnknownMove: Move = {
   id: -1,
   name: "Unknown Move",
   shortName: "unknown",
-}
+};
 
 export enum MoveID {
   MISC = 1,

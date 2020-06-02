@@ -1,4 +1,4 @@
-export type CharacterColor = string
+export type CharacterColor = string;
 
 export enum Character {
   CAPTAIN_FALCON = 0,
