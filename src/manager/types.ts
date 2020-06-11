@@ -1,16 +1,27 @@
 import { ComboFilterSettings } from "../utils";
+import { PlayerIndexFilter } from "../types";
 
 export interface ComboEventFilter {
-  playerIndex: number;
+  playerIndex: PlayerIndexFilter;
   comboCriteria: string | ComboFilterSettings;
 }
 
 export interface GameEventFilter {
+  winnerPlayerIndex: PlayerIndexFilter;
   endMethod: number;
-  winnerPlayerIndex: number;
 }
 
-export type EventFilter = ComboEventFilter | GameEventFilter;
+export interface InputEventFilter {
+  playerIndex: PlayerIndexFilter;
+  combo: string[];
+  duration: number;
+}
+
+export interface StockEventFilter {
+  playerIndex: PlayerIndexFilter;
+}
+
+export type EventFilter = ComboEventFilter | GameEventFilter | InputEventFilter | StockEventFilter;
 
 export interface EventConfig {
   id: string;

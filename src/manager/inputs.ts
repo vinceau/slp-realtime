@@ -1,6 +1,6 @@
 import { Observable, merge } from "rxjs";
-import { InputButtonCombo, Input } from "../types";
-import { EventEmit, EventManagerConfig } from "./types";
+import { InputButtonCombo } from "../types";
+import { EventEmit, EventManagerConfig, EventConfig, InputEventFilter } from "./types";
 import { map } from "rxjs/operators";
 import { playerFilter } from "../operators";
 import { InputEvents } from "../events/inputs";
@@ -9,22 +9,25 @@ export enum InputEvent {
   BUTTON_COMBO = "button-combo",
 }
 
-export interface InputFilter {
-  combo: string[];
-  duration: number;
-  playerIndex: number[];
-}
-
 export const readInputsConfig = (inputs: InputEvents, config: EventManagerConfig): Observable<EventEmit> => {
   return readButtonComboEvents(config, (buttons, duration) => inputs.buttonCombo(buttons, duration));
 };
 
+interface InputEventConfig extends EventManagerConfig {
+  events: Array<
+    EventConfig & {
+      type: InputEvent;
+      filter?: InputEventFilter;
+    }
+  >;
+}
+
 const readButtonComboEvents = (
   eventConfig: EventManagerConfig,
-  playerInput: (buttons: Input[], duration?: number) => Observable<InputButtonCombo>,
+  playerInput: (buttons: string[], duration?: number) => Observable<InputButtonCombo>,
 ): Observable<EventEmit> => {
   // Handle game start events
-  const observables: Observable<EventEmit>[] = eventConfig.events
+  const observables: Observable<EventEmit>[] = (eventConfig as InputEventConfig).events
     .filter((event) => event.type === InputEvent.BUTTON_COMBO)
     .filter((event) => event.filter && event.filter.combo && event.filter.combo.length > 0) // We must have a valid filter
     .map((event) => {
@@ -35,12 +38,10 @@ const readButtonComboEvents = (
 
       let base$: Observable<InputButtonCombo> = playerInput(event.filter.combo, duration);
 
-      // Handle num players filter
-      for (const [key, value] of Object.entries(event.filter)) {
-        switch (key) {
-          case "playerIndex":
-            base$ = base$.pipe(playerFilter(value, eventConfig.variables));
-            break;
+      if (event.filter) {
+        // Handle num players filter
+        if (event.filter.playerIndex !== undefined) {
+          base$ = base$.pipe(playerFilter(event.filter.playerIndex, eventConfig.variables));
         }
       }
 

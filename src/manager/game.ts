@@ -57,19 +57,16 @@ const readGameEndEvents = (config: EventManagerConfig, gameEnd$: Observable<Game
       const eventFilter = event.filter as GameEventFilter;
       if (eventFilter) {
         // Handle end method filter
-        for (const filterOption of Object.keys(eventFilter)) {
-          switch (filterOption) {
-            case "endMethod":
-              base$ = base$.pipe(filter((end) => end.gameEndMethod === eventFilter.endMethod));
-              break;
-            case "winnerPlayerIndex":
-              base$ = base$.pipe(
-                filter((payload) =>
-                  playerFilterMatches(payload.winnerPlayerIndex, eventFilter.winnerPlayerIndex, config.variables),
-                ),
-              );
-              break;
-          }
+        if (eventFilter.endMethod !== undefined) {
+          base$ = base$.pipe(filter((end) => end.gameEndMethod === eventFilter.endMethod));
+        }
+
+        if (eventFilter.winnerPlayerIndex !== undefined) {
+          base$ = base$.pipe(
+            filter((payload) =>
+              playerFilterMatches(payload.winnerPlayerIndex, eventFilter.winnerPlayerIndex, config.variables),
+            ),
+          );
         }
       }
       return base$.pipe(

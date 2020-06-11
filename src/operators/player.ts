@@ -1,11 +1,12 @@
 import { EventManagerVariables } from "../manager";
 import { MonoTypeOperatorFunction, Observable } from "rxjs";
 import { filter } from "rxjs/operators";
+import { PlayerIndexFilter } from "../types";
 
 const ALL_PLAYER_INDICES = [0, 1, 2, 3];
 
 export function playerFilter<T extends { playerIndex: number }>(
-  indices: number | number[] | string,
+  indices: PlayerIndexFilter,
   variables?: EventManagerVariables,
 ): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>): Observable<T> =>
@@ -14,7 +15,7 @@ export function playerFilter<T extends { playerIndex: number }>(
 
 export const playerFilterMatches = (
   playerIndex: number,
-  indices: number | number[] | string,
+  indices: PlayerIndexFilter,
   variables?: EventManagerVariables,
 ): boolean => {
   // Default to all the indices
