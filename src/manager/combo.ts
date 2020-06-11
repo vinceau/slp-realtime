@@ -1,6 +1,6 @@
 import { Observable, merge } from "rxjs";
 import { ComboEventPayload } from "../types";
-import { EventEmit, EventManagerConfig, EventConfig, EventManagerVariables } from "./types";
+import { EventEmit, EventManagerConfig, EventConfig, EventManagerVariables, ComboEventFilter } from "./types";
 import { map, filter } from "rxjs/operators";
 import { playerFilterMatches } from "../operators/player";
 import { ComboEvents } from "../events/combos";
@@ -72,8 +72,9 @@ const handlePlayerIndexFilter = (
   event: EventConfig,
   variables?: EventManagerVariables,
 ): Observable<ComboEventPayload> => {
-  if (event.filter && event.filter.playerIndex) {
-    const value = event.filter.playerIndex;
+  const eventFilter = event.filter as ComboEventFilter;
+  if (eventFilter && eventFilter.playerIndex) {
+    const value = eventFilter.playerIndex;
     base$ = base$.pipe(filter((payload) => playerFilterMatches(payload.combo.playerIndex, value, variables)));
   }
   return base$;
@@ -90,9 +91,10 @@ const handleComboFilter = (
   event: EventConfig,
   variables?: EventManagerVariables,
 ): Observable<ComboEventPayload> => {
+  const eventFilter = event.filter as ComboEventFilter;
   let comboSettings = Object.assign({}, defaultComboFilterSettings);
-  if (event.filter && event.filter.comboCriteria) {
-    const options = event.filter.comboCriteria;
+  if (eventFilter && eventFilter.comboCriteria) {
+    const options = eventFilter.comboCriteria;
     if (typeof options === "string") {
       if (options.charAt(0) === "$" && variables[options]) {
         comboSettings = Object.assign(comboSettings, variables[options]);

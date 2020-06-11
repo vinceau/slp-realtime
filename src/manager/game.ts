@@ -1,6 +1,6 @@
 import { Observable, merge } from "rxjs";
 import { GameStartType, GameEndPayload } from "../types";
-import { EventEmit, EventManagerConfig } from "./types";
+import { EventEmit, EventManagerConfig, GameEventFilter } from "./types";
 import { filter, map } from "rxjs/operators";
 import { GameEvents } from "../events";
 import { playerFilterMatches } from "../operators/player";
@@ -54,17 +54,19 @@ const readGameEndEvents = (config: EventManagerConfig, gameEnd$: Observable<Game
     .filter((event) => event.type === GameEvent.GAME_END)
     .map((event) => {
       let base$: Observable<GameEndPayload> = gameEnd$;
-      if (event.filter) {
+      const eventFilter = event.filter as GameEventFilter;
+      if (eventFilter) {
         // Handle end method filter
-        for (const [key, value] of Object.entries(event.filter)) {
-          switch (key) {
+        for (const filterOption of Object.keys(eventFilter)) {
+          switch (filterOption) {
             case "endMethod":
-              const method = value as number;
-              base$ = base$.pipe(filter((end) => end.gameEndMethod === method));
+              base$ = base$.pipe(filter((end) => end.gameEndMethod === eventFilter.endMethod));
               break;
             case "winnerPlayerIndex":
               base$ = base$.pipe(
-                filter((payload) => playerFilterMatches(payload.winnerPlayerIndex, value, config.variables)),
+                filter((payload) =>
+                  playerFilterMatches(payload.winnerPlayerIndex, eventFilter.winnerPlayerIndex, config.variables),
+                ),
               );
               break;
           }

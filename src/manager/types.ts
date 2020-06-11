@@ -1,7 +1,21 @@
+import { ComboFilterSettings } from "../utils";
+
+export interface ComboEventFilter {
+  playerIndex: number;
+  comboCriteria: string | ComboFilterSettings;
+}
+
+export interface GameEventFilter {
+  endMethod: number;
+  winnerPlayerIndex: number;
+}
+
+export type EventFilter = ComboEventFilter | GameEventFilter;
+
 export interface EventConfig {
   id: string;
   type: string;
-  filter?: Record<string, any>;
+  filter?: EventFilter;
 }
 
 export type EventManagerVariables = Partial<{
