@@ -1,6 +1,6 @@
 import { Observable, merge } from "rxjs";
 import { GameStartType, GameEndPayload } from "../types";
-import { EventEmit, EventManagerConfig } from "../manager/config";
+import { EventEmit, EventManagerConfig } from "./types";
 import { filter, map } from "rxjs/operators";
 import { GameEvents } from "../events";
 import { playerFilterMatches } from "../operators/player";

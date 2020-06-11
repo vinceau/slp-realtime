@@ -1,6 +1,6 @@
 import { Observable, merge } from "rxjs";
 import { StockType } from "../types";
-import { EventEmit, EventManagerConfig } from "../manager/config";
+import { EventEmit, EventManagerConfig } from "./types";
 import { map } from "rxjs/operators";
 import { playerFilter } from "../operators/player";
 import { StockEvents } from "../events/stocks";
