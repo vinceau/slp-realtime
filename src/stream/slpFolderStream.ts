@@ -4,7 +4,7 @@ import fs from "fs-extra";
 import chokidar, { FSWatcher } from "chokidar";
 import tailstream, { TailStream } from "tailstream";
 
-import { SlpStream } from "./slpStream";
+import { ManualSlpStream } from "./manualSlpStream";
 
 /**
  * SlpFolderStream is responsible for monitoring a folder, and detecting
@@ -22,7 +22,7 @@ import { SlpStream } from "./slpStream";
  *
  * @extends {SlpStream}
  */
-export class SlpFolderStream extends SlpStream {
+export class SlpFolderStream extends ManualSlpStream {
   private watcher: FSWatcher | null = null;
   private readStream: TailStream | null = null;
   private currentFilePath: string | null = null;
@@ -51,16 +51,25 @@ export class SlpFolderStream extends SlpStream {
       if (initialFiles.includes(filePath)) {
         return;
       }
-      // This is a newly generated file
-      if (this.readStream) {
-        // End the old stream
-        this.readStream.done();
-      }
+
+      // We have a newly generated file so end the old stream
+      this.endReadStream();
+
+      // Restart the stream
+      this.restartStream$.next();
+
       this.currentFilePath = filePath;
       // Create a new stream for the new file
       this.readStream = tailstream.createReadStream(filePath);
       this.readStream.on("data", (data: any) => this.write(data));
     });
+  }
+
+  private endReadStream(): void {
+    if (this.readStream) {
+      this.readStream.done();
+      this.readStream = null;
+    }
   }
 
   /**
@@ -89,6 +98,7 @@ export class SlpFolderStream extends SlpStream {
       this.readStream.done();
     }
     this.currentFilePath = null;
+    super.stop();
   }
 
   /**
@@ -98,6 +108,6 @@ export class SlpFolderStream extends SlpStream {
    */
   public end(): void {
     super.end();
-    this.stop();
+    this.complete();
   }
 }

@@ -4,8 +4,8 @@ import { WritableOptions } from "stream";
 import { pausable } from "../operators";
 
 export class ManualSlpStream extends SlpStream {
-  private restartStream$ = new Subject<void>();
-  private stopStream$ = new Subject<void>();
+  protected restartStream$ = new Subject<void>();
+  protected stopStream$ = new Subject<void>();
 
   public constructor(slpOptions?: Partial<SlpStreamSettings>, opts?: WritableOptions) {
     super(slpOptions, opts);
@@ -30,5 +30,14 @@ export class ManualSlpStream extends SlpStream {
 
   public restart(): void {
     this.restartStream$.next();
+  }
+
+  public stop(): void {
+    this.stopStream$.next();
+  }
+
+  public complete(): void {
+    this.stopStream$.complete();
+    this.restartStream$.complete();
   }
 }
