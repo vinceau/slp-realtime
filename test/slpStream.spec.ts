@@ -1,6 +1,6 @@
 import sinon from "sinon";
 
-import { pipeFileContents, SlpStream } from "../src";
+import { ManualSlpStream, pipeFileContents, SlpStream } from "../src";
 import { Subscription } from "rxjs";
 
 describe("SlpStream", () => {
@@ -11,7 +11,7 @@ describe("SlpStream", () => {
   });
 
   afterAll(() => {
-    subscriptions.forEach(s => s.unsubscribe());
+    subscriptions.forEach((s) => s.unsubscribe());
   });
 
   describe("when reading from standard slp files", () => {
@@ -19,14 +19,15 @@ describe("SlpStream", () => {
       const gameStartSpy = sinon.spy();
       const gameEndSpy = sinon.spy();
 
-      const slpStream = new SlpStream({ singleGameMode: true });
+      const slpStream = new ManualSlpStream();
       const unsubGameStart = slpStream.gameStart$.subscribe(gameStartSpy);
       const unsubGameEnd = slpStream.gameEnd$.subscribe(gameEndSpy);
       subscriptions.push(unsubGameStart, unsubGameEnd);
 
       // Pipe the file twice
-      await pipeFileContents("slp/Game_20190810T162904.slp", slpStream, {end: false});
+      await pipeFileContents("slp/Game_20190810T162904.slp", slpStream, { end: false });
       await pipeFileContents("slp/Game_20190810T162904.slp", slpStream);
+      // slpStream.complete();
 
       expect(gameStartSpy.callCount).toEqual(1);
       expect(gameEndSpy.callCount).toEqual(1);
@@ -36,19 +37,17 @@ describe("SlpStream", () => {
       const gameStartSpy = sinon.spy();
       const gameEndSpy = sinon.spy();
 
-      const slpStream = new SlpStream({ singleGameMode: false });
+      const slpStream = new SlpStream();
       const unsubGameStart = slpStream.gameStart$.subscribe(gameStartSpy);
       const unsubGameEnd = slpStream.gameEnd$.subscribe(gameEndSpy);
       subscriptions.push(unsubGameStart, unsubGameEnd);
 
       // Pipe the file twice
-      await pipeFileContents("slp/Game_20190810T162904.slp", slpStream, {end: false});
+      await pipeFileContents("slp/Game_20190810T162904.slp", slpStream, { end: false });
       await pipeFileContents("slp/Game_20190810T162904.slp", slpStream);
 
       expect(gameStartSpy.callCount).toEqual(2);
       expect(gameEndSpy.callCount).toEqual(2);
     });
-
   });
-
 });

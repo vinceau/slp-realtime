@@ -2,6 +2,8 @@ import { SlpStream, SlpStreamSettings } from "./slpStream";
 import { Subject } from "rxjs";
 import { WritableOptions } from "stream";
 import { pausable } from "../operators";
+import { pipeFileContents } from "../utils";
+import { share } from "rxjs/operators";
 
 export class ManualSlpStream extends SlpStream {
   protected restartStream$ = new Subject<void>();
@@ -9,10 +11,6 @@ export class ManualSlpStream extends SlpStream {
 
   public constructor(slpOptions?: Partial<SlpStreamSettings>, opts?: WritableOptions) {
     super(slpOptions, opts);
-    // Stop the stream whenever we hit a game end event
-    this.gameEndSource.subscribe(() => {
-      this.stopStream$.next();
-    });
 
     this.messageSize$ = this.messageSizeSource.asObservable().pipe(pausable(this.stopStream$, this.restartStream$));
     this.rawCommand$ = this.rawCommandSource.asObservable().pipe(pausable(this.stopStream$, this.restartStream$));
@@ -25,7 +23,17 @@ export class ManualSlpStream extends SlpStream {
       .pipe(pausable(this.stopStream$, this.restartStream$));
     this.playerFrame$ = this.playerFrameSource.asObservable().pipe(pausable(this.stopStream$, this.restartStream$));
     this.followerFrame$ = this.followerFrameSource.asObservable().pipe(pausable(this.stopStream$, this.restartStream$));
-    this.gameEnd$ = this.gameEndSource.asObservable().pipe(pausable(this.stopStream$, this.restartStream$));
+    this.gameEnd$ = this.gameEndSource.asObservable().pipe(pausable(this.stopStream$, this.restartStream$), share());
+
+    // Stop the stream whenever we hit a game end event
+    this.gameEnd$.subscribe(() => {
+      this.stopStream$.next();
+    });
+  }
+
+  public async pipeFile(filename: string): Promise<void> {
+    this.restart();
+    await pipeFileContents(filename, this, { end: false });
   }
 
   public restart(): void {
