@@ -1,6 +1,6 @@
 import sinon from "sinon";
 
-import { pipeFileContents, SlpRealTime, SlpStream } from "../src";
+import { pipeFileContents, SlpRealTime, ManualSlpStream } from "../src";
 import { Subscription } from "rxjs";
 
 describe("SlpRealTime", () => {
@@ -11,7 +11,7 @@ describe("SlpRealTime", () => {
   });
 
   afterAll(() => {
-    subscriptions.forEach(s => s.unsubscribe());
+    subscriptions.forEach((s) => s.unsubscribe());
   });
 
   it("emits the correct number of events", async () => {
@@ -20,7 +20,7 @@ describe("SlpRealTime", () => {
     const stockSpawnSpy = sinon.spy();
     const stockDeathSpy = sinon.spy();
 
-    const slpStream = new SlpStream({ singleGameMode: true });
+    const slpStream = new ManualSlpStream();
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 
@@ -38,5 +38,4 @@ describe("SlpRealTime", () => {
     expect(stockSpawnSpy.callCount).toEqual(8);
     expect(stockDeathSpy.callCount).toEqual(7);
   });
-
 });

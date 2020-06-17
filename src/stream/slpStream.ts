@@ -4,12 +4,10 @@ import { Command, parseMessage } from "slp-parser-js";
 import { GameStartType, PreFrameUpdateType, PostFrameUpdateType, GameEndType, FrameEntryType } from "../types";
 import { Subject } from "rxjs";
 import { PlayerType } from "slp-parser-js/dist/utils/slpReader";
-import { takeUntil } from "rxjs/operators";
 
 const NETWORK_MESSAGE = "HELO\0";
 
 const defaultSettings = {
-  singleGameMode: false,
   logErrors: false,
 };
 
@@ -31,28 +29,27 @@ export class SlpStream extends Writable {
   private players = new Array<PlayerType>();
 
   // Sources
-  private messageSizeSource = new Subject<Map<Command, number>>();
-  private rawCommandSource = new Subject<{
+  protected messageSizeSource = new Subject<Map<Command, number>>();
+  protected rawCommandSource = new Subject<{
     command: Command;
     payload: Buffer;
   }>();
-  private gameStartSource = new Subject<GameStartType>();
-  private preFrameUpdateSource = new Subject<PreFrameUpdateType>();
-  private postFrameUpdateSource = new Subject<PostFrameUpdateType>();
-  private playerFrameSource = new Subject<FrameEntryType>();
-  private followerFrameSource = new Subject<FrameEntryType>();
-  private gameEndSource = new Subject<GameEndType>();
-  private streamEndedSource = new Subject<void>();
+  protected gameStartSource = new Subject<GameStartType>();
+  protected preFrameUpdateSource = new Subject<PreFrameUpdateType>();
+  protected postFrameUpdateSource = new Subject<PostFrameUpdateType>();
+  protected playerFrameSource = new Subject<FrameEntryType>();
+  protected followerFrameSource = new Subject<FrameEntryType>();
+  protected gameEndSource = new Subject<GameEndType>();
 
   // Observables
-  public messageSize$ = this.messageSizeSource.asObservable().pipe(takeUntil(this.streamEndedSource));
-  public rawCommand$ = this.rawCommandSource.asObservable().pipe(takeUntil(this.streamEndedSource));
-  public gameStart$ = this.gameStartSource.asObservable().pipe(takeUntil(this.streamEndedSource));
-  public preFrameUpdate$ = this.preFrameUpdateSource.asObservable().pipe(takeUntil(this.streamEndedSource));
-  public postFrameUpdate$ = this.postFrameUpdateSource.asObservable().pipe(takeUntil(this.streamEndedSource));
-  public playerFrame$ = this.playerFrameSource.asObservable().pipe(takeUntil(this.streamEndedSource));
-  public followerFrame$ = this.followerFrameSource.asObservable().pipe(takeUntil(this.streamEndedSource));
-  public gameEnd$ = this.gameEndSource.asObservable().pipe(takeUntil(this.streamEndedSource));
+  public messageSize$ = this.messageSizeSource.asObservable();
+  public rawCommand$ = this.rawCommandSource.asObservable();
+  public gameStart$ = this.gameStartSource.asObservable();
+  public preFrameUpdate$ = this.preFrameUpdateSource.asObservable();
+  public postFrameUpdate$ = this.postFrameUpdateSource.asObservable();
+  public playerFrame$ = this.playerFrameSource.asObservable();
+  public followerFrame$ = this.followerFrameSource.asObservable();
+  public gameEnd$ = this.gameEndSource.asObservable();
 
   /**
    *Creates an instance of SlpStream.
@@ -63,10 +60,6 @@ export class SlpStream extends Writable {
   public constructor(slpOptions?: Partial<SlpStreamSettings>, opts?: WritableOptions) {
     super(opts);
     this.settings = Object.assign({}, defaultSettings, slpOptions);
-    // Complete all the observables
-    this.on("finish", () => {
-      this.streamEndedSource.next();
-    });
   }
 
   public _write(newData: Buffer, encoding: string, callback: (error?: Error | null, data?: any) => void): void {
@@ -183,11 +176,6 @@ export class SlpStream extends Writable {
         // Reset players
         this.players = [];
         this.payloadSizes = null;
-
-        // Emit stream end if single game mode is on
-        if (this.settings.singleGameMode) {
-          this.streamEndedSource.next();
-        }
         break;
       case Command.PRE_FRAME_UPDATE:
         this.preFrameUpdateSource.next(parsedPayload as PreFrameUpdateType);
