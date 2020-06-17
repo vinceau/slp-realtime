@@ -56,7 +56,7 @@ export class SlpFolderStream extends ManualSlpStream {
       this.endReadStream();
 
       // Restart the stream
-      this.restartStream$.next();
+      super.restart();
 
       this.currentFilePath = filePath;
       // Create a new stream for the new file

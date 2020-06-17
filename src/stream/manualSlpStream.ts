@@ -6,8 +6,8 @@ import { pipeFileContents } from "../utils";
 import { share } from "rxjs/operators";
 
 export class ManualSlpStream extends SlpStream {
-  protected restartStream$ = new Subject<void>();
-  protected stopStream$ = new Subject<void>();
+  private restartStream$ = new Subject<void>();
+  private stopStream$ = new Subject<void>();
 
   public constructor(slpOptions?: Partial<SlpStreamSettings>, opts?: WritableOptions) {
     super(slpOptions, opts);
