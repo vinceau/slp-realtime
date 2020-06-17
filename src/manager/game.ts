@@ -1,14 +1,9 @@
 import { Observable, merge } from "rxjs";
 import { GameStartType, GameEndPayload } from "../types";
-import { EventEmit, EventManagerConfig, GameEventFilter } from "./types";
+import { EventEmit, EventManagerConfig, GameEventFilter, GameEvent } from "./types";
 import { filter, map } from "rxjs/operators";
 import { GameEvents } from "../events";
 import { playerFilterMatches } from "../operators/player";
-
-export enum GameEvent {
-  GAME_START = "game-start",
-  GAME_END = "game-end",
-}
 
 export const readGameConfig = (game: GameEvents, config: EventManagerConfig): Observable<EventEmit> => {
   return merge(readGameStartEvents(config, game.start$), readGameEndEvents(config, game.end$));

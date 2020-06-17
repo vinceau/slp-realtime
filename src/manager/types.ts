@@ -1,6 +1,27 @@
 import { ComboFilterSettings } from "../utils";
 import { PlayerIndexFilter } from "../types";
 
+export enum ComboEvent {
+  START = "combo-start", // Emitted at the start of a combo
+  EXTEND = "combo-extend", // Emitted at the extension of a combo
+  END = "combo-occurred", // Emitted at the end of a combo
+  CONVERSION = "conversion-occurred", // Emitted at the end of a conversion
+}
+
+export enum GameEvent {
+  GAME_START = "game-start",
+  GAME_END = "game-end",
+}
+
+export enum InputEvent {
+  BUTTON_COMBO = "button-combo",
+}
+
+export enum StockEvent {
+  PLAYER_SPAWN = "player-spawn",
+  PLAYER_DIED = "player-died",
+}
+
 export interface ComboEventFilter {
   playerIndex: PlayerIndexFilter;
   comboCriteria: string | ComboFilterSettings;
