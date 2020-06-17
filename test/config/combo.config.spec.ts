@@ -1,6 +1,14 @@
 import sinon from "sinon";
 
-import { pipeFileContents, SlpRealTime, SlpStream, Character, EventManager, EventManagerConfig, ComboEvent } from "../../src";
+import {
+  pipeFileContents,
+  SlpRealTime,
+  SlpStream,
+  Character,
+  EventManager,
+  EventManagerConfig,
+  ComboEvent,
+} from "../../src";
 import { Subscription } from "rxjs";
 
 describe("combo config", () => {
@@ -11,7 +19,7 @@ describe("combo config", () => {
   });
 
   afterAll(() => {
-    subscriptions.forEach(s => s.unsubscribe());
+    subscriptions.forEach((s) => s.unsubscribe());
   });
 
   it("correctly matches default combo config criteria", async () => {
@@ -36,22 +44,22 @@ describe("combo config", () => {
           id: "combo-match-id",
           type: ComboEvent.END,
         },
-      ]
+      ],
     };
 
     eventManager.updateConfig(config);
 
     subscriptions.push(
-      eventManager.events$.subscribe(event => {
+      eventManager.events$.subscribe((event) => {
         switch (event.id) {
-        case "combo-end-id":
-          allComboSpy();
-          break;
-        case "combo-match-id":
-          comboSpy();
-          break;
+          case "combo-end-id":
+            allComboSpy();
+            break;
+          case "combo-match-id":
+            comboSpy();
+            break;
         }
-      })
+      }),
     );
 
     await pipeFileContents("slp/Game_20190810T162904.slp", slpStream);
@@ -86,7 +94,7 @@ describe("combo config", () => {
             comboCriteria: "$onlyFalcon",
           },
         },
-      ]
+      ],
     };
     const slpStream = new SlpStream({ singleGameMode: true });
     const realtime = new SlpRealTime();
@@ -95,14 +103,14 @@ describe("combo config", () => {
     eventManager.updateConfig(config);
 
     subscriptions.push(
-      eventManager.events$.subscribe(event => {
+      eventManager.events$.subscribe((event) => {
         switch (event.id) {
-        case "only-bowser-events":
-          bowserOnlySpy();
-          break;
-        case "only-falcon-events":
-          excludesBowserSpy();
-          break;
+          case "only-bowser-events":
+            bowserOnlySpy();
+            break;
+          case "only-falcon-events":
+            excludesBowserSpy();
+            break;
         }
       }),
     );
@@ -127,19 +135,19 @@ describe("combo config", () => {
           filter: {
             comboCriteria: { minComboPercent: 20 },
           },
-        }
+        },
       ],
     });
     realtime.setStream(slpStream);
 
     subscriptions.push(
-      eventManager.events$.subscribe(event => {
+      eventManager.events$.subscribe((event) => {
         switch (event.id) {
-        case "min-combo-event":
-          comboSpy();
-          break;
+          case "min-combo-event":
+            comboSpy();
+            break;
         }
-      })
+      }),
     );
 
     await pipeFileContents("slp/Game_20190810T162904.slp", slpStream);
@@ -166,13 +174,13 @@ describe("combo config", () => {
     });
     realtime.setStream(slpStream);
     subscriptions.push(
-      eventManager.events$.subscribe(event => {
+      eventManager.events$.subscribe((event) => {
         switch (event.id) {
-        case "min-combo-event":
-          conversionSpy();
-          break;
+          case "min-combo-event":
+            conversionSpy();
+            break;
         }
-      })
+      }),
     );
     await pipeFileContents("slp/Game_20190324T113942.slp", slpStream);
     expect(conversionSpy.callCount).toEqual(7);
@@ -194,23 +202,21 @@ describe("combo config", () => {
           type: ComboEvent.CONVERSION,
           filter: {
             comboCriteria: { minComboPercent: 50 },
-          }
+          },
         },
-      ]
+      ],
     });
 
-
     subscriptions.push(
-      eventManager.events$.subscribe(event => {
+      eventManager.events$.subscribe((event) => {
         switch (event.id) {
-        case "min-combo-event":
-          comboSpy();
-          break;
+          case "min-combo-event":
+            comboSpy();
+            break;
         }
-      })
+      }),
     );
     await pipeFileContents(filename, slpStream);
     expect(comboSpy.callCount).toEqual(2);
   });
-
 });
