@@ -1,17 +1,17 @@
 import { Observable, merge } from "rxjs";
 import { ComboEventPayload } from "../types";
-import { EventEmit, EventManagerConfig, EventConfig, EventManagerVariables } from "../manager/config";
+import {
+  EventEmit,
+  EventManagerConfig,
+  EventConfig,
+  EventManagerVariables,
+  ComboEventFilter,
+  ComboEvent,
+} from "./types";
 import { map, filter } from "rxjs/operators";
 import { playerFilterMatches } from "../operators/player";
 import { ComboEvents } from "../events/combos";
 import { checkCombo, defaultComboFilterSettings } from "../utils";
-
-export enum ComboEvent {
-  START = "combo-start", // Emitted at the start of a combo
-  EXTEND = "combo-extend", // Emitted at the extension of a combo
-  END = "combo-end", // Emitted at the end of a combo
-  CONVERSION = "conversion", // Emitted at the end of a conversion
-}
 
 export const readComboConfig = (combo: ComboEvents, config: EventManagerConfig): Observable<EventEmit> => {
   const startObservables = config.events
@@ -72,8 +72,9 @@ const handlePlayerIndexFilter = (
   event: EventConfig,
   variables?: EventManagerVariables,
 ): Observable<ComboEventPayload> => {
-  if (event.filter && event.filter.playerIndex) {
-    const value = event.filter.playerIndex;
+  const eventFilter = event.filter as ComboEventFilter;
+  if (eventFilter && eventFilter.playerIndex) {
+    const value = eventFilter.playerIndex;
     base$ = base$.pipe(filter((payload) => playerFilterMatches(payload.combo.playerIndex, value, variables)));
   }
   return base$;
@@ -90,9 +91,10 @@ const handleComboFilter = (
   event: EventConfig,
   variables?: EventManagerVariables,
 ): Observable<ComboEventPayload> => {
+  const eventFilter = event.filter as ComboEventFilter;
   let comboSettings = Object.assign({}, defaultComboFilterSettings);
-  if (event.filter && event.filter.comboCriteria) {
-    const options = event.filter.comboCriteria;
+  if (eventFilter && eventFilter.comboCriteria) {
+    const options = eventFilter.comboCriteria;
     if (typeof options === "string") {
       if (options.charAt(0) === "$" && variables[options]) {
         comboSettings = Object.assign(comboSettings, variables[options]);
