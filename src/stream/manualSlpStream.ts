@@ -1,9 +1,11 @@
-import { SlpStream, SlpStreamSettings } from "./slpStream";
-import { Subject } from "rxjs";
 import { WritableOptions } from "stream";
+
+import { Subject } from "rxjs";
+import { share } from "rxjs/operators";
+
 import { pausable } from "../operators";
 import { pipeFileContents } from "../utils";
-import { share } from "rxjs/operators";
+import { SlpStream, SlpStreamSettings } from "./slpStream";
 
 export class ManualSlpStream extends SlpStream {
   private restartStream$ = new Subject<void>();
@@ -36,9 +38,7 @@ export class ManualSlpStream extends SlpStream {
     this.gameEnd$ = this.gameEndSource.asObservable().pipe(pausable(this.stopStream$, this.restartStream$), share());
 
     // Stop the stream whenever we hit a game end event
-    this.gameEnd$.subscribe(() => {
-      this.stopStream$.next();
-    });
+    this.gameEnd$.subscribe(() => this.stop());
   }
 
   public async pipeFile(filename: string): Promise<void> {
