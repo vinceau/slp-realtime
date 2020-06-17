@@ -1,8 +1,7 @@
-
 import sinon from "sinon";
 
 import { Subscription } from "rxjs";
-import { pipeFileContents, SlpRealTime, SlpStream, EventManager, EventManagerConfig } from "../../src";
+import { pipeFileContents, SlpRealTime, ManualSlpStream, EventManager, EventManagerConfig } from "../../src";
 
 describe("game config", () => {
   let subscriptions: Array<Subscription>;
@@ -12,7 +11,7 @@ describe("game config", () => {
   });
 
   afterAll(() => {
-    subscriptions.forEach(s => s.unsubscribe());
+    subscriptions.forEach((s) => s.unsubscribe());
   });
 
   it("can filter game start and end events", async () => {
@@ -21,7 +20,7 @@ describe("game config", () => {
     const isTeamsGameStartSpy = sinon.spy();
     const gameEndSpy = sinon.spy();
 
-    const slpStream = new SlpStream({ singleGameMode: true });
+    const slpStream = new ManualSlpStream();
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     realtime.setStream(slpStream);
@@ -53,26 +52,26 @@ describe("game config", () => {
             isTeams: true,
           },
         },
-      ]
+      ],
     };
 
     subscriptions.push(
-      eventManager.events$.subscribe(event => {
+      eventManager.events$.subscribe((event) => {
         switch (event.id) {
-        case "game-start-id":
-          gameStartSpy();
-          expect(event.payload.players.length).toEqual(2);
-          break;
-        case "game-end-id":
-          gameEndSpy();
-          break;
-        case "3p-game-start-id":
-          expect(event.payload.players.length).toEqual(3);
-          threePlayerGameStartSpy();
-          break;
-        case "is-teams-game-start-id":
-          isTeamsGameStartSpy();
-          break;
+          case "game-start-id":
+            gameStartSpy();
+            expect(event.payload.players.length).toEqual(2);
+            break;
+          case "game-end-id":
+            gameEndSpy();
+            break;
+          case "3p-game-start-id":
+            expect(event.payload.players.length).toEqual(3);
+            threePlayerGameStartSpy();
+            break;
+          case "is-teams-game-start-id":
+            isTeamsGameStartSpy();
+            break;
         }
       }),
     );
@@ -92,21 +91,21 @@ describe("game config", () => {
     const player2WinSpy = sinon.spy();
     const player4WinSpy = sinon.spy();
 
-    const slpStream = new SlpStream({ singleGameMode: false });
+    const slpStream = new ManualSlpStream();
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     realtime.setStream(slpStream);
 
     const config: EventManagerConfig = {
       variables: {
-        playerIndex: 0,  // Let's pretend that we're player 1
+        playerIndex: 0, // Let's pretend that we're player 1
       },
       events: [
         {
           id: "player-won-id",
           type: "game-end",
           filter: {
-            winnerPlayerIndex: "player",  // Track which games "we" won
+            winnerPlayerIndex: "player", // Track which games "we" won
           },
         },
         {
@@ -123,35 +122,34 @@ describe("game config", () => {
             winnerPlayerIndex: 3,
           },
         },
-      ]
+      ],
     };
 
     subscriptions.push(
-      eventManager.events$.subscribe(event => {
+      eventManager.events$.subscribe((event) => {
         switch (event.id) {
-        case "player-won-id":
-          playerWinSpy();
-          break;
-        case "player-2-won-id":
-          player2WinSpy();
-          break;
-        case "player-4-won-id":
-          player4WinSpy();
-          break;
+          case "player-won-id":
+            playerWinSpy();
+            break;
+          case "player-2-won-id":
+            player2WinSpy();
+            break;
+          case "player-4-won-id":
+            player4WinSpy();
+            break;
         }
       }),
     );
 
     eventManager.updateConfig(config);
 
-    await pipeFileContents("slp/Game_20190810T162904.slp", slpStream, { end: false });
-    await pipeFileContents("slp/Game_20190517T164215.slp", slpStream, { end: false });
-    await pipeFileContents("slp/Game_20190324T113942.slp", slpStream, { end: false });
-    await pipeFileContents("slp/200306_2258_Falco_v_Fox_PS.slp", slpStream, { end: true });
+    await slpStream.pipeFile("slp/Game_20190810T162904.slp");
+    await slpStream.pipeFile("slp/Game_20190517T164215.slp");
+    await slpStream.pipeFile("slp/Game_20190324T113942.slp");
+    await slpStream.pipeFile("slp/200306_2258_Falco_v_Fox_PS.slp");
 
     expect(playerWinSpy.callCount).toEqual(1);
     expect(player2WinSpy.callCount).toEqual(2);
     expect(player4WinSpy.callCount).toEqual(1);
   });
-
 });
