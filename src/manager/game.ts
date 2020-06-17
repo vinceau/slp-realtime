@@ -1,14 +1,9 @@
 import { Observable, merge } from "rxjs";
 import { GameStartType, GameEndPayload } from "../types";
-import { EventEmit, EventManagerConfig, GameEventFilter } from "./types";
+import { EventEmit, EventManagerConfig, GameStartEventFilter, GameEvent, GameEndEventFilter } from "./types";
 import { filter, map } from "rxjs/operators";
 import { GameEvents } from "../events";
 import { playerFilterMatches } from "../operators/player";
-
-export enum GameEvent {
-  GAME_START = "game-start",
-  GAME_END = "game-end",
-}
 
 export const readGameConfig = (game: GameEvents, config: EventManagerConfig): Observable<EventEmit> => {
   return merge(readGameStartEvents(config, game.start$), readGameEndEvents(config, game.end$));
@@ -23,19 +18,14 @@ const readGameStartEvents = (
     .filter((event) => event.type === GameEvent.GAME_START)
     .map((event) => {
       let base$: Observable<GameStartType> = gameStart$;
-      if (event.filter) {
+      const eventFilter = event.filter as GameStartEventFilter;
+      if (eventFilter) {
         // Handle num players filter
-        for (const [key, value] of Object.entries(event.filter)) {
-          switch (key) {
-            case "numPlayers":
-              const numPlayers = value as number;
-              base$ = base$.pipe(filter((settings) => settings.players.length === numPlayers));
-              break;
-            case "isTeams":
-              const isTeams = value as boolean;
-              base$ = base$.pipe(filter((settings) => settings.isTeams === isTeams));
-              break;
-          }
+        if (eventFilter.numPlayers !== undefined) {
+          base$ = base$.pipe(filter((settings) => settings.players.length === eventFilter.numPlayers));
+        }
+        if (eventFilter.isTeams !== undefined) {
+          base$ = base$.pipe(filter((settings) => settings.isTeams === eventFilter.isTeams));
         }
       }
       return base$.pipe(
@@ -54,7 +44,7 @@ const readGameEndEvents = (config: EventManagerConfig, gameEnd$: Observable<Game
     .filter((event) => event.type === GameEvent.GAME_END)
     .map((event) => {
       let base$: Observable<GameEndPayload> = gameEnd$;
-      const eventFilter = event.filter as GameEventFilter;
+      const eventFilter = event.filter as GameEndEventFilter;
       if (eventFilter) {
         // Handle end method filter
         if (eventFilter.endMethod !== undefined) {

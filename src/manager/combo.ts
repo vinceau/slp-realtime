@@ -1,17 +1,17 @@
 import { Observable, merge } from "rxjs";
 import { ComboEventPayload } from "../types";
-import { EventEmit, EventManagerConfig, EventConfig, EventManagerVariables, ComboEventFilter } from "./types";
+import {
+  EventEmit,
+  EventManagerConfig,
+  EventConfig,
+  EventManagerVariables,
+  ComboEventFilter,
+  ComboEvent,
+} from "./types";
 import { map, filter } from "rxjs/operators";
 import { playerFilterMatches } from "../operators/player";
 import { ComboEvents } from "../events/combos";
 import { checkCombo, defaultComboFilterSettings } from "../utils";
-
-export enum ComboEvent {
-  START = "combo-start", // Emitted at the start of a combo
-  EXTEND = "combo-extend", // Emitted at the extension of a combo
-  END = "combo-occurred", // Emitted at the end of a combo
-  CONVERSION = "conversion-occurred", // Emitted at the end of a conversion
-}
 
 export const readComboConfig = (combo: ComboEvents, config: EventManagerConfig): Observable<EventEmit> => {
   const startObservables = config.events
