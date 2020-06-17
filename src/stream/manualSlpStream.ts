@@ -12,17 +12,27 @@ export class ManualSlpStream extends SlpStream {
   public constructor(slpOptions?: Partial<SlpStreamSettings>, opts?: WritableOptions) {
     super(slpOptions, opts);
 
-    this.messageSize$ = this.messageSizeSource.asObservable().pipe(pausable(this.stopStream$, this.restartStream$));
-    this.rawCommand$ = this.rawCommandSource.asObservable().pipe(pausable(this.stopStream$, this.restartStream$));
-    this.gameStart$ = this.gameStartSource.asObservable().pipe(pausable(this.stopStream$, this.restartStream$));
+    this.messageSize$ = this.messageSizeSource
+      .asObservable()
+      .pipe(pausable(this.stopStream$, this.restartStream$), share());
+    this.rawCommand$ = this.rawCommandSource
+      .asObservable()
+      .pipe(pausable(this.stopStream$, this.restartStream$), share());
+    this.gameStart$ = this.gameStartSource
+      .asObservable()
+      .pipe(pausable(this.stopStream$, this.restartStream$), share());
     this.preFrameUpdate$ = this.preFrameUpdateSource
       .asObservable()
-      .pipe(pausable(this.stopStream$, this.restartStream$));
+      .pipe(pausable(this.stopStream$, this.restartStream$), share());
     this.postFrameUpdate$ = this.postFrameUpdateSource
       .asObservable()
-      .pipe(pausable(this.stopStream$, this.restartStream$));
-    this.playerFrame$ = this.playerFrameSource.asObservable().pipe(pausable(this.stopStream$, this.restartStream$));
-    this.followerFrame$ = this.followerFrameSource.asObservable().pipe(pausable(this.stopStream$, this.restartStream$));
+      .pipe(pausable(this.stopStream$, this.restartStream$), share());
+    this.playerFrame$ = this.playerFrameSource
+      .asObservable()
+      .pipe(pausable(this.stopStream$, this.restartStream$), share());
+    this.followerFrame$ = this.followerFrameSource
+      .asObservable()
+      .pipe(pausable(this.stopStream$, this.restartStream$), share());
     this.gameEnd$ = this.gameEndSource.asObservable().pipe(pausable(this.stopStream$, this.restartStream$), share());
 
     // Stop the stream whenever we hit a game end event
