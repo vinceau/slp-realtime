@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_config_stocks_.html">&quot;config/stocks&quot;</a>
+					<a href="../modules/_manager_types_.html">&quot;manager/types&quot;</a>
 				</li>
 				<li>
-					<a href="_config_stocks_.stockevent.html">StockEvent</a>
+					<a href="_manager_types_.stockevent.html">StockEvent</a>
 				</li>
 			</ul>
 			<h1>Enumeration StockEvent</h1>
@@ -74,8 +74,8 @@
 						<section class="tsd-index-section ">
 							<h3>Enumeration members</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_config_stocks_.stockevent.html#player_died" class="tsd-kind-icon">PLAYER_<wbr>DIED</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_config_stocks_.stockevent.html#player_spawn" class="tsd-kind-icon">PLAYER_<wbr>SPAWN</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_manager_types_.stockevent.html#player_died" class="tsd-kind-icon">PLAYER_<wbr>DIED</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="_manager_types_.stockevent.html#player_spawn" class="tsd-kind-icon">PLAYER_<wbr>SPAWN</a></li>
 							</ul>
 						</section>
 					</div>
@@ -89,7 +89,7 @@
 					<div class="tsd-signature tsd-kind-icon">PLAYER_<wbr>DIED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;player-died&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/b1b289a/src/config/stocks.ts#L10">src/config/stocks.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/2201794/src/manager/types.ts#L22">src/manager/types.ts:22</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -99,7 +99,7 @@
 					<div class="tsd-signature tsd-kind-icon">PLAYER_<wbr>SPAWN<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;player-spawn&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/b1b289a/src/config/stocks.ts#L9">src/config/stocks.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/2201794/src/manager/types.ts#L21">src/manager/types.ts:21</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -112,29 +112,68 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-module">
-						<a href="../modules/_config_stocks_.html">&quot;config/stocks&quot;</a>
+						<a href="../modules/_manager_types_.html">&quot;manager/types&quot;</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
+						<a href="_manager_types_.comboevent.html" class="tsd-kind-icon">Combo<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
+						<a href="_manager_types_.gameevent.html" class="tsd-kind-icon">Game<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
+						<a href="_manager_types_.inputevent.html" class="tsd-kind-icon">Input<wbr>Event</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-enum tsd-parent-kind-module">
-						<a href="_config_stocks_.stockevent.html" class="tsd-kind-icon">Stock<wbr>Event</a>
+						<a href="_manager_types_.stockevent.html" class="tsd-kind-icon">Stock<wbr>Event</a>
 						<ul>
 							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="_config_stocks_.stockevent.html#player_died" class="tsd-kind-icon">PLAYER_<wbr>DIED</a>
+								<a href="_manager_types_.stockevent.html#player_died" class="tsd-kind-icon">PLAYER_<wbr>DIED</a>
 							</li>
 							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="_config_stocks_.stockevent.html#player_spawn" class="tsd-kind-icon">PLAYER_<wbr>SPAWN</a>
+								<a href="_manager_types_.stockevent.html#player_spawn" class="tsd-kind-icon">PLAYER_<wbr>SPAWN</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/_config_stocks_.html#readstocksconfig" class="tsd-kind-icon">read<wbr>Stocks<wbr>Config</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/_manager_types_.comboeventfilter.html" class="tsd-kind-icon">Combo<wbr>Event<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/_manager_types_.eventconfig.html" class="tsd-kind-icon">Event<wbr>Config</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/_manager_types_.eventemit.html" class="tsd-kind-icon">Event<wbr>Emit</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/_manager_types_.eventmanagerconfig.html" class="tsd-kind-icon">Event<wbr>Manager<wbr>Config</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/_manager_types_.gameendeventfilter.html" class="tsd-kind-icon">Game<wbr>End<wbr>Event<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/_manager_types_.gamestarteventfilter.html" class="tsd-kind-icon">Game<wbr>Start<wbr>Event<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/_manager_types_.inputeventfilter.html" class="tsd-kind-icon">Input<wbr>Event<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/_manager_types_.stockeventfilter.html" class="tsd-kind-icon">Stock<wbr>Event<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="../modules/_manager_types_.html#eventfilter" class="tsd-kind-icon">Event<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="../modules/_manager_types_.html#eventmanagervariables" class="tsd-kind-icon">Event<wbr>Manager<wbr>Variables</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="../modules/_manager_types_.html#gameeventfilter" class="tsd-kind-icon">Game<wbr>Event<wbr>Filter</a>
 					</li>
 				</ul>
 			</nav>

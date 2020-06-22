@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Move | @vinceau/slp-realtime</title>
+	<title>GameStartEventFilter | @vinceau/slp-realtime</title>
 	<meta name="description" content="Documentation for @vinceau/slp-realtime">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,13 +54,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_utils_melee_moves_.html">&quot;utils/melee/moves&quot;</a>
+					<a href="../modules/_manager_types_.html">&quot;manager/types&quot;</a>
 				</li>
 				<li>
-					<a href="_utils_melee_moves_.move.html">Move</a>
+					<a href="_manager_types_.gamestarteventfilter.html">GameStartEventFilter</a>
 				</li>
 			</ul>
-			<h1>Interface Move</h1>
+			<h1>Interface GameStartEventFilter</h1>
 		</div>
 	</div>
 </header>
@@ -71,7 +71,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Move</span>
+						<span class="target">GameStartEventFilter</span>
 					</li>
 				</ul>
 			</section>
@@ -82,9 +82,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_utils_melee_moves_.move.html#id" class="tsd-kind-icon">id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_utils_melee_moves_.move.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_utils_melee_moves_.move.html#shortname" class="tsd-kind-icon">short<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_manager_types_.gamestarteventfilter.html#isteams" class="tsd-kind-icon">is<wbr>Teams</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_manager_types_.gamestarteventfilter.html#numplayers" class="tsd-kind-icon">num<wbr>Players</a></li>
 							</ul>
 						</section>
 					</div>
@@ -93,32 +92,22 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="id" class="tsd-anchor"></a>
-					<h3>id</h3>
-					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="isteams" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> is<wbr>Teams</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Teams<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/2201794/src/utils/melee/moves.ts#L2">src/utils/melee/moves.ts:2</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/2201794/src/manager/types.ts#L31">src/manager/types.ts:31</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="name" class="tsd-anchor"></a>
-					<h3>name</h3>
-					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="numplayers" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> num<wbr>Players</h3>
+					<div class="tsd-signature tsd-kind-icon">num<wbr>Players<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/2201794/src/utils/melee/moves.ts#L3">src/utils/melee/moves.ts:3</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="shortname" class="tsd-anchor"></a>
-					<h3>short<wbr>Name</h3>
-					<div class="tsd-signature tsd-kind-icon">short<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/2201794/src/utils/melee/moves.ts#L4">src/utils/melee/moves.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/2201794/src/manager/types.ts#L32">src/manager/types.ts:32</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -131,44 +120,68 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-module">
-						<a href="../modules/_utils_melee_moves_.html">&quot;utils/melee/moves&quot;</a>
+						<a href="../modules/_manager_types_.html">&quot;manager/types&quot;</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-enum tsd-parent-kind-module">
-						<a href="../enums/_utils_melee_moves_.moveid.html" class="tsd-kind-icon">MoveID</a>
+						<a href="../enums/_manager_types_.comboevent.html" class="tsd-kind-icon">Combo<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
+						<a href="../enums/_manager_types_.gameevent.html" class="tsd-kind-icon">Game<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
+						<a href="../enums/_manager_types_.inputevent.html" class="tsd-kind-icon">Input<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
+						<a href="../enums/_manager_types_.stockevent.html" class="tsd-kind-icon">Stock<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_manager_types_.comboeventfilter.html" class="tsd-kind-icon">Combo<wbr>Event<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_manager_types_.eventconfig.html" class="tsd-kind-icon">Event<wbr>Config</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_manager_types_.eventemit.html" class="tsd-kind-icon">Event<wbr>Emit</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_manager_types_.eventmanagerconfig.html" class="tsd-kind-icon">Event<wbr>Manager<wbr>Config</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_manager_types_.gameendeventfilter.html" class="tsd-kind-icon">Game<wbr>End<wbr>Event<wbr>Filter</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="_utils_melee_moves_.move.html" class="tsd-kind-icon">Move</a>
+						<a href="_manager_types_.gamestarteventfilter.html" class="tsd-kind-icon">Game<wbr>Start<wbr>Event<wbr>Filter</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_utils_melee_moves_.move.html#id" class="tsd-kind-icon">id</a>
+								<a href="_manager_types_.gamestarteventfilter.html#isteams" class="tsd-kind-icon">is<wbr>Teams</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_utils_melee_moves_.move.html#name" class="tsd-kind-icon">name</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_utils_melee_moves_.move.html#shortname" class="tsd-kind-icon">short<wbr>Name</a>
+								<a href="_manager_types_.gamestarteventfilter.html#numplayers" class="tsd-kind-icon">num<wbr>Players</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/_utils_melee_moves_.html#getmoveinfo" class="tsd-kind-icon">get<wbr>Move<wbr>Info</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_manager_types_.inputeventfilter.html" class="tsd-kind-icon">Input<wbr>Event<wbr>Filter</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/_utils_melee_moves_.html#getmovename" class="tsd-kind-icon">get<wbr>Move<wbr>Name</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_manager_types_.stockeventfilter.html" class="tsd-kind-icon">Stock<wbr>Event<wbr>Filter</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/_utils_melee_moves_.html#getmoveshortname" class="tsd-kind-icon">get<wbr>Move<wbr>Short<wbr>Name</a>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="../modules/_manager_types_.html#eventfilter" class="tsd-kind-icon">Event<wbr>Filter</a>
 					</li>
-					<li class=" tsd-kind-object-literal tsd-parent-kind-module">
-						<a href="../modules/_utils_melee_moves_.html#unknownmove" class="tsd-kind-icon">Unknown<wbr>Move</a>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="../modules/_manager_types_.html#eventmanagervariables" class="tsd-kind-icon">Event<wbr>Manager<wbr>Variables</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="../modules/_manager_types_.html#gameeventfilter" class="tsd-kind-icon">Game<wbr>Event<wbr>Filter</a>
 					</li>
 				</ul>
 			</nav>
