@@ -1,6 +1,6 @@
 import sinon from "sinon";
 
-import { pipeFileContents, SlippiGame, SlpRealTime, SlpStream, ComboFilter, Character } from "../src";
+import { pipeFileContents, SlippiGame, SlpRealTime, ManualSlpStream, ComboFilter, Character } from "../src";
 import { Subscription } from "rxjs";
 
 describe("combo calculation", () => {
@@ -12,7 +12,7 @@ describe("combo calculation", () => {
   });
 
   afterAll(() => {
-    subscriptions.forEach(s => s.unsubscribe());
+    subscriptions.forEach((s) => s.unsubscribe());
   });
 
   beforeEach(() => {
@@ -23,12 +23,12 @@ describe("combo calculation", () => {
   it("correctly matches combo criteria", async () => {
     const comboSpy = sinon.spy();
 
-    const slpStream = new SlpStream({ singleGameMode: true });
+    const slpStream = new ManualSlpStream();
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 
     subscriptions.push(
-      realtime.combo.end$.subscribe(payload => {
+      realtime.combo.end$.subscribe((payload) => {
         if (filter.isCombo(payload.combo, payload.settings)) {
           comboSpy();
         }
@@ -50,12 +50,12 @@ describe("combo calculation", () => {
 
     bowserOnlyFilter.updateSettings({ characterFilter: [Character.BOWSER] });
     excludesBowserFilter.updateSettings({ characterFilter: [Character.CAPTAIN_FALCON] });
-    const slpStream = new SlpStream({ singleGameMode: true });
+    const slpStream = new ManualSlpStream();
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 
     subscriptions.push(
-      realtime.combo.end$.subscribe(payload => {
+      realtime.combo.end$.subscribe((payload) => {
         const c = payload.combo;
         const s = payload.settings;
         if (bowserOnlyFilter.isCombo(c, s)) {
@@ -77,7 +77,7 @@ describe("combo calculation", () => {
     const comboSpy = sinon.spy();
 
     filter.updateSettings({ minComboPercent: 20 });
-    const slpStream = new SlpStream({ singleGameMode: true });
+    const slpStream = new ManualSlpStream();
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 
@@ -86,7 +86,7 @@ describe("combo calculation", () => {
         if (filter.isCombo(payload.combo, payload.settings)) {
           comboSpy();
         }
-      })
+      }),
     );
 
     await pipeFileContents("slp/Game_20190810T162904.slp", slpStream);
@@ -98,7 +98,7 @@ describe("combo calculation", () => {
   it("emits the correct number of conversions", async () => {
     const conversionSpy = sinon.spy();
     filter.updateSettings({ minComboPercent: 20 });
-    const slpStream = new SlpStream({ singleGameMode: true });
+    const slpStream = new ManualSlpStream();
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
     subscriptions.push(
@@ -106,7 +106,7 @@ describe("combo calculation", () => {
         if (filter.isCombo(payload.combo, payload.settings)) {
           conversionSpy();
         }
-      })
+      }),
     );
     await pipeFileContents("slp/Game_20190324T113942.slp", slpStream);
     expect(conversionSpy.callCount).toEqual(7);
@@ -119,14 +119,14 @@ describe("combo calculation", () => {
     const filename = "slp/200306_2258_Falco_v_Fox_PS.slp";
     filter.updateSettings({ minComboPercent: 50 });
 
-    const slpStream = new SlpStream({ singleGameMode: true });
+    const slpStream = new ManualSlpStream();
     realtime.setStream(slpStream);
     subscriptions.push(
       realtime.combo.conversion$.subscribe((payload) => {
         if (filter.isCombo(payload.combo, payload.settings)) {
           comboSpy();
         }
-      })
+      }),
     );
     await pipeFileContents(filename, slpStream);
     expect(comboSpy.callCount).toEqual(2);
@@ -146,14 +146,14 @@ describe("combo calculation", () => {
         nameTags: ["fizzi"],
         fuzzyNameTagMatching: false,
       });
-      const slpStream = new SlpStream({ singleGameMode: true });
+      const slpStream = new ManualSlpStream();
       realtime.setStream(slpStream);
       subscriptions.push(
         realtime.combo.end$.subscribe((payload) => {
           if (filter.isCombo(payload.combo, payload.settings, metadata)) {
             comboSpy();
           }
-        })
+        }),
       );
 
       await pipeFileContents(filename, slpStream);
@@ -169,14 +169,14 @@ describe("combo calculation", () => {
       const metadata = game.getMetadata();
 
       filter.updateSettings({ minComboPercent: 40, nameTags: ["Fizzi"] });
-      const slpStream = new SlpStream({ singleGameMode: true });
+      const slpStream = new ManualSlpStream();
       realtime.setStream(slpStream);
       subscriptions.push(
         realtime.combo.end$.subscribe((payload) => {
           if (filter.isCombo(payload.combo, payload.settings, metadata)) {
             comboSpy();
           }
-        })
+        }),
       );
       await pipeFileContents(filename, slpStream);
       expect(comboSpy.callCount).toEqual(1);
@@ -205,13 +205,11 @@ describe("combo calculation", () => {
         nameTags: ["CptPiplup"],
       });
 
-      const slpStream = new SlpStream({ singleGameMode: true, logErrors: true });
+      const slpStream = new ManualSlpStream({ logErrors: true });
       const realtime = new SlpRealTime();
       realtime.setStream(slpStream);
 
-      const slippiGame = new SlippiGame(
-        "slp/Smashladder_200517_1613_Falcon_v_Falcon_PS.slp"
-      );
+      const slippiGame = new SlippiGame("slp/Smashladder_200517_1613_Falcon_v_Falcon_PS.slp");
       const metadata = slippiGame.getMetadata();
 
       subscriptions.push(
@@ -226,22 +224,17 @@ describe("combo calculation", () => {
           if (opponentFilter.isCombo(payload.combo, payload.settings, metadata)) {
             opponentComboSpy();
           }
-        })
+        }),
       );
 
-      await pipeFileContents(
-        "slp/Smashladder_200517_1613_Falcon_v_Falcon_PS.slp",
-        slpStream
-      );
+      await pipeFileContents("slp/Smashladder_200517_1613_Falcon_v_Falcon_PS.slp", slpStream);
 
       // If we successfully parsed the entire file, we should get a game end payload
       expect(gameEndSpy.callCount).toEqual(1);
       // We should have exactly 3 combos that matched the criteria
       expect(customComboSpy.callCount).toEqual(3);
       // The combos should belong to either the player or the opponent
-      expect(customComboSpy.callCount).toEqual(
-        playerComboSpy.callCount + opponentComboSpy.callCount
-      );
+      expect(customComboSpy.callCount).toEqual(playerComboSpy.callCount + opponentComboSpy.callCount);
       expect(playerComboSpy.callCount).toEqual(2);
       expect(opponentComboSpy.callCount).toEqual(1);
     });
@@ -273,13 +266,11 @@ describe("combo calculation", () => {
         fuzzyNameTagMatching: true,
       });
 
-      const slpStream = new SlpStream({ singleGameMode: true, logErrors: true });
+      const slpStream = new ManualSlpStream({ logErrors: true });
       const realtime = new SlpRealTime();
       realtime.setStream(slpStream);
 
-      const slippiGame = new SlippiGame(
-        "slp/Smashladder_200517_1613_Falcon_v_Falcon_PS.slp"
-      );
+      const slippiGame = new SlippiGame("slp/Smashladder_200517_1613_Falcon_v_Falcon_PS.slp");
       const metadata = slippiGame.getMetadata();
 
       subscriptions.push(
@@ -294,13 +285,10 @@ describe("combo calculation", () => {
           if (caseInsensitiveFilter.isCombo(payload.combo, payload.settings, metadata)) {
             caseInsensitiveMatch();
           }
-        })
+        }),
       );
 
-      await pipeFileContents(
-        "slp/Smashladder_200517_1613_Falcon_v_Falcon_PS.slp",
-        slpStream
-      );
+      await pipeFileContents("slp/Smashladder_200517_1613_Falcon_v_Falcon_PS.slp", slpStream);
 
       // If we successfully parsed the entire file, we should get a game end payload
       expect(gameEndSpy.callCount).toEqual(1);
@@ -308,7 +296,5 @@ describe("combo calculation", () => {
       expect(underscoreMatch.callCount).toEqual(2);
       expect(caseInsensitiveMatch.callCount).toEqual(1);
     });
-
   });
-
 });

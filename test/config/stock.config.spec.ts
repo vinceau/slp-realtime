@@ -1,8 +1,7 @@
-
 import sinon from "sinon";
 
 import { Subscription } from "rxjs";
-import { pipeFileContents, SlpRealTime, SlpStream, EventManager, EventManagerConfig } from "../../src";
+import { pipeFileContents, SlpRealTime, ManualSlpStream, EventManager, EventManagerConfig } from "../../src";
 
 describe("stock config", () => {
   let subscriptions: Array<Subscription>;
@@ -12,14 +11,14 @@ describe("stock config", () => {
   });
 
   afterAll(() => {
-    subscriptions.forEach(s => s.unsubscribe());
+    subscriptions.forEach((s) => s.unsubscribe());
   });
 
   it("can correctly track stock spawn and death events", async () => {
     const playerSpawnSpy = sinon.spy();
     const playerDeathSpy = sinon.spy();
 
-    const slpStream = new SlpStream({ singleGameMode: true });
+    const slpStream = new ManualSlpStream();
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     realtime.setStream(slpStream);
@@ -34,18 +33,18 @@ describe("stock config", () => {
           id: "player-death-id",
           type: "player-died",
         },
-      ]
+      ],
     };
 
     subscriptions.push(
-      eventManager.events$.subscribe(event => {
+      eventManager.events$.subscribe((event) => {
         switch (event.id) {
-        case "player-spawn-id":
-          playerSpawnSpy();
-          break;
-        case "player-death-id":
-          playerDeathSpy();
-          break;
+          case "player-spawn-id":
+            playerSpawnSpy();
+            break;
+          case "player-death-id":
+            playerDeathSpy();
+            break;
         }
       }),
     );
@@ -57,5 +56,4 @@ describe("stock config", () => {
     expect(playerSpawnSpy.callCount).toEqual(8);
     expect(playerDeathSpy.callCount).toEqual(7);
   });
-
 });

@@ -1,4 +1,5 @@
 export * from "./frames";
 export * from "./stocks";
 export * from "./player";
-export * from "./throttleInputButtons";
+export * from "./pausable";
+export * from "./inputs";

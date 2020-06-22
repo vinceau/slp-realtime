@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { last } from "lodash";
 
 import { ComboEventPayload, FrameEntryType, ComboType, PostFrameUpdateType, GameStartType } from "../types";
 import {
@@ -123,7 +123,7 @@ export class ComboEvents {
           break;
         case ComboEvent.End:
           this.comboEndSource.next({
-            combo: _.last(this.combos),
+            combo: last(this.combos),
             settings: this.settings,
           });
           break;

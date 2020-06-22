@@ -1,8 +1,7 @@
-
 import sinon from "sinon";
 
 import { Subscription } from "rxjs";
-import { pipeFileContents, SlpRealTime, SlpStream, EventManager, EventManagerConfig } from "../../src";
+import { pipeFileContents, SlpRealTime, ManualSlpStream, EventManager, EventManagerConfig } from "../../src";
 
 describe("input config", () => {
   let subscriptions: Array<Subscription>;
@@ -12,7 +11,7 @@ describe("input config", () => {
   });
 
   afterAll(() => {
-    subscriptions.forEach(s => s.unsubscribe());
+    subscriptions.forEach((s) => s.unsubscribe());
   });
 
   // This test does not pass yet because we don't actually know where to best throw/catch
@@ -21,14 +20,16 @@ describe("input config", () => {
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     eventManager.updateConfig({
-      events: [{
-        id: "anything",
-        type: "button-combo",
-        filter: {
-          combo: ["23723fsehkf"],
-          playerIndex: 0,
+      events: [
+        {
+          id: "anything",
+          type: "button-combo",
+          filter: {
+            combo: ["23723fsehkf"],
+            playerIndex: 0,
+          },
         },
-      }]
+      ],
     });
     expect(() => eventManager.events$.subscribe()).toThrow();
   });
@@ -39,7 +40,7 @@ describe("input config", () => {
     const p3Spy = sinon.spy();
     const p4Spy = sinon.spy();
 
-    const slpStream = new SlpStream({ singleGameMode: true });
+    const slpStream = new ManualSlpStream();
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     realtime.setStream(slpStream);
@@ -78,24 +79,24 @@ describe("input config", () => {
             playerIndex: 3,
           },
         },
-      ]
+      ],
     };
 
     subscriptions.push(
-      eventManager.events$.subscribe(event => {
+      eventManager.events$.subscribe((event) => {
         switch (event.id) {
-        case "p1-button-combo":
-          p1Spy();
-          break;
-        case "p2-button-combo":
-          p2Spy();
-          break;
-        case "p3-button-combo":
-          p3Spy();
-          break;
-        case "p4-button-combo":
-          p4Spy();
-          break;
+          case "p1-button-combo":
+            p1Spy();
+            break;
+          case "p2-button-combo":
+            p2Spy();
+            break;
+          case "p3-button-combo":
+            p3Spy();
+            break;
+          case "p4-button-combo":
+            p4Spy();
+            break;
         }
       }),
     );
@@ -114,7 +115,7 @@ describe("input config", () => {
   it("can find the correct number of combos", async () => {
     const buttonPresses = sinon.spy();
 
-    const slpStream = new SlpStream({ singleGameMode: true });
+    const slpStream = new ManualSlpStream();
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     realtime.setStream(slpStream);
@@ -128,11 +129,11 @@ describe("input config", () => {
             combo: ["X"],
           },
         },
-      ]
+      ],
     };
 
     subscriptions.push(
-      eventManager.events$.subscribe(event => {
+      eventManager.events$.subscribe((event) => {
         buttonPresses();
       }),
     );
@@ -144,5 +145,4 @@ describe("input config", () => {
 
     expect(buttonPresses.callCount).toEqual(2);
   });
-
 });

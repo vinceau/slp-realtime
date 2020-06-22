@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { forEach } from "lodash";
 import fs, { WriteStream } from "fs";
 import moment, { Moment } from "moment";
 import { Writable, WritableOptions } from "stream";
@@ -132,7 +132,7 @@ export class SlpFile extends Writable {
     // Start writting player specific data
     footer = Buffer.concat([footer, Buffer.from("U"), Buffer.from([7]), Buffer.from("players{")]);
     const players = this.metadata.players;
-    _.forEach(players, (player, index) => {
+    forEach(players, (player, index) => {
       // Start player obj with index being the player index
       footer = Buffer.concat([footer, Buffer.from("U"), Buffer.from([index.length]), Buffer.from(`${index}{`)]);
 
@@ -140,7 +140,7 @@ export class SlpFile extends Writable {
       footer = Buffer.concat([footer, Buffer.from("U"), Buffer.from([10]), Buffer.from("characters{")]);
 
       // Write character usage
-      _.forEach(player.characterUsage, (usage, internalId) => {
+      forEach(player.characterUsage, (usage, internalId) => {
         // Write this character
         footer = Buffer.concat([
           footer,
