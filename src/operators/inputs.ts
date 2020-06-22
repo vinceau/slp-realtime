@@ -18,7 +18,7 @@ export function throttleInputButtons(frames: number): MonoTypeOperatorFunction<I
     );
 }
 
-export function mapFrameToButtonInputs(
+export function mapFramesToButtonInputs(
   index: number,
   buttons: string[],
   duration = 1,

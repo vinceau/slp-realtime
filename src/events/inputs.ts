@@ -4,7 +4,7 @@ import { switchMap } from "rxjs/operators";
 import { SlpStream } from "../stream";
 import { InputButtonCombo } from "../types";
 import { forAllPlayerIndices } from "../utils";
-import { mapFrameToButtonInputs } from "../operators";
+import { mapFramesToButtonInputs } from "../operators";
 
 export class InputEvents {
   private stream$: Observable<SlpStream>;
@@ -31,7 +31,7 @@ export class InputEvents {
       // Get the player frames
       switchMap((stream) => stream.playerFrame$),
       // Map the frames to button inputs
-      mapFrameToButtonInputs(index, buttons, duration),
+      mapFramesToButtonInputs(index, buttons, duration),
     );
   }
 }
