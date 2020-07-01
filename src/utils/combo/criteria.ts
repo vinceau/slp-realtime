@@ -18,24 +18,33 @@ export const MatchesPlayerName: Criteria = (combo, settings, options, metadata) 
 
   const player = settings.players.find((player) => player.playerIndex === combo.playerIndex);
   const netplayName: string | null = get(metadata, ["players", player.playerIndex, "names", "netplay"], null) || null;
+  const netplayCode: string | null = get(metadata, ["players", player.playerIndex, "names", "code"], null) || null;
   const playerTag = player.nametag || null;
 
-  const matchesPlayerTag = playerTag !== null && options.nameTags.includes(playerTag);
-  const matchesNetplayName = netplayName !== null && options.nameTags.includes(netplayName);
-  const exactMatch = matchesPlayerTag || matchesNetplayName;
-  if (!options.fuzzyNameTagMatching || netplayName === null) {
-    return exactMatch;
+  const matchableNames = [netplayName, netplayCode, playerTag].filter((name) => Boolean(name));
+  if (matchableNames.length === 0) {
+    // We're looking for a nametag but we have nothing to match against
+    return false;
   }
 
-  // Replace the netplay names with underscores and coerce to lowercase
-  // Smashladder internally represents spaces as underscores when writing SLP files
-  const fuzzyNetplayName = netplayName.toLowerCase();
-  const matchedFuzzyTag = options.nameTags.find((tag) => {
-    const lowerSearch = tag.toLowerCase();
-    const fuzzySearch = tag.split(" ").join("_").toLowerCase();
-    return lowerSearch === fuzzyNetplayName || fuzzySearch === fuzzyNetplayName;
+  const match = matchableNames.find((name) => {
+    // If we're not doing fuzzy matching just return the exact match
+    if (!options.fuzzyNameTagMatching) {
+      return options.nameTags.includes(name);
+    }
+
+    // Replace the netplay names with underscores and coerce to lowercase
+    // Smashladder internally represents spaces as underscores when writing SLP files
+    const fuzzyNetplayName = name.toLowerCase();
+    const matchedFuzzyTag = options.nameTags.find((tag) => {
+      const lowerSearch = tag.toLowerCase();
+      const fuzzySearch = tag.split(" ").join("_").toLowerCase();
+      return lowerSearch === fuzzyNetplayName || fuzzySearch === fuzzyNetplayName;
+    });
+    return matchedFuzzyTag !== undefined;
   });
-  return matchedFuzzyTag !== undefined;
+
+  return match !== undefined;
 };
 
 export const MatchesCharacter: Criteria = (combo, settings, options) => {
