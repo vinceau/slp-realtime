@@ -37,13 +37,13 @@
     "realtime"
   ],
   "dependencies": {
+    "@slippi/sdk": "file:.yalc/@slippi/sdk",
     "@vinceau/slp-wii-connect": "^1.0.2",
     "chokidar": "^3.3.1",
     "fs-extra": "^8.1.0",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "rxjs": "^6.5.4",
-    "slp-parser-js": "^4.1.0",
     "tailstream": "^0.1.0"
   },
   "devDependencies": {

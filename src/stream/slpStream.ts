@@ -1,9 +1,9 @@
 import { Writable, WritableOptions } from "stream";
 
-import { Command, parseMessage } from "slp-parser-js";
+import { Command, parseMessage } from "@slippi/sdk";
 import { GameStartType, PreFrameUpdateType, PostFrameUpdateType, GameEndType, FrameEntryType } from "../types";
 import { Subject } from "rxjs";
-import { PlayerType } from "slp-parser-js/dist/utils/slpReader";
+import { PlayerType } from "@slippi/sdk/dist/utils/slpReader";
 
 const NETWORK_MESSAGE = "HELO\0";
 

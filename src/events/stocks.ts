@@ -1,4 +1,4 @@
-import { didLoseStock } from "slp-parser-js";
+import { didLoseStock } from "@slippi/sdk";
 import { SlpStream } from "../stream";
 import { map, filter, distinctUntilChanged, switchMap } from "rxjs/operators";
 import { Observable } from "rxjs";

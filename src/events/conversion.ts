@@ -10,7 +10,7 @@ import {
   didLoseStock,
   Timers,
   getSinglesPlayerPermutationsFromSettings,
-} from "slp-parser-js";
+} from "@slippi/sdk";
 import { ConversionType, PostFrameUpdateType, FrameEntryType, GameStartType } from "../types";
 import { Subject, Observable } from "rxjs";
 import { SlpStream } from "../stream";

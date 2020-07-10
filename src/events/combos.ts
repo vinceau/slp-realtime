@@ -13,7 +13,7 @@ import {
   isDown,
   isDead,
   getSinglesPlayerPermutationsFromSettings,
-} from "slp-parser-js";
+} from "@slippi/sdk";
 import { Subject, Observable } from "rxjs";
 import { SlpStream } from "..";
 import { filter, switchMap } from "rxjs/operators";
