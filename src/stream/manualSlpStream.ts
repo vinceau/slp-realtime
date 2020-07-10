@@ -5,34 +5,23 @@ import { share } from "rxjs/operators";
 
 import { pausable } from "../operators";
 import { pipeFileContents } from "../utils";
-import { SlpStream, SlpStreamSettings } from "./slpStream";
+import { SlpStream } from "./slpStream";
+import { SlpStreamSettings, SlpStreamMode } from "@slippi/sdk";
 
 export class ManualSlpStream extends SlpStream {
   private restartStream$ = new Subject<void>();
   private stopStream$ = new Subject<void>();
 
-  public constructor(slpOptions?: Partial<SlpStreamSettings>, opts?: WritableOptions) {
-    super(slpOptions, opts);
+  public constructor(slpOptions?: Partial<Omit<SlpStreamSettings, "mode">>, opts?: WritableOptions) {
+    super({ ...slpOptions, mode: SlpStreamMode.MANUAL }, opts);
 
     this.messageSize$ = this.messageSizeSource
-      .asObservable()
-      .pipe(pausable(this.stopStream$, this.restartStream$), share());
-    this.rawCommand$ = this.rawCommandSource
       .asObservable()
       .pipe(pausable(this.stopStream$, this.restartStream$), share());
     this.gameStart$ = this.gameStartSource
       .asObservable()
       .pipe(pausable(this.stopStream$, this.restartStream$), share());
-    this.preFrameUpdate$ = this.preFrameUpdateSource
-      .asObservable()
-      .pipe(pausable(this.stopStream$, this.restartStream$), share());
-    this.postFrameUpdate$ = this.postFrameUpdateSource
-      .asObservable()
-      .pipe(pausable(this.stopStream$, this.restartStream$), share());
     this.playerFrame$ = this.playerFrameSource
-      .asObservable()
-      .pipe(pausable(this.stopStream$, this.restartStream$), share());
-    this.followerFrame$ = this.followerFrameSource
       .asObservable()
       .pipe(pausable(this.stopStream$, this.restartStream$), share());
     this.gameEnd$ = this.gameEndSource.asObservable().pipe(pausable(this.stopStream$, this.restartStream$), share());
@@ -47,6 +36,8 @@ export class ManualSlpStream extends SlpStream {
   }
 
   public restart(): void {
+    this.parser.reset();
+    super.restart();
     this.restartStream$.next();
   }
 

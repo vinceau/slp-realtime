@@ -4,7 +4,7 @@ import moment, { Moment } from "moment";
 
 import { SlpFile, SlpFileMetadata } from "./slpFile";
 import { SlpStream } from "./slpStream";
-import { Command } from "@slippi/sdk";
+import { Command, SlpStreamEvent, SlpRawEventPayload, SlpCommandEventPayload } from "@slippi/sdk";
 import { PostFrameUpdateType } from "../types";
 
 const defaultSettings = {
@@ -43,14 +43,19 @@ export class SlpFileWriter extends SlpStream {
       players: {},
     };
     // this.on(SlpEvent.RAW_COMMAND, (command: Command, buffer: Uint8Array) => {
-    this.rawCommand$.subscribe((data) => {
+    this.on(SlpStreamEvent.RAW, (data: SlpRawEventPayload) => {
       if (this.currentFile) {
         this.currentFile.write(data.payload);
       }
     });
     // this.on(SlpEvent.POST_FRAME_UPDATE, (command: Command, payload: PostFrameUpdateType) => {
-    this.postFrameUpdate$.subscribe((payload) => {
-      this._handlePostFrameUpdate(Command.POST_FRAME_UPDATE, payload);
+    this.on(SlpStreamEvent.COMMAND, (data: SlpCommandEventPayload) => {
+      const { command, payload } = data;
+      switch (command) {
+        case Command.POST_FRAME_UPDATE:
+          this._handlePostFrameUpdate(command, payload as PostFrameUpdateType);
+          break;
+      }
     });
     this.messageSize$.subscribe(() => {
       this._handleNewGame();
