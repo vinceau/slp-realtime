@@ -673,13 +673,6 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
-"@vinceau/slp-wii-connect@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@vinceau/slp-wii-connect/-/slp-wii-connect-1.0.2.tgz#bbadf4a52e899e0259d4a7edea61f922e8cba358"
-  integrity sha512-8tskYXEvoO+/igOyx756gToBT6xo0muEbqUKKXzkYBE3vsz/TpkztEttFffC9VEvx0/Hr5I4ZzX8WzE9LUWTZg==
-  dependencies:
-    "@shelacek/ubjson" "^1.0.1"
-
 abab@^2.0.0:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.3.tgz#623e2075e02eb2d3f2475e49f99c91846467907a"

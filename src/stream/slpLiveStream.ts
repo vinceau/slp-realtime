@@ -1,8 +1,8 @@
 import { SlpFileWriter } from "./slpWriter";
-import { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect";
+import { ConsoleConnection, ConnectionStatus } from "@slippi/sdk";
 
 // Re-export these for ease-of-use
-export { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect";
+export { ConsoleConnection, ConnectionStatus } from "@slippi/sdk";
 
 const SLIPPI_CONNECTION_TIMEOUT_MS = 5000;
 
