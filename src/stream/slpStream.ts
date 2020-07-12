@@ -9,6 +9,9 @@ import {
   SlpParser,
   MessageSizes,
   SlpParserEvent,
+  GameStartType,
+  FrameEntryType,
+  GameEndType,
 } from "@slippi/sdk";
 import { Subject, fromEvent } from "rxjs";
 import { share } from "rxjs/operators";
@@ -26,9 +29,9 @@ export class SlpStream extends BasicSlpStream {
 
   // Observables
   public messageSize$ = this.messageSizeSource.asObservable();
-  public gameStart$ = fromEvent(this.parser, SlpParserEvent.SETTINGS).pipe(share());
-  public playerFrame$ = fromEvent(this.parser, SlpParserEvent.FINALIZED_FRAME).pipe(share());
-  public gameEnd$ = fromEvent(this.parser, SlpParserEvent.END).pipe(share());
+  public gameStart$ = fromEvent<GameStartType>(this.parser, SlpParserEvent.SETTINGS).pipe(share());
+  public playerFrame$ = fromEvent<FrameEntryType>(this.parser, SlpParserEvent.FINALIZED_FRAME).pipe(share());
+  public gameEnd$ = fromEvent<GameEndType>(this.parser, SlpParserEvent.END).pipe(share());
 
   /**
    *Creates an instance of SlpStream.
