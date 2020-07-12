@@ -10,8 +10,8 @@ import {
   MessageSizes,
   SlpParserEvent,
 } from "@slippi/sdk";
-import { GameStartType, GameEndType, FrameEntryType } from "../types";
-import { Subject } from "rxjs";
+import { Subject, fromEvent } from "rxjs";
+import { share } from "rxjs/operators";
 
 /**
  * SlpStream is a writable stream of Slippi data. It passes the data being written in
@@ -24,15 +24,12 @@ export class SlpStream extends BasicSlpStream {
   protected parser = new SlpParser();
   // Sources
   protected messageSizeSource = new Subject<Map<Command, number>>();
-  protected gameStartSource = new Subject<GameStartType>();
-  protected playerFrameSource = new Subject<FrameEntryType>();
-  protected gameEndSource = new Subject<GameEndType>();
 
   // Observables
   public messageSize$ = this.messageSizeSource.asObservable();
-  public gameStart$ = this.gameStartSource.asObservable();
-  public playerFrame$ = this.playerFrameSource.asObservable();
-  public gameEnd$ = this.gameEndSource.asObservable();
+  public gameStart$ = fromEvent(this.parser, SlpParserEvent.SETTINGS).pipe(share());
+  public playerFrame$ = fromEvent(this.parser, SlpParserEvent.FINALIZED_FRAME).pipe(share());
+  public gameEnd$ = fromEvent(this.parser, SlpParserEvent.END).pipe(share());
 
   /**
    *Creates an instance of SlpStream.
@@ -50,15 +47,6 @@ export class SlpStream extends BasicSlpStream {
           this.messageSizeSource.next(payload as MessageSizes);
           break;
       }
-    });
-    this.parser.on(SlpParserEvent.SETTINGS, (settings: GameStartType) => {
-      this.gameStartSource.next(settings);
-    });
-    this.parser.on(SlpParserEvent.END, (gameEnd: GameEndType) => {
-      this.gameEndSource.next(gameEnd);
-    });
-    this.parser.on(SlpParserEvent.FINALIZED_FRAME, (frameEntry: FrameEntryType) => {
-      this.playerFrameSource.next(frameEntry);
     });
   }
 
