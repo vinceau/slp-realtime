@@ -61,4 +61,9 @@ export class SlpStream extends BasicSlpStream {
       this.playerFrameSource.next(frameEntry);
     });
   }
+
+  public restart(): void {
+    this.parser.reset();
+    super.restart();
+  }
 }

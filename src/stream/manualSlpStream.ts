@@ -36,7 +36,6 @@ export class ManualSlpStream extends SlpStream {
   }
 
   public restart(): void {
-    this.parser.reset();
     super.restart();
     this.restartStream$.next();
   }
