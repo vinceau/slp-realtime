@@ -21,9 +21,8 @@ import { share } from "rxjs/operators";
  * @extends {Writable}
  */
 export class SlpStream extends BasicSlpStream {
-  protected parser = new SlpParser();
-  // Sources
-  protected messageSizeSource = new Subject<Map<Command, number>>();
+  private parser = new SlpParser();
+  private messageSizeSource = new Subject<Map<Command, number>>();
 
   // Observables
   public messageSize$ = this.messageSizeSource.asObservable();
