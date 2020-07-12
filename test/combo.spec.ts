@@ -1,6 +1,6 @@
 import sinon from "sinon";
 
-import { pipeFileContents, SlippiGame, SlpRealTime, ManualSlpStream, ComboFilter, Character } from "../src";
+import { pipeFileContents, SlippiGame, SlpRealTime, SlpStream, ComboFilter, Character } from "../src";
 import { Subscription } from "rxjs";
 
 describe("combo calculation", () => {
@@ -23,7 +23,7 @@ describe("combo calculation", () => {
   it("correctly matches combo criteria", async () => {
     const comboSpy = sinon.spy();
 
-    const slpStream = new ManualSlpStream();
+    const slpStream = new SlpStream();
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 
@@ -50,7 +50,7 @@ describe("combo calculation", () => {
 
     bowserOnlyFilter.updateSettings({ characterFilter: [Character.BOWSER] });
     excludesBowserFilter.updateSettings({ characterFilter: [Character.CAPTAIN_FALCON] });
-    const slpStream = new ManualSlpStream();
+    const slpStream = new SlpStream();
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 
@@ -77,7 +77,7 @@ describe("combo calculation", () => {
     const comboSpy = sinon.spy();
 
     filter.updateSettings({ minComboPercent: 20 });
-    const slpStream = new ManualSlpStream();
+    const slpStream = new SlpStream();
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 
@@ -98,7 +98,7 @@ describe("combo calculation", () => {
   it("emits the correct number of conversions", async () => {
     const conversionSpy = sinon.spy();
     filter.updateSettings({ minComboPercent: 20 });
-    const slpStream = new ManualSlpStream();
+    const slpStream = new SlpStream();
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
     subscriptions.push(
@@ -119,7 +119,7 @@ describe("combo calculation", () => {
     const filename = "slp/200306_2258_Falco_v_Fox_PS.slp";
     filter.updateSettings({ minComboPercent: 50 });
 
-    const slpStream = new ManualSlpStream();
+    const slpStream = new SlpStream();
     realtime.setStream(slpStream);
     subscriptions.push(
       realtime.combo.conversion$.subscribe((payload) => {
@@ -146,7 +146,7 @@ describe("combo calculation", () => {
         nameTags: ["fizzi"],
         fuzzyNameTagMatching: false,
       });
-      const slpStream = new ManualSlpStream();
+      const slpStream = new SlpStream();
       realtime.setStream(slpStream);
       subscriptions.push(
         realtime.combo.end$.subscribe((payload) => {
@@ -169,7 +169,7 @@ describe("combo calculation", () => {
       const metadata = game.getMetadata();
 
       filter.updateSettings({ minComboPercent: 40, nameTags: ["Fizzi"] });
-      const slpStream = new ManualSlpStream();
+      const slpStream = new SlpStream();
       realtime.setStream(slpStream);
       subscriptions.push(
         realtime.combo.end$.subscribe((payload) => {
@@ -205,7 +205,7 @@ describe("combo calculation", () => {
         nameTags: ["CptPiplup"],
       });
 
-      const slpStream = new ManualSlpStream({ suppressErrors: false });
+      const slpStream = new SlpStream({ suppressErrors: false });
       const realtime = new SlpRealTime();
       realtime.setStream(slpStream);
 
@@ -266,7 +266,7 @@ describe("combo calculation", () => {
         fuzzyNameTagMatching: true,
       });
 
-      const slpStream = new ManualSlpStream({ suppressErrors: false });
+      const slpStream = new SlpStream({ suppressErrors: false });
       const realtime = new SlpRealTime();
       realtime.setStream(slpStream);
 

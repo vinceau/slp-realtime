@@ -1,6 +1,6 @@
 import sinon from "sinon";
 
-import { ManualSlpStream, pipeFileContents, SlpStream } from "../src";
+import { SlpStream, pipeFileContents } from "../src";
 import { Subscription } from "rxjs";
 import { SlpStreamMode } from "@slippi/sdk";
 
@@ -20,7 +20,7 @@ describe("SlpStream", () => {
       const gameStartSpy = sinon.spy();
       const gameEndSpy = sinon.spy();
 
-      const slpStream = new ManualSlpStream();
+      const slpStream = new SlpStream({ mode: SlpStreamMode.MANUAL });
       const unsubGameStart = slpStream.gameStart$.subscribe(gameStartSpy);
       const unsubGameEnd = slpStream.gameEnd$.subscribe(gameEndSpy);
       subscriptions.push(unsubGameStart, unsubGameEnd);

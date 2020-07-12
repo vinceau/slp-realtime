@@ -3,7 +3,7 @@ import sinon from "sinon";
 import {
   pipeFileContents,
   SlpRealTime,
-  ManualSlpStream,
+  SlpStream,
   Character,
   EventManager,
   EventManagerConfig,
@@ -26,7 +26,7 @@ describe("combo config", () => {
     const allComboSpy = sinon.spy();
     const comboSpy = sinon.spy();
 
-    const slpStream = new ManualSlpStream();
+    const slpStream = new SlpStream();
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     realtime.setStream(slpStream);
@@ -96,7 +96,7 @@ describe("combo config", () => {
         },
       ],
     };
-    const slpStream = new ManualSlpStream();
+    const slpStream = new SlpStream();
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
     const eventManager = new EventManager(realtime);
@@ -124,7 +124,7 @@ describe("combo config", () => {
   it("can filter by min combo percent config", async () => {
     const comboSpy = sinon.spy();
 
-    const slpStream = new ManualSlpStream();
+    const slpStream = new SlpStream();
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     eventManager.updateConfig({
@@ -158,7 +158,7 @@ describe("combo config", () => {
 
   it("emits the correct number of conversions", async () => {
     const conversionSpy = sinon.spy();
-    const slpStream = new ManualSlpStream();
+    const slpStream = new SlpStream();
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     eventManager.updateConfig({
@@ -190,7 +190,7 @@ describe("combo config", () => {
     const comboSpy = sinon.spy();
 
     const filename = "slp/200306_2258_Falco_v_Fox_PS.slp";
-    const slpStream = new ManualSlpStream();
+    const slpStream = new SlpStream();
 
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);

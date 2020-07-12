@@ -1,6 +1,6 @@
 import sinon from "sinon";
 
-import { pipeFileContents, SlpRealTime, ManualSlpStream } from "../src";
+import { pipeFileContents, SlpRealTime, SlpStream } from "../src";
 import { Subscription } from "rxjs";
 
 describe("SlpRealTime", () => {
@@ -20,7 +20,7 @@ describe("SlpRealTime", () => {
     const stockSpawnSpy = sinon.spy();
     const stockDeathSpy = sinon.spy();
 
-    const slpStream = new ManualSlpStream();
+    const slpStream = new SlpStream();
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 

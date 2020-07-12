@@ -1,7 +1,7 @@
 import sinon from "sinon";
 
 import { Subscription } from "rxjs";
-import { pipeFileContents, SlpRealTime, ManualSlpStream, EventManager, EventManagerConfig } from "../../src";
+import { pipeFileContents, SlpRealTime, SlpStream, EventManager, EventManagerConfig } from "../../src";
 
 describe("stock config", () => {
   let subscriptions: Array<Subscription>;
@@ -18,7 +18,7 @@ describe("stock config", () => {
     const playerSpawnSpy = sinon.spy();
     const playerDeathSpy = sinon.spy();
 
-    const slpStream = new ManualSlpStream();
+    const slpStream = new SlpStream();
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     realtime.setStream(slpStream);

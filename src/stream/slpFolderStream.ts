@@ -3,8 +3,7 @@ import fs from "fs-extra";
 
 import chokidar, { FSWatcher } from "chokidar";
 import tailstream, { TailStream } from "tailstream";
-
-import { ManualSlpStream } from "./manualSlpStream";
+import { SlpStream } from "./slpStream";
 
 /**
  * SlpFolderStream is responsible for monitoring a folder, and detecting
@@ -22,7 +21,7 @@ import { ManualSlpStream } from "./manualSlpStream";
  *
  * @extends {SlpStream}
  */
-export class SlpFolderStream extends ManualSlpStream {
+export class SlpFolderStream extends SlpStream {
   private watcher: FSWatcher | null = null;
   private readStream: TailStream | null = null;
   private currentFilePath: string | null = null;
@@ -98,16 +97,5 @@ export class SlpFolderStream extends ManualSlpStream {
       this.readStream.done();
     }
     this.currentFilePath = null;
-    super.stop();
-  }
-
-  /**
-   * Ends the stream, stopping all file watching.
-   *
-   * @memberof SlpFolderStream
-   */
-  public end(): void {
-    super.end();
-    this.complete();
   }
 }
