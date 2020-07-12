@@ -205,7 +205,7 @@ describe("combo calculation", () => {
         nameTags: ["CptPiplup"],
       });
 
-      const slpStream = new ManualSlpStream({ logErrors: true });
+      const slpStream = new ManualSlpStream({ suppressErrors: false });
       const realtime = new SlpRealTime();
       realtime.setStream(slpStream);
 
@@ -266,7 +266,7 @@ describe("combo calculation", () => {
         fuzzyNameTagMatching: true,
       });
 
-      const slpStream = new ManualSlpStream({ logErrors: true });
+      const slpStream = new ManualSlpStream({ suppressErrors: false });
       const realtime = new SlpRealTime();
       realtime.setStream(slpStream);
 

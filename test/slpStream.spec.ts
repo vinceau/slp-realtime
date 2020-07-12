@@ -2,6 +2,7 @@ import sinon from "sinon";
 
 import { ManualSlpStream, pipeFileContents, SlpStream } from "../src";
 import { Subscription } from "rxjs";
+import { SlpStreamMode } from "@slippi/sdk";
 
 describe("SlpStream", () => {
   let subscriptions: Array<Subscription>;
@@ -37,13 +38,14 @@ describe("SlpStream", () => {
       const gameStartSpy = sinon.spy();
       const gameEndSpy = sinon.spy();
 
-      const slpStream = new SlpStream();
+      const slpStream = new SlpStream({ mode: SlpStreamMode.MANUAL });
       const unsubGameStart = slpStream.gameStart$.subscribe(gameStartSpy);
       const unsubGameEnd = slpStream.gameEnd$.subscribe(gameEndSpy);
       subscriptions.push(unsubGameStart, unsubGameEnd);
 
       // Pipe the file twice
       await pipeFileContents("slp/Game_20190810T162904.slp", slpStream, { end: false });
+      slpStream.restart();
       await pipeFileContents("slp/Game_20190810T162904.slp", slpStream);
 
       expect(gameStartSpy.callCount).toEqual(2);
