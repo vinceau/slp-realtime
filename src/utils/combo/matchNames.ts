@@ -1,15 +1,17 @@
 import { get } from "lodash";
 import { GameStartType } from "../../types";
 
-export function extractPlayerNames(settings: GameStartType, metadata: any, playerIndex?: number): string[] {
+export function extractPlayerNames(settings: GameStartType, metadata?: any, playerIndex?: number): string[] {
   const nametags: string[] = [];
   // If no playerIndex is provided, extract for all players
-  const indices = playerIndex === undefined ? Object.keys(metadata.players) : [playerIndex];
+  const indices: Array<string | number> =
+    playerIndex !== undefined ? [playerIndex] : Boolean(metadata) ? Object.keys(metadata.players) : [];
+
   for (const index of indices) {
     const player = settings.players.find((player) => player.playerIndex === index);
-    const playerTag = player.nametag || null;
-    const netplayName: string | null = get(metadata, ["players", index, "names", "netplay"], null) || null;
-    const netplayCode: string | null = get(metadata, ["players", index, "names", "code"], null) || null;
+    const playerTag = player ? player.nametag : null;
+    const netplayName: string | null = get(metadata, ["players", index, "names", "netplay"], null);
+    const netplayCode: string | null = get(metadata, ["players", index, "names", "code"], null);
     if (netplayName) {
       nametags.push(netplayName);
     }

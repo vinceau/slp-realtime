@@ -1,4 +1,4 @@
-import { get, sumBy } from "lodash";
+import { sumBy } from "lodash";
 
 import { Criteria } from "./filter";
 import { MoveID, Character } from "../melee";
