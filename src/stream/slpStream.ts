@@ -12,11 +12,11 @@ import {
   GameStartType,
   FrameEntryType,
   GameEndType,
-} from "@slippi/sdk";
+} from "@slippi/slippi-js";
 import { Subject, fromEvent } from "rxjs";
 import { share } from "rxjs/operators";
 
-export { SlpStreamMode, SlpStreamSettings, SlpStreamEvent } from "@slippi/sdk";
+export { SlpStreamMode, SlpStreamSettings, SlpStreamEvent } from "@slippi/slippi-js";
 
 /**
  * SlpStream is a writable stream of Slippi data. It passes the data being written in

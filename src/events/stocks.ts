@@ -1,4 +1,4 @@
-import { didLoseStock } from "@slippi/sdk";
+import { didLoseStock } from "@slippi/slippi-js";
 import { SlpStream } from "../stream";
 import { map, filter, distinctUntilChanged, switchMap } from "rxjs/operators";
 import { Observable } from "rxjs";

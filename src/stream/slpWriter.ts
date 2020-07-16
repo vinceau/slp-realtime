@@ -4,7 +4,7 @@ import moment, { Moment } from "moment";
 
 import { SlpFile, SlpFileMetadata } from "./slpFile";
 import { SlpStream } from "./slpStream";
-import { Command, SlpStreamEvent, SlpRawEventPayload, SlpCommandEventPayload } from "@slippi/sdk";
+import { Command, SlpStreamEvent, SlpRawEventPayload, SlpCommandEventPayload } from "@slippi/slippi-js";
 import { PostFrameUpdateType } from "../types";
 
 const defaultSettings = {

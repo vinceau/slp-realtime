@@ -1,8 +1,8 @@
 import { SlpFileWriter } from "./slpWriter";
-import { ConsoleConnection, ConnectionStatus } from "@slippi/sdk";
+import { ConsoleConnection, ConnectionStatus } from "@slippi/slippi-js";
 
 // Re-export these for ease-of-use
-export { ConsoleConnection, ConnectionStatus } from "@slippi/sdk";
+export { ConsoleConnection, ConnectionStatus } from "@slippi/slippi-js";
 
 const SLIPPI_CONNECTION_TIMEOUT_MS = 5000;
 

@@ -2,7 +2,7 @@ import sinon from "sinon";
 
 import { SlpStream, pipeFileContents } from "../src";
 import { Subscription } from "rxjs";
-import { SlpStreamMode } from "@slippi/sdk";
+import { SlpStreamMode } from "@slippi/slippi-js";
 
 describe("SlpStream", () => {
   let subscriptions: Array<Subscription>;

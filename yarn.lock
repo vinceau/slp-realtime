@@ -458,7 +458,7 @@
   resolved "https://registry.yarnpkg.com/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz#8da5c6530915653f3a1f38fd5f101d8c3f8079c5"
   integrity sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==
 
-"@slippi/sdk@file:.yalc/@slippi/sdk":
+"@slippi/slippi-js@file:.yalc/@slippi/slippi-js":
   version "5.0.0"
   dependencies:
     "@shelacek/ubjson" "^1.0.1"

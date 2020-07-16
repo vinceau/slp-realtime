@@ -10,7 +10,7 @@ import {
   didLoseStock,
   Timers,
   getSinglesPlayerPermutationsFromSettings,
-} from "@slippi/sdk";
+} from "@slippi/slippi-js";
 import { ConversionType, PostFrameUpdateType, FrameEntryType, GameStartType } from "../types";
 import { Subject, Observable } from "rxjs";
 import { SlpStream } from "../stream";
