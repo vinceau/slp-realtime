@@ -5,7 +5,11 @@ export function extractPlayerNames(settings: GameStartType, metadata?: any, play
   const nametags: string[] = [];
   // If no playerIndex is provided, extract for all players
   const indices: Array<string | number> =
-    playerIndex !== undefined ? [playerIndex] : Boolean(metadata) ? Object.keys(metadata.players) : [];
+    playerIndex !== undefined
+      ? [playerIndex]
+      : Boolean(metadata && metadata.players)
+      ? Object.keys(metadata.players)
+      : [];
 
   for (const index of indices) {
     const player = settings.players.find((player) => player.playerIndex === index);
