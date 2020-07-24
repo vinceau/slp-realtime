@@ -1,9 +1,9 @@
-import * as path from "path";
+import path from "path";
 import fs from "fs-extra";
 
 import chokidar, { FSWatcher } from "chokidar";
 import tailstream, { TailStream } from "tailstream";
-import { SlpStream } from "./slpStream";
+import { RxSlpStream } from "./slpStream";
 
 /**
  * SlpFolderStream is responsible for monitoring a folder, and detecting
@@ -19,9 +19,9 @@ import { SlpStream } from "./slpStream";
  * this, we use the package `tailstream` where we have to manually call `done()`
  * when we no longer anticipate the file to change.
  *
- * @extends {SlpStream}
+ * @extends {RxSlpStream}
  */
-export class SlpFolderStream extends SlpStream {
+export class SlpFolderStream extends RxSlpStream {
   private watcher: FSWatcher | null = null;
   private readStream: TailStream | null = null;
   private currentFilePath: string | null = null;

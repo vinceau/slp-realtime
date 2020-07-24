@@ -13,7 +13,7 @@ import {
 } from "@slippi/slippi-js";
 import { ConversionType, PostFrameUpdateType, FrameEntryType, GameStartType } from "../types";
 import { Subject, Observable } from "rxjs";
-import { SlpStream } from "../stream";
+import { RxSlpStream } from "../stream";
 import { filter, switchMap } from "rxjs/operators";
 import { withPreviousFrame } from "../operators/frames";
 
@@ -30,7 +30,7 @@ interface ConversionEventPayload {
 }
 
 export class ConversionEvents {
-  private stream$: Observable<SlpStream>;
+  private stream$: Observable<RxSlpStream>;
   private settings: GameStartType;
 
   private playerPermutations = new Array<PlayerIndexedType>();
@@ -46,7 +46,7 @@ export class ConversionEvents {
     this.conversions = new Array<ConversionType>();
   }
 
-  public constructor(stream: Observable<SlpStream>) {
+  public constructor(stream: Observable<RxSlpStream>) {
     this.stream$ = stream;
 
     // Reset the state on game start

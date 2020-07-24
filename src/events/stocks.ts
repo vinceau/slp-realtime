@@ -1,5 +1,5 @@
 import { didLoseStock } from "@slippi/slippi-js";
-import { SlpStream } from "../stream";
+import { RxSlpStream } from "../stream";
 import { map, filter, distinctUntilChanged, switchMap } from "rxjs/operators";
 import { Observable } from "rxjs";
 import { playerFrameFilter, withPreviousFrame } from "../operators/frames";
@@ -8,14 +8,14 @@ import { StockType, PercentChange, StockCountChange } from "../types";
 import { forAllPlayerIndices } from "../utils";
 
 export class StockEvents {
-  private stream$: Observable<SlpStream>;
+  private stream$: Observable<RxSlpStream>;
 
   public playerSpawn$: Observable<StockType>;
   public playerDied$: Observable<StockType>;
   public percentChange$: Observable<PercentChange>;
   public countChange$: Observable<StockCountChange>;
 
-  public constructor(stream: Observable<SlpStream>) {
+  public constructor(stream: Observable<RxSlpStream>) {
     this.stream$ = stream;
 
     this.playerSpawn$ = forAllPlayerIndices((i) => this.playerIndexSpawn(i));

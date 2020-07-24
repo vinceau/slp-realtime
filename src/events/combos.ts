@@ -15,7 +15,7 @@ import {
   getSinglesPlayerPermutationsFromSettings,
 } from "@slippi/slippi-js";
 import { Subject, Observable } from "rxjs";
-import { SlpStream } from "..";
+import { RxSlpStream } from "../stream";
 import { filter, switchMap } from "rxjs/operators";
 import { withPreviousFrame } from "../operators/frames";
 import { ConversionEvents } from "./conversion";
@@ -35,7 +35,7 @@ interface ComboState {
 }
 
 export class ComboEvents {
-  private stream$: Observable<SlpStream>;
+  private stream$: Observable<RxSlpStream>;
 
   private settings: GameStartType;
   private playerPermutations = new Array<PlayerIndexedType>();
@@ -57,7 +57,7 @@ export class ComboEvents {
     this.combos = new Array<ComboType>();
   }
 
-  public constructor(stream: Observable<SlpStream>) {
+  public constructor(stream: Observable<RxSlpStream>) {
     this.stream$ = stream;
 
     const conversionEvents = new ConversionEvents(stream);

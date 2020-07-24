@@ -1,7 +1,7 @@
 import sinon from "sinon";
 
 import { Subscription } from "rxjs";
-import { pipeFileContents, SlpRealTime, SlpStream, EventManager, EventManagerConfig } from "../../src";
+import { pipeFileContents, SlpRealTime, RxSlpStream, EventManager, EventManagerConfig, SlpStreamMode } from "../../src";
 
 describe("game config", () => {
   let subscriptions: Array<Subscription>;
@@ -20,7 +20,7 @@ describe("game config", () => {
     const isTeamsGameStartSpy = sinon.spy();
     const gameEndSpy = sinon.spy();
 
-    const slpStream = new SlpStream();
+    const slpStream = new RxSlpStream();
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     realtime.setStream(slpStream);
@@ -91,7 +91,7 @@ describe("game config", () => {
     const player2WinSpy = sinon.spy();
     const player4WinSpy = sinon.spy();
 
-    const slpStream = new SlpStream();
+    const slpStream = new RxSlpStream(undefined, { mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     realtime.setStream(slpStream);

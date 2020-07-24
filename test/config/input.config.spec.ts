@@ -1,7 +1,7 @@
 import sinon from "sinon";
 
 import { Subscription } from "rxjs";
-import { pipeFileContents, SlpRealTime, SlpStream, EventManager, EventManagerConfig } from "../../src";
+import { pipeFileContents, SlpRealTime, RxSlpStream, EventManager, EventManagerConfig } from "../../src";
 
 describe("input config", () => {
   let subscriptions: Array<Subscription>;
@@ -40,7 +40,7 @@ describe("input config", () => {
     const p3Spy = sinon.spy();
     const p4Spy = sinon.spy();
 
-    const slpStream = new SlpStream();
+    const slpStream = new RxSlpStream();
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     realtime.setStream(slpStream);
@@ -115,7 +115,7 @@ describe("input config", () => {
   it("can find the correct number of combos", async () => {
     const buttonPresses = sinon.spy();
 
-    const slpStream = new SlpStream();
+    const slpStream = new RxSlpStream();
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     realtime.setStream(slpStream);

@@ -1,4 +1,4 @@
-import { pipeFileContents, SlpRealTime, SlpStream } from "../src";
+import { pipeFileContents, SlpRealTime, RxSlpStream, SlpStreamMode } from "../src";
 import { Subscription } from "rxjs";
 
 describe("when determining the winner", () => {
@@ -15,7 +15,7 @@ describe("when determining the winner", () => {
   it("correctly determines winner", async () => {
     let winner = -1;
 
-    const slpStream = new SlpStream();
+    const slpStream = new RxSlpStream(undefined, { mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 
