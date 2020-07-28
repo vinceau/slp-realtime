@@ -90,7 +90,6 @@ export class SlpFolderStream extends RxSlpStream {
     if (this.readStream) {
       this.readStream.unpipe(this);
       this.readStream.done();
-      this.readStream.destroy();
       this.readStream = null;
     }
   }
