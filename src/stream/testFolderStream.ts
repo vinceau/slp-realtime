@@ -6,7 +6,7 @@ import { RxSlpStream } from "./slpStream";
 import { SlpFileWriterOptions, SlpStreamSettings, SlpStreamMode } from "@slippi/slippi-js";
 import { WritableOptions } from "stream";
 import { Subject, Observable, fromEvent } from "rxjs";
-import { map, switchMap, share, tap } from "rxjs/operators";
+import { map, switchMap, share, tap, takeUntil } from "rxjs/operators";
 
 /**
  * SlpFolderStream is responsible for monitoring a folder, and detecting
@@ -39,6 +39,7 @@ export class TestFolderStream extends RxSlpStream {
     this.newFile$ = this.startRequested$.pipe(
       tap((f) => {
         console.log(`got a new start request to monitor folder: ${f}`);
+        this._stopReadStream();
       }),
       switchMap((slpFolder) => {
         // Initialize watcher.
@@ -52,22 +53,13 @@ export class TestFolderStream extends RxSlpStream {
         return fromEvent<[string, any]>(watcher, "add").pipe(
           share(),
           map(([filename]) => path.resolve(filename)),
+          takeUntil(this.stopRequested$),
         );
       }),
     );
-
-    // this.on("drain", () => {
-    //   console.log("got drain event");
-    //   if (this.readStream) {
-    //     this.readStream.resume();
-    //   }
-    // });
-
     this.newFile$.subscribe((filePath) => {
       console.log(`found a new file: ${filePath}`);
-      if (this.readStream) {
-        this.readStream.done();
-      }
+      this._stopReadStream();
 
       // Restart the parser before we begin
       console.log("restarting tailstream");
@@ -90,6 +82,16 @@ export class TestFolderStream extends RxSlpStream {
   }
 
   public stop(): void {
+    this._stopReadStream();
     this.stopRequested$.next();
+  }
+
+  private _stopReadStream(): void {
+    if (this.readStream) {
+      this.readStream.unpipe(this);
+      this.readStream.done();
+      this.readStream.destroy();
+      this.readStream = null;
+    }
   }
 }
