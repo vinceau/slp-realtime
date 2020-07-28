@@ -26,14 +26,25 @@ export { SlpStreamMode, SlpStreamSettings, SlpStreamEvent } from "@slippi/slippi
  * @extends {Writable}
  */
 export class RxSlpStream extends SlpFileWriter {
-  private parser = new SlpParser();
+  protected parser = new SlpParser();
   private messageSizeSource = new Subject<Map<Command, number>>();
 
   // Observables
   public messageSize$ = this.messageSizeSource.asObservable();
-  public gameStart$ = fromEvent<GameStartType>(this.parser, SlpParserEvent.SETTINGS).pipe(share());
-  public playerFrame$ = fromEvent<FrameEntryType>(this.parser, SlpParserEvent.FINALIZED_FRAME).pipe(share());
-  public gameEnd$ = fromEvent<GameEndType>(this.parser, SlpParserEvent.END).pipe(share());
+  public gameStart$ = fromEvent<GameStartType>(this.parser, SlpParserEvent.SETTINGS).pipe(
+    // tap(() => console.log("got a new game")),
+    share(),
+  );
+  public playerFrame$ = fromEvent<FrameEntryType>(this.parser, SlpParserEvent.FINALIZED_FRAME).pipe(
+    // tap((f) => {
+    // console.log(`got frame: ${f.frame}`);
+    // }),
+    share(),
+  );
+  public gameEnd$ = fromEvent<GameEndType>(this.parser, SlpParserEvent.END).pipe(
+    // tap(() => console.log("game ended")),
+    share(),
+  );
 
   /**
    *Creates an instance of SlpStream.

@@ -1,4 +1,4 @@
-import { RxSlpStream } from "./slpStream";
+import { RxSlpStream } from "./rxSlpStream";
 import { ConsoleConnection, ConnectionStatus } from "@slippi/slippi-js";
 
 // Re-export these for ease-of-use
