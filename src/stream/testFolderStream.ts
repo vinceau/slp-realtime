@@ -1,13 +1,12 @@
 import path from "path";
-import fs from "fs-extra";
 
-import chokidar, { FSWatcher } from "chokidar";
+import chokidar from "chokidar";
 import tailstream, { TailStream } from "tailstream";
 import { RxSlpStream } from "./slpStream";
-import { SlpParserEvent, SlpFileWriterOptions, SlpStreamSettings, SlpStreamMode } from "@slippi/slippi-js";
+import { SlpFileWriterOptions, SlpStreamSettings, SlpStreamMode } from "@slippi/slippi-js";
 import { WritableOptions } from "stream";
-import { Subject, from, Observable, fromEvent } from "rxjs";
-import { concatMap, map, switchMap, filter, share, tap } from "rxjs/operators";
+import { Subject, Observable, fromEvent } from "rxjs";
+import { map, switchMap, share, tap } from "rxjs/operators";
 
 /**
  * SlpFolderStream is responsible for monitoring a folder, and detecting
@@ -28,6 +27,8 @@ import { concatMap, map, switchMap, filter, share, tap } from "rxjs/operators";
 export class TestFolderStream extends RxSlpStream {
   private startRequested$ = new Subject<string>();
   private stopRequested$ = new Subject<void>();
+  private newFile$: Observable<string>;
+  private readStream: TailStream | null = null;
 
   public constructor(
     options?: Partial<SlpFileWriterOptions>,
@@ -35,48 +36,45 @@ export class TestFolderStream extends RxSlpStream {
     opts?: WritableOptions,
   ) {
     super(options, { ...slpOptions, mode: SlpStreamMode.MANUAL }, opts);
-    const onNewFile: Observable<string> = this.startRequested$.pipe(
+    this.newFile$ = this.startRequested$.pipe(
       tap((f) => {
         console.log(`got a new start request to monitor folder: ${f}`);
       }),
-      concatMap((slpFolder) =>
-        from(fs.readdir(slpFolder)).pipe(
-          // Map the files to be absolute paths
-          map((initialFiles) => ({
-            folderPath: slpFolder,
-            initialFiles: initialFiles.map((f) => path.resolve(path.join(slpFolder, f))),
-          })),
-        ),
-      ),
-      switchMap((info) => {
+      switchMap((slpFolder) => {
         // Initialize watcher.
-        const slpGlob = path.join(info.folderPath, "*.slp");
+        const slpGlob = path.join(slpFolder, "*.slp");
         const watcher = chokidar.watch(slpGlob, {
           ignored: /(^|[\/\\])\../, // ignore dotfiles
           persistent: true,
+          ignoreInitial: true,
+          ignorePermissionErrors: true,
         });
         return fromEvent<[string, any]>(watcher, "add").pipe(
           share(),
           map(([filename]) => path.resolve(filename)),
-          filter((filename) => !info.initialFiles.includes(filename)),
         );
       }),
     );
-    const onFileData = onNewFile.pipe(
-      switchMap((filePath) => {
-        console.log(`found a new file: ${filePath}`);
-        // Restart the parser before we begin
-        super.restart();
-        console.log("restarting tailstream");
-        const readStream = tailstream.createReadStream(filePath);
-        return fromEvent<any>(readStream, "data").pipe(share()); //, (data: any) => this.write(data));
-      }),
-    );
-    onFileData.subscribe((data) => {
-      console.log(">>>>>> START DATA FROM TAILSTREAM SUBSCRIPTION <<<<<<");
-      console.log(data.toString("hex").match(/../g).join(" "));
-      console.log(">>>>>> END DATA FROM TAILSTREAM SUBSCRIPTION <<<<<<");
-      this.write(data);
+
+    // this.on("drain", () => {
+    //   console.log("got drain event");
+    //   if (this.readStream) {
+    //     this.readStream.resume();
+    //   }
+    // });
+
+    this.newFile$.subscribe((filePath) => {
+      console.log(`found a new file: ${filePath}`);
+      if (this.readStream) {
+        this.readStream.done();
+      }
+
+      // Restart the parser before we begin
+      console.log("restarting tailstream");
+      super.restart();
+
+      this.readStream = tailstream.createReadStream(filePath);
+      this.readStream.pipe(this, { end: false });
     });
   }
 
