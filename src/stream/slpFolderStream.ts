@@ -6,7 +6,7 @@ import { RxSlpStream } from "./rxSlpStream";
 import { SlpFileWriterOptions, SlpStreamSettings, SlpStreamMode } from "@slippi/slippi-js";
 import { WritableOptions } from "stream";
 import { Subject, Observable, fromEvent } from "rxjs";
-import { map, switchMap, share, tap, takeUntil } from "rxjs/operators";
+import { map, switchMap, share, takeUntil } from "rxjs/operators";
 
 /**
  * SlpFolderStream is responsible for monitoring a folder, and detecting
@@ -37,11 +37,10 @@ export class SlpFolderStream extends RxSlpStream {
   ) {
     super(options, { ...slpOptions, mode: SlpStreamMode.MANUAL }, opts);
     this.newFile$ = this.startRequested$.pipe(
-      tap((f) => {
-        console.log(`got a new start request to monitor folder: ${f}`);
-        this._stopReadStream();
-      }),
       switchMap((slpFolder) => {
+        // End any existing read streams
+        this.endReadStream();
+
         // Initialize watcher.
         const slpGlob = path.join(slpFolder, "*.slp");
         const watcher = chokidar.watch(slpGlob, {
@@ -59,15 +58,22 @@ export class SlpFolderStream extends RxSlpStream {
     );
     this.newFile$.subscribe((filePath) => {
       console.log(`found a new file: ${filePath}`);
-      this._stopReadStream();
+      this.endReadStream();
 
       // Restart the parser before we begin
-      console.log("restarting tailstream");
       super.restart();
 
       this.readStream = tailstream.createReadStream(filePath);
       this.readStream.pipe(this, { end: false });
     });
+  }
+
+  private endReadStream(): void {
+    if (this.readStream) {
+      this.readStream.unpipe(this);
+      this.readStream.done();
+      this.readStream = null;
+    }
   }
 
   /**
@@ -78,19 +84,12 @@ export class SlpFolderStream extends RxSlpStream {
    * @memberof SlpFolderStream
    */
   public start(slpFolder: string): void {
+    console.log(`Start monitoring: ${slpFolder}`);
     this.startRequested$.next(slpFolder);
   }
 
   public stop(): void {
-    this._stopReadStream();
+    this.endReadStream();
     this.stopRequested$.next();
-  }
-
-  private _stopReadStream(): void {
-    if (this.readStream) {
-      this.readStream.unpipe(this);
-      this.readStream.done();
-      this.readStream = null;
-    }
   }
 }
