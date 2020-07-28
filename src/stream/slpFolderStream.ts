@@ -1,9 +1,12 @@
 import path from "path";
-import fs from "fs-extra";
 
-import chokidar, { FSWatcher } from "chokidar";
+import chokidar from "chokidar";
 import tailstream, { TailStream } from "tailstream";
-import { RxSlpStream } from "./slpStream";
+import { RxSlpStream } from "./rxSlpStream";
+import { SlpFileWriterOptions, SlpStreamSettings, SlpStreamMode } from "@slippi/slippi-js";
+import { WritableOptions } from "stream";
+import { Subject, Observable, fromEvent } from "rxjs";
+import { map, switchMap, share, takeUntil } from "rxjs/operators";
 
 /**
  * SlpFolderStream is responsible for monitoring a folder, and detecting
@@ -22,9 +25,56 @@ import { RxSlpStream } from "./slpStream";
  * @extends {RxSlpStream}
  */
 export class SlpFolderStream extends RxSlpStream {
-  private watcher: FSWatcher | null = null;
+  private startRequested$ = new Subject<string>();
+  private stopRequested$ = new Subject<void>();
+  private newFile$: Observable<string>;
   private readStream: TailStream | null = null;
-  private currentFilePath: string | null = null;
+
+  public constructor(
+    options?: Partial<SlpFileWriterOptions>,
+    slpOptions?: Partial<SlpStreamSettings>,
+    opts?: WritableOptions,
+  ) {
+    super(options, { ...slpOptions, mode: SlpStreamMode.MANUAL }, opts);
+    this.newFile$ = this.startRequested$.pipe(
+      switchMap((slpFolder) => {
+        // End any existing read streams
+        this.endReadStream();
+
+        // Initialize watcher.
+        const slpGlob = path.join(slpFolder, "*.slp");
+        const watcher = chokidar.watch(slpGlob, {
+          ignored: /(^|[\/\\])\../, // ignore dotfiles
+          persistent: true,
+          ignoreInitial: true,
+          ignorePermissionErrors: true,
+        });
+        return fromEvent<[string, any]>(watcher, "add").pipe(
+          share(),
+          map(([filename]) => path.resolve(filename)),
+          takeUntil(this.stopRequested$),
+        );
+      }),
+    );
+    this.newFile$.subscribe((filePath) => {
+      console.log(`found a new file: ${filePath}`);
+      this.endReadStream();
+
+      // Restart the parser before we begin
+      super.restart();
+
+      this.readStream = tailstream.createReadStream(filePath);
+      this.readStream.pipe(this, { end: false });
+    });
+  }
+
+  private endReadStream(): void {
+    if (this.readStream) {
+      this.readStream.unpipe(this);
+      this.readStream.done();
+      this.readStream = null;
+    }
+  }
 
   /**
    * Starts watching a particular folder for slp files. It treats all new
@@ -33,69 +83,13 @@ export class SlpFolderStream extends RxSlpStream {
    * @param {string} slpFolder
    * @memberof SlpFolderStream
    */
-  public async start(slpFolder: string): Promise<void> {
-    let initialFiles = await fs.readdir(slpFolder);
-    // Convert file paths into absolute paths
-    initialFiles = initialFiles.map((file) => {
-      return path.resolve(path.join(slpFolder, file));
-    });
-
-    // Initialize watcher.
-    const slpGlob = path.join(slpFolder, "*.slp");
-    this.watcher = chokidar.watch(slpGlob, {
-      ignored: /(^|[\/\\])\../, // ignore dotfiles
-      persistent: true,
-    });
-    this.watcher.on("add", (filePath) => {
-      if (initialFiles.includes(filePath)) {
-        return;
-      }
-
-      // We have a newly generated file so end the old stream
-      this.endReadStream();
-
-      // Restart the stream
-      super.restart();
-
-      this.currentFilePath = filePath;
-      // Create a new stream for the new file
-      this.readStream = tailstream.createReadStream(filePath);
-      this.readStream.on("data", (data: any) => this.write(data));
-    });
+  public start(slpFolder: string): void {
+    console.log(`Start monitoring: ${slpFolder}`);
+    this.startRequested$.next(slpFolder);
   }
 
-  private endReadStream(): void {
-    if (this.readStream) {
-      this.readStream.done();
-      this.readStream = null;
-    }
-  }
-
-  /**
-   * Get the current name of the file path that is changing and is being written to.
-   *
-   * @returns {(string | null)}
-   * @memberof SlpFolderStream
-   */
-  public getCurrentFilename(): string | null {
-    if (this.currentFilePath !== null) {
-      return path.resolve(this.currentFilePath);
-    }
-    return null;
-  }
-
-  /**
-   * Stops all file watching and cleans up.
-   *
-   * @memberof SlpFolderStream
-   */
   public stop(): void {
-    if (this.watcher) {
-      this.watcher.close();
-    }
-    if (this.readStream) {
-      this.readStream.done();
-    }
-    this.currentFilePath = null;
+    this.endReadStream();
+    this.stopRequested$.next();
   }
 }

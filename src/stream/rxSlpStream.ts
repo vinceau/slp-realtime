@@ -26,7 +26,7 @@ export { SlpStreamMode, SlpStreamSettings, SlpStreamEvent } from "@slippi/slippi
  * @extends {Writable}
  */
 export class RxSlpStream extends SlpFileWriter {
-  private parser = new SlpParser();
+  protected parser = new SlpParser();
   private messageSizeSource = new Subject<Map<Command, number>>();
 
   // Observables
@@ -57,7 +57,12 @@ export class RxSlpStream extends SlpFileWriter {
 
     this.on(SlpStreamEvent.COMMAND, (data: SlpCommandEventPayload) => {
       const { command, payload } = data;
-      this.parser.handleCommand(command, payload);
+      try {
+        this.parser.handleCommand(command, payload);
+      } catch (err) {
+        console.error(`Error processing command ${command}: ${err}`);
+      }
+
       switch (command) {
         case Command.MESSAGE_SIZES:
           this.messageSizeSource.next(payload as MessageSizes);
