@@ -45,3 +45,17 @@ const mapInputToBits = (button: string): InputBit => {
   }
   return b;
 };
+
+const isButtonPressed = (bitmask: number, button: InputBit): boolean => {
+  return (bitmask & button) === button;
+};
+
+export const bitmaskToButtons = (bitmask: number): string[] => {
+  const inputs = new Array<string>();
+  inputBitMap.forEach((mask, name) => {
+    if (isButtonPressed(bitmask, mask)) {
+      inputs.push(name);
+    }
+  });
+  return inputs;
+};
