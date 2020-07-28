@@ -59,13 +59,14 @@ export class RxSlpStream extends SlpFileWriter {
       const { command, payload } = data;
       try {
         this.parser.handleCommand(command, payload);
-        switch (command) {
-          case Command.MESSAGE_SIZES:
-            this.messageSizeSource.next(payload as MessageSizes);
-            break;
-        }
       } catch (err) {
         console.error(`Error processing command ${command}: ${err}`);
+      }
+
+      switch (command) {
+        case Command.MESSAGE_SIZES:
+          this.messageSizeSource.next(payload as MessageSizes);
+          break;
       }
     });
   }
