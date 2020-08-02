@@ -1,7 +1,8 @@
-import { get, sumBy } from "lodash";
+import { sumBy } from "lodash";
 
 import { Criteria } from "./filter";
 import { MoveID, Character } from "../melee";
+import { extractPlayerNames, namesMatch } from "./matchNames";
 
 /**
  * MatchesPortNumber ensures the player performing the combo is a specific port.
@@ -16,35 +17,13 @@ export const MatchesPlayerName: Criteria = (combo, settings, options, metadata) 
     return true;
   }
 
-  const player = settings.players.find((player) => player.playerIndex === combo.playerIndex);
-  const netplayName: string | null = get(metadata, ["players", player.playerIndex, "names", "netplay"], null) || null;
-  const netplayCode: string | null = get(metadata, ["players", player.playerIndex, "names", "code"], null) || null;
-  const playerTag = player.nametag || null;
-
-  const matchableNames = [netplayName, netplayCode, playerTag].filter((name) => Boolean(name));
+  const matchableNames = extractPlayerNames(settings, metadata, combo.playerIndex);
   if (matchableNames.length === 0) {
     // We're looking for a nametag but we have nothing to match against
     return false;
   }
 
-  const match = matchableNames.find((name) => {
-    // If we're not doing fuzzy matching just return the exact match
-    if (!options.fuzzyNameTagMatching) {
-      return options.nameTags.includes(name);
-    }
-
-    // Replace the netplay names with underscores and coerce to lowercase
-    // Smashladder internally represents spaces as underscores when writing SLP files
-    const fuzzyNetplayName = name.toLowerCase();
-    const matchedFuzzyTag = options.nameTags.find((tag) => {
-      const lowerSearch = tag.toLowerCase();
-      const fuzzySearch = tag.split(" ").join("_").toLowerCase();
-      return lowerSearch === fuzzyNetplayName || fuzzySearch === fuzzyNetplayName;
-    });
-    return matchedFuzzyTag !== undefined;
-  });
-
-  return match !== undefined;
+  return namesMatch(options.nameTags, matchableNames, options.fuzzyNameTagMatching);
 };
 
 export const MatchesCharacter: Criteria = (combo, settings, options) => {

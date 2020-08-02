@@ -32,10 +32,13 @@ const readPlayerSpawnEvents = (
       }
 
       return base$.pipe(
-        map((context) => ({
-          id: event.id,
-          payload: context,
-        })),
+        map(
+          (context): EventEmit => ({
+            id: event.id,
+            type: event.type,
+            payload: context,
+          }),
+        ),
       );
     });
   return merge(...observables);
@@ -60,10 +63,13 @@ const readPlayerDiedEvents = (
       }
 
       return base$.pipe(
-        map((context) => ({
-          id: event.id,
-          payload: context,
-        })),
+        map(
+          (context): EventEmit => ({
+            id: event.id,
+            type: event.type,
+            payload: context,
+          }),
+        ),
       );
     });
   return merge(...observables);

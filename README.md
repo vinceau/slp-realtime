@@ -1,4 +1,3 @@
-
 # `slp-realtime`
 
 [![slp-realtime is magic - Nikki](https://i.imgur.com/qnfI6c5.png)](https://i.imgur.com/qnfI6c5.png)
@@ -8,28 +7,30 @@
 [![Coverage Status](https://coveralls.io/repos/github/vinceau/slp-realtime/badge.svg)](https://coveralls.io/github/vinceau/slp-realtime)
 [![License](https://img.shields.io/npm/l/@vinceau/slp-realtime)](https://github.com/vinceau/slp-realtime/blob/master/LICENSE)
 
-> The brains *and* the brawn of [Project Clippi](https://github.com/vinceau/project-clippi).
+> The brains _and_ the brawn of [Project Clippi](https://github.com/vinceau/project-clippi).
 
 This library provides an easy way to subscribe to real-time [Slippi](https://github.com/project-slippi/project-slippi) game events as they happen. Rebuilt from the ground up using [RxJS Observables](https://rxjs-dev.firebaseapp.com/guide/overview), the power to subscribe to any and every event is in your hands.
 
 ## Highlights
 
-* Go file-less. Read directly from the relay or console.
-* Custom combos. Easily add combo parameters and output Dolphin-compatible JSON files.
-* Powerful [RxJS Observable](https://rxjs-dev.firebaseapp.com/guide/overview) and Stream API.
+- Go file-less. Read directly from the relay or console.
+- Custom combos. Easily add combo parameters and output Dolphin-compatible JSON files.
+- Powerful [RxJS Observable](https://rxjs-dev.firebaseapp.com/guide/overview) and Stream API.
 
 ## Installation
+
+The `slp-realtime` package relies on the `rxjs` package as a peer dependency and must be installed alongside.
 
 **With NPM**
 
 ```bash
-npm install @vinceau/slp-realtime
+npm install @vinceau/slp-realtime rxjs
 ```
 
 **With Yarn**
 
 ```bash
-yarn add @vinceau/slp-realtime
+yarn add @vinceau/slp-realtime rxjs
 ```
 
 ## Usage
@@ -51,7 +52,8 @@ First instantiate an instance of `SlpLiveStream` and connect to a Wii or Slippi 
 const { SlpLiveStream } = require("@vinceau/slp-realtime");
 
 const livestream = new SlpLiveStream();
-livestream.start(address, slpPort)
+livestream
+  .start(address, slpPort)
   .then(() => {
     console.log("Successfully connected!");
   })
@@ -69,16 +71,16 @@ const realtime = new SlpRealTime();
 realtime.setStream(livestream);
 
 realtime.game.start$.subscribe(() => {
-    console.log("game started");
+  console.log("game started");
 });
 
-realtime.stock.playerSpawn$.subscribe(stock => {
-    const { playerIndex, count } = stock;
-    console.log(`player ${playerIndex + 1} spawned with ${count} stocks remaining`);
+realtime.stock.playerSpawn$.subscribe((stock) => {
+  const { playerIndex, count } = stock;
+  console.log(`player ${playerIndex + 1} spawned with ${count} stocks remaining`);
 });
 
 realtime.combo.end$.subscribe(() => {
-    console.log("wombo combooo!!");
+  console.log("wombo combooo!!");
 });
 ```
 
@@ -93,20 +95,20 @@ const { ComboFilter } = require("@vinceau/slp-realtime");
 
 const comboFilter = new ComboFilter();
 comboFilter.updateSettings({
-    excludeCPUs: false,    // combos on CPUs are okay
-    comboMustKill: false,  // combos don't have to kill
-    minComboPercent: 40,   // combos have to do at least 40% damage
+  excludeCPUs: false, // combos on CPUs are okay
+  comboMustKill: false, // combos don't have to kill
+  minComboPercent: 40, // combos have to do at least 40% damage
 });
 ```
 
 `ComboFilter` has an `isCombo()` method which returns `true` if a given combo matches the specified criteria. We can hook it up to our live stream with the following:
 
 ```javascript
-realtime.combo.end$.subscribe(payload => {
-    const { combo, settings } = payload;
-    if (comboFilter.isCombo(combo, settings)) {
-        console.log("Combo matched!");
-    }
+realtime.combo.end$.subscribe((payload) => {
+  const { combo, settings } = payload;
+  if (comboFilter.isCombo(combo, settings)) {
+    console.log("Combo matched!");
+  }
 });
 ```
 
@@ -158,10 +160,9 @@ yarn run test
 
 This project was made possible by:
 
-* [Jas Laferriere](https://github.com/JLaferri) and the rest of the [Project Slippi](https://github.com/project-slippi) team
+- [Jas Laferriere](https://github.com/JLaferri) and the rest of the [Project Slippi](https://github.com/project-slippi) team
 
-* [NikhilNarayana](https://github.com/NikhilNarayana) and his [Get Slippi Combos](https://gist.github.com/NikhilNarayana/d45e328e9ea47127634f2faf575e8dcf) script
-
+- [NikhilNarayana](https://github.com/NikhilNarayana) and his [Get Slippi Combos](https://gist.github.com/NikhilNarayana/d45e328e9ea47127634f2faf575e8dcf) script
 
 ## License
 

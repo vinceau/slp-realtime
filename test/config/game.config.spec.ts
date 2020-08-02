@@ -1,7 +1,7 @@
 import sinon from "sinon";
 
 import { Subscription } from "rxjs";
-import { pipeFileContents, SlpRealTime, ManualSlpStream, EventManager, EventManagerConfig } from "../../src";
+import { pipeFileContents, SlpRealTime, RxSlpStream, EventManager, EventManagerConfig, SlpStreamMode } from "../../src";
 
 describe("game config", () => {
   let subscriptions: Array<Subscription>;
@@ -20,7 +20,7 @@ describe("game config", () => {
     const isTeamsGameStartSpy = sinon.spy();
     const gameEndSpy = sinon.spy();
 
-    const slpStream = new ManualSlpStream();
+    const slpStream = new RxSlpStream();
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     realtime.setStream(slpStream);
@@ -91,7 +91,7 @@ describe("game config", () => {
     const player2WinSpy = sinon.spy();
     const player4WinSpy = sinon.spy();
 
-    const slpStream = new ManualSlpStream();
+    const slpStream = new RxSlpStream(undefined, { mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     realtime.setStream(slpStream);
@@ -143,10 +143,13 @@ describe("game config", () => {
 
     eventManager.updateConfig(config);
 
-    await slpStream.pipeFile("slp/Game_20190810T162904.slp");
-    await slpStream.pipeFile("slp/Game_20190517T164215.slp");
-    await slpStream.pipeFile("slp/Game_20190324T113942.slp");
-    await slpStream.pipeFile("slp/200306_2258_Falco_v_Fox_PS.slp");
+    await pipeFileContents("slp/Game_20190810T162904.slp", slpStream, { end: false });
+    slpStream.restart();
+    await pipeFileContents("slp/Game_20190517T164215.slp", slpStream, { end: false });
+    slpStream.restart();
+    await pipeFileContents("slp/Game_20190324T113942.slp", slpStream, { end: false });
+    slpStream.restart();
+    await pipeFileContents("slp/200306_2258_Falco_v_Fox_PS.slp", slpStream);
 
     expect(playerWinSpy.callCount).toEqual(1);
     expect(player2WinSpy.callCount).toEqual(2);
