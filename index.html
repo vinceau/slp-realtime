@@ -85,10 +85,11 @@
 				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
 					<h2>Installation</h2>
 				</a>
+				<p>The <code>slp-realtime</code> package relies on the <code>rxjs</code> package as a peer dependency and must be installed alongside.</p>
 				<p><strong>With NPM</strong></p>
-				<pre><code class="language-bash">npm install @vinceau/slp-realtime</code></pre>
+				<pre><code class="language-bash">npm install @vinceau/slp-realtime rxjs</code></pre>
 				<p><strong>With Yarn</strong></p>
-				<pre><code class="language-bash">yarn add @vinceau/slp-realtime</code></pre>
+				<pre><code class="language-bash">yarn add @vinceau/slp-realtime rxjs</code></pre>
 				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 					<h2>Usage</h2>
 				</a>
@@ -104,7 +105,8 @@
 				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> { SlpLiveStream } = <span class="hljs-built_in">require</span>(<span class="hljs-string">"@vinceau/slp-realtime"</span>);
 
 <span class="hljs-keyword">const</span> livestream = <span class="hljs-keyword">new</span> SlpLiveStream();
-livestream.start(address, slpPort)
+livestream
+  .start(address, slpPort)
   .then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Successfully connected!"</span>);
   })
@@ -118,16 +120,16 @@ livestream.start(address, slpPort)
 realtime.setStream(livestream);
 
 realtime.game.start$.subscribe(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"game started"</span>);
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"game started"</span>);
 });
 
-realtime.stock.playerSpawn$.subscribe(<span class="hljs-function"><span class="hljs-params">stock</span> =&gt;</span> {
-    <span class="hljs-keyword">const</span> { playerIndex, count } = stock;
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`player <span class="hljs-subst">${playerIndex + <span class="hljs-number">1</span>}</span> spawned with <span class="hljs-subst">${count}</span> stocks remaining`</span>);
+realtime.stock.playerSpawn$.subscribe(<span class="hljs-function">(<span class="hljs-params">stock</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> { playerIndex, count } = stock;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`player <span class="hljs-subst">${playerIndex + <span class="hljs-number">1</span>}</span> spawned with <span class="hljs-subst">${count}</span> stocks remaining`</span>);
 });
 
 realtime.combo.end$.subscribe(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"wombo combooo!!"</span>);
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"wombo combooo!!"</span>);
 });</code></pre>
 				<a href="#detecting-custom-combos" id="detecting-custom-combos" style="color: inherit; text-decoration: none;">
 					<h3>Detecting Custom Combos</h3>
@@ -138,16 +140,16 @@ realtime.combo.end$.subscribe(<span class="hljs-function"><span class="hljs-para
 
 <span class="hljs-keyword">const</span> comboFilter = <span class="hljs-keyword">new</span> ComboFilter();
 comboFilter.updateSettings({
-    <span class="hljs-attr">excludeCPUs</span>: <span class="hljs-literal">false</span>,    <span class="hljs-comment">// combos on CPUs are okay</span>
-    <span class="hljs-attr">comboMustKill</span>: <span class="hljs-literal">false</span>,  <span class="hljs-comment">// combos don't have to kill</span>
-    <span class="hljs-attr">minComboPercent</span>: <span class="hljs-number">40</span>,   <span class="hljs-comment">// combos have to do at least 40% damage</span>
+  <span class="hljs-attr">excludeCPUs</span>: <span class="hljs-literal">false</span>, <span class="hljs-comment">// combos on CPUs are okay</span>
+  <span class="hljs-attr">comboMustKill</span>: <span class="hljs-literal">false</span>, <span class="hljs-comment">// combos don't have to kill</span>
+  <span class="hljs-attr">minComboPercent</span>: <span class="hljs-number">40</span>, <span class="hljs-comment">// combos have to do at least 40% damage</span>
 });</code></pre>
 				<p><code>ComboFilter</code> has an <code>isCombo()</code> method which returns <code>true</code> if a given combo matches the specified criteria. We can hook it up to our live stream with the following:</p>
-				<pre><code class="language-javascript">realtime.combo.end$.subscribe(<span class="hljs-function"><span class="hljs-params">payload</span> =&gt;</span> {
-    <span class="hljs-keyword">const</span> { combo, settings } = payload;
-    <span class="hljs-keyword">if</span> (comboFilter.isCombo(combo, settings)) {
-        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Combo matched!"</span>);
-    }
+				<pre><code class="language-javascript">realtime.combo.end$.subscribe(<span class="hljs-function">(<span class="hljs-params">payload</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> { combo, settings } = payload;
+  <span class="hljs-keyword">if</span> (comboFilter.isCombo(combo, settings)) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Combo matched!"</span>);
+  }
 });</code></pre>
 				<a href="#make-a-custom-hud" id="make-a-custom-hud" style="color: inherit; text-decoration: none;">
 					<h3>Make a Custom HUD</h3>
@@ -276,22 +278,13 @@ realtime.stock.countChange$.subscribe(<span class="hljs-function">(<span class="
 						<a href="modules/_stream_index_.html">&quot;stream/index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_stream_manualslpstream_.html">&quot;stream/manual<wbr>Slp<wbr>Stream&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_stream_slpfile_.html">&quot;stream/slp<wbr>File&quot;</a>
+						<a href="modules/_stream_rxslpstream_.html">&quot;stream/rx<wbr>Slp<wbr>Stream&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/_stream_slpfolderstream_.html">&quot;stream/slp<wbr>Folder<wbr>Stream&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/_stream_slplivestream_.html">&quot;stream/slp<wbr>Live<wbr>Stream&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_stream_slpstream_.html">&quot;stream/slp<wbr>Stream&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_stream_slpwriter_.html">&quot;stream/slp<wbr>Writer&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/_types_.html">&quot;types&quot;</a>
@@ -304,6 +297,9 @@ realtime.stock.countChange$.subscribe(<span class="hljs-function">(<span class="
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/_utils_combo_index_.html">&quot;utils/combo/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_utils_combo_matchnames_.html">&quot;utils/combo/match<wbr>Names&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/_utils_controls_.html">&quot;utils/controls&quot;</a>

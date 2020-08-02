@@ -107,19 +107,19 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Conversion<wbr>Events<span class="tsd-signature-symbol">(</span>stream<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><a href="_stream_slpstream_.slpstream.html" class="tsd-signature-type">SlpStream</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_events_conversion_.conversionevents.html" class="tsd-signature-type">ConversionEvents</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Conversion<wbr>Events<span class="tsd-signature-symbol">(</span>stream<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><a href="_stream_rxslpstream_.rxslpstream.html" class="tsd-signature-type">RxSlpStream</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_events_conversion_.conversionevents.html" class="tsd-signature-type">ConversionEvents</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/events/conversion.ts#L47">src/events/conversion.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/92fd5cc/src/events/conversion.ts#L47">src/events/conversion.ts:47</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>stream: <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><a href="_stream_slpstream_.slpstream.html" class="tsd-signature-type">SlpStream</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>stream: <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><a href="_stream_rxslpstream_.rxslpstream.html" class="tsd-signature-type">RxSlpStream</a><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_events_conversion_.conversionevents.html" class="tsd-signature-type">ConversionEvents</a></h4>
@@ -135,7 +135,7 @@
 					<div class="tsd-signature tsd-kind-icon">end$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ConversionEventPayload</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = this.conversionSource.asObservable()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/events/conversion.ts#L41">src/events/conversion.ts:41</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/92fd5cc/src/events/conversion.ts#L41">src/events/conversion.ts:41</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -146,22 +146,22 @@
 					<a name="processframe" class="tsd-anchor"></a>
 					<h3>process<wbr>Frame</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">process<wbr>Frame<span class="tsd-signature-symbol">(</span>prevFrame<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#frameentrytype" class="tsd-signature-type">FrameEntryType</a>, latestFrame<span class="tsd-signature-symbol">: </span><a href="../modules/_types_.html#frameentrytype" class="tsd-signature-type">FrameEntryType</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">process<wbr>Frame<span class="tsd-signature-symbol">(</span>prevFrame<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">FrameEntryType</span>, latestFrame<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">FrameEntryType</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/events/conversion.ts#L92">src/events/conversion.ts:92</a></li>
+									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/92fd5cc/src/events/conversion.ts#L92">src/events/conversion.ts:92</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>prevFrame: <a href="../modules/_types_.html#frameentrytype" class="tsd-signature-type">FrameEntryType</a></h5>
+									<h5>prevFrame: <span class="tsd-signature-type">FrameEntryType</span></h5>
 								</li>
 								<li>
-									<h5>latestFrame: <a href="../modules/_types_.html#frameentrytype" class="tsd-signature-type">FrameEntryType</a></h5>
+									<h5>latestFrame: <span class="tsd-signature-type">FrameEntryType</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -178,7 +178,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/events/conversion.ts#L79">src/events/conversion.ts:79</a></li>
+									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/92fd5cc/src/events/conversion.ts#L79">src/events/conversion.ts:79</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>

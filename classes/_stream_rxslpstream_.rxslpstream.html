@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ManualSlpStream | @vinceau/slp-realtime</title>
+	<title>RxSlpStream | @vinceau/slp-realtime</title>
 	<meta name="description" content="Documentation for @vinceau/slp-realtime">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,30 +54,41 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_stream_manualslpstream_.html">&quot;stream/manualSlpStream&quot;</a>
+					<a href="../modules/_stream_rxslpstream_.html">&quot;stream/rxSlpStream&quot;</a>
 				</li>
 				<li>
-					<a href="_stream_manualslpstream_.manualslpstream.html">ManualSlpStream</a>
+					<a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>
 				</li>
 			</ul>
-			<h1>Class ManualSlpStream</h1>
+			<h1>Class RxSlpStream</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>SlpStream is a writable stream of Slippi data. It passes the data being written in
+						and emits an event based on what kind of Slippi messages were processed.</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="_stream_slpstream_.slpstream.html" class="tsd-signature-type">SlpStream</a>
+						<span class="tsd-signature-type">SlpFileWriter</span>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">ManualSlpStream</span>
+								<span class="target">RxSlpStream</span>
 								<ul class="tsd-hierarchy">
 									<li>
 										<a href="_stream_slpfolderstream_.slpfolderstream.html" class="tsd-signature-type">SlpFolderStream</a>
+									</li>
+									<li>
+										<a href="_stream_slplivestream_.slplivestream.html" class="tsd-signature-type">SlpLiveStream</a>
 									</li>
 								</ul>
 							</li>
@@ -98,72 +109,60 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="_stream_manualslpstream_.manualslpstream.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="_stream_rxslpstream_.rxslpstream.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited">
+						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#destroyed" class="tsd-kind-icon">destroyed</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#followerframe_" class="tsd-kind-icon">follower<wbr>Frame$</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_stream_manualslpstream_.manualslpstream.html#followerframesource" class="tsd-kind-icon">follower<wbr>Frame<wbr>Source</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#gameend_" class="tsd-kind-icon">game<wbr>End$</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_stream_manualslpstream_.manualslpstream.html#gameendsource" class="tsd-kind-icon">game<wbr>End<wbr>Source</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#gamestart_" class="tsd-kind-icon">game<wbr>Start$</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_stream_manualslpstream_.manualslpstream.html#gamestartsource" class="tsd-kind-icon">game<wbr>Start<wbr>Source</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#messagesize_" class="tsd-kind-icon">message<wbr>Size$</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_stream_manualslpstream_.manualslpstream.html#messagesizesource" class="tsd-kind-icon">message<wbr>Size<wbr>Source</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#playerframe_" class="tsd-kind-icon">player<wbr>Frame$</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_stream_manualslpstream_.manualslpstream.html#playerframesource" class="tsd-kind-icon">player<wbr>Frame<wbr>Source</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#postframeupdate_" class="tsd-kind-icon">post<wbr>Frame<wbr>Update$</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_stream_manualslpstream_.manualslpstream.html#postframeupdatesource" class="tsd-kind-icon">post<wbr>Frame<wbr>Update<wbr>Source</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#preframeupdate_" class="tsd-kind-icon">pre<wbr>Frame<wbr>Update$</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_stream_manualslpstream_.manualslpstream.html#preframeupdatesource" class="tsd-kind-icon">pre<wbr>Frame<wbr>Update<wbr>Source</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#rawcommand_" class="tsd-kind-icon">raw<wbr>Command$</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="_stream_manualslpstream_.manualslpstream.html#rawcommandsource" class="tsd-kind-icon">raw<wbr>Command<wbr>Source</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#writable" class="tsd-kind-icon">writable</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#writableended" class="tsd-kind-icon">writable<wbr>Ended</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#writablefinished" class="tsd-kind-icon">writable<wbr>Finished</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#writablehighwatermark" class="tsd-kind-icon">writable<wbr>High<wbr>Water<wbr>Mark</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#writablelength" class="tsd-kind-icon">writable<wbr>Length</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#writableobjectmode" class="tsd-kind-icon">writable<wbr>Object<wbr>Mode</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="_stream_manualslpstream_.manualslpstream.html#defaultmaxlisteners" class="tsd-kind-icon">default<wbr>Max<wbr>Listeners</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#destroyed" class="tsd-kind-icon">destroyed</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_stream_rxslpstream_.rxslpstream.html#gameend_" class="tsd-kind-icon">game<wbr>End$</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_stream_rxslpstream_.rxslpstream.html#gamestart_" class="tsd-kind-icon">game<wbr>Start$</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_stream_rxslpstream_.rxslpstream.html#messagesize_" class="tsd-kind-icon">message<wbr>Size$</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="_stream_rxslpstream_.rxslpstream.html#parser" class="tsd-kind-icon">parser</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_stream_rxslpstream_.rxslpstream.html#playerframe_" class="tsd-kind-icon">player<wbr>Frame$</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#writable" class="tsd-kind-icon">writable</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#writableended" class="tsd-kind-icon">writable<wbr>Ended</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#writablefinished" class="tsd-kind-icon">writable<wbr>Finished</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#writablehighwatermark" class="tsd-kind-icon">writable<wbr>High<wbr>Water<wbr>Mark</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#writablelength" class="tsd-kind-icon">writable<wbr>Length</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#writableobjectmode" class="tsd-kind-icon">writable<wbr>Object<wbr>Mode</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="_stream_rxslpstream_.rxslpstream.html#defaultmaxlisteners" class="tsd-kind-icon">default<wbr>Max<wbr>Listeners</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#_destroy" class="tsd-kind-icon">_destroy</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#_final" class="tsd-kind-icon">_final</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#_write" class="tsd-kind-icon">_write</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#_writev" class="tsd-kind-icon">_writev</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_stream_manualslpstream_.manualslpstream.html#complete" class="tsd-kind-icon">complete</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#cork" class="tsd-kind-icon">cork</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#destroy" class="tsd-kind-icon">destroy</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#emit" class="tsd-kind-icon">emit</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#end" class="tsd-kind-icon">end</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#eventnames" class="tsd-kind-icon">event<wbr>Names</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#getmaxlisteners" class="tsd-kind-icon">get<wbr>Max<wbr>Listeners</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#listenercount" class="tsd-kind-icon">listener<wbr>Count</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#listeners" class="tsd-kind-icon">listeners</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#off" class="tsd-kind-icon">off</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#on" class="tsd-kind-icon">on</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#once" class="tsd-kind-icon">once</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#pipe" class="tsd-kind-icon">pipe</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_stream_manualslpstream_.manualslpstream.html#pipefile" class="tsd-kind-icon">pipe<wbr>File</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#prependlistener" class="tsd-kind-icon">prepend<wbr>Listener</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#prependoncelistener" class="tsd-kind-icon">prepend<wbr>Once<wbr>Listener</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#rawlisteners" class="tsd-kind-icon">raw<wbr>Listeners</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#removelistener" class="tsd-kind-icon">remove<wbr>Listener</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_stream_manualslpstream_.manualslpstream.html#restart" class="tsd-kind-icon">restart</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#setdefaultencoding" class="tsd-kind-icon">set<wbr>Default<wbr>Encoding</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#setmaxlisteners" class="tsd-kind-icon">set<wbr>Max<wbr>Listeners</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_stream_manualslpstream_.manualslpstream.html#stop" class="tsd-kind-icon">stop</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#uncork" class="tsd-kind-icon">uncork</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_manualslpstream_.manualslpstream.html#write" class="tsd-kind-icon">write</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="_stream_manualslpstream_.manualslpstream.html#listenercount-1" class="tsd-kind-icon">listener<wbr>Count</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#_destroy" class="tsd-kind-icon">_destroy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#_final" class="tsd-kind-icon">_final</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#_write" class="tsd-kind-icon">_write</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#_writev" class="tsd-kind-icon">_writev</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#cork" class="tsd-kind-icon">cork</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#destroy" class="tsd-kind-icon">destroy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#emit" class="tsd-kind-icon">emit</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#end" class="tsd-kind-icon">end</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#eventnames" class="tsd-kind-icon">event<wbr>Names</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#getcurrentfilename" class="tsd-kind-icon">get<wbr>Current<wbr>Filename</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#getmaxlisteners" class="tsd-kind-icon">get<wbr>Max<wbr>Listeners</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#listenercount" class="tsd-kind-icon">listener<wbr>Count</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#listeners" class="tsd-kind-icon">listeners</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#off" class="tsd-kind-icon">off</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#on" class="tsd-kind-icon">on</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#once" class="tsd-kind-icon">once</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#pipe" class="tsd-kind-icon">pipe</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#prependlistener" class="tsd-kind-icon">prepend<wbr>Listener</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#prependoncelistener" class="tsd-kind-icon">prepend<wbr>Once<wbr>Listener</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#rawlisteners" class="tsd-kind-icon">raw<wbr>Listeners</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#removelistener" class="tsd-kind-icon">remove<wbr>Listener</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="_stream_rxslpstream_.rxslpstream.html#restart" class="tsd-kind-icon">restart</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#setdefaultencoding" class="tsd-kind-icon">set<wbr>Default<wbr>Encoding</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#setmaxlisteners" class="tsd-kind-icon">set<wbr>Max<wbr>Listeners</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#uncork" class="tsd-kind-icon">uncork</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#updatesettings" class="tsd-kind-icon">update<wbr>Settings</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#write" class="tsd-kind-icon">write</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="_stream_rxslpstream_.rxslpstream.html#listenercount-1" class="tsd-kind-icon">listener<wbr>Count</a></li>
 							</ul>
 						</section>
 					</div>
@@ -175,216 +174,103 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Manual<wbr>Slp<wbr>Stream<span class="tsd-signature-symbol">(</span>slpOptions<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_stream_slpstream_.html#slpstreamsettings" class="tsd-signature-type">SlpStreamSettings</a><span class="tsd-signature-symbol">&gt;</span>, opts<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">WritableOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_stream_manualslpstream_.manualslpstream.html" class="tsd-signature-type">ManualSlpStream</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>RxSlp<wbr>Stream<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">SlpFileWriterOptions</span><span class="tsd-signature-symbol">&gt;</span>, slpOptions<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_stream_rxslpstream_.html#slpstreamsettings" class="tsd-signature-type">SlpStreamSettings</a><span class="tsd-signature-symbol">&gt;</span>, opts<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">WritableOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_stream_rxslpstream_.rxslpstream.html" class="tsd-signature-type">RxSlpStream</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="_stream_slpstream_.slpstream.html">SlpStream</a>.<a href="_stream_slpstream_.slpstream.html#constructor">constructor</a></p>
+								<p>Overrides SlpFileWriter.__constructor</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/manualSlpStream.ts#L12">src/stream/manualSlpStream.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/92fd5cc/src/stream/rxSlpStream.ts#L36">src/stream/rxSlpStream.ts:36</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates an instance of SlpStream.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>memberof</dt>
+									<dd><p>SlpStream</p>
+									</dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> slpOptions: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_stream_slpstream_.html#slpstreamsettings" class="tsd-signature-type">SlpStreamSettings</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">SlpFileWriterOptions</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> slpOptions: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_stream_rxslpstream_.html#slpstreamsettings" class="tsd-signature-type">SlpStreamSettings</a><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> opts: <span class="tsd-signature-type">WritableOptions</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_stream_manualslpstream_.manualslpstream.html" class="tsd-signature-type">ManualSlpStream</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_stream_rxslpstream_.rxslpstream.html" class="tsd-signature-type">RxSlpStream</a></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="destroyed" class="tsd-anchor"></a>
 					<h3>destroyed</h3>
 					<div class="tsd-signature tsd-kind-icon">destroyed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#destroyed">destroyed</a></p>
+						<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#destroyed">destroyed</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/stream.d.ts:126</li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-					<a name="followerframe_" class="tsd-anchor"></a>
-					<h3>follower<wbr>Frame$</h3>
-					<div class="tsd-signature tsd-kind-icon">follower<wbr>Frame$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>followers<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>frame<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>items<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ItemUpdateType</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>players<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = this.followerFrameSource.asObservable()</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpstream_.slpstream.html">SlpStream</a>.<a href="_stream_slpstream_.slpstream.html#followerframe_">followerFrame$</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/slpStream.ts#L51">src/stream/slpStream.ts:51</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="followerframesource" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> follower<wbr>Frame<wbr>Source</h3>
-					<div class="tsd-signature tsd-kind-icon">follower<wbr>Frame<wbr>Source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Subject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>followers<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>frame<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>items<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ItemUpdateType</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>players<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Subject&lt;FrameEntryType&gt;()</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpstream_.slpstream.html">SlpStream</a>.<a href="_stream_slpstream_.slpstream.html#followerframesource">followerFrameSource</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/slpStream.ts#L41">src/stream/slpStream.ts:41</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="gameend_" class="tsd-anchor"></a>
 					<h3>game<wbr>End$</h3>
-					<div class="tsd-signature tsd-kind-icon">game<wbr>End$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>gameEndMethod<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>lrasInitiatorIndex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = this.gameEndSource.asObservable()</span></div>
+					<div class="tsd-signature tsd-kind-icon">game<wbr>End$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">GameEndType</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = fromEvent&lt;GameEndType&gt;(this.parser, SlpParserEvent.END).pipe(share())</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpstream_.slpstream.html">SlpStream</a>.<a href="_stream_slpstream_.slpstream.html#gameend_">gameEnd$</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/slpStream.ts#L52">src/stream/slpStream.ts:52</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/92fd5cc/src/stream/rxSlpStream.ts#L36">src/stream/rxSlpStream.ts:36</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="gameendsource" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> game<wbr>End<wbr>Source</h3>
-					<div class="tsd-signature tsd-kind-icon">game<wbr>End<wbr>Source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Subject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>gameEndMethod<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>lrasInitiatorIndex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Subject&lt;GameEndType&gt;()</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpstream_.slpstream.html">SlpStream</a>.<a href="_stream_slpstream_.slpstream.html#gameendsource">gameEndSource</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/slpStream.ts#L42">src/stream/slpStream.ts:42</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="gamestart_" class="tsd-anchor"></a>
 					<h3>game<wbr>Start$</h3>
-					<div class="tsd-signature tsd-kind-icon">game<wbr>Start$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>isPAL<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>isTeams<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>players<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PlayerType</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>slpVersion<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>stageId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = this.gameStartSource.asObservable()</span></div>
+					<div class="tsd-signature tsd-kind-icon">game<wbr>Start$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">GameStartType</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = fromEvent&lt;GameStartType&gt;(this.parser, SlpParserEvent.SETTINGS).pipe(share())</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpstream_.slpstream.html">SlpStream</a>.<a href="_stream_slpstream_.slpstream.html#gamestart_">gameStart$</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/slpStream.ts#L47">src/stream/slpStream.ts:47</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/92fd5cc/src/stream/rxSlpStream.ts#L34">src/stream/rxSlpStream.ts:34</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="gamestartsource" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> game<wbr>Start<wbr>Source</h3>
-					<div class="tsd-signature tsd-kind-icon">game<wbr>Start<wbr>Source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Subject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>isPAL<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>isTeams<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>players<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PlayerType</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>slpVersion<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>stageId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Subject&lt;GameStartType&gt;()</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpstream_.slpstream.html">SlpStream</a>.<a href="_stream_slpstream_.slpstream.html#gamestartsource">gameStartSource</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/slpStream.ts#L37">src/stream/slpStream.ts:37</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="messagesize_" class="tsd-anchor"></a>
 					<h3>message<wbr>Size$</h3>
 					<div class="tsd-signature tsd-kind-icon">message<wbr>Size$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Command</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = this.messageSizeSource.asObservable()</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpstream_.slpstream.html">SlpStream</a>.<a href="_stream_slpstream_.slpstream.html#messagesize_">messageSize$</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/slpStream.ts#L45">src/stream/slpStream.ts:45</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/92fd5cc/src/stream/rxSlpStream.ts#L33">src/stream/rxSlpStream.ts:33</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="messagesizesource" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> message<wbr>Size<wbr>Source</h3>
-					<div class="tsd-signature tsd-kind-icon">message<wbr>Size<wbr>Source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Subject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Command</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Subject&lt;Map&lt;Command, number&gt;&gt;()</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+					<a name="parser" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> parser</h3>
+					<div class="tsd-signature tsd-kind-icon">parser<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">SlpParser</span><span class="tsd-signature-symbol"> = new SlpParser()</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpstream_.slpstream.html">SlpStream</a>.<a href="_stream_slpstream_.slpstream.html#messagesizesource">messageSizeSource</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/slpStream.ts#L32">src/stream/slpStream.ts:32</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/92fd5cc/src/stream/rxSlpStream.ts#L29">src/stream/rxSlpStream.ts:29</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="playerframe_" class="tsd-anchor"></a>
 					<h3>player<wbr>Frame$</h3>
-					<div class="tsd-signature tsd-kind-icon">player<wbr>Frame$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>followers<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>frame<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>items<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ItemUpdateType</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>players<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = this.playerFrameSource.asObservable()</span></div>
+					<div class="tsd-signature tsd-kind-icon">player<wbr>Frame$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">FrameEntryType</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = fromEvent&lt;FrameEntryType&gt;(this.parser, SlpParserEvent.FINALIZED_FRAME).pipe(share())</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpstream_.slpstream.html">SlpStream</a>.<a href="_stream_slpstream_.slpstream.html#playerframe_">playerFrame$</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/slpStream.ts#L50">src/stream/slpStream.ts:50</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="playerframesource" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> player<wbr>Frame<wbr>Source</h3>
-					<div class="tsd-signature tsd-kind-icon">player<wbr>Frame<wbr>Source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Subject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>followers<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>frame<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>items<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ItemUpdateType</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>players<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Subject&lt;FrameEntryType&gt;()</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpstream_.slpstream.html">SlpStream</a>.<a href="_stream_slpstream_.slpstream.html#playerframesource">playerFrameSource</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/slpStream.ts#L40">src/stream/slpStream.ts:40</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-					<a name="postframeupdate_" class="tsd-anchor"></a>
-					<h3>post<wbr>Frame<wbr>Update$</h3>
-					<div class="tsd-signature tsd-kind-icon">post<wbr>Frame<wbr>Update$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>actionStateCounter<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>actionStateId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>currentComboCount<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>facingDirection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>frame<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>internalCharacterId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>isFollower<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>lCancelStatus<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>lastAttackLanded<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>lastHitBy<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>percent<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>playerIndex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>positionX<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>positionY<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>shieldSize<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>stocksRemaining<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = this.postFrameUpdateSource.asObservable()</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpstream_.slpstream.html">SlpStream</a>.<a href="_stream_slpstream_.slpstream.html#postframeupdate_">postFrameUpdate$</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/slpStream.ts#L49">src/stream/slpStream.ts:49</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="postframeupdatesource" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> post<wbr>Frame<wbr>Update<wbr>Source</h3>
-					<div class="tsd-signature tsd-kind-icon">post<wbr>Frame<wbr>Update<wbr>Source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Subject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>actionStateCounter<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>actionStateId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>currentComboCount<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>facingDirection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>frame<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>internalCharacterId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>isFollower<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>lCancelStatus<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>lastAttackLanded<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>lastHitBy<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>percent<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>playerIndex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>positionX<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>positionY<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>shieldSize<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>stocksRemaining<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Subject&lt;PostFrameUpdateType&gt;()</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpstream_.slpstream.html">SlpStream</a>.<a href="_stream_slpstream_.slpstream.html#postframeupdatesource">postFrameUpdateSource</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/slpStream.ts#L39">src/stream/slpStream.ts:39</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-					<a name="preframeupdate_" class="tsd-anchor"></a>
-					<h3>pre<wbr>Frame<wbr>Update$</h3>
-					<div class="tsd-signature tsd-kind-icon">pre<wbr>Frame<wbr>Update$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>actionStateId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>buttons<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>cStickX<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>cStickY<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>facingDirection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>frame<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>isFollower<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>joystickX<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>joystickY<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>percent<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>physicalButtons<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>physicalLTrigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>physicalRTrigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>playerIndex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>positionX<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>positionY<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>seed<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>trigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = this.preFrameUpdateSource.asObservable()</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpstream_.slpstream.html">SlpStream</a>.<a href="_stream_slpstream_.slpstream.html#preframeupdate_">preFrameUpdate$</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/slpStream.ts#L48">src/stream/slpStream.ts:48</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="preframeupdatesource" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> pre<wbr>Frame<wbr>Update<wbr>Source</h3>
-					<div class="tsd-signature tsd-kind-icon">pre<wbr>Frame<wbr>Update<wbr>Source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Subject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>actionStateId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>buttons<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>cStickX<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>cStickY<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>facingDirection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>frame<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>isFollower<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>joystickX<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>joystickY<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>percent<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>physicalButtons<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>physicalLTrigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>physicalRTrigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>playerIndex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>positionX<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>positionY<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>seed<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>trigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Subject&lt;PreFrameUpdateType&gt;()</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpstream_.slpstream.html">SlpStream</a>.<a href="_stream_slpstream_.slpstream.html#preframeupdatesource">preFrameUpdateSource</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/slpStream.ts#L38">src/stream/slpStream.ts:38</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-					<a name="rawcommand_" class="tsd-anchor"></a>
-					<h3>raw<wbr>Command$</h3>
-					<div class="tsd-signature tsd-kind-icon">raw<wbr>Command$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>command<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Command</span><span class="tsd-signature-symbol">; </span>payload<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Buffer</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = this.rawCommandSource.asObservable()</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpstream_.slpstream.html">SlpStream</a>.<a href="_stream_slpstream_.slpstream.html#rawcommand_">rawCommand$</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/slpStream.ts#L46">src/stream/slpStream.ts:46</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="rawcommandsource" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> raw<wbr>Command<wbr>Source</h3>
-					<div class="tsd-signature tsd-kind-icon">raw<wbr>Command<wbr>Source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Subject</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>command<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Command</span><span class="tsd-signature-symbol">; </span>payload<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Buffer</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = new Subject&lt;{command: Command;payload: Buffer;}&gt;()</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpstream_.slpstream.html">SlpStream</a>.<a href="_stream_slpstream_.slpstream.html#rawcommandsource">rawCommandSource</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/slpStream.ts#L33">src/stream/slpStream.ts:33</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/92fd5cc/src/stream/rxSlpStream.ts#L35">src/stream/rxSlpStream.ts:35</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -393,7 +279,7 @@
 					<h3>writable</h3>
 					<div class="tsd-signature tsd-kind-icon">writable<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#writable">writable</a></p>
+						<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#writable">writable</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/stream.d.ts:120</li>
 						</ul>
@@ -404,7 +290,7 @@
 					<h3>writable<wbr>Ended</h3>
 					<div class="tsd-signature tsd-kind-icon">writable<wbr>Ended<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#writableended">writableEnded</a></p>
+						<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#writableended">writableEnded</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/stream.d.ts:121</li>
 						</ul>
@@ -415,7 +301,7 @@
 					<h3>writable<wbr>Finished</h3>
 					<div class="tsd-signature tsd-kind-icon">writable<wbr>Finished<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#writablefinished">writableFinished</a></p>
+						<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#writablefinished">writableFinished</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/stream.d.ts:122</li>
 						</ul>
@@ -426,7 +312,7 @@
 					<h3>writable<wbr>High<wbr>Water<wbr>Mark</h3>
 					<div class="tsd-signature tsd-kind-icon">writable<wbr>High<wbr>Water<wbr>Mark<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#writablehighwatermark">writableHighWaterMark</a></p>
+						<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#writablehighwatermark">writableHighWaterMark</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/stream.d.ts:123</li>
 						</ul>
@@ -437,7 +323,7 @@
 					<h3>writable<wbr>Length</h3>
 					<div class="tsd-signature tsd-kind-icon">writable<wbr>Length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#writablelength">writableLength</a></p>
+						<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#writablelength">writableLength</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/stream.d.ts:124</li>
 						</ul>
@@ -448,7 +334,7 @@
 					<h3>writable<wbr>Object<wbr>Mode</h3>
 					<div class="tsd-signature tsd-kind-icon">writable<wbr>Object<wbr>Mode<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#writableobjectmode">writableObjectMode</a></p>
+						<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#writableobjectmode">writableObjectMode</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/stream.d.ts:125</li>
 						</ul>
@@ -459,7 +345,7 @@
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> default<wbr>Max<wbr>Listeners</h3>
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Max<wbr>Listeners<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#defaultmaxlisteners">defaultMaxListeners</a></p>
+						<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#defaultmaxlisteners">defaultMaxListeners</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/events.d.ts:18</li>
 						</ul>
@@ -477,7 +363,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#_destroy">_destroy</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#_destroy">_destroy</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:130</li>
 								</ul>
@@ -522,7 +408,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#_final">_final</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#_final">_final</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:131</li>
 								</ul>
@@ -564,10 +450,10 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpstream_.slpstream.html">SlpStream</a>.<a href="_stream_slpstream_.slpstream.html#_write">_write</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#_write">_write</a></p>
 								<p>Overrides Writable._write</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/slpStream.ts#L65">src/stream/slpStream.ts:65</a></li>
+									<li>Defined in node_modules/@slippi/slippi-js/dist/utils/slpStream.d.ts:50</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -616,7 +502,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#_writev">_writev</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#_writev">_writev</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:129</li>
 								</ul>
@@ -667,7 +553,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#addlistener">addListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#addlistener">addListener</a></p>
 								<p>Overrides EventEmitter.addListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:152</li>
@@ -712,7 +598,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#addlistener">addListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#addlistener">addListener</a></p>
 								<p>Overrides EventEmitter.addListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:153</li>
@@ -743,7 +629,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#addlistener">addListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#addlistener">addListener</a></p>
 								<p>Overrides EventEmitter.addListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:154</li>
@@ -780,7 +666,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#addlistener">addListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#addlistener">addListener</a></p>
 								<p>Overrides EventEmitter.addListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:155</li>
@@ -811,7 +697,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#addlistener">addListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#addlistener">addListener</a></p>
 								<p>Overrides EventEmitter.addListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:156</li>
@@ -848,7 +734,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#addlistener">addListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#addlistener">addListener</a></p>
 								<p>Overrides EventEmitter.addListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:157</li>
@@ -885,7 +771,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#addlistener">addListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#addlistener">addListener</a></p>
 								<p>Overrides EventEmitter.addListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:158</li>
@@ -922,23 +808,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="complete" class="tsd-anchor"></a>
-					<h3>complete</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">complete<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/manualSlpStream.ts#L57">src/stream/manualSlpStream.ts:57</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="cork" class="tsd-anchor"></a>
 					<h3>cork</h3>
@@ -948,7 +817,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#cork">cork</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#cork">cork</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:138</li>
 								</ul>
@@ -966,7 +835,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#destroy">destroy</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#destroy">destroy</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:140</li>
 								</ul>
@@ -996,7 +865,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#emit">emit</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#emit">emit</a></p>
 								<p>Overrides EventEmitter.emit</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:160</li>
@@ -1012,7 +881,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#emit">emit</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#emit">emit</a></p>
 								<p>Overrides EventEmitter.emit</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:161</li>
@@ -1028,7 +897,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#emit">emit</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#emit">emit</a></p>
 								<p>Overrides EventEmitter.emit</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:162</li>
@@ -1047,7 +916,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#emit">emit</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#emit">emit</a></p>
 								<p>Overrides EventEmitter.emit</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:163</li>
@@ -1063,7 +932,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#emit">emit</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#emit">emit</a></p>
 								<p>Overrides EventEmitter.emit</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:164</li>
@@ -1082,7 +951,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#emit">emit</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#emit">emit</a></p>
 								<p>Overrides EventEmitter.emit</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:165</li>
@@ -1101,7 +970,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#emit">emit</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#emit">emit</a></p>
 								<p>Overrides EventEmitter.emit</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:166</li>
@@ -1131,7 +1000,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#end">end</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#end">end</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:135</li>
 								</ul>
@@ -1158,7 +1027,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#end">end</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#end">end</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:136</li>
 								</ul>
@@ -1188,7 +1057,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#end">end</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#end">end</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:137</li>
 								</ul>
@@ -1230,12 +1099,41 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#eventnames">eventNames</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#eventnames">eventNames</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/events.d.ts:33</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">symbol</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="getcurrentfilename" class="tsd-anchor"></a>
+					<h3>get<wbr>Current<wbr>Filename</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Current<wbr>Filename<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#getcurrentfilename">getCurrentFilename</a></p>
+								<ul>
+									<li>Defined in node_modules/@slippi/slippi-js/dist/utils/slpFileWriter.d.ts:41</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Return the name of the SLP file currently being written or null if
+									no file is being written to currently.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>memberof</dt>
+									<dd><p>SlpFileWriter</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1248,7 +1146,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#getmaxlisteners">getMaxListeners</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#getmaxlisteners">getMaxListeners</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/events.d.ts:29</li>
 								</ul>
@@ -1266,7 +1164,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#listenercount-1">listenerCount</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#listenercount-1">listenerCount</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/events.d.ts:34</li>
 								</ul>
@@ -1290,7 +1188,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#listeners">listeners</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#listeners">listeners</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/events.d.ts:30</li>
 								</ul>
@@ -1314,7 +1212,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#off">off</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#off">off</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/events.d.ts:26</li>
 								</ul>
@@ -1365,7 +1263,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#on">on</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#on">on</a></p>
 								<p>Overrides EventEmitter.on</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:168</li>
@@ -1396,7 +1294,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#on">on</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#on">on</a></p>
 								<p>Overrides EventEmitter.on</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:169</li>
@@ -1427,7 +1325,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#on">on</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#on">on</a></p>
 								<p>Overrides EventEmitter.on</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:170</li>
@@ -1464,7 +1362,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#on">on</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#on">on</a></p>
 								<p>Overrides EventEmitter.on</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:171</li>
@@ -1495,7 +1393,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#on">on</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#on">on</a></p>
 								<p>Overrides EventEmitter.on</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:172</li>
@@ -1532,7 +1430,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#on">on</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#on">on</a></p>
 								<p>Overrides EventEmitter.on</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:173</li>
@@ -1569,7 +1467,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#on">on</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#on">on</a></p>
 								<p>Overrides EventEmitter.on</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:174</li>
@@ -1621,7 +1519,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#once">once</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#once">once</a></p>
 								<p>Overrides EventEmitter.once</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:176</li>
@@ -1652,7 +1550,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#once">once</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#once">once</a></p>
 								<p>Overrides EventEmitter.once</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:177</li>
@@ -1683,7 +1581,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#once">once</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#once">once</a></p>
 								<p>Overrides EventEmitter.once</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:178</li>
@@ -1720,7 +1618,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#once">once</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#once">once</a></p>
 								<p>Overrides EventEmitter.once</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:179</li>
@@ -1751,7 +1649,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#once">once</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#once">once</a></p>
 								<p>Overrides EventEmitter.once</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:180</li>
@@ -1788,7 +1686,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#once">once</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#once">once</a></p>
 								<p>Overrides EventEmitter.once</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:181</li>
@@ -1825,7 +1723,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#once">once</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#once">once</a></p>
 								<p>Overrides EventEmitter.once</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:182</li>
@@ -1871,7 +1769,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#pipe">pipe</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#pipe">pipe</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:5</li>
 								</ul>
@@ -1900,29 +1798,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="pipefile" class="tsd-anchor"></a>
-					<h3>pipe<wbr>File</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">pipe<wbr>File<span class="tsd-signature-symbol">(</span>filename<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/manualSlpStream.ts#L44">src/stream/manualSlpStream.ts:44</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>filename: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
 					<a name="prependlistener" class="tsd-anchor"></a>
 					<h3>prepend<wbr>Listener</h3>
@@ -1938,7 +1813,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#prependlistener">prependListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependlistener">prependListener</a></p>
 								<p>Overrides EventEmitter.prependListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:184</li>
@@ -1969,7 +1844,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#prependlistener">prependListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependlistener">prependListener</a></p>
 								<p>Overrides EventEmitter.prependListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:185</li>
@@ -2000,7 +1875,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#prependlistener">prependListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependlistener">prependListener</a></p>
 								<p>Overrides EventEmitter.prependListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:186</li>
@@ -2037,7 +1912,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#prependlistener">prependListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependlistener">prependListener</a></p>
 								<p>Overrides EventEmitter.prependListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:187</li>
@@ -2068,7 +1943,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#prependlistener">prependListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependlistener">prependListener</a></p>
 								<p>Overrides EventEmitter.prependListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:188</li>
@@ -2105,7 +1980,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#prependlistener">prependListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependlistener">prependListener</a></p>
 								<p>Overrides EventEmitter.prependListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:189</li>
@@ -2142,7 +2017,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#prependlistener">prependListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependlistener">prependListener</a></p>
 								<p>Overrides EventEmitter.prependListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:190</li>
@@ -2194,7 +2069,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependoncelistener">prependOnceListener</a></p>
 								<p>Overrides EventEmitter.prependOnceListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:192</li>
@@ -2225,7 +2100,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependoncelistener">prependOnceListener</a></p>
 								<p>Overrides EventEmitter.prependOnceListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:193</li>
@@ -2256,7 +2131,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependoncelistener">prependOnceListener</a></p>
 								<p>Overrides EventEmitter.prependOnceListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:194</li>
@@ -2293,7 +2168,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependoncelistener">prependOnceListener</a></p>
 								<p>Overrides EventEmitter.prependOnceListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:195</li>
@@ -2324,7 +2199,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependoncelistener">prependOnceListener</a></p>
 								<p>Overrides EventEmitter.prependOnceListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:196</li>
@@ -2361,7 +2236,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependoncelistener">prependOnceListener</a></p>
 								<p>Overrides EventEmitter.prependOnceListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:197</li>
@@ -2398,7 +2273,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependoncelistener">prependOnceListener</a></p>
 								<p>Overrides EventEmitter.prependOnceListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:198</li>
@@ -2444,7 +2319,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#rawlisteners">rawListeners</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#rawlisteners">rawListeners</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/events.d.ts:31</li>
 								</ul>
@@ -2468,7 +2343,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#removealllisteners">removeAllListeners</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#removealllisteners">removeAllListeners</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/events.d.ts:27</li>
 								</ul>
@@ -2498,7 +2373,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#removelistener">removeListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#removelistener">removeListener</a></p>
 								<p>Overrides EventEmitter.removeListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:200</li>
@@ -2529,7 +2404,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#removelistener">removeListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#removelistener">removeListener</a></p>
 								<p>Overrides EventEmitter.removeListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:201</li>
@@ -2560,7 +2435,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#removelistener">removeListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#removelistener">removeListener</a></p>
 								<p>Overrides EventEmitter.removeListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:202</li>
@@ -2597,7 +2472,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#removelistener">removeListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#removelistener">removeListener</a></p>
 								<p>Overrides EventEmitter.removeListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:203</li>
@@ -2628,7 +2503,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#removelistener">removeListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#removelistener">removeListener</a></p>
 								<p>Overrides EventEmitter.removeListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:204</li>
@@ -2665,7 +2540,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#removelistener">removeListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#removelistener">removeListener</a></p>
 								<p>Overrides EventEmitter.removeListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:205</li>
@@ -2702,7 +2577,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#removelistener">removeListener</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#removelistener">removeListener</a></p>
 								<p>Overrides EventEmitter.removeListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:206</li>
@@ -2739,17 +2614,18 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 					<a name="restart" class="tsd-anchor"></a>
 					<h3>restart</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
 						<li class="tsd-signature tsd-kind-icon">restart<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Overrides SlpStream.restart</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/manualSlpStream.ts#L49">src/stream/manualSlpStream.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/92fd5cc/src/stream/rxSlpStream.ts#L74">src/stream/rxSlpStream.ts:74</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -2765,7 +2641,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#setdefaultencoding">setDefaultEncoding</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#setdefaultencoding">setDefaultEncoding</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:134</li>
 								</ul>
@@ -2789,7 +2665,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#setmaxlisteners">setMaxListeners</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#setmaxlisteners">setMaxListeners</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/events.d.ts:28</li>
 								</ul>
@@ -2804,23 +2680,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="stop" class="tsd-anchor"></a>
-					<h3>stop</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">stop<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/034d573/src/stream/manualSlpStream.ts#L53">src/stream/manualSlpStream.ts:53</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="uncork" class="tsd-anchor"></a>
 					<h3>uncork</h3>
@@ -2830,11 +2689,45 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#uncork">uncork</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#uncork">uncork</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:139</li>
 								</ul>
 							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="updatesettings" class="tsd-anchor"></a>
+					<h3>update<wbr>Settings</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Settings<span class="tsd-signature-symbol">(</span>settings<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">SlpFileWriterOptions</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#updatesettings">updateSettings</a></p>
+								<ul>
+									<li>Defined in node_modules/@slippi/slippi-js/dist/utils/slpFileWriter.d.ts:48</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Updates the settings to be the desired ones passed in.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>memberof</dt>
+									<dd><p>SlpFileWriter</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>settings: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">SlpFileWriterOptions</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -2849,7 +2742,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#write">write</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#write">write</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:132</li>
 								</ul>
@@ -2885,7 +2778,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#write">write</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#write">write</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:133</li>
 								</ul>
@@ -2933,7 +2826,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_slpfile_.slpfile.html">SlpFile</a>.<a href="_stream_slpfile_.slpfile.html#listenercount-1">listenerCount</a></p>
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#listenercount-1">listenerCount</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/events.d.ts:17</li>
 								</ul>
@@ -2967,184 +2860,157 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-module">
-						<a href="../modules/_stream_manualslpstream_.html">&quot;stream/manual<wbr>Slp<wbr>Stream&quot;</a>
+						<a href="../modules/_stream_rxslpstream_.html">&quot;stream/rx<wbr>Slp<wbr>Stream&quot;</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-reference tsd-parent-kind-module">
+						<a href="../modules/_stream_rxslpstream_.html#slpstreamevent" class="tsd-kind-icon">Slp<wbr>Stream<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module">
+						<a href="../modules/_stream_rxslpstream_.html#slpstreammode" class="tsd-kind-icon">Slp<wbr>Stream<wbr>Mode</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module">
+						<a href="../modules/_stream_rxslpstream_.html#slpstreamsettings" class="tsd-kind-icon">Slp<wbr>Stream<wbr>Settings</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-module">
-						<a href="_stream_manualslpstream_.manualslpstream.html" class="tsd-kind-icon">Manual<wbr>Slp<wbr>Stream</a>
+						<a href="_stream_rxslpstream_.rxslpstream.html" class="tsd-kind-icon">Rx<wbr>Slp<wbr>Stream</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-								<a href="_stream_manualslpstream_.manualslpstream.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#destroyed" class="tsd-kind-icon">destroyed</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#destroyed" class="tsd-kind-icon">destroyed</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_stream_rxslpstream_.rxslpstream.html#gameend_" class="tsd-kind-icon">game<wbr>End$</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_stream_rxslpstream_.rxslpstream.html#gamestart_" class="tsd-kind-icon">game<wbr>Start$</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_stream_rxslpstream_.rxslpstream.html#messagesize_" class="tsd-kind-icon">message<wbr>Size$</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="_stream_rxslpstream_.rxslpstream.html#parser" class="tsd-kind-icon">parser</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_stream_rxslpstream_.rxslpstream.html#playerframe_" class="tsd-kind-icon">player<wbr>Frame$</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#followerframe_" class="tsd-kind-icon">follower<wbr>Frame$</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="_stream_manualslpstream_.manualslpstream.html#followerframesource" class="tsd-kind-icon">follower<wbr>Frame<wbr>Source</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#writable" class="tsd-kind-icon">writable</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#gameend_" class="tsd-kind-icon">game<wbr>End$</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="_stream_manualslpstream_.manualslpstream.html#gameendsource" class="tsd-kind-icon">game<wbr>End<wbr>Source</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#writableended" class="tsd-kind-icon">writable<wbr>Ended</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#gamestart_" class="tsd-kind-icon">game<wbr>Start$</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="_stream_manualslpstream_.manualslpstream.html#gamestartsource" class="tsd-kind-icon">game<wbr>Start<wbr>Source</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#writablefinished" class="tsd-kind-icon">writable<wbr>Finished</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#messagesize_" class="tsd-kind-icon">message<wbr>Size$</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="_stream_manualslpstream_.manualslpstream.html#messagesizesource" class="tsd-kind-icon">message<wbr>Size<wbr>Source</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#writablehighwatermark" class="tsd-kind-icon">writable<wbr>High<wbr>Water<wbr>Mark</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#playerframe_" class="tsd-kind-icon">player<wbr>Frame$</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="_stream_manualslpstream_.manualslpstream.html#playerframesource" class="tsd-kind-icon">player<wbr>Frame<wbr>Source</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#writablelength" class="tsd-kind-icon">writable<wbr>Length</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#postframeupdate_" class="tsd-kind-icon">post<wbr>Frame<wbr>Update$</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="_stream_manualslpstream_.manualslpstream.html#postframeupdatesource" class="tsd-kind-icon">post<wbr>Frame<wbr>Update<wbr>Source</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#preframeupdate_" class="tsd-kind-icon">pre<wbr>Frame<wbr>Update$</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="_stream_manualslpstream_.manualslpstream.html#preframeupdatesource" class="tsd-kind-icon">pre<wbr>Frame<wbr>Update<wbr>Source</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#rawcommand_" class="tsd-kind-icon">raw<wbr>Command$</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="_stream_manualslpstream_.manualslpstream.html#rawcommandsource" class="tsd-kind-icon">raw<wbr>Command<wbr>Source</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#writable" class="tsd-kind-icon">writable</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#writableended" class="tsd-kind-icon">writable<wbr>Ended</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#writablefinished" class="tsd-kind-icon">writable<wbr>Finished</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#writablehighwatermark" class="tsd-kind-icon">writable<wbr>High<wbr>Water<wbr>Mark</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#writablelength" class="tsd-kind-icon">writable<wbr>Length</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#writableobjectmode" class="tsd-kind-icon">writable<wbr>Object<wbr>Mode</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#writableobjectmode" class="tsd-kind-icon">writable<wbr>Object<wbr>Mode</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="_stream_manualslpstream_.manualslpstream.html#defaultmaxlisteners" class="tsd-kind-icon">default<wbr>Max<wbr>Listeners</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#defaultmaxlisteners" class="tsd-kind-icon">default<wbr>Max<wbr>Listeners</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#_destroy" class="tsd-kind-icon">_destroy</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#_destroy" class="tsd-kind-icon">_destroy</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#_final" class="tsd-kind-icon">_final</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#_final" class="tsd-kind-icon">_final</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#_write" class="tsd-kind-icon">_write</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#_write" class="tsd-kind-icon">_write</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#_writev" class="tsd-kind-icon">_writev</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#_writev" class="tsd-kind-icon">_writev</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_stream_manualslpstream_.manualslpstream.html#complete" class="tsd-kind-icon">complete</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#addlistener" class="tsd-kind-icon">add<wbr>Listener</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#cork" class="tsd-kind-icon">cork</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#cork" class="tsd-kind-icon">cork</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#destroy" class="tsd-kind-icon">destroy</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#destroy" class="tsd-kind-icon">destroy</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#emit" class="tsd-kind-icon">emit</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#emit" class="tsd-kind-icon">emit</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#end" class="tsd-kind-icon">end</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#end" class="tsd-kind-icon">end</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#eventnames" class="tsd-kind-icon">event<wbr>Names</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#eventnames" class="tsd-kind-icon">event<wbr>Names</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#getmaxlisteners" class="tsd-kind-icon">get<wbr>Max<wbr>Listeners</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#getcurrentfilename" class="tsd-kind-icon">get<wbr>Current<wbr>Filename</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#listenercount" class="tsd-kind-icon">listener<wbr>Count</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#getmaxlisteners" class="tsd-kind-icon">get<wbr>Max<wbr>Listeners</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#listeners" class="tsd-kind-icon">listeners</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#listenercount" class="tsd-kind-icon">listener<wbr>Count</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#off" class="tsd-kind-icon">off</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#listeners" class="tsd-kind-icon">listeners</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="_stream_rxslpstream_.rxslpstream.html#off" class="tsd-kind-icon">off</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#on" class="tsd-kind-icon">on</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#on" class="tsd-kind-icon">on</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#once" class="tsd-kind-icon">once</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#once" class="tsd-kind-icon">once</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#pipe" class="tsd-kind-icon">pipe</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_stream_manualslpstream_.manualslpstream.html#pipefile" class="tsd-kind-icon">pipe<wbr>File</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#pipe" class="tsd-kind-icon">pipe</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#prependlistener" class="tsd-kind-icon">prepend<wbr>Listener</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#prependlistener" class="tsd-kind-icon">prepend<wbr>Listener</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#prependoncelistener" class="tsd-kind-icon">prepend<wbr>Once<wbr>Listener</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#prependoncelistener" class="tsd-kind-icon">prepend<wbr>Once<wbr>Listener</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#rawlisteners" class="tsd-kind-icon">raw<wbr>Listeners</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#rawlisteners" class="tsd-kind-icon">raw<wbr>Listeners</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#removealllisteners" class="tsd-kind-icon">remove<wbr>All<wbr>Listeners</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#removelistener" class="tsd-kind-icon">remove<wbr>Listener</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#removelistener" class="tsd-kind-icon">remove<wbr>Listener</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_stream_manualslpstream_.manualslpstream.html#restart" class="tsd-kind-icon">restart</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#setdefaultencoding" class="tsd-kind-icon">set<wbr>Default<wbr>Encoding</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="_stream_rxslpstream_.rxslpstream.html#restart" class="tsd-kind-icon">restart</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#setmaxlisteners" class="tsd-kind-icon">set<wbr>Max<wbr>Listeners</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_stream_manualslpstream_.manualslpstream.html#stop" class="tsd-kind-icon">stop</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#setdefaultencoding" class="tsd-kind-icon">set<wbr>Default<wbr>Encoding</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#uncork" class="tsd-kind-icon">uncork</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#setmaxlisteners" class="tsd-kind-icon">set<wbr>Max<wbr>Listeners</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="_stream_manualslpstream_.manualslpstream.html#write" class="tsd-kind-icon">write</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#uncork" class="tsd-kind-icon">uncork</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="_stream_rxslpstream_.rxslpstream.html#updatesettings" class="tsd-kind-icon">update<wbr>Settings</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="_stream_rxslpstream_.rxslpstream.html#write" class="tsd-kind-icon">write</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="_stream_manualslpstream_.manualslpstream.html#listenercount-1" class="tsd-kind-icon">listener<wbr>Count</a>
+								<a href="_stream_rxslpstream_.rxslpstream.html#listenercount-1" class="tsd-kind-icon">listener<wbr>Count</a>
 							</li>
 						</ul>
 					</li>
@@ -3169,6 +3035,7 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
@@ -3180,6 +3047,9 @@
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
 			</ul>
 		</div>
 	</div>
