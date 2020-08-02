@@ -458,10 +458,10 @@
   resolved "https://registry.yarnpkg.com/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz#8da5c6530915653f3a1f38fd5f101d8c3f8079c5"
   integrity sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==
 
-"@slippi/slippi-js@^5.0.3":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@slippi/slippi-js/-/slippi-js-5.0.3.tgz#ff94be5c78a1d0934d1f56f287f9ff1e17508111"
-  integrity sha512-K85+dKykHe2ekfLBvnCqBsI7dmQK5SrClKvAjwj10S2M5RMsFKt5e/ZIMCTtgFLVslkxbivta3+ssWYM21U2uA==
+"@slippi/slippi-js@^5.0.4":
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/@slippi/slippi-js/-/slippi-js-5.0.4.tgz#417876c4d0739786fc153ab26c0017b5d38a476a"
+  integrity sha512-NZrACcYhBn8YnYxlfLumNg/ZuhcNxae4eB9N0fFbZtW9JJo9mdoN0cfqHz3ofBTgy5cYP1cWkWhjDhzSnJSAnQ==
   dependencies:
     "@shelacek/ubjson" "^1.0.1"
     iconv-lite "^0.6.2"
