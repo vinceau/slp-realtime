@@ -19,7 +19,7 @@ This library provides an easy way to subscribe to real-time [Slippi](https://git
 
 ## Installation
 
-The `slp-realtime` package relies on the `rxjs` package as a peer dependency and must be installed alongside.
+This package relies on the `rxjs` package as a peer dependency and must be installed alongside.
 
 **With NPM**
 
