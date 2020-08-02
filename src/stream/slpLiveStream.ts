@@ -1,8 +1,8 @@
-import { SlpFileWriter } from "./slpWriter";
-import { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect";
+import { RxSlpStream } from "./rxSlpStream";
+import { ConsoleConnection, ConnectionStatus } from "@slippi/slippi-js";
 
 // Re-export these for ease-of-use
-export { ConsoleConnection, ConnectionStatus } from "@vinceau/slp-wii-connect";
+export { ConsoleConnection, ConnectionStatus } from "@slippi/slippi-js";
 
 const SLIPPI_CONNECTION_TIMEOUT_MS = 5000;
 
@@ -14,7 +14,7 @@ const SLIPPI_CONNECTION_TIMEOUT_MS = 5000;
  * @class SlpLiveStream
  * @extends {SlpFileWriter}
  */
-export class SlpLiveStream extends SlpFileWriter {
+export class SlpLiveStream extends RxSlpStream {
   /**
    * Connection can be used to return the connection status.
    *
@@ -40,7 +40,7 @@ export class SlpLiveStream extends SlpFileWriter {
       try {
         this.connection.connect(address, port, SLIPPI_CONNECTION_TIMEOUT_MS);
         this.connection.on("handshake", (data) => {
-          this.updateSettings({ consoleNick: data.consoleNickname });
+          this.updateSettings({ consoleNickname: data.consoleNickname });
         });
         this.connection.on("data", (data) => {
           this.write(data);

@@ -69,5 +69,6 @@ export interface EventManagerConfig {
 
 export interface EventEmit {
   id: string;
+  type: string;
   payload?: any;
 }

@@ -1,8 +1,7 @@
-
 import sinon from "sinon";
 
 import { Subscription } from "rxjs";
-import { pipeFileContents, SlpRealTime, SlpStream, EventManager, EventManagerConfig } from "../../src";
+import { pipeFileContents, SlpRealTime, RxSlpStream, EventManager, EventManagerConfig, SlpStreamMode } from "../../src";
 
 describe("player variables config", () => {
   let subscriptions: Array<Subscription>;
@@ -12,7 +11,7 @@ describe("player variables config", () => {
   });
 
   afterAll(() => {
-    subscriptions.forEach(s => s.unsubscribe());
+    subscriptions.forEach((s) => s.unsubscribe());
   });
 
   it("can match the player index filter using variables", async () => {
@@ -21,7 +20,7 @@ describe("player variables config", () => {
     const playerSpy2 = sinon.spy();
     const opponentSpy2 = sinon.spy();
 
-    const slpStream = new SlpStream();
+    const slpStream = new RxSlpStream(undefined, { mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     realtime.setStream(slpStream);
@@ -47,18 +46,18 @@ describe("player variables config", () => {
             playerIndex: "opponents",
           },
         },
-      ]
+      ],
     };
 
     subscriptions.push(
-      eventManager.events$.subscribe(event => {
+      eventManager.events$.subscribe((event) => {
         switch (event.id) {
-        case "player-button-combo":
-          playerSpy1();
-          break;
-        case "opponents-button-combo":
-          opponentSpy1();
-          break;
+          case "player-button-combo":
+            playerSpy1();
+            break;
+          case "opponents-button-combo":
+            opponentSpy1();
+            break;
         }
       }),
     );
@@ -66,7 +65,7 @@ describe("player variables config", () => {
     eventManager.updateConfig(config);
 
     // P1 vs P4
-    await pipeFileContents("slp/Game_20190810T162904.slp", slpStream, { end: false } );
+    await pipeFileContents("slp/Game_20190810T162904.slp", slpStream, { end: false });
 
     expect(playerSpy1.callCount).toEqual(22);
     expect(opponentSpy1.callCount).toEqual(26);
@@ -92,29 +91,29 @@ describe("player variables config", () => {
             playerIndex: "opponents",
           },
         },
-      ]
+      ],
     };
 
     subscriptions.push(
-      eventManager.events$.subscribe(event => {
+      eventManager.events$.subscribe((event) => {
         switch (event.id) {
-        case "player-button-combo":
-          playerSpy2();
-          break;
-        case "opponent-button-combo":
-          opponentSpy2();
-          break;
+          case "player-button-combo":
+            playerSpy2();
+            break;
+          case "opponent-button-combo":
+            opponentSpy2();
+            break;
         }
       }),
     );
 
     eventManager.updateConfig(newConfig);
 
+    slpStream.restart();
     // P1 vs P4
     await pipeFileContents("slp/Game_20190810T162904.slp", slpStream);
 
     expect(playerSpy2.callCount).toEqual(26);
     expect(opponentSpy2.callCount).toEqual(22);
   });
-
 });

@@ -1,15 +1,15 @@
 import { Observable } from "rxjs";
 import { switchMap } from "rxjs/operators";
 
-import { SlpStream } from "../stream";
+import { RxSlpStream } from "../stream";
 import { InputButtonCombo } from "../types";
 import { forAllPlayerIndices } from "../utils";
 import { mapFramesToButtonInputs } from "../operators";
 
 export class InputEvents {
-  private stream$: Observable<SlpStream>;
+  private stream$: Observable<RxSlpStream>;
 
-  public constructor(stream: Observable<SlpStream>) {
+  public constructor(stream: Observable<RxSlpStream>) {
     this.stream$ = stream;
   }
 

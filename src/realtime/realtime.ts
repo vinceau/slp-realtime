@@ -1,4 +1,4 @@
-import { SlpStream } from "../stream";
+import { RxSlpStream } from "../stream";
 import { StockEvents, InputEvents, ComboEvents, GameEvents } from "../events";
 import { ReplaySubject } from "rxjs";
 
@@ -11,7 +11,7 @@ import { ReplaySubject } from "rxjs";
  * @extends {EventEmitter}
  */
 export class SlpRealTime {
-  private stream$ = new ReplaySubject<SlpStream>();
+  private stream$ = new ReplaySubject<RxSlpStream>();
 
   public game: GameEvents;
   public stock: StockEvents;
@@ -31,7 +31,7 @@ export class SlpRealTime {
    * @param {SlpStream} stream
    * @memberof SlpRealTime
    */
-  public setStream(stream: SlpStream): void {
+  public setStream(stream: RxSlpStream): void {
     this.stream$.next(stream);
   }
 }

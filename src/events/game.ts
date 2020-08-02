@@ -1,16 +1,16 @@
 import { Observable } from "rxjs";
-import { SlpStream } from "../stream";
+import { RxSlpStream } from "../stream";
 import { withLatestFrom, map, switchMap } from "rxjs/operators";
 import { findWinner } from "../utils";
 import { GameStartType, GameEndPayload } from "../types";
 
 export class GameEvents {
-  private stream$: Observable<SlpStream>;
+  private stream$: Observable<RxSlpStream>;
 
   public start$: Observable<GameStartType>;
   public end$: Observable<GameEndPayload>;
 
-  public constructor(stream: Observable<SlpStream>) {
+  public constructor(stream: Observable<RxSlpStream>) {
     this.stream$ = stream;
 
     this.start$ = this.stream$.pipe(switchMap((s) => s.gameStart$));

@@ -1,4 +1,4 @@
-import { pipeFileContents, SlpRealTime, ManualSlpStream } from "../src";
+import { pipeFileContents, SlpRealTime, RxSlpStream, SlpStreamMode } from "../src";
 import { Subscription } from "rxjs";
 
 describe("when determining the winner", () => {
@@ -15,7 +15,7 @@ describe("when determining the winner", () => {
   it("correctly determines winner", async () => {
     let winner = -1;
 
-    const slpStream = new ManualSlpStream();
+    const slpStream = new RxSlpStream(undefined, { mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 
@@ -26,25 +26,28 @@ describe("when determining the winner", () => {
     );
 
     // Player 4 is the winner
-    await slpStream.pipeFile("slp/Game_20190810T162904.slp");
+    await pipeFileContents("slp/Game_20190810T162904.slp", slpStream, { end: false });
     expect(winner).toEqual(3);
 
     winner = -1; // Reset the winner
 
+    slpStream.restart();
     // Player 2 is the winner
-    await slpStream.pipeFile("slp/Game_20190517T164215.slp");
+    await pipeFileContents("slp/Game_20190517T164215.slp", slpStream, { end: false });
     expect(winner).toEqual(1);
 
     winner = -1; // Reset the winner
 
+    slpStream.restart();
     // Player 1 is the winner
-    await slpStream.pipeFile("slp/Game_20190324T113942.slp");
+    await pipeFileContents("slp/Game_20190324T113942.slp", slpStream, { end: false });
     expect(winner).toEqual(0);
 
     winner = -1; // Reset the winner
 
+    slpStream.restart();
     // Player 2 is the winner
-    await slpStream.pipeFile("slp/200306_2258_Falco_v_Fox_PS.slp");
+    await pipeFileContents("slp/200306_2258_Falco_v_Fox_PS.slp", slpStream);
     expect(winner).toEqual(1);
   });
 });

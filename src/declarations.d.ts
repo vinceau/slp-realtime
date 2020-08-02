@@ -1,7 +1,7 @@
 declare module "tailstream" {
-  import { Stream } from "stream";
+  import { Readable } from "stream";
 
-  export interface TailStream extends Stream {
+  export interface TailStream extends Readable {
     done(): void;
   }
 

@@ -18,20 +18,26 @@ export const readComboConfig = (combo: ComboEvents, config: EventManagerConfig):
     .filter((event) => event.type === ComboEvent.START)
     .map((event) => {
       return handlePlayerIndexFilter(combo.start$, event, config.variables).pipe(
-        map((payload) => ({
-          id: event.id,
-          payload,
-        })),
+        map(
+          (payload): EventEmit => ({
+            id: event.id,
+            type: event.type,
+            payload,
+          }),
+        ),
       );
     });
   const extendObservables = config.events
     .filter((event) => event.type === ComboEvent.EXTEND)
     .map((event) => {
       return handlePlayerIndexFilter(combo.extend$, event, config.variables).pipe(
-        map((payload) => ({
-          id: event.id,
-          payload,
-        })),
+        map(
+          (payload): EventEmit => ({
+            id: event.id,
+            type: event.type,
+            payload,
+          }),
+        ),
       );
     });
   const endObservables = config.events
@@ -39,10 +45,13 @@ export const readComboConfig = (combo: ComboEvents, config: EventManagerConfig):
     .map((event) => {
       const base$ = handlePlayerIndexFilter(combo.end$, event, config.variables);
       return handleComboFilter(base$, event, config.variables).pipe(
-        map((payload) => ({
-          id: event.id,
-          payload,
-        })),
+        map(
+          (payload): EventEmit => ({
+            id: event.id,
+            type: event.type,
+            payload,
+          }),
+        ),
       );
     });
   const conversionObservables = config.events
@@ -50,10 +59,13 @@ export const readComboConfig = (combo: ComboEvents, config: EventManagerConfig):
     .map((event) => {
       const base$ = handlePlayerIndexFilter(combo.conversion$, event, config.variables);
       return handleComboFilter(base$, event, config.variables).pipe(
-        map((payload) => ({
-          id: event.id,
-          payload,
-        })),
+        map(
+          (payload): EventEmit => ({
+            id: event.id,
+            type: event.type,
+            payload,
+          }),
+        ),
       );
     });
 
