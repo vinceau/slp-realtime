@@ -1,10 +1,11 @@
 {
-	"name": "slp-realtime-json-config-example",
-	"version": "1.0.0",
-	"license": "MIT",
-	"main": "index.js",
-	"dependencies": {
-		"@vinceau/slp-realtime": "file:../.."
-	},
-	"private": true
+  "name": "slp-realtime-json-config-example",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "index.js",
+  "dependencies": {
+    "@vinceau/slp-realtime": "file:../..",
+    "rxjs": "^6.5.4"
+  },
+  "private": true
 }
