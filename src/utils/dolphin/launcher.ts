@@ -13,7 +13,7 @@ const defaultDolphinLauncherOptions = {
   endBuffer: 1, // Match the start frame because why not
 };
 
-type DolphinLauncherOptions = typeof defaultDolphinLauncherOptions;
+export type DolphinLauncherOptions = typeof defaultDolphinLauncherOptions;
 
 export class DolphinLauncher {
   public output: DolphinOutput;
