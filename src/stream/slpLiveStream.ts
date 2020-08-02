@@ -1,5 +1,5 @@
 import { RxSlpStream } from "./rxSlpStream";
-import { ConsoleConnection, ConnectionStatus } from "@slippi/slippi-js";
+import { ConsoleConnection, ConnectionStatus, ConnectionEvent } from "@slippi/slippi-js";
 
 // Re-export these for ease-of-use
 export { ConsoleConnection, ConnectionStatus } from "@slippi/slippi-js";
@@ -22,6 +22,16 @@ export class SlpLiveStream extends RxSlpStream {
    */
   public connection = new ConsoleConnection();
 
+  constructor() {
+    super();
+    this.connection.on(ConnectionEvent.HANDSHAKE, (data) => {
+      this.updateSettings({ consoleNickname: data.consoleNickname });
+    });
+    this.connection.on(ConnectionEvent.DATA, (data) => {
+      this.write(data);
+    });
+  }
+
   /**
    * Connect to a Wii or Slippi relay on the specified address and port.
    *
@@ -31,30 +41,30 @@ export class SlpLiveStream extends RxSlpStream {
    * @memberof SlpLiveStream
    */
   public async start(address: string, port: number): Promise<void> {
-    // Restart the connection if already connected
-    if (this.connection !== null) {
-      this.connection.disconnect();
-    }
-
     const assertConnected: Promise<void> = new Promise((resolve, reject): void => {
+      // Attach the statusChange handler before we initiate the connection
+      const onStatusChange = (status: ConnectionStatus) => {
+        // We only care about the connected and disconnected statuses
+        if (status !== ConnectionStatus.CONNECTED && status !== ConnectionStatus.DISCONNECTED) {
+          return;
+        }
+        this.connection.removeListener(ConnectionEvent.STATUS_CHANGE, onStatusChange);
+
+        // Complete the promise
+        switch (status) {
+          case ConnectionStatus.CONNECTED:
+            resolve();
+            break;
+          case ConnectionStatus.DISCONNECTED:
+            reject(new Error(`Failed to connect to: ${address}:${port}`));
+            break;
+        }
+      };
+      this.connection.on(ConnectionEvent.STATUS_CHANGE, onStatusChange);
+
       try {
+        // Actually try to connect
         this.connection.connect(address, port, SLIPPI_CONNECTION_TIMEOUT_MS);
-        this.connection.on("handshake", (data) => {
-          this.updateSettings({ consoleNickname: data.consoleNickname });
-        });
-        this.connection.on("data", (data) => {
-          this.write(data);
-        });
-        this.connection.once("statusChange", (status: ConnectionStatus) => {
-          switch (status) {
-            case ConnectionStatus.CONNECTED:
-              resolve();
-              break;
-            case ConnectionStatus.DISCONNECTED:
-              reject(new Error(`Failed to connect to: ${address}:${port}`));
-              break;
-          }
-        });
       } catch (err) {
         reject(err);
       }
