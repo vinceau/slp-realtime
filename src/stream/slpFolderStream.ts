@@ -25,7 +25,7 @@ import { map, switchMap, share, takeUntil } from "rxjs/operators";
  * @extends {RxSlpStream}
  */
 export class SlpFolderStream extends RxSlpStream {
-  private startRequested$ = new Subject<string>();
+  private startRequested$ = new Subject<[string, boolean]>();
   private stopRequested$ = new Subject<void>();
   private newFile$: Observable<string>;
   private readStream: TailStream | null = null;
@@ -37,12 +37,13 @@ export class SlpFolderStream extends RxSlpStream {
   ) {
     super(options, { ...slpOptions, mode: SlpStreamMode.MANUAL }, opts);
     this.newFile$ = this.startRequested$.pipe(
-      switchMap((slpFolder) => {
+      switchMap(([slpFolder, includeSubfolders]) => {
         // End any existing read streams
         this.endReadStream();
 
         // Initialize watcher.
-        const slpGlob = path.join(slpFolder, "*.slp");
+        const subFolderGlob = includeSubfolders ? "**" : "";
+        const slpGlob = path.join(slpFolder, subFolderGlob, "*.slp");
         const watcher = chokidar.watch(slpGlob, {
           ignored: /(^|[\/\\])\../, // ignore dotfiles
           persistent: true,
@@ -83,9 +84,9 @@ export class SlpFolderStream extends RxSlpStream {
    * @param {string} slpFolder
    * @memberof SlpFolderStream
    */
-  public start(slpFolder: string): void {
-    console.log(`Start monitoring: ${slpFolder}`);
-    this.startRequested$.next(slpFolder);
+  public start(slpFolder: string, includeSubfolders?: boolean): void {
+    console.log(`Start monitoring${includeSubfolders ? " with subfolders" : ""}: ${slpFolder}`);
+    this.startRequested$.next([slpFolder, Boolean(includeSubfolders)]);
   }
 
   public stop(): void {
