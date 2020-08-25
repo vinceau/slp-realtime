@@ -3,13 +3,11 @@ import { GameStartType } from "../../types";
 
 export function extractPlayerNames(settings: GameStartType, metadata?: any, playerIndex?: number): string[] {
   const nametags: string[] = [];
-  // If no playerIndex is provided, extract for all players
-  const indices: Array<string | number> =
-    playerIndex !== undefined
-      ? [playerIndex]
-      : Boolean(metadata && metadata.players)
-      ? Object.keys(metadata.players)
-      : [];
+  let indices: number[] = settings.players.map((p) => p.playerIndex);
+  // If playerIndex is provided use that
+  if (playerIndex !== undefined) {
+    indices = [playerIndex];
+  }
 
   for (const index of indices) {
     const player = settings.players.find((player) => player.playerIndex === index);
