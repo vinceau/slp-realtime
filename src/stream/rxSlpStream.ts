@@ -26,7 +26,7 @@ export { SlpStreamMode, SlpStreamSettings, SlpStreamEvent } from "@slippi/slippi
  * @extends {Writable}
  */
 export class RxSlpStream extends SlpFileWriter {
-  protected parser = new SlpParser();
+  protected parser = new SlpParser({ strict: true }); // Strict mode will enable data validation
   private messageSizeSource = new Subject<Map<Command, number>>();
 
   // Observables
