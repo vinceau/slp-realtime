@@ -1,8 +1,8 @@
 import { RxSlpStream } from "./rxSlpStream";
-import { ConsoleConnection, ConnectionStatus, ConnectionEvent } from "@slippi/slippi-js";
+import { Connection, ConsoleConnection, DolphinConnection, ConnectionStatus, ConnectionEvent } from "@slippi/slippi-js";
 
 // Re-export these for ease-of-use
-export { ConsoleConnection, ConnectionStatus } from "@slippi/slippi-js";
+export { ConnectionEvent, ConsoleConnection, ConnectionStatus } from "@slippi/slippi-js";
 
 const SLIPPI_CONNECTION_TIMEOUT_MS = 5000;
 
@@ -20,10 +20,15 @@ export class SlpLiveStream extends RxSlpStream {
    *
    * @memberof SlpLiveStream
    */
-  public connection = new ConsoleConnection();
+  public connection: Connection;
 
-  constructor() {
+  constructor(connectionType?: "dolphin" | "console") {
     super();
+    if (connectionType === "dolphin") {
+      this.connection = new DolphinConnection();
+    } else {
+      this.connection = new ConsoleConnection();
+    }
     this.connection.on(ConnectionEvent.HANDSHAKE, (data) => {
       this.updateSettings({ consoleNickname: data.consoleNickname });
     });
@@ -64,7 +69,7 @@ export class SlpLiveStream extends RxSlpStream {
 
       try {
         // Actually try to connect
-        this.connection.connect(address, port, SLIPPI_CONNECTION_TIMEOUT_MS);
+        this.connection.connect(address, port);
       } catch (err) {
         reject(err);
       }
