@@ -8,6 +8,7 @@ import {
   EventManager,
   EventManagerConfig,
   ComboEvent,
+  SlpStreamMode,
 } from "../../src";
 import { Subscription } from "rxjs";
 
@@ -26,7 +27,7 @@ describe("combo config", () => {
     const allComboSpy = sinon.spy();
     const comboSpy = sinon.spy();
 
-    const slpStream = new RxSlpStream();
+    const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     realtime.setStream(slpStream);
@@ -96,7 +97,7 @@ describe("combo config", () => {
         },
       ],
     };
-    const slpStream = new RxSlpStream();
+    const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
     const eventManager = new EventManager(realtime);
@@ -124,7 +125,7 @@ describe("combo config", () => {
   it("can filter by min combo percent config", async () => {
     const comboSpy = sinon.spy();
 
-    const slpStream = new RxSlpStream();
+    const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     eventManager.updateConfig({
@@ -158,7 +159,7 @@ describe("combo config", () => {
 
   it("emits the correct number of conversions", async () => {
     const conversionSpy = sinon.spy();
-    const slpStream = new RxSlpStream();
+    const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     eventManager.updateConfig({
@@ -190,7 +191,7 @@ describe("combo config", () => {
     const comboSpy = sinon.spy();
 
     const filename = "slp/200306_2258_Falco_v_Fox_PS.slp";
-    const slpStream = new RxSlpStream();
+    const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
 
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);

@@ -15,7 +15,7 @@ describe("when determining the winner", () => {
   it("correctly determines winner", async () => {
     let winner = -1;
 
-    const slpStream = new RxSlpStream(undefined, { mode: SlpStreamMode.MANUAL });
+    const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 

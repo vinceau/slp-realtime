@@ -3,7 +3,7 @@ import path from "path";
 import chokidar from "chokidar";
 import tailstream, { TailStream } from "tailstream";
 import { RxSlpStream } from "./rxSlpStream";
-import { SlpFileWriterOptions, SlpStreamSettings, SlpStreamMode } from "@slippi/slippi-js";
+import { SlpFileWriterOptions, SlpStreamMode } from "@slippi/slippi-js";
 import { WritableOptions } from "stream";
 import { Subject, Observable, fromEvent } from "rxjs";
 import { map, switchMap, share, takeUntil } from "rxjs/operators";
@@ -30,12 +30,8 @@ export class SlpFolderStream extends RxSlpStream {
   private newFile$: Observable<string>;
   private readStream: TailStream | null = null;
 
-  public constructor(
-    options?: Partial<SlpFileWriterOptions>,
-    slpOptions?: Partial<SlpStreamSettings>,
-    opts?: WritableOptions,
-  ) {
-    super(options, { ...slpOptions, mode: SlpStreamMode.MANUAL }, opts);
+  public constructor(options?: Partial<SlpFileWriterOptions>, opts?: WritableOptions) {
+    super({ ...options, mode: SlpStreamMode.MANUAL }, opts);
     this.newFile$ = this.startRequested$.pipe(
       switchMap(([slpFolder, includeSubfolders]) => {
         // End any existing read streams

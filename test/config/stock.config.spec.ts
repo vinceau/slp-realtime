@@ -18,7 +18,7 @@ describe("stock config", () => {
     const playerSpawnSpy = sinon.spy();
     const playerDeathSpy = sinon.spy();
 
-    const slpStream = new RxSlpStream(undefined, { mode: SlpStreamMode.MANUAL });
+    const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     realtime.setStream(slpStream);

@@ -20,7 +20,7 @@ describe("game config", () => {
     const isTeamsGameStartSpy = sinon.spy();
     const gameEndSpy = sinon.spy();
 
-    const slpStream = new RxSlpStream();
+    const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     realtime.setStream(slpStream);
@@ -91,7 +91,7 @@ describe("game config", () => {
     const player2WinSpy = sinon.spy();
     const player4WinSpy = sinon.spy();
 
-    const slpStream = new RxSlpStream(undefined, { mode: SlpStreamMode.MANUAL });
+    const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     realtime.setStream(slpStream);
