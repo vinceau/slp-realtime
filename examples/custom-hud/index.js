@@ -1,6 +1,12 @@
 /*
 This example script reads live slp files from a folder, and writes
 the players stock count and percentages to a file.
+
+NOTE: Please don't actually do this for real custom HUDs. Writing to files is
+slow and OBS takes a long time to update after file changes. If you actually
+want to build a custom HUD for OBS you should use a browser source and send
+updates using websockets instead of writing data to a file.
+
 */
 
 // TODO: Set this folder!!

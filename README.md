@@ -136,6 +136,8 @@ realtime.stock.countChange$.subscribe((payload) => {
 });
 ```
 
+**NOTE: Please don't actually do this for real custom HUDs. Writing to files is slow and OBS takes a long time to update after file changes. If you actually want to build a custom layout for OBS you should use a browser source and send updates using websockets instead of writing data to a file.**
+
 ## Development
 
 To build the library from source:
