@@ -46,7 +46,7 @@ realtime.game.start$.subscribe(() => {
 realtime.stock.percentChange$.subscribe((payload) => {
   const player = payload.playerIndex + 1;
   console.log(`player ${player} percent: ${payload.percent}`);
-  setPlayerPercent(player, `${Math.floor(payload.percent)}%`);
+  setPlayerPercent(player, `${payload.percent.toFixed(0)}%`);
 });
 
 realtime.stock.countChange$.subscribe((payload) => {

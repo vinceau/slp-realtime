@@ -123,16 +123,16 @@ Want to make your own HUD?
 5. Profit!!
 
 ```javascript
-realtime.stock.percentChange$.subscribe(payload => {
+realtime.stock.percentChange$.subscribe((payload) => {
   const player = payload.playerIndex + 1;
   console.log(`player ${player} percent: ${payload.percent}`);
-  fs.writeFileSync(`./player${player}Percent.txt`), payload.percent);
+  fs.writeFileSync(`./player${player}Percent.txt`, payload.percent.toFixed(0));
 });
 
 realtime.stock.countChange$.subscribe((payload) => {
   const player = payload.playerIndex + 1;
   console.log(`player ${player} stocks: ${payload.stocksRemaining}`);
-  fs.writeFileSync(`./player${player}Stocks.txt`), payload.stocksRemaining);
+  fs.writeFileSync(`./player${player}Stocks.txt`, payload.stocksRemaining.toString());
 });
 ```
 
