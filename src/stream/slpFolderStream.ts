@@ -5,7 +5,7 @@ import tailstream, { TailStream } from "tailstream";
 import { RxSlpStream } from "./rxSlpStream";
 import { SlpFileWriterOptions, SlpStreamSettings, SlpStreamMode } from "@slippi/slippi-js";
 import { WritableOptions } from "stream";
-import { Subject, Observable, fromEvent } from "rxjs";
+import { Subject, fromEvent, BehaviorSubject } from "rxjs";
 import { map, switchMap, share, takeUntil } from "rxjs/operators";
 
 /**
@@ -27,7 +27,7 @@ import { map, switchMap, share, takeUntil } from "rxjs/operators";
 export class SlpFolderStream extends RxSlpStream {
   private startRequested$ = new Subject<[string, boolean]>();
   private stopRequested$ = new Subject<void>();
-  private newFile$: Observable<string>;
+  private newFile$ = new BehaviorSubject<string | null>(null);
   private readStream: TailStream | null = null;
 
   public constructor(
@@ -36,28 +36,17 @@ export class SlpFolderStream extends RxSlpStream {
     opts?: WritableOptions,
   ) {
     super(options, { ...slpOptions, mode: SlpStreamMode.MANUAL }, opts);
-    this.newFile$ = this.startRequested$.pipe(
-      switchMap(([slpFolder, includeSubfolders]) => {
-        // End any existing read streams
-        this.endReadStream();
+    this._setupSubjects();
+  }
 
-        // Initialize watcher.
-        const subFolderGlob = includeSubfolders ? "**" : "";
-        const slpGlob = path.join(slpFolder, subFolderGlob, "*.slp");
-        const watcher = chokidar.watch(slpGlob, {
-          ignored: /(^|[\/\\])\../, // ignore dotfiles
-          persistent: true,
-          ignoreInitial: true,
-          ignorePermissionErrors: true,
-        });
-        return fromEvent<[string, any]>(watcher, "add").pipe(
-          share(),
-          map(([filename]) => path.resolve(filename)),
-          takeUntil(this.stopRequested$),
-        );
-      }),
-    );
+  private _setupSubjects(): void {
+    // Handle what happens when we detect a new file
     this.newFile$.subscribe((filePath) => {
+      // Filepath can be null if it's not subscription hasn't started
+      if (!filePath) {
+        return;
+      }
+
       console.log(`found a new file: ${filePath}`);
       this.endReadStream();
 
@@ -67,6 +56,31 @@ export class SlpFolderStream extends RxSlpStream {
       this.readStream = tailstream.createReadStream(filePath);
       this.readStream.pipe(this, { end: false });
     });
+
+    // Set up the new file listener
+    this.startRequested$
+      .pipe(
+        switchMap(([slpFolder, includeSubfolders]) => {
+          // End any existing read streams
+          this.endReadStream();
+
+          // Initialize watcher.
+          const subFolderGlob = includeSubfolders ? "**" : "";
+          const slpGlob = path.join(slpFolder, subFolderGlob, "*.slp");
+          const watcher = chokidar.watch(slpGlob, {
+            ignored: /(^|[\/\\])\../, // ignore dotfiles
+            persistent: true,
+            ignoreInitial: true,
+            ignorePermissionErrors: true,
+          });
+          return fromEvent<[string, any]>(watcher, "add").pipe(
+            share(),
+            map(([filename]) => path.resolve(filename)),
+            takeUntil(this.stopRequested$),
+          );
+        }),
+      )
+      .subscribe(this.newFile$);
   }
 
   private endReadStream(): void {
@@ -92,5 +106,12 @@ export class SlpFolderStream extends RxSlpStream {
   public stop(): void {
     this.endReadStream();
     this.stopRequested$.next();
+  }
+
+  /**
+   * Returns the latest created file that was found by folder monitoring.
+   */
+  public latestFile(): string | null {
+    return this.newFile$.value;
   }
 }

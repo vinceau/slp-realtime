@@ -20,22 +20,22 @@ const errHandler = (err) => {
   if (err) {
     console.error(err);
   }
-}
+};
 
 const setPlayerStock = (player, stock) => {
   fs.writeFile(path.join(playerInfoFolder, `player${player}Stocks.txt`), stock, errHandler);
-}
+};
 
 const setPlayerPercent = (player, percent) => {
   fs.writeFile(path.join(playerInfoFolder, `player${player}Percent.txt`), percent, errHandler);
-}
+};
 
 // Connect to the relay
 const stream = new SlpFolderStream();
 const realtime = new SlpRealTime();
 realtime.setStream(stream);
 realtime.game.start$.subscribe(() => {
-  console.log(`Detected a new game in ${stream.getCurrentFilename()}`);
+  console.log(`Detected a new game in ${stream.latestFile()}`);
 });
 realtime.stock.percentChange$.subscribe((payload) => {
   const player = payload.playerIndex + 1;
