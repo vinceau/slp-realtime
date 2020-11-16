@@ -46,7 +46,7 @@ realtime.stock.percentChange$.subscribe((payload) => {
 realtime.stock.countChange$.subscribe((payload) => {
   const player = payload.playerIndex + 1;
   console.log(`player ${player} stocks: ${payload.stocksRemaining}`);
-  setPlayerStock(player, payload.stocksRemaining);
+  setPlayerStock(player, payload.stocksRemaining.toString());
 });
 
 // Reset the text files on game end
