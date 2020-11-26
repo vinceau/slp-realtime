@@ -458,10 +458,10 @@
   resolved "https://registry.yarnpkg.com/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz#8da5c6530915653f3a1f38fd5f101d8c3f8079c5"
   integrity sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==
 
-"@slippi/slippi-js@^5.1.0-beta.3":
-  version "5.1.0-beta.3"
-  resolved "https://registry.yarnpkg.com/@slippi/slippi-js/-/slippi-js-5.1.0-beta.3.tgz#54cf6a85d22a1e465eca01143ec5d7cb82500034"
-  integrity sha512-DSK69x4C6yNredQkOgRtFGqC2U1kKq9C3n/R+yWg3DCmyWAdb/Bac3HDq5j83Mo/uwOgvYmpMXgNLlnIEvUbaA==
+"@slippi/slippi-js@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@slippi/slippi-js/-/slippi-js-5.1.0.tgz#ec523179d07b48fde94036080c4abd1b6eab4cc4"
+  integrity sha512-u9RWxFU8oDzv5COCmA2lSnQzcgFwEliFNKijDfzKRlnQ68AuIFz/RFOaP+YwWegvarTYVU29RdDtnD1+oAjlpw==
   dependencies:
     "@shelacek/ubjson" "^1.0.1"
     enet "^0.2.9"
