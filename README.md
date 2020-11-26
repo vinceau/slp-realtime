@@ -123,18 +123,20 @@ Want to make your own HUD?
 5. Profit!!
 
 ```javascript
-realtime.stock.percentChange$.subscribe(payload => {
+realtime.stock.percentChange$.subscribe((payload) => {
   const player = payload.playerIndex + 1;
   console.log(`player ${player} percent: ${payload.percent}`);
-  fs.writeFileSync(`./player${player}Percent.txt`), payload.percent);
+  fs.writeFileSync(`./player${player}Percent.txt`, payload.percent.toFixed(0));
 });
 
 realtime.stock.countChange$.subscribe((payload) => {
   const player = payload.playerIndex + 1;
   console.log(`player ${player} stocks: ${payload.stocksRemaining}`);
-  fs.writeFileSync(`./player${player}Stocks.txt`), payload.stocksRemaining);
+  fs.writeFileSync(`./player${player}Stocks.txt`, payload.stocksRemaining.toString());
 });
 ```
+
+**NOTE: Please don't actually do this for real custom HUDs. Writing to files is slow and OBS takes a long time to update after file changes. If you actually want to build a custom layout for OBS you should use a browser source and send updates using websockets instead of writing data to a file.**
 
 ## Development
 
