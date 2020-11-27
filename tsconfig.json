@@ -2,18 +2,16 @@
   "compilerOptions": {
     "declaration": true,
     "declarationDir": "./dist",
-    "module": "es6",
+    "module": "esnext",
     "noImplicitAny": true,
     "moduleResolution": "node",
     "outDir": "./dist",
-    "target": "es5",
+    "target": "es2018",
     "esModuleInterop": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "sourceMap": true,
+    "lib": ["esnext"]
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }
