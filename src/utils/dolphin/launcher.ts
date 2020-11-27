@@ -9,6 +9,7 @@ const defaultDolphinLauncherOptions = {
   meleeIsoPath: "", // Path to Melee iso
   batch: false, // Quit Dolphin when playback queue ends
   disableSeekBar: false, // Disable the Dolphin seek bar
+  readEvents: true, // Track the Dolphin playback events over stdout
   startBuffer: 1, // Sometimes Dolphin misses the start frame so start from the following frame
   endBuffer: 1, // Match the start frame because why not
 };
@@ -61,6 +62,9 @@ export class DolphinLauncher {
     const params = ["-i", comboFilePath];
     if (this.options.meleeIsoPath) {
       params.push("-e", this.options.meleeIsoPath);
+    }
+    if (this.options.readEvents) {
+      params.push("-c");
     }
     if (this.options.batch) {
       params.push("-b");
