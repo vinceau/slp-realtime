@@ -64,7 +64,7 @@ export class DolphinLauncher {
       params.push("-e", this.options.meleeIsoPath);
     }
     if (this.options.readEvents) {
-      params.push("-c");
+      params.push("-co");
     }
     if (this.options.batch) {
       params.push("-b");
