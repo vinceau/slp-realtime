@@ -142,6 +142,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#destroy" class="tsd-kind-icon">destroy</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#emit" class="tsd-kind-icon">emit</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#end" class="tsd-kind-icon">end</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#endcurrentfile" class="tsd-kind-icon">end<wbr>Current<wbr>File</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#eventnames" class="tsd-kind-icon">event<wbr>Names</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#getcurrentfilename" class="tsd-kind-icon">get<wbr>Current<wbr>Filename</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_stream_rxslpstream_.rxslpstream.html#getmaxlisteners" class="tsd-kind-icon">get<wbr>Max<wbr>Listeners</a></li>
@@ -174,14 +175,14 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>RxSlp<wbr>Stream<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">SlpFileWriterOptions</span><span class="tsd-signature-symbol">&gt;</span>, slpOptions<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_stream_rxslpstream_.html#slpstreamsettings" class="tsd-signature-type">SlpStreamSettings</a><span class="tsd-signature-symbol">&gt;</span>, opts<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">WritableOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_stream_rxslpstream_.rxslpstream.html" class="tsd-signature-type">RxSlpStream</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>RxSlp<wbr>Stream<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">SlpFileWriterOptions</span><span class="tsd-signature-symbol">&gt;</span>, opts<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">WritableOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_stream_rxslpstream_.rxslpstream.html" class="tsd-signature-type">RxSlpStream</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides SlpFileWriter.__constructor</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/6881c75/src/stream/rxSlpStream.ts#L36">src/stream/rxSlpStream.ts:36</a></li>
+									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/15611d3/src/stream/rxSlpStream.ts#L35">src/stream/rxSlpStream.ts:35</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -200,9 +201,6 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">SlpFileWriterOptions</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> slpOptions: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/_stream_rxslpstream_.html#slpstreamsettings" class="tsd-signature-type">SlpStreamSettings</a><span class="tsd-signature-symbol">&gt;</span></h5>
-								</li>
-								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> opts: <span class="tsd-signature-type">WritableOptions</span></h5>
 								</li>
 							</ul>
@@ -218,7 +216,7 @@
 					<h3>destroyed</h3>
 					<div class="tsd-signature tsd-kind-icon">destroyed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#destroyed">destroyed</a></p>
+						<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#destroyed">destroyed</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/stream.d.ts:126</li>
 						</ul>
@@ -230,7 +228,7 @@
 					<div class="tsd-signature tsd-kind-icon">game<wbr>End$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">GameEndType</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = fromEvent&lt;GameEndType&gt;(this.parser, SlpParserEvent.END).pipe(share())</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/6881c75/src/stream/rxSlpStream.ts#L36">src/stream/rxSlpStream.ts:36</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/15611d3/src/stream/rxSlpStream.ts#L35">src/stream/rxSlpStream.ts:35</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -240,7 +238,7 @@
 					<div class="tsd-signature tsd-kind-icon">game<wbr>Start$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">GameStartType</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = fromEvent&lt;GameStartType&gt;(this.parser, SlpParserEvent.SETTINGS).pipe(share())</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/6881c75/src/stream/rxSlpStream.ts#L34">src/stream/rxSlpStream.ts:34</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/15611d3/src/stream/rxSlpStream.ts#L33">src/stream/rxSlpStream.ts:33</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -250,7 +248,7 @@
 					<div class="tsd-signature tsd-kind-icon">message<wbr>Size$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Map</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Command</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = this.messageSizeSource.asObservable()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/6881c75/src/stream/rxSlpStream.ts#L33">src/stream/rxSlpStream.ts:33</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/15611d3/src/stream/rxSlpStream.ts#L32">src/stream/rxSlpStream.ts:32</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -260,7 +258,7 @@
 					<div class="tsd-signature tsd-kind-icon">parser<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">SlpParser</span><span class="tsd-signature-symbol"> = new SlpParser({ strict: true })</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/6881c75/src/stream/rxSlpStream.ts#L29">src/stream/rxSlpStream.ts:29</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/15611d3/src/stream/rxSlpStream.ts#L28">src/stream/rxSlpStream.ts:28</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -270,7 +268,7 @@
 					<div class="tsd-signature tsd-kind-icon">player<wbr>Frame$<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Observable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">FrameEntryType</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = fromEvent&lt;FrameEntryType&gt;(this.parser, SlpParserEvent.FINALIZED_FRAME).pipe(share())</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/6881c75/src/stream/rxSlpStream.ts#L35">src/stream/rxSlpStream.ts:35</a></li>
+							<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/15611d3/src/stream/rxSlpStream.ts#L34">src/stream/rxSlpStream.ts:34</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -279,7 +277,7 @@
 					<h3>writable</h3>
 					<div class="tsd-signature tsd-kind-icon">writable<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#writable">writable</a></p>
+						<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#writable">writable</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/stream.d.ts:120</li>
 						</ul>
@@ -290,7 +288,7 @@
 					<h3>writable<wbr>Ended</h3>
 					<div class="tsd-signature tsd-kind-icon">writable<wbr>Ended<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#writableended">writableEnded</a></p>
+						<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#writableended">writableEnded</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/stream.d.ts:121</li>
 						</ul>
@@ -301,7 +299,7 @@
 					<h3>writable<wbr>Finished</h3>
 					<div class="tsd-signature tsd-kind-icon">writable<wbr>Finished<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#writablefinished">writableFinished</a></p>
+						<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#writablefinished">writableFinished</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/stream.d.ts:122</li>
 						</ul>
@@ -312,7 +310,7 @@
 					<h3>writable<wbr>High<wbr>Water<wbr>Mark</h3>
 					<div class="tsd-signature tsd-kind-icon">writable<wbr>High<wbr>Water<wbr>Mark<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#writablehighwatermark">writableHighWaterMark</a></p>
+						<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#writablehighwatermark">writableHighWaterMark</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/stream.d.ts:123</li>
 						</ul>
@@ -323,7 +321,7 @@
 					<h3>writable<wbr>Length</h3>
 					<div class="tsd-signature tsd-kind-icon">writable<wbr>Length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#writablelength">writableLength</a></p>
+						<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#writablelength">writableLength</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/stream.d.ts:124</li>
 						</ul>
@@ -334,7 +332,7 @@
 					<h3>writable<wbr>Object<wbr>Mode</h3>
 					<div class="tsd-signature tsd-kind-icon">writable<wbr>Object<wbr>Mode<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#writableobjectmode">writableObjectMode</a></p>
+						<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#writableobjectmode">writableObjectMode</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/stream.d.ts:125</li>
 						</ul>
@@ -345,7 +343,7 @@
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> default<wbr>Max<wbr>Listeners</h3>
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Max<wbr>Listeners<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#defaultmaxlisteners">defaultMaxListeners</a></p>
+						<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#defaultmaxlisteners">defaultMaxListeners</a></p>
 						<ul>
 							<li>Defined in node_modules/@types/node/events.d.ts:18</li>
 						</ul>
@@ -363,7 +361,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#_destroy">_destroy</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#_destroy">_destroy</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:130</li>
 								</ul>
@@ -408,7 +406,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#_final">_final</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#_final">_final</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:131</li>
 								</ul>
@@ -502,7 +500,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#_writev">_writev</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#_writev">_writev</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:129</li>
 								</ul>
@@ -553,7 +551,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#addlistener">addListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#addlistener">addListener</a></p>
 								<p>Overrides EventEmitter.addListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:152</li>
@@ -598,7 +596,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#addlistener">addListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#addlistener">addListener</a></p>
 								<p>Overrides EventEmitter.addListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:153</li>
@@ -629,7 +627,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#addlistener">addListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#addlistener">addListener</a></p>
 								<p>Overrides EventEmitter.addListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:154</li>
@@ -666,7 +664,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#addlistener">addListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#addlistener">addListener</a></p>
 								<p>Overrides EventEmitter.addListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:155</li>
@@ -697,7 +695,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#addlistener">addListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#addlistener">addListener</a></p>
 								<p>Overrides EventEmitter.addListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:156</li>
@@ -734,7 +732,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#addlistener">addListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#addlistener">addListener</a></p>
 								<p>Overrides EventEmitter.addListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:157</li>
@@ -771,7 +769,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#addlistener">addListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#addlistener">addListener</a></p>
 								<p>Overrides EventEmitter.addListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:158</li>
@@ -817,7 +815,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#cork">cork</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#cork">cork</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:138</li>
 								</ul>
@@ -835,7 +833,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#destroy">destroy</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#destroy">destroy</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:140</li>
 								</ul>
@@ -865,7 +863,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#emit">emit</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#emit">emit</a></p>
 								<p>Overrides EventEmitter.emit</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:160</li>
@@ -881,7 +879,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#emit">emit</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#emit">emit</a></p>
 								<p>Overrides EventEmitter.emit</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:161</li>
@@ -897,7 +895,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#emit">emit</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#emit">emit</a></p>
 								<p>Overrides EventEmitter.emit</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:162</li>
@@ -916,7 +914,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#emit">emit</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#emit">emit</a></p>
 								<p>Overrides EventEmitter.emit</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:163</li>
@@ -932,7 +930,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#emit">emit</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#emit">emit</a></p>
 								<p>Overrides EventEmitter.emit</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:164</li>
@@ -951,7 +949,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#emit">emit</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#emit">emit</a></p>
 								<p>Overrides EventEmitter.emit</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:165</li>
@@ -970,7 +968,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#emit">emit</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#emit">emit</a></p>
 								<p>Overrides EventEmitter.emit</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:166</li>
@@ -1000,7 +998,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#end">end</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#end">end</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:135</li>
 								</ul>
@@ -1027,7 +1025,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#end">end</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#end">end</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:136</li>
 								</ul>
@@ -1057,7 +1055,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#end">end</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#end">end</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:137</li>
 								</ul>
@@ -1091,6 +1089,34 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="endcurrentfile" class="tsd-anchor"></a>
+					<h3>end<wbr>Current<wbr>File</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">end<wbr>Current<wbr>File<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#endcurrentfile">endCurrentFile</a></p>
+								<ul>
+									<li>Defined in node_modules/@slippi/slippi-js/dist/utils/slpFileWriter.d.ts:48</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Ends the current file being written to.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>memberof</dt>
+									<dd><p>SlpFileWriter</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="eventnames" class="tsd-anchor"></a>
 					<h3>event<wbr>Names</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -1099,7 +1125,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#eventnames">eventNames</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#eventnames">eventNames</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/events.d.ts:33</li>
 								</ul>
@@ -1146,7 +1172,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#getmaxlisteners">getMaxListeners</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#getmaxlisteners">getMaxListeners</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/events.d.ts:29</li>
 								</ul>
@@ -1164,7 +1190,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#listenercount-1">listenerCount</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#listenercount-1">listenerCount</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/events.d.ts:34</li>
 								</ul>
@@ -1188,7 +1214,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#listeners">listeners</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#listeners">listeners</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/events.d.ts:30</li>
 								</ul>
@@ -1212,7 +1238,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#off">off</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#off">off</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/events.d.ts:26</li>
 								</ul>
@@ -1263,7 +1289,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#on">on</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#on">on</a></p>
 								<p>Overrides EventEmitter.on</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:168</li>
@@ -1294,7 +1320,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#on">on</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#on">on</a></p>
 								<p>Overrides EventEmitter.on</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:169</li>
@@ -1325,7 +1351,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#on">on</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#on">on</a></p>
 								<p>Overrides EventEmitter.on</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:170</li>
@@ -1362,7 +1388,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#on">on</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#on">on</a></p>
 								<p>Overrides EventEmitter.on</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:171</li>
@@ -1393,7 +1419,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#on">on</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#on">on</a></p>
 								<p>Overrides EventEmitter.on</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:172</li>
@@ -1430,7 +1456,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#on">on</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#on">on</a></p>
 								<p>Overrides EventEmitter.on</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:173</li>
@@ -1467,7 +1493,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#on">on</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#on">on</a></p>
 								<p>Overrides EventEmitter.on</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:174</li>
@@ -1519,7 +1545,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#once">once</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#once">once</a></p>
 								<p>Overrides EventEmitter.once</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:176</li>
@@ -1550,7 +1576,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#once">once</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#once">once</a></p>
 								<p>Overrides EventEmitter.once</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:177</li>
@@ -1581,7 +1607,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#once">once</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#once">once</a></p>
 								<p>Overrides EventEmitter.once</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:178</li>
@@ -1618,7 +1644,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#once">once</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#once">once</a></p>
 								<p>Overrides EventEmitter.once</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:179</li>
@@ -1649,7 +1675,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#once">once</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#once">once</a></p>
 								<p>Overrides EventEmitter.once</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:180</li>
@@ -1686,7 +1712,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#once">once</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#once">once</a></p>
 								<p>Overrides EventEmitter.once</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:181</li>
@@ -1723,7 +1749,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#once">once</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#once">once</a></p>
 								<p>Overrides EventEmitter.once</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:182</li>
@@ -1769,7 +1795,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#pipe">pipe</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#pipe">pipe</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:5</li>
 								</ul>
@@ -1813,7 +1839,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependlistener">prependListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#prependlistener">prependListener</a></p>
 								<p>Overrides EventEmitter.prependListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:184</li>
@@ -1844,7 +1870,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependlistener">prependListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#prependlistener">prependListener</a></p>
 								<p>Overrides EventEmitter.prependListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:185</li>
@@ -1875,7 +1901,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependlistener">prependListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#prependlistener">prependListener</a></p>
 								<p>Overrides EventEmitter.prependListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:186</li>
@@ -1912,7 +1938,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependlistener">prependListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#prependlistener">prependListener</a></p>
 								<p>Overrides EventEmitter.prependListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:187</li>
@@ -1943,7 +1969,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependlistener">prependListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#prependlistener">prependListener</a></p>
 								<p>Overrides EventEmitter.prependListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:188</li>
@@ -1980,7 +2006,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependlistener">prependListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#prependlistener">prependListener</a></p>
 								<p>Overrides EventEmitter.prependListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:189</li>
@@ -2017,7 +2043,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependlistener">prependListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#prependlistener">prependListener</a></p>
 								<p>Overrides EventEmitter.prependListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:190</li>
@@ -2069,7 +2095,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#prependoncelistener">prependOnceListener</a></p>
 								<p>Overrides EventEmitter.prependOnceListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:192</li>
@@ -2100,7 +2126,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#prependoncelistener">prependOnceListener</a></p>
 								<p>Overrides EventEmitter.prependOnceListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:193</li>
@@ -2131,7 +2157,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#prependoncelistener">prependOnceListener</a></p>
 								<p>Overrides EventEmitter.prependOnceListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:194</li>
@@ -2168,7 +2194,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#prependoncelistener">prependOnceListener</a></p>
 								<p>Overrides EventEmitter.prependOnceListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:195</li>
@@ -2199,7 +2225,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#prependoncelistener">prependOnceListener</a></p>
 								<p>Overrides EventEmitter.prependOnceListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:196</li>
@@ -2236,7 +2262,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#prependoncelistener">prependOnceListener</a></p>
 								<p>Overrides EventEmitter.prependOnceListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:197</li>
@@ -2273,7 +2299,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#prependoncelistener">prependOnceListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#prependoncelistener">prependOnceListener</a></p>
 								<p>Overrides EventEmitter.prependOnceListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:198</li>
@@ -2319,7 +2345,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#rawlisteners">rawListeners</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#rawlisteners">rawListeners</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/events.d.ts:31</li>
 								</ul>
@@ -2343,7 +2369,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#removealllisteners">removeAllListeners</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#removealllisteners">removeAllListeners</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/events.d.ts:27</li>
 								</ul>
@@ -2373,7 +2399,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#removelistener">removeListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#removelistener">removeListener</a></p>
 								<p>Overrides EventEmitter.removeListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:200</li>
@@ -2404,7 +2430,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#removelistener">removeListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#removelistener">removeListener</a></p>
 								<p>Overrides EventEmitter.removeListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:201</li>
@@ -2435,7 +2461,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#removelistener">removeListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#removelistener">removeListener</a></p>
 								<p>Overrides EventEmitter.removeListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:202</li>
@@ -2472,7 +2498,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#removelistener">removeListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#removelistener">removeListener</a></p>
 								<p>Overrides EventEmitter.removeListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:203</li>
@@ -2503,7 +2529,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#removelistener">removeListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#removelistener">removeListener</a></p>
 								<p>Overrides EventEmitter.removeListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:204</li>
@@ -2540,7 +2566,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#removelistener">removeListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#removelistener">removeListener</a></p>
 								<p>Overrides EventEmitter.removeListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:205</li>
@@ -2577,7 +2603,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#removelistener">removeListener</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#removelistener">removeListener</a></p>
 								<p>Overrides EventEmitter.removeListener</p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:206</li>
@@ -2625,7 +2651,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides SlpStream.restart</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/6881c75/src/stream/rxSlpStream.ts#L75">src/stream/rxSlpStream.ts:75</a></li>
+									<li>Defined in <a href="https://github.com/vinceau/slp-realtime/blob/15611d3/src/stream/rxSlpStream.ts#L69">src/stream/rxSlpStream.ts:69</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -2641,7 +2667,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#setdefaultencoding">setDefaultEncoding</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#setdefaultencoding">setDefaultEncoding</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:134</li>
 								</ul>
@@ -2665,7 +2691,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#setmaxlisteners">setMaxListeners</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#setmaxlisteners">setMaxListeners</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/events.d.ts:28</li>
 								</ul>
@@ -2689,7 +2715,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#uncork">uncork</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#uncork">uncork</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:139</li>
 								</ul>
@@ -2709,7 +2735,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#updatesettings">updateSettings</a></p>
 								<ul>
-									<li>Defined in node_modules/@slippi/slippi-js/dist/utils/slpFileWriter.d.ts:48</li>
+									<li>Defined in node_modules/@slippi/slippi-js/dist/utils/slpFileWriter.d.ts:55</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2742,7 +2768,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#write">write</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#write">write</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:132</li>
 								</ul>
@@ -2778,7 +2804,7 @@
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#write">write</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#write">write</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/stream.d.ts:133</li>
 								</ul>
@@ -2826,7 +2852,7 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="_stream_rxslpstream_.rxslpstream.html">RxSlpStream</a>.<a href="_stream_rxslpstream_.rxslpstream.html#listenercount-1">listenerCount</a></p>
+								<p>Inherited from <a href="_utils_dolphin_output_.dolphinoutput.html">DolphinOutput</a>.<a href="_utils_dolphin_output_.dolphinoutput.html#listenercount-1">listenerCount</a></p>
 								<ul>
 									<li>Defined in node_modules/@types/node/events.d.ts:17</li>
 								</ul>
@@ -2948,6 +2974,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="_stream_rxslpstream_.rxslpstream.html#end" class="tsd-kind-icon">end</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="_stream_rxslpstream_.rxslpstream.html#endcurrentfile" class="tsd-kind-icon">end<wbr>Current<wbr>File</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="_stream_rxslpstream_.rxslpstream.html#eventnames" class="tsd-kind-icon">event<wbr>Names</a>
