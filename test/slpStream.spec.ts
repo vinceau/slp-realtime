@@ -20,7 +20,7 @@ describe("SlpStream", () => {
       const gameStartSpy = sinon.spy();
       const gameEndSpy = sinon.spy();
 
-      const slpStream = new RxSlpStream(undefined, { mode: SlpStreamMode.MANUAL });
+      const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
       const unsubGameStart = slpStream.gameStart$.subscribe(gameStartSpy);
       const unsubGameEnd = slpStream.gameEnd$.subscribe(gameEndSpy);
       subscriptions.push(unsubGameStart, unsubGameEnd);
@@ -38,7 +38,7 @@ describe("SlpStream", () => {
       const gameStartSpy = sinon.spy();
       const gameEndSpy = sinon.spy();
 
-      const slpStream = new RxSlpStream(undefined, { mode: SlpStreamMode.MANUAL });
+      const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
       const unsubGameStart = slpStream.gameStart$.subscribe(gameStartSpy);
       const unsubGameEnd = slpStream.gameEnd$.subscribe(gameEndSpy);
       subscriptions.push(unsubGameStart, unsubGameEnd);

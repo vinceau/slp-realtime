@@ -2,7 +2,7 @@
   "name": "@vinceau/slp-realtime",
   "description": "Realtime slp parsing",
   "license": "MIT",
-  "version": "3.0.4",
+  "version": "3.1.0",
   "repository": "vinceau/slp-realtime",
   "engines": {
     "node": ">=10"
@@ -27,7 +27,6 @@
     "minor": "npm version minor && npm publish",
     "major": "npm version major && npm publish",
     "prepublishOnly": "yarn run lint && yarn run test && yarn run build",
-    "postpublish": "git push origin master --follow-tags",
     "docs": "yarn typedoc --excludePrivate --excludeNotExported --exclude \"**/*+(.spec).ts\"",
     "postdocs": "touch docs/.nojekyll"
   },
@@ -37,7 +36,7 @@
     "realtime"
   ],
   "dependencies": {
-    "@slippi/slippi-js": "^5.0.5",
+    "@slippi/slippi-js": "^5.1.1",
     "chokidar": "^3.3.1",
     "fs-extra": "^8.1.0",
     "lodash": "^4.17.19",

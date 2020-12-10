@@ -20,7 +20,7 @@ describe("player variables config", () => {
     const playerSpy2 = sinon.spy();
     const opponentSpy2 = sinon.spy();
 
-    const slpStream = new RxSlpStream(undefined, { mode: SlpStreamMode.MANUAL });
+    const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     const eventManager = new EventManager(realtime);
     realtime.setStream(slpStream);

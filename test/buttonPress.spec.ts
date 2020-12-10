@@ -1,6 +1,6 @@
 import sinon from "sinon";
 
-import { pipeFileContents, SlpRealTime, RxSlpStream, ComboFilter, throttleInputButtons } from "../src";
+import { pipeFileContents, SlpRealTime, RxSlpStream, ComboFilter, throttleInputButtons, SlpStreamMode } from "../src";
 import { Subscription } from "rxjs";
 
 describe("combo calculation", () => {
@@ -23,7 +23,7 @@ describe("combo calculation", () => {
   it("correctly finds button combinations", async () => {
     const comboSpy = sinon.spy();
 
-    const slpStream = new RxSlpStream();
+    const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 

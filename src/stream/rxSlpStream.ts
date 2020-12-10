@@ -10,7 +10,6 @@ import {
   GameEndType,
   SlpFileWriter,
   SlpFileWriterOptions,
-  SlpStreamSettings,
 } from "@slippi/slippi-js";
 import { Subject, fromEvent } from "rxjs";
 import { share } from "rxjs/operators";
@@ -41,17 +40,12 @@ export class RxSlpStream extends SlpFileWriter {
    * @param {WritableOptions} [opts]
    * @memberof SlpStream
    */
-  public constructor(
-    options?: Partial<SlpFileWriterOptions>,
-    slpOptions?: Partial<SlpStreamSettings>,
-    opts?: WritableOptions,
-  ) {
+  public constructor(options?: Partial<SlpFileWriterOptions>, opts?: WritableOptions) {
     super(
       {
         ...options,
         outputFiles: options && options.outputFiles === true, // Don't write out files unless manually specified
       },
-      slpOptions,
       opts,
     );
 
