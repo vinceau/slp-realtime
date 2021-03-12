@@ -64,13 +64,13 @@ export class DolphinLauncher {
       params.push("-e", this.options.meleeIsoPath);
     }
     if (this.options.readEvents) {
-      params.push("-co");
+      params.push("--cout");
     }
     if (this.options.batch) {
-      params.push("-b");
+      params.push("--batch");
     }
     if (this.options.disableSeekBar) {
-      params.push("-hs");
+      params.push("--hide-seekbar");
     }
     return spawn(this.options.dolphinPath, params);
   }
