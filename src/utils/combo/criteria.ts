@@ -1,7 +1,8 @@
 import { sumBy } from "lodash";
 
+import type { ComboType, GameStartType } from "../../types";
+import { Character, MoveID } from "../melee";
 import type { Criteria } from "./filter";
-import { MoveID, Character } from "../melee";
 import { extractPlayerNamesByPort, namesMatch } from "./matchNames";
 
 /**
@@ -9,7 +10,7 @@ import { extractPlayerNamesByPort, namesMatch } from "./matchNames";
  */
 export const MatchesPortNumber: Criteria = (combo, settings, options) => {
   const player = settings.players.find((player) => player.playerIndex === combo.playerIndex);
-  return options.portFilter.includes(player.port);
+  return player !== undefined && options.portFilter.includes(player.port);
 };
 
 export const MatchesPlayerName: Criteria = (combo, settings, options, metadata) => {
@@ -32,16 +33,20 @@ export const MatchesPlayerName: Criteria = (combo, settings, options, metadata) 
 };
 
 export const MatchesCharacter: Criteria = (combo, settings, options) => {
-  if (options.characterFilter.length === 0) {
+  return comboMatchesCharacter(combo, settings, options.characterFilter);
+};
+
+const comboMatchesCharacter = (combo: ComboType, settings: GameStartType, characterFilter: number[]) => {
+  if (characterFilter.length === 0) {
     return true;
   }
 
   const matches = combo.moves.find((move) => {
     const player = settings.players.find((player) => player.playerIndex === move.playerIndex);
-    if (!player) {
+    if (!player || player.characterId === null) {
       return false;
     }
-    return options.characterFilter.includes(player.characterId);
+    return characterFilter.includes(player.characterId);
   });
 
   return Boolean(matches);
@@ -52,8 +57,7 @@ export const ExcludesChainGrabs: Criteria = (combo, settings, options) => {
     return true;
   }
 
-  const player = settings.players.find((player) => player.playerIndex === combo.playerIndex);
-  if (!options.chainGrabbers.includes(player.characterId)) {
+  if (!comboMatchesCharacter(combo, settings, options.chainGrabbers)) {
     return true;
   }
 
@@ -71,8 +75,7 @@ export const ExcludesWobbles: Criteria = (combo, settings, options) => {
     return true;
   }
 
-  const player = settings.players.find((player) => player.playerIndex === combo.playerIndex);
-  if (player.characterId !== Character.ICE_CLIMBERS) {
+  if (!comboMatchesCharacter(combo, settings, [Character.ICE_CLIMBERS])) {
     // Continue processing if the character is not Ice Climbers
     return true;
   }
@@ -99,10 +102,24 @@ export const SatisfiesMinComboLength: Criteria = (combo, settings, options) => {
 };
 
 export const SatisfiesMinComboPercent: Criteria = (combo, settings, options) => {
-  const player = settings.players.find((player) => player.playerIndex === combo.playerIndex);
+  if (settings.players.length !== 2) {
+    return true;
+  }
 
+  const move = combo.moves.find((move) => move.playerIndex !== combo.playerIndex);
+  if (!move) {
+    return false;
+  }
+
+  const player = settings.players.find((p) => p.playerIndex === move.playerIndex);
+  if (!player || player.characterId === null) {
+    return false;
+  }
   const minComboPercent = options.perCharacterMinComboPercent[player.characterId] || options.minComboPercent;
-  const totalComboPercent = combo.endPercent - combo.startPercent;
+  const totalComboPercent =
+    combo.endPercent === null || combo.endPercent === undefined
+      ? combo.startPercent
+      : combo.endPercent - combo.startPercent;
   // Continue only if the total combo percent was greater than the threshold
   return totalComboPercent > minComboPercent;
 };

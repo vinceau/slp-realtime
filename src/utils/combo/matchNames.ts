@@ -1,14 +1,17 @@
 import { get } from "lodash";
+
 import type { GameStartType } from "../../types";
+
+type Maybe<T> = null | undefined | T;
 
 export function extractPlayerNamesByPort(settings: GameStartType, metadata?: any): string[][] {
   return [0, 1, 2, 3].map((index) => {
     const nametags: string[] = [];
     const player = settings.players.find((player) => player.playerIndex === index);
     const playerTag = player ? player.nametag : null;
-    const netplayName: string | null =
-      get(metadata, ["players", index, "names", "netplay"], null) ?? player.displayName;
-    const netplayCode: string | null = get(metadata, ["players", index, "names", "code"], null) ?? player.connectCode;
+    const netplayName: Maybe<string> =
+      get(metadata, ["players", index, "names", "netplay"], null) ?? player?.displayName;
+    const netplayCode: Maybe<string> = get(metadata, ["players", index, "names", "code"], null) ?? player?.connectCode;
     if (netplayName) {
       nametags.push(netplayName);
     }

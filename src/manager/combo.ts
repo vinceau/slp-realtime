@@ -1,12 +1,14 @@
 import type { Observable } from "rxjs";
 import { merge } from "rxjs";
-import type { ComboEventPayload } from "../types";
-import type { EventEmit, EventManagerConfig, EventConfig, EventManagerVariables, ComboEventFilter } from "./types";
-import { ComboEvent } from "./types";
-import { map, filter } from "rxjs/operators";
-import { playerFilterMatches } from "../operators/player";
+import { filter, map } from "rxjs/operators";
+
 import type { ComboEvents } from "../events/combos";
+import { playerFilterMatches } from "../operators/player";
+import type { ComboEventPayload } from "../types";
 import { checkCombo, defaultComboFilterSettings } from "../utils";
+import { exists } from "../utils/exists";
+import type { ComboEventFilter, EventConfig, EventEmit, EventManagerConfig, EventManagerVariables } from "./types";
+import { ComboEvent } from "./types";
 
 export const readComboConfig = (combo: ComboEvents, config: EventManagerConfig): Observable<EventEmit> => {
   const startObservables = config.events
@@ -103,7 +105,7 @@ const handleComboFilter = (
   if (eventFilter && eventFilter.comboCriteria) {
     const options = eventFilter.comboCriteria;
     if (typeof options === "string") {
-      if (options.charAt(0) === "$" && variables[options]) {
+      if (options.charAt(0) === "$" && exists(variables) && variables[options]) {
         comboSettings = Object.assign(comboSettings, variables[options]);
       } else if (options === "none") {
         // Require explicit specification for no criteria matching

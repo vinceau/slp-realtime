@@ -1,11 +1,13 @@
 import type { Observable } from "rxjs";
 import { merge } from "rxjs";
-import type { InputButtonCombo } from "../types";
-import type { EventEmit, EventManagerConfig, EventConfig, InputEventFilter } from "./types";
-import { InputEvent } from "./types";
 import { map } from "rxjs/operators";
-import { playerFilter } from "../operators";
+
 import type { InputEvents } from "../events/inputs";
+import { playerFilter } from "../operators";
+import type { InputButtonCombo } from "../types";
+import { exists } from "../utils/exists";
+import type { EventConfig, EventEmit, EventManagerConfig, InputEventFilter } from "./types";
+import { InputEvent } from "./types";
 
 export const readInputsConfig = (inputs: InputEvents, config: EventManagerConfig): Observable<EventEmit> => {
   return readButtonComboEvents(config, (buttons, duration) => inputs.buttonCombo(buttons, duration));
@@ -26,11 +28,10 @@ const readButtonComboEvents = (
 ): Observable<EventEmit> => {
   // Handle game start events
   const observables: Observable<EventEmit>[] = (eventConfig as InputEventConfig).events
-    .filter((event) => event.type === InputEvent.BUTTON_COMBO)
-    .filter((event) => event.filter && event.filter.combo && event.filter.combo.length > 0) // We must have a valid filter
+    .filter(filterValidButtonCombo) // We must have a valid filter
     .map((event) => {
       let duration = 1;
-      if (event.filter.duration && event.filter.duration > 1) {
+      if (exists(event.filter.duration) && event.filter.duration > 1) {
         duration = Math.floor(event.filter.duration);
       }
 
@@ -55,3 +56,14 @@ const readButtonComboEvents = (
     });
   return merge(...observables);
 };
+
+function filterValidButtonCombo(
+  event: EventConfig & { type: InputEvent; filter?: InputEventFilter },
+): event is EventConfig & { type: InputEvent; filter: InputEventFilter } {
+  return (
+    event.type === InputEvent.BUTTON_COMBO &&
+    exists(event.filter) &&
+    event.filter.combo &&
+    event.filter.combo.length > 0
+  ); // We must have a valid filter
+}

@@ -1,18 +1,18 @@
 import type {
-  SlpCommandEventPayload,
-  MessageSizes,
-  GameStartType,
   FrameEntryType,
-  GameEndType,
-  SlpFileWriterOptions,
   FramesType,
+  GameEndType,
+  GameStartType,
+  MessageSizes,
+  SlpCommandEventPayload,
+  SlpFileWriterOptions,
 } from "@slippi/slippi-js";
-import { Command, SlpStreamEvent, SlpParser, SlpParserEvent, SlpFileWriter } from "@slippi/slippi-js";
-import { Subject, fromEvent } from "rxjs";
+import { Command, SlpFileWriter, SlpParser, SlpParserEvent, SlpStreamEvent } from "@slippi/slippi-js";
+import { fromEvent, Subject } from "rxjs";
 import { map, share, tap } from "rxjs/operators";
 import type { WritableOptions } from "stream";
 
-export { SlpStreamMode, SlpStreamSettings, SlpStreamEvent } from "@slippi/slippi-js";
+export { SlpStreamEvent, SlpStreamMode, SlpStreamSettings } from "@slippi/slippi-js";
 
 /**
  * SlpStream is a writable stream of Slippi data. It passes the data being written in

@@ -1,14 +1,14 @@
-import path from "path";
-
-import chokidar from "chokidar";
-import type { TailStream } from "tailstream";
-import tailstream from "tailstream";
-import { RxSlpStream } from "./rxSlpStream";
 import type { SlpFileWriterOptions } from "@slippi/slippi-js";
 import { SlpStreamMode } from "@slippi/slippi-js";
+import chokidar from "chokidar";
+import path from "path";
+import { BehaviorSubject, fromEvent, Subject } from "rxjs";
+import { map, share, switchMap, takeUntil } from "rxjs/operators";
 import type { WritableOptions } from "stream";
-import { Subject, fromEvent, BehaviorSubject } from "rxjs";
-import { map, switchMap, share, takeUntil } from "rxjs/operators";
+import type { TailStream } from "tailstream";
+import tailstream from "tailstream";
+
+import { RxSlpStream } from "./rxSlpStream";
 
 /**
  * SlpFolderStream is responsible for monitoring a folder, and detecting

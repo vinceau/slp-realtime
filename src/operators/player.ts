@@ -1,6 +1,7 @@
-import type { EventManagerVariables } from "../manager";
 import type { MonoTypeOperatorFunction, Observable } from "rxjs";
 import { filter } from "rxjs/operators";
+
+import type { EventManagerVariables } from "../manager";
 import type { PlayerIndexFilter } from "../types";
 
 const ALL_PLAYER_INDICES = [0, 1, 2, 3];

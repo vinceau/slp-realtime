@@ -1,6 +1,8 @@
+import { shuffle } from "lodash";
+
 import type { ComboType } from "../../types";
 import { Frames } from "../../types";
-import { shuffle } from "lodash";
+import { exists } from "../exists";
 
 export interface DolphinEntry {
   path: string;
@@ -70,7 +72,7 @@ const mapDolphinEntry = (entry: DolphinPlaybackItem, startBuffer: number, endBuf
   if (combo) {
     dolphinEntry.startFrame = Math.max(Frames.FIRST, combo.startFrame - startBuffer);
     // If endFrame is undefined it will just play to the end
-    if (combo.endFrame) {
+    if (exists(combo.endFrame)) {
       dolphinEntry.endFrame = combo.endFrame + endBuffer;
     }
   }

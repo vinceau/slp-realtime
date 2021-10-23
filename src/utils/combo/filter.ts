@@ -1,5 +1,5 @@
-import { Character } from "../melee";
 import type { ComboType, GameStartType } from "../../types";
+import { Character } from "../melee";
 import { ALL_CRITERIA } from "./criteria";
 
 export interface ComboFilterSettings {

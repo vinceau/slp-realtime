@@ -3,5 +3,5 @@
 // when `./types` is exported after `./eventManager`. This causes the tests in
 // the `combo.config.spec.ts` file to fail.
 
-export * from "./types";
 export * from "./eventManager";
+export * from "./types";

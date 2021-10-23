@@ -1,11 +1,13 @@
 import type { Observable } from "rxjs";
 import { merge } from "rxjs";
-import type { GameStartType, GameEndPayload } from "../types";
-import type { EventEmit, EventManagerConfig, GameStartEventFilter, GameEndEventFilter } from "./types";
-import { GameEvent } from "./types";
 import { filter, map } from "rxjs/operators";
+
 import type { GameEvents } from "../events";
 import { playerFilterMatches } from "../operators/player";
+import type { GameEndPayload, GameStartType } from "../types";
+import { exists } from "../utils/exists";
+import type { EventEmit, EventManagerConfig, GameEndEventFilter, GameStartEventFilter } from "./types";
+import { GameEvent } from "./types";
 
 export const readGameConfig = (game: GameEvents, config: EventManagerConfig): Observable<EventEmit> => {
   return merge(readGameStartEvents(config, game.start$), readGameEndEvents(config, game.end$));
@@ -55,12 +57,10 @@ const readGameEndEvents = (config: EventManagerConfig, gameEnd$: Observable<Game
         if (eventFilter.endMethod !== undefined) {
           base$ = base$.pipe(filter((end) => end.gameEndMethod === eventFilter.endMethod));
         }
-
-        if (eventFilter.winnerPlayerIndex !== undefined) {
+        const winner = eventFilter.winnerPlayerIndex;
+        if (exists(winner)) {
           base$ = base$.pipe(
-            filter((payload) =>
-              playerFilterMatches(payload.winnerPlayerIndex, eventFilter.winnerPlayerIndex, config.variables),
-            ),
+            filter((payload) => playerFilterMatches(payload.winnerPlayerIndex, winner, config.variables)),
           );
         }
       }
