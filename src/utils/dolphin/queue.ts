@@ -1,4 +1,5 @@
-import { ComboType, Frames } from "../../types";
+import type { ComboType } from "../../types";
+import { Frames } from "../../types";
 import { shuffle } from "lodash";
 
 export interface DolphinEntry {

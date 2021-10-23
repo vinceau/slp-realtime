@@ -1,4 +1,4 @@
-import { Observable, MonoTypeOperatorFunction } from "rxjs";
+import type { Observable, MonoTypeOperatorFunction } from "rxjs";
 import { repeatWhen, takeUntil } from "rxjs/operators";
 
 /**

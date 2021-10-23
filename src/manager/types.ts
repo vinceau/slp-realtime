@@ -1,5 +1,5 @@
-import { ComboFilterSettings } from "../utils";
-import { PlayerIndexFilter } from "../types";
+import type { ComboFilterSettings } from "../utils";
+import type { PlayerIndexFilter } from "../types";
 
 export enum ComboEvent {
   START = "combo-start", // Emitted at the start of a combo

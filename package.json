@@ -5,7 +5,7 @@
   "version": "3.1.1",
   "repository": "vinceau/slp-realtime",
   "engines": {
-    "node": ">=10"
+    "node": ">=14"
   },
   "files": [
     "dist"
@@ -43,8 +43,8 @@
     "tailstream": "^0.1.0"
   },
   "peerDependencies": {
-    "rxjs": "^6.x",
-    "@slippi/slippi-js": "^6.x"
+    "@slippi/slippi-js": "^6.x",
+    "rxjs": "^6.x"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^8.0.0",
@@ -54,9 +54,9 @@
     "@types/lodash": "^4.14.138",
     "@types/node": "^12.7.3",
     "@types/sinon": "^7.5.1",
-    "@typescript-eslint/eslint-plugin": "^2.25.0",
-    "@typescript-eslint/parser": "^2.25.0",
-    "eslint": "^6.8.0",
+    "@typescript-eslint/eslint-plugin": "^5.1.0",
+    "@typescript-eslint/parser": "^5.1.0",
+    "eslint": "^8.1.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.3",
     "husky": "^4.2.5",
@@ -73,7 +73,7 @@
     "sinon": "^7.5.0",
     "ts-jest": "^25.2.1",
     "typedoc": "^0.17.4",
-    "typescript": "^3.6.2"
+    "typescript": "^4.4.4"
   },
   "husky": {
     "hooks": {

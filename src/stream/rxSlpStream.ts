@@ -1,20 +1,16 @@
-import {
-  Command,
-  SlpStreamEvent,
+import type {
   SlpCommandEventPayload,
-  SlpParser,
   MessageSizes,
-  SlpParserEvent,
   GameStartType,
   FrameEntryType,
   GameEndType,
-  SlpFileWriter,
   SlpFileWriterOptions,
   FramesType,
 } from "@slippi/slippi-js";
+import { Command, SlpStreamEvent, SlpParser, SlpParserEvent, SlpFileWriter } from "@slippi/slippi-js";
 import { Subject, fromEvent } from "rxjs";
 import { map, share, tap } from "rxjs/operators";
-import { WritableOptions } from "stream";
+import type { WritableOptions } from "stream";
 
 export { SlpStreamMode, SlpStreamSettings, SlpStreamEvent } from "@slippi/slippi-js";
 

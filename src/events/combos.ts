@@ -1,7 +1,8 @@
 import { ComboComputer } from "@slippi/slippi-js";
-import { ComboEventPayload } from "../types";
-import { Observable, fromEvent } from "rxjs";
-import { RxSlpStream } from "../stream";
+import type { ComboEventPayload } from "../types";
+import type { Observable } from "rxjs";
+import { fromEvent } from "rxjs";
+import type { RxSlpStream } from "../stream";
 import { filter, share, switchMap } from "rxjs/operators";
 import { ConversionEvents } from "./conversion";
 

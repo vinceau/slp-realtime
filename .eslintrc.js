@@ -12,6 +12,7 @@ module.exports = {
   rules: {
     "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/explicit-member-accessibility": "warn",
+    "@typescript-eslint/consistent-type-imports": "warn",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {

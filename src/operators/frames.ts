@@ -1,5 +1,6 @@
-import { FrameEntryType, Frames } from "../types";
-import { Observable, MonoTypeOperatorFunction, OperatorFunction } from "rxjs";
+import type { FrameEntryType } from "../types";
+import { Frames } from "../types";
+import type { Observable, MonoTypeOperatorFunction, OperatorFunction } from "rxjs";
 import { filter, pairwise } from "rxjs/operators";
 
 /**

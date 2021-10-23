@@ -1,8 +1,8 @@
-import { Observable } from "rxjs";
+import type { Observable } from "rxjs";
 import { switchMap } from "rxjs/operators";
 
-import { RxSlpStream } from "../stream";
-import { InputButtonCombo } from "../types";
+import type { RxSlpStream } from "../stream";
+import type { InputButtonCombo } from "../types";
 import { forAllPlayerIndices } from "../utils";
 import { mapFramesToButtonInputs } from "../operators";
 

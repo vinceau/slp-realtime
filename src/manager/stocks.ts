@@ -1,9 +1,11 @@
-import { Observable, merge } from "rxjs";
-import { StockType } from "../types";
-import { EventEmit, EventManagerConfig, StockEventFilter, StockEvent } from "./types";
+import type { Observable } from "rxjs";
+import { merge } from "rxjs";
+import type { StockType } from "../types";
+import type { EventEmit, EventManagerConfig, StockEventFilter } from "./types";
+import { StockEvent } from "./types";
 import { map } from "rxjs/operators";
 import { playerFilter } from "../operators/player";
-import { StockEvents } from "../events/stocks";
+import type { StockEvents } from "../events/stocks";
 
 export const readStocksConfig = (stocks: StockEvents, config: EventManagerConfig): Observable<EventEmit> => {
   return merge(readPlayerSpawnEvents(config, stocks.playerSpawn$), readPlayerDiedEvents(config, stocks.playerDied$));

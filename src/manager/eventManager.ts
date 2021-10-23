@@ -1,6 +1,7 @@
-import { SlpRealTime } from "../realtime";
-import { ReplaySubject, Observable, merge } from "rxjs";
-import { EventManagerConfig, EventEmit } from "./types";
+import type { SlpRealTime } from "../realtime";
+import type { Observable } from "rxjs";
+import { ReplaySubject, merge } from "rxjs";
+import type { EventManagerConfig, EventEmit } from "./types";
 import { switchMap } from "rxjs/operators";
 import { readGameConfig } from "./game";
 import { readInputsConfig } from "./inputs";

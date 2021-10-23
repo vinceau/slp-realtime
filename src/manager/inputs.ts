@@ -1,9 +1,11 @@
-import { Observable, merge } from "rxjs";
-import { InputButtonCombo } from "../types";
-import { EventEmit, EventManagerConfig, EventConfig, InputEventFilter, InputEvent } from "./types";
+import type { Observable } from "rxjs";
+import { merge } from "rxjs";
+import type { InputButtonCombo } from "../types";
+import type { EventEmit, EventManagerConfig, EventConfig, InputEventFilter } from "./types";
+import { InputEvent } from "./types";
 import { map } from "rxjs/operators";
 import { playerFilter } from "../operators";
-import { InputEvents } from "../events/inputs";
+import type { InputEvents } from "../events/inputs";
 
 export const readInputsConfig = (inputs: InputEvents, config: EventManagerConfig): Observable<EventEmit> => {
   return readButtonComboEvents(config, (buttons, duration) => inputs.buttonCombo(buttons, duration));

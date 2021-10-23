@@ -1,6 +1,7 @@
 import { isDead } from "@slippi/slippi-js";
-import { GameStartType, PostFrameUpdateType, StockType, FrameEntryType } from "../types";
-import { Observable, OperatorFunction, MonoTypeOperatorFunction, merge } from "rxjs";
+import type { GameStartType, PostFrameUpdateType, StockType, FrameEntryType } from "../types";
+import type { Observable, OperatorFunction, MonoTypeOperatorFunction } from "rxjs";
+import { merge } from "rxjs";
 import { withLatestFrom, map, filter } from "rxjs/operators";
 import { filterOnlyFirstFrame, withPreviousFrame, playerFrameFilter } from "./frames";
 

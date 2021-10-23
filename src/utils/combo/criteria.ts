@@ -1,6 +1,6 @@
 import { sumBy } from "lodash";
 
-import { Criteria } from "./filter";
+import type { Criteria } from "./filter";
 import { MoveID, Character } from "../melee";
 import { extractPlayerNamesByPort, namesMatch } from "./matchNames";
 

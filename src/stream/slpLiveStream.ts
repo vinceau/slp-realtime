@@ -1,5 +1,6 @@
 import { RxSlpStream } from "./rxSlpStream";
-import { Connection, ConsoleConnection, DolphinConnection, ConnectionStatus, ConnectionEvent } from "@slippi/slippi-js";
+import type { Connection } from "@slippi/slippi-js";
+import { ConsoleConnection, DolphinConnection, ConnectionStatus, ConnectionEvent } from "@slippi/slippi-js";
 
 // Re-export these for ease-of-use
 export { ConnectionEvent, ConsoleConnection, ConnectionStatus } from "@slippi/slippi-js";

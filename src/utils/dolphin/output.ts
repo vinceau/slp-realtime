@@ -13,7 +13,8 @@
  */
 
 import os from "os";
-import { Writable, WritableOptions } from "stream";
+import type { WritableOptions } from "stream";
+import { Writable } from "stream";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { Frames } from "../../types";

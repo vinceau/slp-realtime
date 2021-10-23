@@ -1,5 +1,6 @@
-import { InputButtonCombo, FrameEntryType, Frames } from "../types";
-import { Observable, MonoTypeOperatorFunction, OperatorFunction } from "rxjs";
+import type { InputButtonCombo, FrameEntryType } from "../types";
+import { Frames } from "../types";
+import type { Observable, MonoTypeOperatorFunction, OperatorFunction } from "rxjs";
 import { distinctUntilChanged, map, scan, filter } from "rxjs/operators";
 import { playerFrameFilter } from "./frames";
 import { generateInputBitmask, bitmaskToButtons } from "../utils";

@@ -1,6 +1,8 @@
-import { ConversionType, GameStartType, ConversionComputer } from "@slippi/slippi-js";
-import { Observable, fromEvent } from "rxjs";
-import { RxSlpStream } from "../stream";
+import type { ConversionType, GameStartType } from "@slippi/slippi-js";
+import { ConversionComputer } from "@slippi/slippi-js";
+import type { Observable } from "rxjs";
+import { fromEvent } from "rxjs";
+import type { RxSlpStream } from "../stream";
 import { filter, share, switchMap } from "rxjs/operators";
 
 interface ConversionEventPayload {

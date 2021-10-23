@@ -1,10 +1,12 @@
 import path from "path";
 
 import chokidar from "chokidar";
-import tailstream, { TailStream } from "tailstream";
+import type { TailStream } from "tailstream";
+import tailstream from "tailstream";
 import { RxSlpStream } from "./rxSlpStream";
-import { SlpFileWriterOptions, SlpStreamMode } from "@slippi/slippi-js";
-import { WritableOptions } from "stream";
+import type { SlpFileWriterOptions } from "@slippi/slippi-js";
+import { SlpStreamMode } from "@slippi/slippi-js";
+import type { WritableOptions } from "stream";
 import { Subject, fromEvent, BehaviorSubject } from "rxjs";
 import { map, switchMap, share, takeUntil } from "rxjs/operators";
 

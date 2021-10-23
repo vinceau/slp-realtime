@@ -1,4 +1,4 @@
-import { FrameEntryType } from "../types";
+import type { FrameEntryType } from "../types";
 
 /**
  * Given the last frame of the game, determine the winner first based on stock count

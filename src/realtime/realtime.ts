@@ -1,4 +1,4 @@
-import { RxSlpStream } from "../stream";
+import type { RxSlpStream } from "../stream";
 import { StockEvents, InputEvents, ComboEvents, GameEvents } from "../events";
 import { ReplaySubject } from "rxjs";
 

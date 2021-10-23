@@ -1,5 +1,5 @@
 import { get } from "lodash";
-import { GameStartType } from "../../types";
+import type { GameStartType } from "../../types";
 
 export function extractPlayerNamesByPort(settings: GameStartType, metadata?: any): string[][] {
   return [0, 1, 2, 3].map((index) => {

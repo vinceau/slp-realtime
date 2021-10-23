@@ -1,4 +1,4 @@
-import { ComboType, GameStartType, GameEndType } from "@slippi/slippi-js";
+import type { ComboType, GameStartType, GameEndType } from "@slippi/slippi-js";
 
 // Export the parameter types for events and SlippiGame for convenience
 export {
