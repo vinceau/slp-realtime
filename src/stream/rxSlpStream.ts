@@ -35,9 +35,7 @@ export class RxSlpStream extends SlpFileWriter {
     // Run this side effect first so we can update allFrames
     tap((latestFrame) => {
       const frameNum = latestFrame.frame;
-      if (frameNum !== null || frameNum !== undefined) {
-        this.allFrames[frameNum] = latestFrame;
-      }
+      this.allFrames[frameNum] = latestFrame;
     }),
     map((latestFrame) => {
       return {
