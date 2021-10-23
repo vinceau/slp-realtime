@@ -1,4 +1,4 @@
-import type { MetadataType, ComboType, GameStartType } from "../../types";
+import type { ComboType, GameStartType, MetadataType } from "../../types";
 import { Character } from "../melee";
 import { ALL_CRITERIA } from "./criteria";
 

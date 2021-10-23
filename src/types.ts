@@ -8,10 +8,10 @@ export {
   Frames,
   GameEndType,
   GameStartType,
+  MetadataType,
   PostFrameUpdateType,
   PreFrameUpdateType,
   StockType,
-  MetadataType,
 } from "@slippi/slippi-js";
 
 export enum GameEndMethod {

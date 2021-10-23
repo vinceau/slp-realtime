@@ -20,6 +20,7 @@ module.exports = {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-use-before-define": "off",
+    "@typescript-eslint/explicit-member-accessibility": "warn",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
@@ -27,8 +28,8 @@ module.exports = {
         varsIgnorePattern: "^_",
       },
     ],
+    "object-shorthand": ["warn"],
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/explicit-member-accessibility": "error",
     "@typescript-eslint/consistent-type-imports": "warn",
     "import/no-default-export": "error",
     "import/no-named-as-default-member": "off",
