@@ -1,4 +1,5 @@
-import { SlippiGame, extractPlayerNames, namesMatch } from "../src";
+import { SlippiGame } from "@slippi/slippi-js";
+import { extractPlayerNames, namesMatch } from "../src";
 
 describe("when extracting player names", () => {
   it("can correctly extract player names", () => {

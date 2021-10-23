@@ -55,10 +55,8 @@ export function mapFrameToSpawnStockType(
       withLatestFrom(settings$),
       map(([frame, settings]) => {
         const player = settings.players.find((player) => player.playerIndex === playerIndex);
-        const opponent = settings.players.find((player) => player.playerIndex !== playerIndex);
         const stock: StockType = {
           playerIndex: player.playerIndex,
-          opponentIndex: opponent.playerIndex,
           startFrame: frame.frame,
           endFrame: null,
           startPercent: 0,

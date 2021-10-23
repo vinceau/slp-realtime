@@ -10,9 +10,10 @@ import {
   GameEndType,
   SlpFileWriter,
   SlpFileWriterOptions,
+  FramesType,
 } from "@slippi/slippi-js";
 import { Subject, fromEvent } from "rxjs";
-import { share } from "rxjs/operators";
+import { map, share, tap } from "rxjs/operators";
 import { WritableOptions } from "stream";
 
 export { SlpStreamMode, SlpStreamSettings, SlpStreamEvent } from "@slippi/slippi-js";
@@ -27,12 +28,28 @@ export { SlpStreamMode, SlpStreamSettings, SlpStreamEvent } from "@slippi/slippi
 export class RxSlpStream extends SlpFileWriter {
   protected parser = new SlpParser({ strict: true }); // Strict mode will enable data validation
   private messageSizeSource = new Subject<Map<Command, number>>();
+  private allFrames: FramesType = {};
 
   // Observables
   public messageSize$ = this.messageSizeSource.asObservable();
   public gameStart$ = fromEvent<GameStartType>(this.parser, SlpParserEvent.SETTINGS).pipe(share());
   public playerFrame$ = fromEvent<FrameEntryType>(this.parser, SlpParserEvent.FINALIZED_FRAME).pipe(share());
   public gameEnd$ = fromEvent<GameEndType>(this.parser, SlpParserEvent.END).pipe(share());
+  public allFrames$ = this.playerFrame$.pipe(
+    // Run this side effect first so we can update allFrames
+    tap((latestFrame) => {
+      const frameNum = latestFrame.frame;
+      if (frameNum !== null || frameNum !== undefined) {
+        this.allFrames[frameNum] = latestFrame;
+      }
+    }),
+    map((latestFrame) => {
+      return {
+        allFrames: this.allFrames,
+        latestFrame,
+      };
+    }),
+  );
 
   /**
    *Creates an instance of SlpStream.
@@ -69,5 +86,6 @@ export class RxSlpStream extends SlpFileWriter {
   public restart(): void {
     this.parser.reset();
     super.restart();
+    this.allFrames = {};
   }
 }

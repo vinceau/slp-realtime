@@ -1,19 +1,14 @@
 import { get } from "lodash";
 import { GameStartType } from "../../types";
 
-export function extractPlayerNames(settings: GameStartType, metadata?: any, playerIndex?: number): string[] {
-  const nametags: string[] = [];
-  let indices: number[] = settings.players.map((p) => p.playerIndex);
-  // If playerIndex is provided use that
-  if (playerIndex !== undefined) {
-    indices = [playerIndex];
-  }
-
-  for (const index of indices) {
+export function extractPlayerNamesByPort(settings: GameStartType, metadata?: any): string[][] {
+  return [0, 1, 2, 3].map((index) => {
+    const nametags: string[] = [];
     const player = settings.players.find((player) => player.playerIndex === index);
     const playerTag = player ? player.nametag : null;
-    const netplayName: string | null = get(metadata, ["players", index, "names", "netplay"], null);
-    const netplayCode: string | null = get(metadata, ["players", index, "names", "code"], null);
+    const netplayName: string | null =
+      get(metadata, ["players", index, "names", "netplay"], null) ?? player.displayName;
+    const netplayCode: string | null = get(metadata, ["players", index, "names", "code"], null) ?? player.connectCode;
     if (netplayName) {
       nametags.push(netplayName);
     }
@@ -23,8 +18,12 @@ export function extractPlayerNames(settings: GameStartType, metadata?: any, play
     if (playerTag) {
       nametags.push(playerTag);
     }
-  }
-  return nametags;
+    return nametags;
+  });
+}
+
+export function extractPlayerNames(settings: GameStartType, metadata?: any): string[] {
+  return extractPlayerNamesByPort(settings, metadata).flat();
 }
 
 export function namesMatch(lookingForNametags: string[], inGameTags: string[], fuzzyMatch?: boolean): boolean {

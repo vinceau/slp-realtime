@@ -1,4 +1,5 @@
-import { SlippiGame, ComboFilter, Character } from "../src";
+import { SlippiGame } from "@slippi/slippi-js";
+import { ComboFilter, Character } from "../src";
 
 describe("can match combos for rollback slp files", () => {
   it("can filter by slippi connect codes", async () => {

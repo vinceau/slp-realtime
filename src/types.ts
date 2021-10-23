@@ -2,7 +2,6 @@ import { ComboType, GameStartType, GameEndType } from "@slippi/slippi-js";
 
 // Export the parameter types for events and SlippiGame for convenience
 export {
-  SlippiGame,
   GameStartType,
   GameEndType,
   ComboType,

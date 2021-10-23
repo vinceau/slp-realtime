@@ -2,7 +2,7 @@ import { sumBy } from "lodash";
 
 import { Criteria } from "./filter";
 import { MoveID, Character } from "../melee";
-import { extractPlayerNames, namesMatch } from "./matchNames";
+import { extractPlayerNamesByPort, namesMatch } from "./matchNames";
 
 /**
  * MatchesPortNumber ensures the player performing the combo is a specific port.
@@ -17,13 +17,18 @@ export const MatchesPlayerName: Criteria = (combo, settings, options, metadata) 
     return true;
   }
 
-  const matchableNames = extractPlayerNames(settings, metadata, combo.playerIndex);
-  if (matchableNames.length === 0) {
-    // We're looking for a nametag but we have nothing to match against
-    return false;
-  }
+  const allMatchableNames = extractPlayerNamesByPort(settings, metadata);
+  const uniquePlayerIds = new Set(combo.moves.map((move) => move.playerIndex));
+  const match = Array.from(uniquePlayerIds).find((playerIndex) => {
+    const matchableNames = allMatchableNames[playerIndex];
+    if (matchableNames.length === 0) {
+      // We're looking for a nametag but we have nothing to match against
+      return false;
+    }
 
-  return namesMatch(options.nameTags, matchableNames, options.fuzzyNameTagMatching);
+    return namesMatch(options.nameTags, matchableNames, options.fuzzyNameTagMatching);
+  });
+  return match !== undefined;
 };
 
 export const MatchesCharacter: Criteria = (combo, settings, options) => {
@@ -31,9 +36,15 @@ export const MatchesCharacter: Criteria = (combo, settings, options) => {
     return true;
   }
 
-  const player = settings.players.find((player) => player.playerIndex === combo.playerIndex);
-  const matchesCharacter = options.characterFilter.includes(player.characterId);
-  return matchesCharacter;
+  const matches = combo.moves.find((move) => {
+    const player = settings.players.find((player) => player.playerIndex === move.playerIndex);
+    if (!player) {
+      return false;
+    }
+    return options.characterFilter.includes(player.characterId);
+  });
+
+  return Boolean(matches);
 };
 
 export const ExcludesChainGrabs: Criteria = (combo, settings, options) => {
