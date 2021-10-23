@@ -183,6 +183,28 @@ describe("combo calculation", () => {
       expect(comboSpy.callCount).toEqual(1);
     });
 
+    it("can correctly match port filter", async () => {
+      const realtime = new SlpRealTime();
+      const comboSpy = sinon.spy();
+
+      const filename = "slp/Game_20190517T164215.slp";
+      const game = new SlippiGame(filename);
+      const metadata = game.getMetadata();
+
+      filter.updateSettings({ portFilter: [2], minComboPercent: 40 });
+      const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
+      realtime.setStream(slpStream);
+      subscriptions.push(
+        realtime.combo.end$.subscribe((payload) => {
+          if (filter.isCombo(payload.combo, payload.settings, metadata)) {
+            comboSpy();
+          }
+        }),
+      );
+      await pipeFileContents(filename, slpStream);
+      expect(comboSpy.callCount).toEqual(1);
+    });
+
     it("can match combos from Smashladder SLP files", async () => {
       const gameEndSpy = sinon.spy();
       const customComboSpy = sinon.spy();

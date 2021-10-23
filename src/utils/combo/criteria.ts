@@ -8,9 +8,9 @@ import { extractPlayerNamesByPort, namesMatch } from "./matchNames";
 /**
  * MatchesPortNumber ensures the player performing the combo is a specific port.
  */
-export const MatchesPortNumber: Criteria = (combo, settings, options) => {
-  const player = settings.players.find((player) => player.playerIndex === combo.playerIndex);
-  return player !== undefined && options.portFilter.includes(player.port);
+export const MatchesPortNumber: Criteria = (combo, _settings, options) => {
+  const move = combo.moves.find((move) => options.portFilter.includes(move.playerIndex + 1));
+  return Boolean(move);
 };
 
 export const MatchesPlayerName: Criteria = (combo, settings, options, metadata) => {
@@ -96,7 +96,7 @@ export const ExcludesWobbles: Criteria = (combo, settings, options) => {
   return !wobbled;
 };
 
-export const SatisfiesMinComboLength: Criteria = (combo, settings, options) => {
+export const SatisfiesMinComboLength: Criteria = (combo, _settings, options) => {
   const numMoves = combo.moves.length;
   return numMoves >= options.minComboLength;
 };
@@ -124,13 +124,13 @@ export const SatisfiesMinComboPercent: Criteria = (combo, settings, options) => 
   return totalComboPercent > minComboPercent;
 };
 
-export const ExcludesLargeSingleHit: Criteria = (combo, settings, options) => {
+export const ExcludesLargeSingleHit: Criteria = (combo, _settings, options) => {
   const totalDmg = sumBy(combo.moves, ({ damage }) => damage);
   const largeSingleHit = combo.moves.some(({ damage }) => damage / totalDmg >= options.largeHitThreshold);
   return !largeSingleHit;
 };
 
-export const ExcludesCPUs: Criteria = (combo, settings, options) => {
+export const ExcludesCPUs: Criteria = (_combo, settings, options) => {
   if (!options.excludeCPUs) {
     return true;
   }
@@ -138,11 +138,11 @@ export const ExcludesCPUs: Criteria = (combo, settings, options) => {
   return !cpu;
 };
 
-export const IsOneVsOne: Criteria = (combo, settings) => {
+export const IsOneVsOne: Criteria = (_combo, settings) => {
   return settings.players.length === 2;
 };
 
-export const ComboDidKill: Criteria = (combo, settings, options) => {
+export const ComboDidKill: Criteria = (combo, _settings, options) => {
   return !options.comboMustKill || combo.didKill;
 };
 
