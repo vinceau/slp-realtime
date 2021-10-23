@@ -11,6 +11,7 @@ export {
   PostFrameUpdateType,
   PreFrameUpdateType,
   StockType,
+  MetadataType,
 } from "@slippi/slippi-js";
 
 export enum GameEndMethod {

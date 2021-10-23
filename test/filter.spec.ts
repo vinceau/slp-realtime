@@ -1,4 +1,4 @@
-import { SlippiGame } from "@slippi/slippi-js";
+import { GameStartType, SlippiGame } from "@slippi/slippi-js";
 import { extractPlayerNames, namesMatch } from "../src";
 
 describe("when extracting player names", () => {
@@ -6,7 +6,8 @@ describe("when extracting player names", () => {
     const game = new SlippiGame("slp/nametag-combos.slp");
     const settings = game.getSettings();
     const metadata = game.getMetadata();
-    const matchableNames = extractPlayerNames(settings, metadata);
+    expect(settings).not.toBeNull();
+    const matchableNames = extractPlayerNames(settings as GameStartType, metadata);
     expect(matchableNames.length).toEqual(2);
     expect(matchableNames.includes("PK")).toBeTruthy();
     expect(matchableNames.includes("GOGO")).toBeTruthy();

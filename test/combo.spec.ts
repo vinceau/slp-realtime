@@ -1,4 +1,4 @@
-import sinon from "sinon";
+import * as sinon from "sinon";
 
 import { SlippiGame } from "@slippi/slippi-js";
 import { pipeFileContents, SlpRealTime, RxSlpStream, ComboFilter, Character, SlpStreamMode } from "../src";
