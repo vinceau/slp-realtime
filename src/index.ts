@@ -1,4 +1,3 @@
-export * from "./manager";
 export * from "./operators";
 export * from "./realtime";
 export * from "./stream";
