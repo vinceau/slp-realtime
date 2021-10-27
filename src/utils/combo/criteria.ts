@@ -1,8 +1,9 @@
+import { Character } from "@slippi/slippi-js";
 import { sumBy } from "lodash";
 
 import type { ComboType, GameStartType } from "../../types";
 import { isEquivalentArray } from "../helpers";
-import { Character, MoveID } from "../melee";
+import { MoveID } from "../melee";
 import { extractPlayerNamesByPort, namesMatch } from "../names";
 import type { Criteria } from "./filter";
 

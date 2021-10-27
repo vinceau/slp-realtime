@@ -1,7 +1,5 @@
 import { Stage, stages as stageUtils } from "@slippi/slippi-js";
 
-export { Stage } from "@slippi/slippi-js";
-
 export interface StageInfo {
   id: Stage;
   name: string;

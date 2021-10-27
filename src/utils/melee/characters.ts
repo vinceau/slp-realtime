@@ -1,7 +1,5 @@
 import { Character } from "@slippi/slippi-js";
 
-export { Character } from "@slippi/slippi-js";
-
 export type CharacterColor = string;
 
 export interface CharacterInfo {

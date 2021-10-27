@@ -12,8 +12,6 @@ import { fromEvent, Subject } from "rxjs";
 import { map, share, tap } from "rxjs/operators";
 import type { WritableOptions } from "stream";
 
-export { SlpStreamEvent, SlpStreamMode, SlpStreamSettings } from "@slippi/slippi-js";
-
 /**
  * SlpStream is a writable stream of Slippi data. It passes the data being written in
  * and emits an event based on what kind of Slippi messages were processed.

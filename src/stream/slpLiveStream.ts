@@ -4,9 +4,6 @@ import type { WritableOptions } from "stream";
 
 import { RxSlpStream } from "./rxSlpStream";
 
-// Re-export these for ease-of-use
-export { ConnectionEvent, ConnectionStatus, ConsoleConnection } from "@slippi/slippi-js";
-
 const SLIPPI_CONNECTION_TIMEOUT_MS = 5000;
 
 /**

@@ -1,5 +1,6 @@
+import { Character } from "@slippi/slippi-js";
+
 import type { ComboType, GameStartType, MetadataType } from "../../types";
-import { Character } from "../melee";
 import { ALL_CRITERIA } from "./criteria";
 
 export interface ComboFilterSettings {
