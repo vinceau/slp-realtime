@@ -27,7 +27,7 @@
     "minor": "npm version minor && npm publish",
     "major": "npm version major && npm publish",
     "prepublishOnly": "yarn run lint && yarn run test && yarn run build",
-    "docs": "yarn typedoc --excludePrivate --excludeNotExported --exclude \"**/*+(.spec).ts\"",
+    "docs": "yarn typedoc src/index.ts --excludePrivate --exclude \"**/*+(.spec).ts\"",
     "postdocs": "touch docs/.nojekyll"
   },
   "keywords": [
