@@ -18,6 +18,7 @@ export default {
     {
       file: minifyExtension(pkg.main),
       format: "cjs",
+      plugins: [terser()],
     },
     {
       file: pkg.module,
@@ -25,9 +26,6 @@ export default {
     },
   ],
   plugins: [
-    terser({
-      include: [/^.+\.min\.js$/],
-    }),
     autoExternal(),
     resolve(),
     typescript({
