@@ -13,7 +13,7 @@ describe("when reading dolphin playback stdout", () => {
     subscription.unsubscribe();
   });
 
-  it("can parse command messages", async (finishJest) => {
+  it("can parse command messages", (finishJest) => {
     const inoutStream = new Transform();
     const filepath = "C:/abc/def";
     const payloadToWrite = [
@@ -33,17 +33,17 @@ describe("when reading dolphin playback stdout", () => {
     const dolphinOutput = new DolphinOutput();
 
     const filenames$ = dolphinOutput.playbackStatus$.pipe(
-        filter(playback => playback.status === DolphinPlaybackStatus.FILE_LOADED),
-        map(playback => playback.data.path),
+      filter((playback) => playback.status === DolphinPlaybackStatus.FILE_LOADED),
+      map((playback) => playback.data.path),
     );
     subscription.add(
-      filenames$.subscribe(name => {
+      filenames$.subscribe((name) => {
         expect(name).toEqual(filepath);
         filenameSpy();
       }),
     );
     subscription.add(
-      dolphinOutput.playbackStatus$.subscribe(payload => {
+      dolphinOutput.playbackStatus$.subscribe((payload) => {
         statusSpy();
         if (payload.status === DolphinPlaybackStatus.PLAYBACK_END) {
           expect(payload.data.forceQuit).toBeFalsy();
@@ -52,18 +52,17 @@ describe("when reading dolphin playback stdout", () => {
     );
 
     dolphinOutput.once("finish", () => {
-        expect(filenameSpy.callCount).toEqual(1);
-        expect(statusSpy.callCount).toEqual(4);
-        finishJest();
+      expect(filenameSpy.callCount).toEqual(1);
+      expect(statusSpy.callCount).toEqual(4);
+      finishJest();
     });
 
     inoutStream.push(payloadToWrite);
     inoutStream.pipe(dolphinOutput);
     inoutStream.end();
-
   });
 
-  it("can mark games as having force quit", async (finishJest) => {
+  it("can mark games as having force quit", (finishJest) => {
     const inoutStream = new Transform();
     const filepath = "C:/abc/def";
     const payloadToWrite = [
@@ -83,7 +82,7 @@ describe("when reading dolphin playback stdout", () => {
     const dolphinOutput = new DolphinOutput();
 
     subscription.add(
-      dolphinOutput.playbackStatus$.subscribe(payload => {
+      dolphinOutput.playbackStatus$.subscribe((payload) => {
         statusSpy();
         if (payload.status === DolphinPlaybackStatus.PLAYBACK_END) {
           expect(payload.data.forceQuit).toBeTruthy();
@@ -92,14 +91,12 @@ describe("when reading dolphin playback stdout", () => {
     );
 
     dolphinOutput.once("finish", () => {
-        expect(statusSpy.callCount).toEqual(4);
-        finishJest();
+      expect(statusSpy.callCount).toEqual(4);
+      finishJest();
     });
 
     inoutStream.push(payloadToWrite);
     inoutStream.pipe(dolphinOutput);
     inoutStream.end();
-
   });
-
 });
