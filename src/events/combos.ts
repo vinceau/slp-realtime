@@ -5,9 +5,9 @@ import { filter, share, switchMap } from "rxjs/operators";
 
 import type { RxSlpStream } from "../stream";
 import type { ComboEventPayload } from "../types";
-import { ConversionEvents } from "./conversion";
+import { RealTimeConversionEvents } from "./conversion";
 
-export class ComboEvents {
+export class RealTimeComboEvents {
   private stream$: Observable<RxSlpStream>;
 
   private comboComputer = new ComboComputer();
@@ -20,7 +20,7 @@ export class ComboEvents {
   public constructor(stream: Observable<RxSlpStream>) {
     this.stream$ = stream;
 
-    const conversionEvents = new ConversionEvents(stream);
+    const conversionEvents = new RealTimeConversionEvents(stream);
     this.conversion$ = conversionEvents.end$;
 
     // Reset the state on game start

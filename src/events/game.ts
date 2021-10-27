@@ -5,7 +5,7 @@ import type { RxSlpStream } from "../stream";
 import type { GameEndPayload, GameStartType } from "../types";
 import { findWinner } from "../utils";
 
-export class GameEvents {
+export class RealTimeGameEvents {
   private stream$: Observable<RxSlpStream>;
 
   public start$: Observable<GameStartType>;

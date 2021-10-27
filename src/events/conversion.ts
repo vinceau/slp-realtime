@@ -11,7 +11,7 @@ interface ConversionEventPayload {
   settings: GameStartType;
 }
 
-export class ConversionEvents {
+export class RealTimeConversionEvents {
   private stream$: Observable<RxSlpStream>;
   private conversionComputer = new ConversionComputer();
   public end$ = fromEvent<ConversionEventPayload>(this.conversionComputer, "CONVERSION").pipe(share());

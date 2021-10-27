@@ -9,7 +9,7 @@ import type { PercentChange, StockCountChange, StockType } from "../types";
 import { forAllPlayerIndices } from "../utils";
 import { exists } from "../utils/exists";
 
-export class StockEvents {
+export class RealTimeStockEvents {
   private stream$: Observable<RxSlpStream>;
 
   public playerSpawn$: Observable<StockType>;
