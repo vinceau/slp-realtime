@@ -1,6 +1,7 @@
-import sinon from "sinon";
+import * as sinon from "sinon";
 
-import { pipeFileContents, SlpRealTime, RxSlpStream, ComboFilter, throttleInputButtons, SlpStreamMode } from "../src";
+import { pipeFileContents, SlpRealTime, RxSlpStream, ComboFilter, throttleInputButtons } from "../src";
+import { SlpStreamMode } from "@slippi/slippi-js";
 import { Subscription } from "rxjs";
 
 describe("combo calculation", () => {
