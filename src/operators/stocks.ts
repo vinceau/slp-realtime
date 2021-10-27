@@ -1,8 +1,11 @@
 import { isDead } from "@slippi/slippi-js";
-import { GameStartType, PostFrameUpdateType, StockType, FrameEntryType } from "../types";
-import { Observable, OperatorFunction, MonoTypeOperatorFunction, merge } from "rxjs";
-import { withLatestFrom, map, filter } from "rxjs/operators";
-import { filterOnlyFirstFrame, withPreviousFrame, playerFrameFilter } from "./frames";
+import type { MonoTypeOperatorFunction, Observable, OperatorFunction } from "rxjs";
+import { merge } from "rxjs";
+import { filter, map, withLatestFrom } from "rxjs/operators";
+
+import type { FrameEntryType, GameStartType, PostFrameUpdateType, StockType } from "../types";
+import { exists } from "../utils/exists";
+import { filterOnlyFirstFrame, playerFrameFilter, withPreviousFrame } from "./frames";
 
 /**
  * Filter only the frames where the player has just spawned
@@ -15,8 +18,11 @@ export function filterJustSpawned(playerIndex: number): MonoTypeOperatorFunction
       playerFrameFilter(playerIndex),
       withPreviousFrame(), // Get previous frame too
       filter(([prevFrame, latestFrame]) => {
-        const prevActionState = prevFrame.players[playerIndex].post.actionStateId;
-        const currActionState = latestFrame.players[playerIndex].post.actionStateId;
+        const prevActionState = prevFrame.players[playerIndex]?.post.actionStateId ?? null;
+        const currActionState = latestFrame.players[playerIndex]?.post.actionStateId ?? null;
+        if (prevActionState === null || currActionState === null) {
+          return false;
+        }
         // We only care about the frames where we just spawned
         return isDead(prevActionState) && !isDead(currActionState);
       }),
@@ -53,12 +59,13 @@ export function mapFrameToSpawnStockType(
   return (source: Observable<PostFrameUpdateType>): Observable<StockType> =>
     source.pipe(
       withLatestFrom(settings$),
-      map(([frame, settings]) => {
+      map(([frame, settings]): StockType | null => {
         const player = settings.players.find((player) => player.playerIndex === playerIndex);
-        const opponent = settings.players.find((player) => player.playerIndex !== playerIndex);
+        if (!player || !exists(frame.frame) || !exists(frame.stocksRemaining)) {
+          return null;
+        }
         const stock: StockType = {
           playerIndex: player.playerIndex,
-          opponentIndex: opponent.playerIndex,
           startFrame: frame.frame,
           endFrame: null,
           startPercent: 0,
@@ -69,6 +76,7 @@ export function mapFrameToSpawnStockType(
         };
         return stock;
       }),
+      filter(exists),
     );
 }
 
@@ -81,8 +89,8 @@ export function mapFramesToDeathStockType(
       map(([[prevPlayerFrame, playerFrame], spawnStock]) => ({
         ...spawnStock,
         endFrame: playerFrame.frame,
-        endPercent: prevPlayerFrame.percent || 0,
-        currentPercent: prevPlayerFrame.percent || 0,
+        endPercent: prevPlayerFrame.percent ?? 0,
+        currentPercent: prevPlayerFrame.percent ?? 0,
         deathAnimation: playerFrame.actionStateId,
       })),
     );

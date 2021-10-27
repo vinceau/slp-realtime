@@ -1,4 +1,5 @@
-import { FrameEntryType } from "../types";
+import type { FrameEntryType } from "../types";
+import { exists } from "./exists";
 
 /**
  * Given the last frame of the game, determine the winner first based on stock count
@@ -8,8 +9,15 @@ import { FrameEntryType } from "../types";
  * @returns the player index of the winner
  */
 export const findWinner = (lastFrame: FrameEntryType): number => {
-  const postFrameEntries = Object.keys(lastFrame.players).map((i: any) => lastFrame.players[i].post);
+  const postFrameEntries = Object.keys(lastFrame.players)
+    .map((i: any) => lastFrame.players[i]?.post)
+    .filter(exists);
+
   const winnerPostFrame = postFrameEntries.reduce((a, b) => {
+    if (!exists(a.stocksRemaining) || !exists(b.stocksRemaining) || !exists(a.percent) || !exists(b.percent)) {
+      return a;
+    }
+
     // Determine winner based on stock count
     if (a.stocksRemaining > b.stocksRemaining) {
       return a;
@@ -30,5 +38,5 @@ export const findWinner = (lastFrame: FrameEntryType): number => {
     return a;
   });
 
-  return winnerPostFrame.playerIndex;
+  return winnerPostFrame.playerIndex as number;
 };

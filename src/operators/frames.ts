@@ -1,6 +1,9 @@
-import { FrameEntryType, Frames } from "../types";
-import { Observable, MonoTypeOperatorFunction, OperatorFunction } from "rxjs";
+import type { MonoTypeOperatorFunction, Observable, OperatorFunction } from "rxjs";
 import { filter, pairwise } from "rxjs/operators";
+
+import type { FrameEntryType } from "../types";
+import { Frames } from "../types";
+import { exists } from "../utils/exists";
 
 /**
  * Filter the frames to only those that belong to the player {index}.
@@ -18,12 +21,14 @@ export function playerFrameFilter(index: number): MonoTypeOperatorFunction<Frame
 /**
  * Return the previous frame of the game and the current frame
  */
-export function withPreviousFrame<T extends { frame: number }>(): OperatorFunction<T, [T, T]> {
+export function withPreviousFrame<T extends { frame: number | null }>(): OperatorFunction<T, [T, T]> {
   return (source: Observable<T>): Observable<[T, T]> =>
     source.pipe(
       pairwise(), // We want both the latest frame and the previous frame
       filter(
-        ([prevFrame, latestFrame]) => latestFrame.frame > prevFrame.frame, // Filter out the frames from last game
+        ([{ frame: prevFrameNum }, { frame: latestFrameNum }]) => {
+          return exists(prevFrameNum) && exists(latestFrameNum) && latestFrameNum > prevFrameNum;
+        }, // Filter out the frames from last game
       ),
     );
 }

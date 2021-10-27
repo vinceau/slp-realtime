@@ -1,21 +1,18 @@
-import {
-  Command,
-  SlpStreamEvent,
-  SlpCommandEventPayload,
-  SlpParser,
-  MessageSizes,
-  SlpParserEvent,
-  GameStartType,
+import type {
   FrameEntryType,
+  FramesType,
   GameEndType,
-  SlpFileWriter,
+  GameStartType,
+  MessageSizes,
+  SlpCommandEventPayload,
   SlpFileWriterOptions,
 } from "@slippi/slippi-js";
-import { Subject, fromEvent } from "rxjs";
-import { share } from "rxjs/operators";
-import { WritableOptions } from "stream";
+import { Command, SlpFileWriter, SlpParser, SlpParserEvent, SlpStreamEvent } from "@slippi/slippi-js";
+import { fromEvent, Subject } from "rxjs";
+import { map, share, tap } from "rxjs/operators";
+import type { WritableOptions } from "stream";
 
-export { SlpStreamMode, SlpStreamSettings, SlpStreamEvent } from "@slippi/slippi-js";
+export { SlpStreamEvent, SlpStreamMode, SlpStreamSettings } from "@slippi/slippi-js";
 
 /**
  * SlpStream is a writable stream of Slippi data. It passes the data being written in
@@ -27,12 +24,26 @@ export { SlpStreamMode, SlpStreamSettings, SlpStreamEvent } from "@slippi/slippi
 export class RxSlpStream extends SlpFileWriter {
   protected parser = new SlpParser({ strict: true }); // Strict mode will enable data validation
   private messageSizeSource = new Subject<Map<Command, number>>();
+  private allFrames: FramesType = {};
 
   // Observables
   public messageSize$ = this.messageSizeSource.asObservable();
   public gameStart$ = fromEvent<GameStartType>(this.parser, SlpParserEvent.SETTINGS).pipe(share());
   public playerFrame$ = fromEvent<FrameEntryType>(this.parser, SlpParserEvent.FINALIZED_FRAME).pipe(share());
   public gameEnd$ = fromEvent<GameEndType>(this.parser, SlpParserEvent.END).pipe(share());
+  public allFrames$ = this.playerFrame$.pipe(
+    // Run this side effect first so we can update allFrames
+    tap((latestFrame) => {
+      const frameNum = latestFrame.frame;
+      this.allFrames[frameNum] = latestFrame;
+    }),
+    map((latestFrame) => {
+      return {
+        allFrames: this.allFrames,
+        latestFrame,
+      };
+    }),
+  );
 
   /**
    *Creates an instance of SlpStream.
@@ -69,5 +80,6 @@ export class RxSlpStream extends SlpFileWriter {
   public restart(): void {
     this.parser.reset();
     super.restart();
+    this.allFrames = {};
   }
 }

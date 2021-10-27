@@ -1,6 +1,7 @@
-import sinon from "sinon";
+import * as sinon from "sinon";
 
-import { pipeFileContents, SlippiGame, SlpRealTime, RxSlpStream, ComboFilter, Character, SlpStreamMode } from "../src";
+import { SlippiGame } from "@slippi/slippi-js";
+import { pipeFileContents, SlpRealTime, RxSlpStream, ComboFilter, Character, SlpStreamMode } from "../src";
 import { Subscription } from "rxjs";
 
 describe("combo calculation", () => {
@@ -169,6 +170,28 @@ describe("combo calculation", () => {
       const metadata = game.getMetadata();
 
       filter.updateSettings({ minComboPercent: 40, nameTags: ["Fizzi"] });
+      const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
+      realtime.setStream(slpStream);
+      subscriptions.push(
+        realtime.combo.end$.subscribe((payload) => {
+          if (filter.isCombo(payload.combo, payload.settings, metadata)) {
+            comboSpy();
+          }
+        }),
+      );
+      await pipeFileContents(filename, slpStream);
+      expect(comboSpy.callCount).toEqual(1);
+    });
+
+    it("can correctly match port filter", async () => {
+      const realtime = new SlpRealTime();
+      const comboSpy = sinon.spy();
+
+      const filename = "slp/Game_20190517T164215.slp";
+      const game = new SlippiGame(filename);
+      const metadata = game.getMetadata();
+
+      filter.updateSettings({ portFilter: [2], minComboPercent: 40 });
       const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
       realtime.setStream(slpStream);
       subscriptions.push(

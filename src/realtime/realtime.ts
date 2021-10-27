@@ -1,6 +1,7 @@
-import { RxSlpStream } from "../stream";
-import { StockEvents, InputEvents, ComboEvents, GameEvents } from "../events";
 import { ReplaySubject } from "rxjs";
+
+import { ComboEvents, GameEvents, InputEvents, StockEvents } from "../events";
+import type { RxSlpStream } from "../stream";
 
 /**
  * SlpRealTime is solely responsible for detecting notable in-game events

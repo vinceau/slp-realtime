@@ -1,8 +1,11 @@
-import { InputButtonCombo, FrameEntryType, Frames } from "../types";
-import { Observable, MonoTypeOperatorFunction, OperatorFunction } from "rxjs";
-import { distinctUntilChanged, map, scan, filter } from "rxjs/operators";
+import type { MonoTypeOperatorFunction, Observable, OperatorFunction } from "rxjs";
+import { distinctUntilChanged, filter, map, scan } from "rxjs/operators";
+
+import type { FrameEntryType, InputButtonCombo } from "../types";
+import { Frames } from "../types";
+import { bitmaskToButtons, generateInputBitmask } from "../utils";
+import { exists } from "../utils/exists";
 import { playerFrameFilter } from "./frames";
-import { generateInputBitmask, bitmaskToButtons } from "../utils";
 
 /**
  * Throttle inputs for a number of frames
@@ -34,8 +37,11 @@ export function mapFramesToButtonInputs(
         frame: number;
         buttonPressed: boolean;
         buttonCombo: string[];
-      } => {
-        const buttonCombo = f.players[index].pre.physicalButtons;
+      } | null => {
+        const buttonCombo = f.players[index]?.pre.physicalButtons;
+        if (!exists(buttonCombo)) {
+          return null;
+        }
         const buttonComboPressed = (buttonCombo & controlBitMask) === controlBitMask;
         return {
           frame: f.frame,
@@ -43,6 +49,7 @@ export function mapFramesToButtonInputs(
           buttonCombo: bitmaskToButtons(buttonCombo),
         };
       }),
+      filter(exists),
       // Count the number of consecutively pressed frames
       scan(
         (
@@ -63,7 +70,7 @@ export function mapFramesToButtonInputs(
         {
           count: 0,
           frame: Frames.FIRST,
-          buttonCombo: [],
+          buttonCombo: [] as string[],
         },
       ),
       // Filter to be the exact frame when we pressed the combination for sufficient frames

@@ -13,9 +13,11 @@
  */
 
 import os from "os";
-import { Writable, WritableOptions } from "stream";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
+import type { WritableOptions } from "stream";
+import { Writable } from "stream";
+
 import { Frames } from "../../types";
 
 enum PlaybackCommand {
@@ -107,7 +109,7 @@ export class DolphinOutput extends Writable {
     callback();
   }
 
-  private _processCommand(command: string, val?: string): void {
+  private _processCommand(command: string, val: string): void {
     const value = parseInt(val);
     switch (command) {
       case PlaybackCommand.FILE_PATH:

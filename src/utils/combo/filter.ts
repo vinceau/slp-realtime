@@ -1,5 +1,5 @@
+import type { ComboType, GameStartType, MetadataType } from "../../types";
 import { Character } from "../melee";
-import { ComboType, GameStartType } from "../../types";
 import { ALL_CRITERIA } from "./criteria";
 
 export interface ComboFilterSettings {
@@ -20,13 +20,11 @@ export interface ComboFilterSettings {
   fuzzyNameTagMatching: boolean;
 }
 
-export type Metadata = Record<string, any>;
-
 export type Criteria = (
   combo: ComboType,
   settings: GameStartType,
   options: ComboFilterSettings,
-  metadata?: Metadata,
+  metadata?: MetadataType | null,
 ) => boolean;
 
 export const defaultComboFilterSettings: ComboFilterSettings = {
@@ -74,7 +72,7 @@ export class ComboFilter {
     return this.updateSettings(this.originalSettings);
   }
 
-  public isCombo(combo: ComboType, settings: GameStartType, metadata?: Metadata): boolean {
+  public isCombo(combo: ComboType, settings: GameStartType, metadata?: MetadataType | null): boolean {
     return checkCombo(this.settings, combo, settings, metadata, this.criteria);
   }
 }
@@ -83,7 +81,7 @@ export const checkCombo = (
   comboSettings: ComboFilterSettings,
   combo: ComboType,
   gameSettings: GameStartType,
-  metadata?: Metadata,
+  metadata?: MetadataType | null,
   criteria?: Criteria[],
 ): boolean => {
   const criteriaToCheck = criteria && criteria.length > 0 ? criteria : [...ALL_CRITERIA];

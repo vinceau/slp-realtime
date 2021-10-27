@@ -1,4 +1,5 @@
-import { SlippiGame, ComboFilter, Character } from "../src";
+import { GameStartType, SlippiGame, StatsType } from "@slippi/slippi-js";
+import { ComboFilter, Character } from "../src";
 
 describe("can match combos for rollback slp files", () => {
   it("can filter by slippi connect codes", async () => {
@@ -24,9 +25,11 @@ describe("can match combos for rollback slp files", () => {
     charFilter.updateSettings({ characterFilter: [Character.MARIO], minComboPercent: 30, comboMustKill: false });
 
     const game = new SlippiGame("slp/Game_20200701T191315-rb-codes.slp");
-    const settings = game.getSettings();
+    const settings = game.getSettings() as GameStartType;
+    expect(settings).not.toBeNull();
     const md = game.getMetadata();
-    const stats = game.getStats();
+    const stats = game.getStats() as StatsType;
+    expect(stats).not.toBeNull();
     const comboMatched = stats.conversions.filter((c) => comboFilter.isCombo(c, settings));
     const codeMatched = stats.conversions.filter((c) => codeFilter.isCombo(c, settings, md));
     const strictCodeMatched = stats.conversions.filter((c) => strictCodeFilter.isCombo(c, settings, md));

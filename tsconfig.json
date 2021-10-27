@@ -10,6 +10,8 @@
     "esModuleInterop": true,
     "downlevelIteration": true,
     "sourceMap": true,
+    "strict": true,
+    "strictNullChecks": true,
     "lib": ["esnext"]
   },
   "include": ["src/**/*"],

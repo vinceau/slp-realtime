@@ -1,8 +1,9 @@
-import { Observable } from "rxjs";
-import { RxSlpStream } from "../stream";
-import { withLatestFrom, map, switchMap } from "rxjs/operators";
+import type { Observable } from "rxjs";
+import { map, switchMap, withLatestFrom } from "rxjs/operators";
+
+import type { RxSlpStream } from "../stream";
+import type { GameEndPayload, GameStartType } from "../types";
 import { findWinner } from "../utils";
-import { GameStartType, GameEndPayload } from "../types";
 
 export class GameEvents {
   private stream$: Observable<RxSlpStream>;

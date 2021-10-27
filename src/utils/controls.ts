@@ -1,4 +1,5 @@
 import { Input } from "../types";
+import { exists } from "./exists";
 
 enum InputBit {
   D_LEFT = 0x0001,
@@ -40,7 +41,7 @@ export const generateInputBitmask = (...buttons: string[]): number => {
 
 const mapInputToBits = (button: string): InputBit => {
   const b = inputBitMap.get(button);
-  if (!b) {
+  if (!exists(b)) {
     throw new Error(`Unknown input: ${button}`);
   }
   return b;
