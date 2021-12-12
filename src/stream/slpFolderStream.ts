@@ -31,6 +31,7 @@ export class SlpFolderStream extends RxSlpStream {
   private stopRequested$ = new Subject<void>();
   private newFile$ = new BehaviorSubject<string | null>(null);
   private readStream: TailStream | null = null;
+  public watcher: chokidar.FSWatcher | null = null;
 
   public constructor(options?: Partial<SlpFileWriterOptions>, opts?: WritableOptions) {
     super({ ...options, mode: SlpStreamMode.MANUAL }, opts);
@@ -65,13 +66,13 @@ export class SlpFolderStream extends RxSlpStream {
           // Initialize watcher.
           const subFolderGlob = includeSubfolders ? "**" : "";
           const slpGlob = path.join(slpFolder, subFolderGlob, "*.slp");
-          const watcher = chokidar.watch(slpGlob, {
+          this.watcher = chokidar.watch(slpGlob, {
             ignored: /(^|[\/\\])\../, // ignore dotfiles
             persistent: true,
             ignoreInitial: true,
             ignorePermissionErrors: true,
           });
-          return fromEvent<[string, any]>(watcher, "add").pipe(
+          return fromEvent<[string, any]>(this.watcher, "add").pipe(
             share(),
             map(([filename]) => path.resolve(filename)),
             takeUntil(this.stopRequested$),
