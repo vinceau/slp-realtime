@@ -46,7 +46,6 @@ export class SlpFolderStream extends RxSlpStream {
         return;
       }
 
-      console.log(`found a new file: ${filePath}`);
       this.endReadStream();
 
       // Restart the parser before we begin
@@ -98,7 +97,6 @@ export class SlpFolderStream extends RxSlpStream {
    * @memberof SlpFolderStream
    */
   public start(slpFolder: string, includeSubfolders?: boolean): void {
-    console.log(`Start monitoring${includeSubfolders ? " with subfolders" : ""}: ${slpFolder}`);
     this.startRequested$.next([slpFolder, Boolean(includeSubfolders)]);
   }
 
