@@ -3,7 +3,6 @@ const brake = require("brake");
 import type { Observable } from "rxjs";
 import { merge } from "rxjs";
 import type { Readable, Writable } from "stream";
-const Transform = require("readable-stream").Transform;
 
 export const forAllPlayerIndices = <T>(func: (index: number) => Observable<T>): Observable<T> => {
   return merge(func(0), func(1), func(2), func(3));
@@ -21,24 +20,36 @@ export const pipeFileContents = async (filename: string, destination: Writable, 
   });
 };
 
+// TODO - Resolve when the stream has actually started
 export const pipeFileContentsToFile = async (
   filename: string,
   destination: string,
-  speed: Number = 3000,
-): Promise<{ readStream: Readable; writeStream: Writable; brakeStream: typeof Transform }> => {
+  slow: boolean = true,
+): Promise<{
+  readStream: Readable;
+  writeStream: Writable;
+  brakeStream: typeof brake;
+  stopPipeStream: Function;
+}> => {
   return new Promise((resolve) => {
-    const readStream = fs.createReadStream(filename);
-
     const writeStream = fs.createWriteStream(destination);
+    const readStream = fs.createReadStream(filename);
+    // Brake will slow down the stream by the given speed, this is useful for testing SlpFolderStreams
+    const brakeStream = brake(2e4);
 
-    const brakeStream = brake(speed);
-
-    readStream.pipe(brakeStream).pipe(writeStream);
-
-    readStream.on("open", () => {
+    if (slow) {
       readStream.pipe(brakeStream).pipe(writeStream);
+    } else {
+      readStream.pipe(writeStream);
+    }
 
-      resolve({ readStream, writeStream, brakeStream });
-    });
+    let stopPipeStream = () => {
+      readStream.unpipe(writeStream).unpipe(brakeStream);
+      readStream.destroy();
+      writeStream.destroy();
+      brakeStream.destroy();
+    };
+
+    resolve({ readStream, writeStream, brakeStream, stopPipeStream });
   });
 };
