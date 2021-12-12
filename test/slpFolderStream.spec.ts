@@ -47,6 +47,9 @@ describe("slpFolderStream", () => {
     // Stop the folder stream and watcher
     slpFolderStream.stop();
 
+    // After stopping, the watcher should be null
+    expect(slpFolderStream.getWatcher()).toBe(null);
+
     // Stop the tmp stream
     stopPipeStream();
   });
