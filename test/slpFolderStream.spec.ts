@@ -1,6 +1,5 @@
-const path = require("path");
-const targetDirectory = path.resolve(__dirname, "..", "slp", "folder-stream");
-const fs = require("fs");
+import path from "path";
+import fs from "fs";
 
 import { pipeFileContentsToFile } from "../src";
 
