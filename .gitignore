@@ -69,6 +69,3 @@ dist/
 *.old
 
 docs
-
-# Test files
-slp/folder-stream/*.slp
