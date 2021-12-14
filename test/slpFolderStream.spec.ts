@@ -1,44 +1,45 @@
 import path from "path";
 import fs from "fs";
+const { copyFile, mkdir } = fs.promises;
 
 import { SlpFolderStream } from "../src";
 
-const targetDirectory = path.resolve(__dirname, "..", "slp", "folder-stream");
-
 describe("slpFolderStream", () => {
-  let tmpSlpFiles: Array<fs.PathLike>;
+  let tmpTargetDirectory: string = path.resolve(__dirname, "..", "slp", "tmp");
 
-  beforeAll(() => {
-    tmpSlpFiles = [];
+  beforeAll(async () => {
+    await mkdir(tmpTargetDirectory, { recursive: true });
   });
 
-  afterAll(() => {
-    tmpSlpFiles.forEach((file) => fs.unlinkSync(file));
+  afterAll(async () => {
+    fs.rmdirSync(tmpTargetDirectory, { recursive: true });
   });
+
+  let randomSlpFilename = (): string => (Math.random() + 1).toString(36).substring(7) + ".slp";
 
   it("starts watching, detects a new file and stops watching", async () => {
     const slpFolderStream = new SlpFolderStream();
 
-    slpFolderStream.start(targetDirectory, true);
+    slpFolderStream.start(tmpTargetDirectory, true);
+
+    // Wait for Chokidar to be ready
+    await new Promise<void>((resolve, reject) => {
+      slpFolderStream.watcher ? slpFolderStream.watcher.once("ready", resolve) : reject();
+    });
 
     // Generate a random targetFile
-    let targetFile = path.resolve(targetDirectory, (Math.random() + 1).toString(36).substring(7) + ".slp");
-    tmpSlpFiles.push(targetFile);
+    let targetFile = path.resolve(tmpTargetDirectory, randomSlpFilename());
 
-    // Copy a slp file to the target directory so slpFolderStream can pick it up
-    fs.copyFileSync("slp/Game_20190810T162904.slp", targetFile);
+    await copyFile("slp/Game_20190810T162904.slp", targetFile);
+
+    // Wait for Chokidar to be pick up the file
+    await new Promise<void>((resolve, reject) => {
+      slpFolderStream.watcher ? slpFolderStream.watcher.once("add", resolve) : reject();
+    });
 
     expect(slpFolderStream.latestFile()).toBe(targetFile);
 
-    // Stop the folder stream and watcher
+    // Stop the folder stream
     slpFolderStream.stop();
-
-    // Generate a new random targetFile
-    targetFile = path.resolve(targetDirectory, (Math.random() + 1).toString(36).substring(7) + ".slp");
-    tmpSlpFiles.push(targetFile);
-
-    fs.copyFileSync("slp/Game_20190810T162904.slp", targetFile);
-
-    expect(slpFolderStream.latestFile()).not.toBe(targetFile);
   });
 });
