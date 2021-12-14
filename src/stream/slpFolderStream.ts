@@ -31,7 +31,7 @@ export class SlpFolderStream extends RxSlpStream {
   private stopRequested$ = new Subject<void>();
   private newFile$ = new BehaviorSubject<string | null>(null);
   private readStream: TailStream | null = null;
-  private watcher: chokidar.FSWatcher | null = null;
+  public watcher: chokidar.FSWatcher | null = null;
 
   public constructor(options?: Partial<SlpFileWriterOptions>, opts?: WritableOptions) {
     super({ ...options, mode: SlpStreamMode.MANUAL }, opts);
