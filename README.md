@@ -19,18 +19,18 @@ This library provides an easy way to subscribe to real-time [Slippi](https://git
 
 ## Installation
 
-This package relies on the `rxjs` package as a peer dependency and must be installed alongside.
+This package relies on the `rxjs` and `@slippi/slippi-js` packages as a peer dependency and must be installed alongside this package.
 
 **With NPM**
 
 ```bash
-npm install @vinceau/slp-realtime rxjs
+npm install @vinceau/slp-realtime rxjs @slippi/slippi-js
 ```
 
 **With Yarn**
 
 ```bash
-yarn add @vinceau/slp-realtime rxjs
+yarn add @vinceau/slp-realtime rxjs @slippi/slippi-js
 ```
 
 ## Usage
