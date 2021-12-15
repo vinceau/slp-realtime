@@ -27,7 +27,7 @@ describe("slpFolderStream", () => {
 
   it("should be able to start and stop detecting files", async () => {
     const gameStartSpy = sinon.spy();
-    await slpFolderStream.start(tmpTargetDirectory, true);
+    await slpFolderStream.start(tmpTargetDirectory, { includeSubfolders: true });
 
     subscriptions.push(slpFolderStream.gameStart$.subscribe(() => gameStartSpy()));
 

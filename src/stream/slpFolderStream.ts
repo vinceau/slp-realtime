@@ -77,13 +77,13 @@ export class SlpFolderStream extends RxSlpStream {
    * @param {string} slpFolder
    * @memberof SlpFolderStream
    */
-  public async start(slpFolder: string, includeSubfolders?: boolean): Promise<void> {
+  public async start(slpFolder: string, options?: { includeSubfolders?: boolean }): Promise<void> {
     // Clean up any existing streams
     this.stopFileWatcher();
     this.endReadStream();
 
     // Initialize watcher.
-    const subFolderGlob = includeSubfolders ? "**" : "";
+    const subFolderGlob = options?.includeSubfolders ? "**" : "";
     const slpGlob = path.join(slpFolder, subFolderGlob, "*.slp");
 
     const watcher = chokidar.watch(slpGlob, {
