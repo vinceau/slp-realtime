@@ -1,9 +1,9 @@
 import type { SlpFileWriterOptions } from "@slippi/slippi-js";
 import { SlpStreamMode } from "@slippi/slippi-js";
+import type { FSWatcher } from "chokidar";
 import chokidar from "chokidar";
 import path from "path";
-import { BehaviorSubject, fromEvent, Subject } from "rxjs";
-import { map, share, switchMap, takeUntil } from "rxjs/operators";
+import { BehaviorSubject, Subject } from "rxjs";
 import type { WritableOptions } from "stream";
 import type { TailStream } from "tailstream";
 import tailstream from "tailstream";
@@ -27,10 +27,10 @@ import { RxSlpStream } from "./rxSlpStream";
  * @extends {RxSlpStream}
  */
 export class SlpFolderStream extends RxSlpStream {
-  private startRequested$ = new Subject<[string, boolean]>();
   private stopRequested$ = new Subject<void>();
   private newFile$ = new BehaviorSubject<string | null>(null);
   private readStream: TailStream | null = null;
+  private fileWatcher: FSWatcher | null = null;
 
   public constructor(options?: Partial<SlpFileWriterOptions>, opts?: WritableOptions) {
     super({ ...options, mode: SlpStreamMode.MANUAL }, opts);
@@ -45,7 +45,6 @@ export class SlpFolderStream extends RxSlpStream {
         return;
       }
 
-      console.log(`found a new file: ${filePath}`);
       this.endReadStream();
 
       // Restart the parser before we begin
@@ -54,31 +53,6 @@ export class SlpFolderStream extends RxSlpStream {
       this.readStream = tailstream.createReadStream(filePath);
       this.readStream.pipe(this, { end: false });
     });
-
-    // Set up the new file listener
-    this.startRequested$
-      .pipe(
-        switchMap(([slpFolder, includeSubfolders]) => {
-          // End any existing read streams
-          this.endReadStream();
-
-          // Initialize watcher.
-          const subFolderGlob = includeSubfolders ? "**" : "";
-          const slpGlob = path.join(slpFolder, subFolderGlob, "*.slp");
-          const watcher = chokidar.watch(slpGlob, {
-            ignored: /(^|[\/\\])\../, // ignore dotfiles
-            persistent: true,
-            ignoreInitial: true,
-            ignorePermissionErrors: true,
-          });
-          return fromEvent<[string, any]>(watcher, "add").pipe(
-            share(),
-            map(([filename]) => path.resolve(filename)),
-            takeUntil(this.stopRequested$),
-          );
-        }),
-      )
-      .subscribe(this.newFile$);
   }
 
   private endReadStream(): void {
@@ -89,6 +63,13 @@ export class SlpFolderStream extends RxSlpStream {
     }
   }
 
+  private stopFileWatcher(): void {
+    if (this.fileWatcher) {
+      this.fileWatcher.close();
+      this.fileWatcher = null;
+    }
+  }
+
   /**
    * Starts watching a particular folder for slp files. It treats all new
    * `.slp` files as though it's a live Slippi stream.
@@ -96,12 +77,35 @@ export class SlpFolderStream extends RxSlpStream {
    * @param {string} slpFolder
    * @memberof SlpFolderStream
    */
-  public start(slpFolder: string, includeSubfolders?: boolean): void {
-    console.log(`Start monitoring${includeSubfolders ? " with subfolders" : ""}: ${slpFolder}`);
-    this.startRequested$.next([slpFolder, Boolean(includeSubfolders)]);
+  public async start(slpFolder: string, includeSubfolders?: boolean): Promise<void> {
+    // Clean up any existing streams
+    this.stopFileWatcher();
+    this.endReadStream();
+
+    // Initialize watcher.
+    const subFolderGlob = includeSubfolders ? "**" : "";
+    const slpGlob = path.join(slpFolder, subFolderGlob, "*.slp");
+
+    const watcher = chokidar.watch(slpGlob, {
+      ignored: /(^|[\/\\])\../, // ignore dotfiles
+      persistent: true,
+      ignoreInitial: true,
+      ignorePermissionErrors: true,
+    });
+
+    // Wait until the watcher is actually ready
+    await new Promise((resolve) => watcher.once("ready", resolve));
+
+    // Set up the new file listener
+    watcher.on("add", (filename) => {
+      this.newFile$.next(filename);
+    });
+
+    this.fileWatcher = watcher;
   }
 
   public stop(): void {
+    this.stopFileWatcher();
     this.endReadStream();
     this.stopRequested$.next();
   }
