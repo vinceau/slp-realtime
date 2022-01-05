@@ -13,7 +13,7 @@ This library provides an easy way to subscribe to real-time [Slippi](https://git
 
 ## Highlights
 
-- Go file-less. Read directly from the relay or console.
+- Go file-less. Read directly from Slippi Dolphin, the relay, or a console.
 - Custom combos. Easily add combo parameters and output Dolphin-compatible JSON files.
 - Powerful [RxJS Observable](https://rxjs-dev.firebaseapp.com/guide/overview) and Stream API.
 
@@ -35,9 +35,9 @@ yarn add @vinceau/slp-realtime rxjs @slippi/slippi-js
 
 ## Usage
 
-For a list of all the subscribable events, [click here](api/observables.md#events).
-
 See a [working example](examples) or [check out the docs](api/README.md).
+
+For a list of all the subscribable events, [click here](api/observables.md#events).
 
 The following usage examples use the more complex [RxJS Observable API](api/observables.md). For a more
 simplified usage, check out the [JSON Config API](api/json-config.md) and the [accompanying working example](examples/json-config).
@@ -137,6 +137,15 @@ realtime.stock.countChange$.subscribe((payload) => {
 ```
 
 **NOTE: Please don't actually do this for real custom HUDs. Writing to files is slow and OBS takes a long time to update after file changes. If you actually want to build a custom layout for OBS you should use a browser source and send updates using websockets instead of writing data to a file.**
+
+## Setup on WSL
+
+If you're running your node project inside Windows Subsystem for Linux and running Dolphin or a relay in Windows, setup requires a couple extra steps:
+
+1. Change the address passed to `livestream.start` to the one listed in `/etc/resolv.conf` instead of `localhost` 
+(see https://devdojo.com/mvnarendrareddy/access-windows-localhost-from-wsl2).
+
+2. Add a firewall rule allowing access from WSL (see https://superuser.com/a/1620974) 
 
 ## Development
 
