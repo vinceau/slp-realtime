@@ -1,3 +1,5 @@
+**NOTE: The connection method used in this example, `SlpFolderStream`, is largely deprecated in favor of using `SlpLiveStream` with the `"dolphin"` connection type. See [here](../relay-connection-or-dolphin) for details.**
+
 # SLP Folder Monitoring Example
 
 This is an example demonstrating the real-time capabilities of `slp-realtime` and its ability
@@ -6,6 +8,7 @@ to read events from open SLP files that are still be written to.
 This script reads events from a specific folder which has new SLP files being written to
 and generates a Dolphin-compatible `combos.json` file when disconnected the interrupt signal
 is given.
+
 
 ## How to use
 

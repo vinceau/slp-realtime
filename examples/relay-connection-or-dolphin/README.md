@@ -1,10 +1,10 @@
-# Relay Connection Example
+# Dolphin / Relay Connection Example
 
 This is an example demonstrating the real-time capabilities of `slp-realtime`.
 
-This script connects to a Slippi relay, automatically detects combos,
-and generates a Dolphin-compatible `combos.json` file when disconnected
-from the relay.
+This script connects to a Dolphin instance or Slippi relay, automatically
+detects combos, and generates a Dolphin-compatible `combos.json` file 
+when disconnected from the relay.
 
 ## How to use
 
@@ -20,7 +20,7 @@ yarn run build
 2. Prepare the example by changing directory into the example folder and installing the dependencies. 
 
 ```bash
-cd examples/relay-connection
+cd examples/relay-connection-or-dolphin
 yarn install
 ```
 
