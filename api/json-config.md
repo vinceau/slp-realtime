@@ -1,4 +1,6 @@
-# JSON Config API
+# JSON Config API (DEPRECATED)
+
+> Do not use this JSON Config API anymore! It is deprecated and will be completely removed in the next version!
 
 To interface with this API you first instantiate an [`EventManager`](./types.md#eventmanager) object and you pass a configuration object which defines what kind of events you are interested in subscribing for.
 
