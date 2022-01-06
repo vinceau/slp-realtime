@@ -1,4 +1,5 @@
-import type { Connection } from "@slippi/slippi-js";
+import type { Connection, SlpFileWriterOptions } from "@slippi/slippi-js";
+import type { WritableOptions } from "stream";
 import { ConnectionEvent, ConnectionStatus, ConsoleConnection, DolphinConnection } from "@slippi/slippi-js";
 
 import { RxSlpStream } from "./rxSlpStream";
@@ -24,8 +25,12 @@ export class SlpLiveStream extends RxSlpStream {
    */
   public connection: Connection;
 
-  public constructor(connectionType?: "dolphin" | "console") {
-    super();
+  public constructor(
+    connectionType?: "dolphin" | "console",
+    options?: Partial<SlpFileWriterOptions>,
+    opts?: WritableOptions,
+  ) {
+    super(options, opts);
     if (connectionType === "dolphin") {
       this.connection = new DolphinConnection();
     } else {
