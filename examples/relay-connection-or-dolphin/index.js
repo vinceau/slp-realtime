@@ -1,18 +1,19 @@
 /*
-This example script connects to a relay, automatically detects combos,
-and generates a Dolphin-compatible `combos.json` file when disconnected
-from the relay.
+This example script connects to a relay or instance of Dolphin, automatically
+ detects combos, and generates a Dolphin-compatible `combos.json` file 
+ when disconnected.
 */
 
 const fs = require("fs");
 const { tap, map, filter } = require("rxjs/operators");
+const { Ports } = require('@slippi/slippi-js')
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { ConnectionStatus, SlpLiveStream, SlpRealTime, ComboFilter, generateDolphinQueuePayload } = require("@vinceau/slp-realtime");
 
 // TODO: Make sure you set these values!
-const ADDRESS = "localhost";  // leave as is if the relay is on the same computer
-const PORT = 1667;            // relay port
+const ADDRESS = "localhost";  // leave as is for Dolphin or a relay on the same computer
+const PORT = Ports.DEFAULT;   // options are DEFAULT, RELAY_START, and LEGACY
 
 const outputCombosFile = "combos.json";   // The json file to write combos to
 
@@ -25,7 +26,7 @@ comboFilter.updateSettings({
   minComboPercent: 40,   // combos have to do at least 40% damage
 });
 
-// Connect to the relay
+// Connect to Dolphin or the relay
 const livestream = new SlpLiveStream({
   outputFiles: true,  // Write out slp files so we can reference them in the dolphin json file
 });
@@ -33,7 +34,7 @@ const livestream = new SlpLiveStream({
 // connect to the livestream
 livestream.start(ADDRESS, PORT)
   .then(() => {
-    console.log("Connected to Slippi Relay");
+    console.log("Connected to Slippi");
   })
   .catch(console.error);
 

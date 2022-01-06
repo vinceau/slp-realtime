@@ -72,3 +72,10 @@ Returns an `Observable<`[`ComboEventPayload`](./types.md#comboeventpayload)`>`
 Emitted when a conversion occurs.
 
 Returns an `Observable<`[`ComboEventPayload`](./types.md#comboeventpayload)`>`
+
+
+### Input
+
+#### `realtime.input.playerIndexButtonCombo`
+
+A function which takes in `(playerIndex: number, buttons: string[], duration: number = 1)` and returns an `Observable<`[`InputButtonCombo`](./types.md#inputbuttoncombo)`>` which emits when the buttons in `buttons` are held by player `playerIndex` for `duration` frames.
