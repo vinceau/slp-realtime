@@ -1,3 +1,6 @@
+# DEPRECTATED! DO NOT USE THE JSON CONFIG API ANYMORE!
+# It will be removed completely very soon so do not use!
+
 # JSON Config API Example
 
 This is an example demonstrating the JSON Config API of `slp-realtime`.
