@@ -136,6 +136,15 @@ realtime.stock.countChange$.subscribe((payload) => {
 **NOTE: Please don't actually do this for real custom HUDs. Writing to files is slow and OBS takes a long time to update after file changes. If you actually want to build a custom layout for OBS you should use a browser source and send updates using websockets instead of writing data to a file.**
 
 
+## Setup on WSL
+
+If you're running the Node project inside Windows Subsystem for Linux and running Dolphin or a relay in Windows, setup requires a couple extra steps:
+
+1. Change the address passed to `livestream.start` to the one listed in `/etc/resolv.conf` instead of `localhost` ([see here](https://devdojo.com/mvnarendrareddy/access-windows-localhost-from-wsl2))
+
+2. Add a firewall rule allowing access from WSL ([see here](https://superuser.com/a/1620974))
+
+
 ## Development
 
 To build the library from source:
@@ -155,15 +164,6 @@ To run the tests:
 ```bash
 yarn run test
 ```
-
-
-## Setup on WSL
-
-If you're running the Node project inside Windows Subsystem for Linux and running Dolphin or a relay in Windows, setup requires a couple extra steps:
-
-1. Change the address passed to `livestream.start` to the one listed in `/etc/resolv.conf` instead of `localhost` ([see here](https://devdojo.com/mvnarendrareddy/access-windows-localhost-from-wsl2))
-
-2. Add a firewall rule allowing access from WSL ([see here](https://superuser.com/a/1620974))
 
 
 ## Acknowledgements
