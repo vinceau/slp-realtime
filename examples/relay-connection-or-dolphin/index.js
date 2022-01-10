@@ -27,7 +27,8 @@ comboFilter.updateSettings({
 });
 
 // Connect to Dolphin or the relay
-const livestream = new SlpLiveStream({
+const connectionType = "dolphin"; // Change this to "console" if connecting to a relay or Nintendont
+const livestream = new SlpLiveStream(connectionType, {
   outputFiles: true,  // Write out slp files so we can reference them in the dolphin json file
 });
 
