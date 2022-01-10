@@ -1,4 +1,4 @@
-**NOTE: The connection method used in this example, `SlpFolderStream`, is largely deprecated in favor of using `SlpLiveStream` with the `"dolphin"` connection type. See [here](../relay-connection-or-dolphin) for details.**
+**NOTE: The connection method used in this example, `SlpFolderStream`, is largely deprecated in favor of using `SlpLiveStream` with the `"dolphin"` connection type. See [here](../dolphin-or-relay-connection) for details.**
 
 # SLP Folder Monitoring Example
 
