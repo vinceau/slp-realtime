@@ -1,6 +1,6 @@
-import Sinon, * as sinon from "sinon";
+import * as sinon from "sinon";
 
-import { ComboType, SlippiGame } from "@slippi/slippi-js";
+import { SlippiGame } from "@slippi/slippi-js";
 import { pipeFileContents, SlpRealTime, RxSlpStream, ComboFilter, Character, SlpStreamMode, MoveID } from "../src";
 import { Subscription } from "rxjs";
 
@@ -331,8 +331,8 @@ describe("combo calculation", () => {
     });
     let slpStream: RxSlpStream;
     let realtime: SlpRealTime;
-    let regularComboSpy: Sinon.SinonSpy;
-    let sequenceComboSpy: Sinon.SinonSpy;
+    let regularComboSpy: sinon.SinonSpy;
+    let sequenceComboSpy: sinon.SinonSpy;
 
     beforeEach(() => {
       slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
