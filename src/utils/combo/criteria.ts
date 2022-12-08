@@ -146,6 +146,35 @@ export const ComboDidKill: Criteria = (combo, _settings, options) => {
   return !options.comboMustKill || combo.didKill;
 };
 
+export const IncludesComboSequence: Criteria = (combo, _, options) => {
+  const sequenceFilter = options.includesComboSequence;
+  const moves = combo.moves.map((move) => move.moveId);
+
+  if (!sequenceFilter || sequenceFilter.length === 0) {
+    return true;
+  }
+  if (moves.length < sequenceFilter.length) {
+    return false;
+  }
+
+  for (let i = 0; i < moves.length - sequenceFilter.length + 1; i++) {
+    if (moves[i] === sequenceFilter[0]) {
+      let match = true;
+      for (let n = 1; n < sequenceFilter.length; n++) {
+        if (moves[i + n] !== sequenceFilter[n]) {
+          match = false;
+          break;
+        }
+      }
+      if (match) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+};
+
 export const ALL_CRITERIA: Criteria[] = [
   MatchesPortNumber,
   MatchesPlayerName,
@@ -158,4 +187,5 @@ export const ALL_CRITERIA: Criteria[] = [
   ExcludesCPUs,
   IsOneVsOne,
   ComboDidKill,
+  IncludesComboSequence,
 ];
