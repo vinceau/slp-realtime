@@ -1,6 +1,7 @@
 import { sumBy } from "lodash";
 
 import type { ComboType, GameStartType } from "../../types";
+import { IsEquivalentArray } from "../helpers";
 import { Character, MoveID } from "../melee";
 import type { Criteria } from "./filter";
 import { extractPlayerNamesByPort, namesMatch } from "./matchNames";
@@ -158,17 +159,11 @@ export const IncludesComboSequence: Criteria = (combo, _, options) => {
   }
 
   for (let i = 0; i < moves.length - sequenceFilter.length + 1; i++) {
-    if (moves[i] === sequenceFilter[0]) {
-      let match = true;
-      for (let n = 1; n < sequenceFilter.length; n++) {
-        if (moves[i + n] !== sequenceFilter[n]) {
-          match = false;
-          break;
-        }
-      }
-      if (match) {
-        return true;
-      }
+    if (
+      moves[i] === sequenceFilter[0] &&
+      IsEquivalentArray(moves.slice(i, i + sequenceFilter.length), sequenceFilter)
+    ) {
+      return true;
     }
   }
 
