@@ -344,7 +344,9 @@ describe("combo calculation", () => {
 
     it("correctly filters against a move sequence", async () => {
       const sequenceComboFilter = new ComboFilter({
-        includesComboSequence: [MoveID.F_AIR, MoveID.D_AIR],
+        includesComboSequence: {
+          sequence: [MoveID.F_AIR, MoveID.D_AIR],
+        },
         excludeCPUs: false,
         comboMustKill: false,
         minComboLength: 0,
@@ -371,7 +373,9 @@ describe("combo calculation", () => {
 
     it("skips combos that do not contain the move sequence", async () => {
       const sequenceComboFilter = new ComboFilter({
-        includesComboSequence: [MoveID.NEUTRAL_SPECIAL, MoveID.NEUTRAL_SPECIAL, MoveID.NEUTRAL_SPECIAL],
+        includesComboSequence: {
+          sequence: [MoveID.NEUTRAL_SPECIAL, MoveID.NEUTRAL_SPECIAL, MoveID.NEUTRAL_SPECIAL],
+        },
         comboMustKill: false,
         minComboLength: 0,
         minComboPercent: 0,
@@ -397,7 +401,9 @@ describe("combo calculation", () => {
 
     it("matches combos that contain 1 specific move", async () => {
       const sequenceComboFilter = new ComboFilter({
-        includesComboSequence: [MoveID.B_AIR],
+        includesComboSequence: {
+          sequence: [MoveID.B_AIR],
+        },
         excludeCPUs: false,
         comboMustKill: false,
         minComboLength: 0,
@@ -420,7 +426,9 @@ describe("combo calculation", () => {
 
     it("does not match combos that do not contain 1 specific move", async () => {
       const sequenceComboFilter = new ComboFilter({
-        includesComboSequence: [MoveID.NEUTRAL_SPECIAL],
+        includesComboSequence: {
+          sequence: [MoveID.NEUTRAL_SPECIAL],
+        },
         excludeCPUs: false,
         comboMustKill: false,
         minComboLength: 0,

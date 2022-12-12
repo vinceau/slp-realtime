@@ -1,9 +1,9 @@
 import { sumBy } from "lodash";
 
 import type { ComboType, GameStartType } from "../../types";
-import { IsEquivalentArray } from "../helpers";
+import { isEquivalentArray } from "../helpers";
 import { Character, MoveID } from "../melee";
-import type { Criteria } from "./filter";
+import { ComboSequenceFilterMode, Criteria } from "./filter";
 import { extractPlayerNamesByPort, namesMatch } from "./matchNames";
 
 /**
@@ -147,27 +147,50 @@ export const ComboDidKill: Criteria = (combo, _settings, options) => {
   return !options.comboMustKill || combo.didKill;
 };
 
-export const IncludesComboSequence: Criteria = (combo, _, options) => {
-  const sequenceFilter = options.includesComboSequence;
-  const moves = combo.moves.map((move) => move.moveId);
-
-  if (!sequenceFilter || sequenceFilter.length === 0) {
-    return true;
-  }
-  if (moves.length < sequenceFilter.length) {
-    return false;
-  }
-
-  for (let i = 0; i < moves.length - sequenceFilter.length + 1; i++) {
+const isIncludedInCombo = (comboMoves: number[], filterSequence: number[]): boolean => {
+  for (let i = 0; i < comboMoves.length - filterSequence.length + 1; i++) {
     if (
-      moves[i] === sequenceFilter[0] &&
-      IsEquivalentArray(moves.slice(i, i + sequenceFilter.length), sequenceFilter)
+      comboMoves[i] === filterSequence[0] &&
+      isEquivalentArray(comboMoves.slice(i, i + filterSequence.length), filterSequence)
     ) {
       return true;
     }
   }
 
   return false;
+};
+const isStartOfCombo = (comboMoves: number[], filterSequence: number[]): boolean => {
+  return isEquivalentArray(comboMoves.slice(0, filterSequence.length), filterSequence);
+};
+const isEndOfCombo = (comboMoves: number[], filterSequence: number[]): boolean => {
+  return isEquivalentArray(comboMoves.slice(comboMoves.length - filterSequence.length), filterSequence);
+};
+const isExactCombo = (comboMoves: number[], filterSequence: number[]): boolean => {
+  return isEquivalentArray(comboMoves, filterSequence);
+};
+
+export const IncludesComboSequence: Criteria = (combo, _, options) => {
+  const sequenceFilter = options.includesComboSequence;
+  const moves = combo.moves.map((move) => move.moveId);
+
+  if (!sequenceFilter?.sequence || sequenceFilter.sequence.length === 0) {
+    return true;
+  }
+  if (moves.length < sequenceFilter.sequence.length) {
+    return false;
+  }
+
+  switch (options.includesComboSequence.mode) {
+    case ComboSequenceFilterMode.start:
+      return isStartOfCombo(moves, sequenceFilter.sequence);
+    case ComboSequenceFilterMode.end:
+      return isEndOfCombo(moves, sequenceFilter.sequence);
+    case ComboSequenceFilterMode.exact:
+      return isExactCombo(moves, sequenceFilter.sequence);
+    case ComboSequenceFilterMode.include:
+    default:
+      return isIncludedInCombo(moves, sequenceFilter.sequence);
+  }
 };
 
 export const ALL_CRITERIA: Criteria[] = [
