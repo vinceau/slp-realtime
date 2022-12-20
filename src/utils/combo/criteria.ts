@@ -1,8 +1,9 @@
 import { sumBy } from "lodash";
 
 import type { ComboType, GameStartType } from "../../types";
+import { isEquivalentArray } from "../helpers";
 import { Character, MoveID } from "../melee";
-import type { Criteria } from "./filter";
+import { Criteria } from "./filter";
 import { extractPlayerNamesByPort, namesMatch } from "./matchNames";
 
 /**
@@ -146,6 +147,43 @@ export const ComboDidKill: Criteria = (combo, _settings, options) => {
   return !options.comboMustKill || combo.didKill;
 };
 
+const isIncludedInCombo = (comboMoves: number[], filterSequence: number[]): boolean => {
+  for (let i = 0; i < comboMoves.length - filterSequence.length + 1; i++) {
+    if (
+      comboMoves[i] === filterSequence[0] &&
+      isEquivalentArray(comboMoves.slice(i, i + filterSequence.length), filterSequence)
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+export const IncludesComboSequence: Criteria = (combo, _, options) => {
+  const sequenceFilter = options.includesComboSequence;
+  const moves = combo.moves.map((move) => move.moveId);
+
+  if (!sequenceFilter?.sequence || sequenceFilter.sequence.length === 0) {
+    return true;
+  }
+  if (moves.length < sequenceFilter.sequence.length) {
+    return false;
+  }
+
+  switch (options.includesComboSequence.mode) {
+    case "start":
+      return isEquivalentArray(moves.slice(0, sequenceFilter.sequence.length), sequenceFilter.sequence);
+    case "end":
+      return isEquivalentArray(moves.slice(moves.length - sequenceFilter.sequence.length), sequenceFilter.sequence);
+    case "exact":
+      return isEquivalentArray(moves, sequenceFilter.sequence);
+    case "include":
+    default:
+      return isIncludedInCombo(moves, sequenceFilter.sequence);
+  }
+};
+
 export const ALL_CRITERIA: Criteria[] = [
   MatchesPortNumber,
   MatchesPlayerName,
@@ -158,4 +196,5 @@ export const ALL_CRITERIA: Criteria[] = [
   ExcludesCPUs,
   IsOneVsOne,
   ComboDidKill,
+  IncludesComboSequence,
 ];

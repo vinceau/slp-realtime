@@ -1,7 +1,7 @@
 import * as sinon from "sinon";
 
 import { SlippiGame } from "@slippi/slippi-js";
-import { pipeFileContents, SlpRealTime, RxSlpStream, ComboFilter, Character, SlpStreamMode } from "../src";
+import { pipeFileContents, SlpRealTime, RxSlpStream, ComboFilter, Character, SlpStreamMode, MoveID } from "../src";
 import { Subscription } from "rxjs";
 
 describe("combo calculation", () => {
@@ -318,6 +318,135 @@ describe("combo calculation", () => {
       expect(strictMatch.callCount).toEqual(0);
       expect(underscoreMatch.callCount).toEqual(2);
       expect(caseInsensitiveMatch.callCount).toEqual(1);
+    });
+  });
+
+  describe("when matching inclusion of move sequence", () => {
+    const regularComboFilter = new ComboFilter({
+      excludeCPUs: false,
+      comboMustKill: false,
+      minComboLength: 0,
+      minComboPercent: 0,
+      largeHitThreshold: 1,
+    });
+    let slpStream: RxSlpStream;
+    let realtime: SlpRealTime;
+    let regularComboSpy: sinon.SinonSpy;
+    let sequenceComboSpy: sinon.SinonSpy;
+
+    beforeEach(() => {
+      slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
+      realtime = new SlpRealTime();
+      realtime.setStream(slpStream);
+      regularComboSpy = sinon.spy();
+      sequenceComboSpy = sinon.spy();
+    });
+
+    it("correctly filters against a move sequence", async () => {
+      const sequenceComboFilter = new ComboFilter({
+        includesComboSequence: {
+          sequence: [MoveID.F_AIR, MoveID.D_AIR],
+        },
+        excludeCPUs: false,
+        comboMustKill: false,
+        minComboLength: 0,
+        minComboPercent: 0,
+        largeHitThreshold: 1,
+      });
+
+      subscriptions.push(
+        realtime.combo.end$.subscribe((payload) => {
+          if (regularComboFilter.isCombo(payload.combo, payload.settings)) {
+            regularComboSpy();
+          }
+          if (sequenceComboFilter.isCombo(payload.combo, payload.settings)) {
+            sequenceComboSpy();
+          }
+        }),
+      );
+
+      await pipeFileContents("slp/combo-sequences.slp", slpStream);
+
+      expect(sequenceComboSpy.callCount).toBeGreaterThan(0);
+      expect(regularComboSpy.callCount).toBeGreaterThan(sequenceComboSpy.callCount);
+    });
+
+    it("skips combos that do not contain the move sequence", async () => {
+      const sequenceComboFilter = new ComboFilter({
+        includesComboSequence: {
+          sequence: [MoveID.NEUTRAL_SPECIAL, MoveID.NEUTRAL_SPECIAL, MoveID.NEUTRAL_SPECIAL],
+        },
+        comboMustKill: false,
+        minComboLength: 0,
+        minComboPercent: 0,
+        largeHitThreshold: 1,
+      });
+
+      subscriptions.push(
+        realtime.combo.end$.subscribe((payload) => {
+          if (regularComboFilter.isCombo(payload.combo, payload.settings)) {
+            regularComboSpy();
+          }
+          if (sequenceComboFilter.isCombo(payload.combo, payload.settings)) {
+            sequenceComboSpy();
+          }
+        }),
+      );
+
+      await pipeFileContents("slp/Game_20190810T162904.slp", slpStream);
+
+      expect(regularComboSpy.callCount).toBeGreaterThan(0);
+      expect(sequenceComboSpy.callCount).toEqual(0);
+    });
+
+    it("matches combos that contain 1 specific move", async () => {
+      const sequenceComboFilter = new ComboFilter({
+        includesComboSequence: {
+          sequence: [MoveID.B_AIR],
+        },
+        excludeCPUs: false,
+        comboMustKill: false,
+        minComboLength: 0,
+        minComboPercent: 0,
+        largeHitThreshold: 1,
+      });
+
+      subscriptions.push(
+        realtime.combo.end$.subscribe((payload) => {
+          if (sequenceComboFilter.isCombo(payload.combo, payload.settings)) {
+            sequenceComboSpy();
+          }
+        }),
+      );
+
+      await pipeFileContents("slp/combo-sequences.slp", slpStream);
+
+      expect(sequenceComboSpy.callCount).toBeGreaterThan(0);
+    });
+
+    it("does not match combos that do not contain 1 specific move", async () => {
+      const sequenceComboFilter = new ComboFilter({
+        includesComboSequence: {
+          sequence: [MoveID.NEUTRAL_SPECIAL],
+        },
+        excludeCPUs: false,
+        comboMustKill: false,
+        minComboLength: 0,
+        minComboPercent: 0,
+        largeHitThreshold: 1,
+      });
+
+      subscriptions.push(
+        realtime.combo.end$.subscribe((payload) => {
+          if (sequenceComboFilter.isCombo(payload.combo, payload.settings)) {
+            sequenceComboSpy();
+          }
+        }),
+      );
+
+      await pipeFileContents("slp/combo-sequences.slp", slpStream);
+
+      expect(sequenceComboSpy.callCount).toEqual(0);
     });
   });
 });

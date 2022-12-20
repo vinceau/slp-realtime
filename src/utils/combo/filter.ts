@@ -17,8 +17,14 @@ export interface ComboFilterSettings {
   wobbleThreshold: number; // The number of pummels before it's considered a wobble
   chainGrabThreshold: number; // proportion of up throw / pummels to other moves to be considered a chain grab
   perCharacterMinComboPercent: { [characterId: number]: number };
+  includesComboSequence: ComboSequenceFilter; // List of moveIDs to appear in sequence
   fuzzyNameTagMatching: boolean;
 }
+
+export type ComboSequenceFilter = {
+  sequence: number[];
+  mode?: "include" | "start" | "end" | "exact";
+};
 
 export type Criteria = (
   combo: ComboType,
@@ -43,6 +49,10 @@ export const defaultComboFilterSettings: ComboFilterSettings = {
   chainGrabThreshold: 0.8,
   perCharacterMinComboPercent: {
     [Character.JIGGLYPUFF]: 85,
+  },
+  includesComboSequence: {
+    sequence: [],
+    mode: "include",
   },
   fuzzyNameTagMatching: true,
 };

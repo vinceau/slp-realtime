@@ -18,3 +18,20 @@ export const pipeFileContents = async (filename: string, destination: Writable, 
     });
   });
 };
+
+/**
+ * Checks whether 2 arrays' values are equivalent
+ * @template T Any type that supports equality check
+ * @param arrA
+ * @param arrB
+ * @returns Whether the 2 supplied arrays match the same elements in the same order
+ */
+export const isEquivalentArray = <T>(arrA: T[], arrB: T[]): boolean => {
+  if (arrA.length !== arrB.length) return false;
+  for (let i = 0; i < arrA.length; i++) {
+    if (arrA[i] !== arrB[i]) {
+      return false;
+    }
+  }
+  return true;
+};
