@@ -27,7 +27,9 @@ export const pipeFileContents = async (filename: string, destination: Writable, 
  * @returns Whether the 2 supplied arrays match the same elements in the same order
  */
 export const isEquivalentArray = <T>(arrA: T[], arrB: T[]): boolean => {
-  if (arrA.length !== arrB.length) return false;
+  if (arrA.length !== arrB.length) {
+    return false;
+  }
   for (let i = 0; i < arrA.length; i++) {
     if (arrA[i] !== arrB[i]) {
       return false;

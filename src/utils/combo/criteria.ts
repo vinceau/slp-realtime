@@ -3,7 +3,7 @@ import { sumBy } from "lodash";
 import type { ComboType, GameStartType } from "../../types";
 import { isEquivalentArray } from "../helpers";
 import { Character, MoveID } from "../melee";
-import { Criteria } from "./filter";
+import type { Criteria } from "./filter";
 import { extractPlayerNamesByPort, namesMatch } from "./matchNames";
 
 /**

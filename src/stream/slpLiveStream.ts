@@ -1,6 +1,6 @@
 import type { Connection, SlpFileWriterOptions } from "@slippi/slippi-js";
-import type { WritableOptions } from "stream";
 import { ConnectionEvent, ConnectionStatus, ConsoleConnection, DolphinConnection } from "@slippi/slippi-js";
+import type { WritableOptions } from "stream";
 
 import { RxSlpStream } from "./rxSlpStream";
 
