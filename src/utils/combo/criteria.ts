@@ -161,26 +161,28 @@ const isIncludedInCombo = (comboMoves: number[], filterSequence: number[]): bool
 };
 
 export const IncludesComboSequence: Criteria = (combo, _, options) => {
-  const sequenceFilter = options.includesComboSequence;
+  const { sequence, mode = "include" } = options.includesComboSequence;
   const moves = combo.moves.map((move) => move.moveId);
 
-  if (!sequenceFilter?.sequence || sequenceFilter.sequence.length === 0) {
+  if (!sequence || sequence.length === 0) {
     return true;
   }
-  if (moves.length < sequenceFilter.sequence.length) {
+  if (moves.length < sequence.length) {
     return false;
   }
 
-  switch (options.includesComboSequence.mode) {
+  switch (mode) {
     case "start":
-      return isEquivalentArray(moves.slice(0, sequenceFilter.sequence.length), sequenceFilter.sequence);
+      return isEquivalentArray(moves.slice(0, sequence.length), sequence);
     case "end":
-      return isEquivalentArray(moves.slice(moves.length - sequenceFilter.sequence.length), sequenceFilter.sequence);
+      return isEquivalentArray(moves.slice(moves.length - sequence.length), sequence);
     case "exact":
-      return isEquivalentArray(moves, sequenceFilter.sequence);
+      return isEquivalentArray(moves, sequence);
     case "include":
+      return isIncludedInCombo(moves, sequence);
     default:
-      return isIncludedInCombo(moves, sequenceFilter.sequence);
+      // Invalid mode so we're just going to ignore this particular criteria.
+      return true;
   }
 };
 
