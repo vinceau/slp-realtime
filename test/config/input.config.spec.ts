@@ -16,23 +16,23 @@ describe("input config", () => {
 
   // This test does not pass yet because we don't actually know where to best throw/catch
   // so we'll just skip it for now
-  it.skip("should throw when an invalid input is given", () => {
-    const realtime = new SlpRealTime();
-    const eventManager = new EventManager(realtime);
-    eventManager.updateConfig({
-      events: [
-        {
-          id: "anything",
-          type: "button-combo",
-          filter: {
-            combo: ["23723fsehkf"],
-            playerIndex: 0,
-          },
-        },
-      ],
-    });
-    expect(() => eventManager.events$.subscribe()).toThrow();
-  });
+  // it.skip("should throw when an invalid input is given", () => {
+  //   const realtime = new SlpRealTime();
+  //   const eventManager = new EventManager(realtime);
+  //   eventManager.updateConfig({
+  //     events: [
+  //       {
+  //         id: "anything",
+  //         type: "button-combo",
+  //         filter: {
+  //           combo: ["23723fsehkf"],
+  //           playerIndex: 0,
+  //         },
+  //       },
+  //     ],
+  //   });
+  //   expect(() => eventManager.events$.subscribe()).toThrow();
+  // });
 
   it("can match the player index filter", async () => {
     const p1Spy = sinon.spy();
