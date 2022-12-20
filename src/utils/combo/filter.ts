@@ -21,16 +21,9 @@ export interface ComboFilterSettings {
   fuzzyNameTagMatching: boolean;
 }
 
-export enum ComboSequenceFilterMode {
-  "include",
-  "start",
-  "end",
-  "exact",
-}
-
 export type ComboSequenceFilter = {
   sequence: number[];
-  mode?: ComboSequenceFilterMode;
+  mode?: "include" | "start" | "end" | "exact";
 };
 
 export type Criteria = (
@@ -59,7 +52,7 @@ export const defaultComboFilterSettings: ComboFilterSettings = {
   },
   includesComboSequence: {
     sequence: [],
-    mode: ComboSequenceFilterMode.include,
+    mode: "include",
   },
   fuzzyNameTagMatching: true,
 };

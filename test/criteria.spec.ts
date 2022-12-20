@@ -1,11 +1,5 @@
 import { GameMode, MoveLandedType } from "@slippi/slippi-js";
-import {
-  ComboFilterSettings,
-  ComboSequenceFilterMode,
-  defaultComboFilterSettings,
-  IncludesComboSequence,
-  MoveID,
-} from "../src";
+import { ComboFilterSettings, defaultComboFilterSettings, IncludesComboSequence, MoveID } from "../src";
 import { ComboType, GameStartType } from "../src/types";
 
 const generateMoves = (moveIds: number[]): MoveLandedType[] => {
@@ -58,7 +52,7 @@ describe("combo criteria", () => {
     it("fails when combo is shorter than the filter", () => {
       combo.moves = generateMoves([MoveID.F_SMASH]);
       options.includesComboSequence = {
-        mode: ComboSequenceFilterMode.include,
+        mode: "include",
         sequence: [MoveID.F_SMASH, MoveID.F_SMASH],
       };
 
@@ -67,7 +61,7 @@ describe("combo criteria", () => {
 
     it("passes combos that include the given filter", () => {
       options.includesComboSequence = {
-        mode: ComboSequenceFilterMode.include,
+        mode: "include",
         sequence: [MoveID.D_SPECIAL, MoveID.JAB_1, MoveID.U_AIR, MoveID.U_SMASH],
       };
 
@@ -84,7 +78,7 @@ describe("combo criteria", () => {
 
     it("fails combos that do not include the given filter", () => {
       options.includesComboSequence = {
-        mode: ComboSequenceFilterMode.include,
+        mode: "include",
         sequence: [MoveID.U_SMASH, MoveID.U_SMASH],
       };
 
@@ -93,7 +87,7 @@ describe("combo criteria", () => {
 
     it("passes combos that start with the given filter", () => {
       options.includesComboSequence = {
-        mode: ComboSequenceFilterMode.start,
+        mode: "start",
         sequence: [MoveID.D_AIR, MoveID.D_SPECIAL, MoveID.JAB_1],
       };
 
@@ -102,7 +96,7 @@ describe("combo criteria", () => {
 
     it("fails combos that do not start with the given filter", () => {
       options.includesComboSequence = {
-        mode: ComboSequenceFilterMode.start,
+        mode: "start",
         sequence: [MoveID.D_SPECIAL, MoveID.JAB_1, MoveID.U_AIR],
       };
 
@@ -111,7 +105,7 @@ describe("combo criteria", () => {
 
     it("passes combos that end with the given filter", () => {
       options.includesComboSequence = {
-        mode: ComboSequenceFilterMode.end,
+        mode: "end",
         sequence: [MoveID.U_SMASH, MoveID.NEUTRAL_AIR, MoveID.U_SMASH],
       };
 
@@ -120,7 +114,7 @@ describe("combo criteria", () => {
 
     it("fails combos that do not end with the given filter", () => {
       options.includesComboSequence = {
-        mode: ComboSequenceFilterMode.end,
+        mode: "end",
         sequence: [MoveID.U_AIR, MoveID.U_SMASH, MoveID.NEUTRAL_AIR],
       };
 
@@ -129,7 +123,7 @@ describe("combo criteria", () => {
 
     it("passes combos that exactly match the given filter", () => {
       options.includesComboSequence = {
-        mode: ComboSequenceFilterMode.exact,
+        mode: "exact",
         sequence: [
           MoveID.D_AIR,
           MoveID.D_SPECIAL,
@@ -146,7 +140,7 @@ describe("combo criteria", () => {
 
     it("fails combos that do not exactly match the given filter", () => {
       options.includesComboSequence = {
-        mode: ComboSequenceFilterMode.exact,
+        mode: "exact",
         sequence: [MoveID.D_AIR, MoveID.D_SPECIAL, MoveID.JAB_1, MoveID.U_SMASH, MoveID.NEUTRAL_AIR, MoveID.U_SMASH],
       };
 

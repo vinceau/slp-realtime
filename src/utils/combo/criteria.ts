@@ -3,7 +3,7 @@ import { sumBy } from "lodash";
 import type { ComboType, GameStartType } from "../../types";
 import { isEquivalentArray } from "../helpers";
 import { Character, MoveID } from "../melee";
-import { ComboSequenceFilterMode, Criteria } from "./filter";
+import { Criteria } from "./filter";
 import { extractPlayerNamesByPort, namesMatch } from "./matchNames";
 
 /**
@@ -159,15 +159,6 @@ const isIncludedInCombo = (comboMoves: number[], filterSequence: number[]): bool
 
   return false;
 };
-const isStartOfCombo = (comboMoves: number[], filterSequence: number[]): boolean => {
-  return isEquivalentArray(comboMoves.slice(0, filterSequence.length), filterSequence);
-};
-const isEndOfCombo = (comboMoves: number[], filterSequence: number[]): boolean => {
-  return isEquivalentArray(comboMoves.slice(comboMoves.length - filterSequence.length), filterSequence);
-};
-const isExactCombo = (comboMoves: number[], filterSequence: number[]): boolean => {
-  return isEquivalentArray(comboMoves, filterSequence);
-};
 
 export const IncludesComboSequence: Criteria = (combo, _, options) => {
   const sequenceFilter = options.includesComboSequence;
@@ -181,13 +172,13 @@ export const IncludesComboSequence: Criteria = (combo, _, options) => {
   }
 
   switch (options.includesComboSequence.mode) {
-    case ComboSequenceFilterMode.start:
-      return isStartOfCombo(moves, sequenceFilter.sequence);
-    case ComboSequenceFilterMode.end:
-      return isEndOfCombo(moves, sequenceFilter.sequence);
-    case ComboSequenceFilterMode.exact:
-      return isExactCombo(moves, sequenceFilter.sequence);
-    case ComboSequenceFilterMode.include:
+    case "start":
+      return isEquivalentArray(moves.slice(0, sequenceFilter.sequence.length), sequenceFilter.sequence);
+    case "end":
+      return isEquivalentArray(moves.slice(moves.length - sequenceFilter.sequence.length), sequenceFilter.sequence);
+    case "exact":
+      return isEquivalentArray(moves, sequenceFilter.sequence);
+    case "include":
     default:
       return isIncludedInCombo(moves, sequenceFilter.sequence);
   }
