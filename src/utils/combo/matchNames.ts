@@ -1,25 +1,40 @@
 import { get } from "lodash";
 
-import type { GameStartType } from "../../types";
+import type { GameStartType, MetadataType } from "../../types";
 
-type Maybe<T> = null | undefined | T;
+type PlayerNames = {
+  name: string;
+  code: string;
+  tag: string;
+};
+
+function extractNames(index: number, settings: GameStartType, metadata?: MetadataType | null): PlayerNames {
+  const result: PlayerNames = {
+    name: "",
+    code: "",
+    tag: "",
+  };
+
+  const player = settings.players.find((player) => player.playerIndex === index);
+  result.tag = player?.nametag ?? "";
+  result.name = player?.displayName || get(metadata, ["players", index, "names", "netplay"], "");
+  result.code = player?.connectCode || get(metadata, ["players", index, "names", "code"], "");
+
+  return result;
+}
 
 export function extractPlayerNamesByPort(settings: GameStartType, metadata?: any): string[][] {
   return [0, 1, 2, 3].map((index) => {
     const nametags: string[] = [];
-    const player = settings.players.find((player) => player.playerIndex === index);
-    const playerTag = player ? player.nametag : null;
-    const netplayName: Maybe<string> =
-      get(metadata, ["players", index, "names", "netplay"], null) ?? player?.displayName;
-    const netplayCode: Maybe<string> = get(metadata, ["players", index, "names", "code"], null) ?? player?.connectCode;
-    if (netplayName) {
-      nametags.push(netplayName);
+    const { name, code, tag } = extractNames(index, settings, metadata);
+    if (name) {
+      nametags.push(name);
     }
-    if (netplayCode) {
-      nametags.push(netplayCode);
+    if (code) {
+      nametags.push(code);
     }
-    if (playerTag) {
-      nametags.push(playerTag);
+    if (tag) {
+      nametags.push(tag);
     }
     return nametags;
   });
