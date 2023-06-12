@@ -40,9 +40,10 @@ export interface GameEndEventFilter {
 export type GameEventFilter = GameStartEventFilter | GameEndEventFilter;
 
 export interface InputEventFilter {
-  playerIndex?: PlayerIndexFilter;
   combo: string[];
   duration?: number;
+  playerNames?: string[];
+  playerIndex?: PlayerIndexFilter;
 }
 
 export interface StockEventFilter {
