@@ -15,6 +15,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest --verbose --detectOpenHandles",
+    "typecheck": "yarn tsc --noEmit",
     "coverage": "yarn run test --coverage",
     "postcoverage": "open-cli coverage/lcov-report/index.html",
     "lint": "eslint \"src/**/*.ts\"",

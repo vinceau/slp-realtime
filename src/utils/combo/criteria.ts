@@ -3,8 +3,8 @@ import { sumBy } from "lodash";
 import type { ComboType, GameStartType } from "../../types";
 import { isEquivalentArray } from "../helpers";
 import { Character, MoveID } from "../melee";
+import { extractPlayerNamesByPort, namesMatch } from "../names";
 import type { Criteria } from "./filter";
-import { extractPlayerNamesByPort, namesMatch } from "./matchNames";
 
 /**
  * MatchesPortNumber ensures the player performing the combo is a specific port.

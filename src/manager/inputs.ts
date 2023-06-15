@@ -10,7 +10,7 @@ import type { EventConfig, EventEmit, EventManagerConfig, InputEventFilter } fro
 import { InputEvent } from "./types";
 
 export const readInputsConfig = (inputs: InputEvents, config: EventManagerConfig): Observable<EventEmit> => {
-  return readButtonComboEvents(config, (buttons, duration) => inputs.buttonCombo(buttons, duration));
+  return readButtonComboEvents(config, inputs);
 };
 
 interface InputEventConfig extends EventManagerConfig {
@@ -22,10 +22,7 @@ interface InputEventConfig extends EventManagerConfig {
   >;
 }
 
-const readButtonComboEvents = (
-  eventConfig: EventManagerConfig,
-  playerInput: (buttons: string[], duration?: number) => Observable<InputButtonCombo>,
-): Observable<EventEmit> => {
+const readButtonComboEvents = (eventConfig: EventManagerConfig, inputs: InputEvents): Observable<EventEmit> => {
   // Handle game start events
   const observables: Observable<EventEmit>[] = (eventConfig as InputEventConfig).events
     .filter(filterValidButtonCombo) // We must have a valid filter
@@ -35,11 +32,20 @@ const readButtonComboEvents = (
         duration = Math.floor(event.filter.duration);
       }
 
-      let base$: Observable<InputButtonCombo> = playerInput(event.filter.combo, duration);
+      const buttons = event.filter.combo;
+      let base$: Observable<InputButtonCombo> = inputs.buttonCombo(buttons, duration);
 
       if (event.filter) {
-        // Handle num players filter
-        if (event.filter.playerIndex !== undefined) {
+        if (event.filter.playerNames) {
+          // Replace the base observable with one that only looks at certain players
+          base$ = inputs.playerNameButtonCombo({
+            namesToFind: event.filter.playerNames,
+            buttons,
+            duration,
+            fuzzyNameMatch: event.filter.fuzzyNameMatch,
+          });
+        } else if (event.filter.playerIndex !== undefined) {
+          // Handle num players filter
           base$ = base$.pipe(playerFilter(event.filter.playerIndex, eventConfig.variables));
         }
       }
