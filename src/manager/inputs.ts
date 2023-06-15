@@ -38,7 +38,12 @@ const readButtonComboEvents = (eventConfig: EventManagerConfig, inputs: InputEve
       if (event.filter) {
         if (event.filter.playerNames) {
           // Replace the base observable with one that only looks at certain players
-          base$ = inputs.playerNameButtonCombo({ namesToFind: event.filter.playerNames, buttons, duration });
+          base$ = inputs.playerNameButtonCombo({
+            namesToFind: event.filter.playerNames,
+            buttons,
+            duration,
+            fuzzyNameMatch: event.filter.fuzzyNameMatch,
+          });
         } else if (event.filter.playerIndex !== undefined) {
           // Handle num players filter
           base$ = base$.pipe(playerFilter(event.filter.playerIndex, eventConfig.variables));

@@ -23,15 +23,20 @@ export class InputEvents {
     namesToFind,
     buttons,
     duration,
+    fuzzyNameMatch,
   }: {
     namesToFind: string[];
     buttons: string[];
     duration?: number;
+    fuzzyNameMatch?: boolean;
   }): Observable<InputButtonCombo> {
     return this.stream$.pipe(
       switchMap((stream) => stream.gameStart$),
       switchMap((settings) => {
-        const matchingPlayerIndices = findPlayerIndexByName(settings, null, { namesToFind });
+        const matchingPlayerIndices = findPlayerIndexByName(settings, null, {
+          namesToFind,
+          fuzzyMatch: fuzzyNameMatch,
+        });
         const matchingPlayerButtonCombos = matchingPlayerIndices.map((index) =>
           this.playerIndexButtonCombo(index, buttons, duration),
         );

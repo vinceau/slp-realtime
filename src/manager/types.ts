@@ -44,6 +44,7 @@ export interface InputEventFilter {
   duration?: number;
   playerNames?: string[];
   playerIndex?: PlayerIndexFilter;
+  fuzzyNameMatch?: boolean;
 }
 
 export interface StockEventFilter {
