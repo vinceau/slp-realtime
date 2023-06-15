@@ -3,4 +3,5 @@ export * from "./controls";
 export * from "./dolphin";
 export * from "./helpers";
 export * from "./melee";
+export * from "./names";
 export * from "./winner";

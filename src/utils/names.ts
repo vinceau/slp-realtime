@@ -1,5 +1,5 @@
 import type { GameStartType, MetadataType } from "@slippi/slippi-js";
-import get from "lodash/get";
+import { get } from "lodash";
 
 type PlayerNames = {
   name: string;
@@ -27,19 +27,64 @@ export function extractNames(
 }
 
 export function findPlayerIndexByName(
-  namesToFind: string[],
   settings: Pick<GameStartType, "players">,
-  metadata?: MetadataType | null,
+  metadata: MetadataType | null,
+  options: {
+    namesToFind: string[];
+    fuzzyMatch?: boolean;
+  },
 ): number[] {
+  const { namesToFind, fuzzyMatch } = options;
   const playerIndices = settings.players.map(({ playerIndex }) => playerIndex);
   return playerIndices.filter((i) => {
     const { name, tag, code } = extractNames(i, settings, metadata);
     const possibleNames = [name, tag, code].filter((n) => Boolean(n));
-    for (const nameToFind of namesToFind) {
-      if (possibleNames.includes(nameToFind)) {
-        return true;
-      }
-    }
-    return false;
+    return namesMatch(namesToFind, possibleNames, fuzzyMatch);
   });
+}
+
+export function namesMatch(lookingForNametags: string[], inGameTags: string[], fuzzyMatch?: boolean): boolean {
+  if (lookingForNametags.length === 0 || inGameTags.length === 0) {
+    return false;
+  }
+
+  const match = inGameTags.find((name) => {
+    // If we're not doing fuzzy matching just return the exact match
+    if (!fuzzyMatch) {
+      return lookingForNametags.includes(name);
+    }
+
+    // Replace the netplay names with underscores and coerce to lowercase
+    // Smashladder internally represents spaces as underscores when writing SLP files
+    const fuzzyNetplayName = name.toLowerCase();
+    const matchedFuzzyTag = lookingForNametags.find((tag) => {
+      const lowerSearch = tag.toLowerCase();
+      const fuzzySearch = tag.split(" ").join("_").toLowerCase();
+      return lowerSearch === fuzzyNetplayName || fuzzySearch === fuzzyNetplayName;
+    });
+    return matchedFuzzyTag !== undefined;
+  });
+
+  return match !== undefined;
+}
+
+export function extractPlayerNamesByPort(settings: GameStartType, metadata?: MetadataType | null): string[][] {
+  return [0, 1, 2, 3].map((index) => {
+    const nametags: string[] = [];
+    const { name, code, tag } = extractNames(index, settings, metadata);
+    if (name) {
+      nametags.push(name);
+    }
+    if (code) {
+      nametags.push(code);
+    }
+    if (tag) {
+      nametags.push(tag);
+    }
+    return nametags;
+  });
+}
+
+export function extractPlayerNames(settings: GameStartType, metadata?: MetadataType): string[] {
+  return extractPlayerNamesByPort(settings, metadata).flat();
 }

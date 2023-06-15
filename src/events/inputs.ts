@@ -31,7 +31,7 @@ export class InputEvents {
     return this.stream$.pipe(
       switchMap((stream) => stream.gameStart$),
       switchMap((settings) => {
-        const matchingPlayerIndices = findPlayerIndexByName(namesToFind, settings);
+        const matchingPlayerIndices = findPlayerIndexByName(settings, null, { namesToFind });
         const matchingPlayerButtonCombos = matchingPlayerIndices.map((index) =>
           this.playerIndexButtonCombo(index, buttons, duration),
         );
