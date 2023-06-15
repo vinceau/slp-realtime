@@ -85,6 +85,6 @@ export function extractPlayerNamesByPort(settings: GameStartType, metadata?: Met
   });
 }
 
-export function extractPlayerNames(settings: GameStartType, metadata?: MetadataType): string[] {
+export function extractPlayerNames(settings: GameStartType, metadata?: MetadataType | null): string[] {
   return extractPlayerNamesByPort(settings, metadata).flat();
 }
