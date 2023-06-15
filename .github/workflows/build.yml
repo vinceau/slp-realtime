@@ -42,3 +42,4 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           yarn run lint
+          yarn run typecheck
