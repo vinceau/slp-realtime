@@ -1,8 +1,9 @@
+import type { GameStartType } from "@slippi/slippi-js";
 import type { Observable } from "rxjs";
 import { map, switchMap, withLatestFrom } from "rxjs/operators";
 
 import type { RxSlpStream } from "../stream";
-import type { GameEndPayload, GameStartType } from "../types";
+import type { GameEndPayload } from "../types";
 import { findWinner } from "../utils";
 
 export class RealTimeGameEvents {

@@ -1,3 +1,4 @@
+import type { StockType } from "@slippi/slippi-js";
 import { didLoseStock } from "@slippi/slippi-js";
 import type { Observable } from "rxjs";
 import { distinctUntilChanged, filter, map, switchMap } from "rxjs/operators";
@@ -5,7 +6,7 @@ import { distinctUntilChanged, filter, map, switchMap } from "rxjs/operators";
 import { playerFrameFilter, withPreviousFrame } from "../operators/frames";
 import { filterJustSpawned, mapFramesToDeathStockType, mapFrameToSpawnStockType } from "../operators/stocks";
 import type { RxSlpStream } from "../stream";
-import type { PercentChange, StockCountChange, StockType } from "../types";
+import type { PercentChange, StockCountChange } from "../types";
 import { forAllPlayerIndices } from "../utils";
 import { exists } from "../utils/exists";
 

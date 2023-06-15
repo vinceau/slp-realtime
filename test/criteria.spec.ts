@@ -1,6 +1,5 @@
-import { GameMode, MoveLandedType } from "@slippi/slippi-js";
 import { ComboFilterSettings, defaultComboFilterSettings, IncludesComboSequence, MoveId } from "../src";
-import { ComboType, GameStartType } from "../src/types";
+import { GameMode, MoveLandedType, ComboType, GameStartType } from "@slippi/slippi-js";
 
 const generateMoves = (moveIds: number[]): MoveLandedType[] => {
   const baseMove = { damage: 1, frame: 0, hitCount: 1, playerIndex: 1 };
@@ -11,7 +10,7 @@ describe("combo criteria", () => {
   describe("combo sequence inclusion", () => {
     let combo: ComboType;
     let options: ComboFilterSettings;
-    const gameStartType: GameStartType = {
+    const gameStartType = ({
       gameMode: GameMode.ONLINE,
       isPAL: true,
       isTeams: false,
@@ -19,7 +18,7 @@ describe("combo criteria", () => {
       scene: 0,
       slpVersion: "",
       stageId: 0,
-    };
+    } as unknown) as GameStartType;
 
     beforeEach(() => {
       combo = {

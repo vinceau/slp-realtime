@@ -1,8 +1,9 @@
+import type { FrameEntryType } from "@slippi/slippi-js";
+import { Frames } from "@slippi/slippi-js";
 import type { MonoTypeOperatorFunction, Observable, OperatorFunction } from "rxjs";
 import { distinctUntilChanged, filter, map, scan } from "rxjs/operators";
 
-import type { FrameEntryType, InputButtonCombo } from "../types";
-import { Frames } from "../types";
+import type { InputButtonCombo } from "../types";
 import { bitmaskToButtons, generateInputBitmask } from "../utils";
 import { exists } from "../utils/exists";
 import { playerFrameFilter } from "./frames";
