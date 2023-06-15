@@ -1,5 +1,5 @@
 import { GameMode, MoveLandedType } from "@slippi/slippi-js";
-import { ComboFilterSettings, defaultComboFilterSettings, IncludesComboSequence, MoveID } from "../src";
+import { ComboFilterSettings, defaultComboFilterSettings, IncludesComboSequence, MoveId } from "../src";
 import { ComboType, GameStartType } from "../src/types";
 
 const generateMoves = (moveIds: number[]): MoveLandedType[] => {
@@ -26,13 +26,13 @@ describe("combo criteria", () => {
         currentPercent: 0,
         didKill: false,
         moves: generateMoves([
-          MoveID.D_AIR,
-          MoveID.D_SPECIAL,
-          MoveID.JAB_1,
-          MoveID.U_AIR,
-          MoveID.U_SMASH,
-          MoveID.NEUTRAL_AIR,
-          MoveID.U_SMASH,
+          MoveId.D_AIR,
+          MoveId.D_SPECIAL,
+          MoveId.JAB_1,
+          MoveId.U_AIR,
+          MoveId.U_SMASH,
+          MoveId.NEUTRAL_AIR,
+          MoveId.U_SMASH,
         ]),
         playerIndex: 0,
         startFrame: 0,
@@ -44,16 +44,16 @@ describe("combo criteria", () => {
     });
 
     it("succeeds when not set in options", () => {
-      combo.moves = generateMoves([MoveID.F_SMASH]);
+      combo.moves = generateMoves([MoveId.F_SMASH]);
 
       expect(IncludesComboSequence(combo, gameStartType, options)).toBeTruthy();
     });
 
     it("fails when combo is shorter than the filter", () => {
-      combo.moves = generateMoves([MoveID.F_SMASH]);
+      combo.moves = generateMoves([MoveId.F_SMASH]);
       options.includesComboSequence = {
         mode: "include",
-        sequence: [MoveID.F_SMASH, MoveID.F_SMASH],
+        sequence: [MoveId.F_SMASH, MoveId.F_SMASH],
       };
 
       expect(IncludesComboSequence(combo, gameStartType, options)).toBeFalsy();
@@ -62,7 +62,7 @@ describe("combo criteria", () => {
     it("passes combos that include the given filter", () => {
       options.includesComboSequence = {
         mode: "include",
-        sequence: [MoveID.D_SPECIAL, MoveID.JAB_1, MoveID.U_AIR, MoveID.U_SMASH],
+        sequence: [MoveId.D_SPECIAL, MoveId.JAB_1, MoveId.U_AIR, MoveId.U_SMASH],
       };
 
       expect(IncludesComboSequence(combo, gameStartType, options)).toBeTruthy();
@@ -70,7 +70,7 @@ describe("combo criteria", () => {
 
     it("defaults to 'includes' mode", () => {
       options.includesComboSequence = {
-        sequence: [MoveID.D_SPECIAL, MoveID.JAB_1, MoveID.U_AIR, MoveID.U_SMASH],
+        sequence: [MoveId.D_SPECIAL, MoveId.JAB_1, MoveId.U_AIR, MoveId.U_SMASH],
       };
 
       expect(IncludesComboSequence(combo, gameStartType, options)).toBeTruthy();
@@ -79,7 +79,7 @@ describe("combo criteria", () => {
     it("fails combos that do not include the given filter", () => {
       options.includesComboSequence = {
         mode: "include",
-        sequence: [MoveID.U_SMASH, MoveID.U_SMASH],
+        sequence: [MoveId.U_SMASH, MoveId.U_SMASH],
       };
 
       expect(IncludesComboSequence(combo, gameStartType, options)).toBeFalsy();
@@ -88,7 +88,7 @@ describe("combo criteria", () => {
     it("passes combos that start with the given filter", () => {
       options.includesComboSequence = {
         mode: "start",
-        sequence: [MoveID.D_AIR, MoveID.D_SPECIAL, MoveID.JAB_1],
+        sequence: [MoveId.D_AIR, MoveId.D_SPECIAL, MoveId.JAB_1],
       };
 
       expect(IncludesComboSequence(combo, gameStartType, options)).toBeTruthy();
@@ -97,7 +97,7 @@ describe("combo criteria", () => {
     it("fails combos that do not start with the given filter", () => {
       options.includesComboSequence = {
         mode: "start",
-        sequence: [MoveID.D_SPECIAL, MoveID.JAB_1, MoveID.U_AIR],
+        sequence: [MoveId.D_SPECIAL, MoveId.JAB_1, MoveId.U_AIR],
       };
 
       expect(IncludesComboSequence(combo, gameStartType, options)).toBeFalsy();
@@ -106,7 +106,7 @@ describe("combo criteria", () => {
     it("passes combos that end with the given filter", () => {
       options.includesComboSequence = {
         mode: "end",
-        sequence: [MoveID.U_SMASH, MoveID.NEUTRAL_AIR, MoveID.U_SMASH],
+        sequence: [MoveId.U_SMASH, MoveId.NEUTRAL_AIR, MoveId.U_SMASH],
       };
 
       expect(IncludesComboSequence(combo, gameStartType, options)).toBeTruthy();
@@ -115,7 +115,7 @@ describe("combo criteria", () => {
     it("fails combos that do not end with the given filter", () => {
       options.includesComboSequence = {
         mode: "end",
-        sequence: [MoveID.U_AIR, MoveID.U_SMASH, MoveID.NEUTRAL_AIR],
+        sequence: [MoveId.U_AIR, MoveId.U_SMASH, MoveId.NEUTRAL_AIR],
       };
 
       expect(IncludesComboSequence(combo, gameStartType, options)).toBeFalsy();
@@ -125,13 +125,13 @@ describe("combo criteria", () => {
       options.includesComboSequence = {
         mode: "exact",
         sequence: [
-          MoveID.D_AIR,
-          MoveID.D_SPECIAL,
-          MoveID.JAB_1,
-          MoveID.U_AIR,
-          MoveID.U_SMASH,
-          MoveID.NEUTRAL_AIR,
-          MoveID.U_SMASH,
+          MoveId.D_AIR,
+          MoveId.D_SPECIAL,
+          MoveId.JAB_1,
+          MoveId.U_AIR,
+          MoveId.U_SMASH,
+          MoveId.NEUTRAL_AIR,
+          MoveId.U_SMASH,
         ],
       };
 
@@ -141,7 +141,7 @@ describe("combo criteria", () => {
     it("fails combos that do not exactly match the given filter", () => {
       options.includesComboSequence = {
         mode: "exact",
-        sequence: [MoveID.D_AIR, MoveID.D_SPECIAL, MoveID.JAB_1, MoveID.U_SMASH, MoveID.NEUTRAL_AIR, MoveID.U_SMASH],
+        sequence: [MoveId.D_AIR, MoveId.D_SPECIAL, MoveId.JAB_1, MoveId.U_SMASH, MoveId.NEUTRAL_AIR, MoveId.U_SMASH],
       };
 
       expect(IncludesComboSequence(combo, gameStartType, options)).toBeFalsy();
