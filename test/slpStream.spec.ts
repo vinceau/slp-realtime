@@ -1,4 +1,4 @@
-import sinon from "sinon";
+import * as sinon from "sinon";
 
 import { RxSlpStream, pipeFileContents } from "../src";
 import { Subscription } from "rxjs";

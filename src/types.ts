@@ -1,19 +1,5 @@
 import type { ComboType, GameEndType, GameStartType } from "@slippi/slippi-js";
 
-// Export the parameter types for events and SlippiGame for convenience
-export {
-  ComboType,
-  ConversionType,
-  FrameEntryType,
-  Frames,
-  GameEndType,
-  GameStartType,
-  MetadataType,
-  PostFrameUpdateType,
-  PreFrameUpdateType,
-  StockType,
-} from "@slippi/slippi-js";
-
 export enum GameEndMethod {
   UNRESOLVED = 0,
   TIME = 1,
@@ -62,5 +48,3 @@ export interface InputButtonCombo {
 export interface GameEndPayload extends GameEndType {
   winnerPlayerIndex: number;
 }
-
-export type PlayerIndexFilter = number | number[] | string;

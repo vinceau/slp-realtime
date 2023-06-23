@@ -12,13 +12,12 @@
  * [NO_GAME]               - no more files in the queue
  */
 
+import { Frames } from "@slippi/slippi-js";
 import os from "os";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import type { WritableOptions } from "stream";
 import { Writable } from "stream";
-
-import { Frames } from "../../types";
 
 enum PlaybackCommand {
   FILE_PATH = "[FILE_PATH]",

@@ -8,7 +8,7 @@ import type { InputButtonCombo } from "../types";
 import { forAllPlayerIndices } from "../utils";
 import { findPlayerIndexByName } from "../utils/names";
 
-export class InputEvents {
+export class RealTimeInputEvents {
   private stream$: Observable<RxSlpStream>;
 
   public constructor(stream: Observable<RxSlpStream>) {

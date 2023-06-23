@@ -1,7 +1,7 @@
+import type { ComboType } from "@slippi/slippi-js";
+import { Frames } from "@slippi/slippi-js";
 import { shuffle } from "lodash";
 
-import type { ComboType } from "../../types";
-import { Frames } from "../../types";
 import { exists } from "../exists";
 
 export interface DolphinEntry {

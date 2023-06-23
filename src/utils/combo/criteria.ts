@@ -1,8 +1,9 @@
+import type { ComboType, GameStartType } from "@slippi/slippi-js";
+import { Character } from "@slippi/slippi-js";
 import { sumBy } from "lodash";
 
-import type { ComboType, GameStartType } from "../../types";
 import { isEquivalentArray } from "../helpers";
-import { Character, MoveID } from "../melee";
+import { MoveId } from "../melee";
 import { extractPlayerNamesByPort, namesMatch } from "../names";
 import type { Criteria } from "./filter";
 
@@ -63,7 +64,7 @@ export const ExcludesChainGrabs: Criteria = (combo, settings, options) => {
   }
 
   const numUpThrowPummels = combo.moves.filter(
-    ({ moveId }) => moveId === MoveID.U_THROW || moveId === MoveID.GRAB_PUMMEL,
+    ({ moveId }) => moveId === MoveId.U_THROW || moveId === MoveId.GRAB_PUMMEL,
   ).length;
   const numMoves = combo.moves.length;
   const isChainGrab = numUpThrowPummels / numMoves >= options.chainGrabThreshold;
@@ -84,7 +85,7 @@ export const ExcludesWobbles: Criteria = (combo, settings, options) => {
   const wobbles = [];
   let pummels = 0;
   combo.moves.forEach(({ moveId }) => {
-    if (moveId === MoveID.GRAB_PUMMEL) {
+    if (moveId === MoveId.GRAB_PUMMEL) {
       pummels++;
     } else {
       wobbles.push(pummels);

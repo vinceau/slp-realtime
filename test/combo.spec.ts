@@ -1,7 +1,7 @@
 import * as sinon from "sinon";
 
-import { SlippiGame } from "@slippi/slippi-js";
-import { pipeFileContents, SlpRealTime, RxSlpStream, ComboFilter, Character, SlpStreamMode, MoveID } from "../src";
+import { SlippiGame, Character, SlpStreamMode } from "@slippi/slippi-js";
+import { pipeFileContents, SlpRealTime, RxSlpStream, ComboFilter, MoveId } from "../src";
 import { Subscription } from "rxjs";
 
 describe("combo calculation", () => {
@@ -345,7 +345,7 @@ describe("combo calculation", () => {
     it("correctly filters against a move sequence", async () => {
       const sequenceComboFilter = new ComboFilter({
         includesComboSequence: {
-          sequence: [MoveID.F_AIR, MoveID.D_AIR],
+          sequence: [MoveId.F_AIR, MoveId.D_AIR],
         },
         excludeCPUs: false,
         comboMustKill: false,
@@ -374,7 +374,7 @@ describe("combo calculation", () => {
     it("skips combos that do not contain the move sequence", async () => {
       const sequenceComboFilter = new ComboFilter({
         includesComboSequence: {
-          sequence: [MoveID.NEUTRAL_SPECIAL, MoveID.NEUTRAL_SPECIAL, MoveID.NEUTRAL_SPECIAL],
+          sequence: [MoveId.NEUTRAL_SPECIAL, MoveId.NEUTRAL_SPECIAL, MoveId.NEUTRAL_SPECIAL],
         },
         comboMustKill: false,
         minComboLength: 0,
@@ -402,7 +402,7 @@ describe("combo calculation", () => {
     it("matches combos that contain 1 specific move", async () => {
       const sequenceComboFilter = new ComboFilter({
         includesComboSequence: {
-          sequence: [MoveID.B_AIR],
+          sequence: [MoveId.B_AIR],
         },
         excludeCPUs: false,
         comboMustKill: false,
@@ -427,7 +427,7 @@ describe("combo calculation", () => {
     it("does not match combos that do not contain 1 specific move", async () => {
       const sequenceComboFilter = new ComboFilter({
         includesComboSequence: {
-          sequence: [MoveID.NEUTRAL_SPECIAL],
+          sequence: [MoveId.NEUTRAL_SPECIAL],
         },
         excludeCPUs: false,
         comboMustKill: false,

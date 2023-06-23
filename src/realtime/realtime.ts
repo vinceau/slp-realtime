@@ -1,6 +1,6 @@
 import { ReplaySubject } from "rxjs";
 
-import { ComboEvents, GameEvents, InputEvents, StockEvents } from "../events";
+import { RealTimeComboEvents, RealTimeGameEvents, RealTimeInputEvents, RealTimeStockEvents } from "../events";
 import type { RxSlpStream } from "../stream";
 
 /**
@@ -14,16 +14,16 @@ import type { RxSlpStream } from "../stream";
 export class SlpRealTime {
   private stream$ = new ReplaySubject<RxSlpStream>();
 
-  public game: GameEvents;
-  public stock: StockEvents;
-  public input: InputEvents;
-  public combo: ComboEvents;
+  public game: RealTimeGameEvents;
+  public stock: RealTimeStockEvents;
+  public input: RealTimeInputEvents;
+  public combo: RealTimeComboEvents;
 
   public constructor() {
-    this.game = new GameEvents(this.stream$);
-    this.stock = new StockEvents(this.stream$);
-    this.input = new InputEvents(this.stream$);
-    this.combo = new ComboEvents(this.stream$);
+    this.game = new RealTimeGameEvents(this.stream$);
+    this.stock = new RealTimeStockEvents(this.stream$);
+    this.input = new RealTimeInputEvents(this.stream$);
+    this.combo = new RealTimeComboEvents(this.stream$);
   }
 
   /**

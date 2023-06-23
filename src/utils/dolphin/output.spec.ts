@@ -1,5 +1,5 @@
 import os from "os";
-import sinon from "sinon";
+import * as sinon from "sinon";
 
 import { Transform } from "stream";
 import { Subscription } from "rxjs";

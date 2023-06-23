@@ -1,4 +1,5 @@
-import type { FrameEntryType } from "../types";
+import type { FrameEntryType } from "@slippi/slippi-js";
+
 import { exists } from "./exists";
 
 /**

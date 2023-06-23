@@ -1,4 +1,4 @@
-export * from "./manager";
+export * from "./events";
 export * from "./operators";
 export * from "./realtime";
 export * from "./stream";

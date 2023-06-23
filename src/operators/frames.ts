@@ -1,8 +1,8 @@
+import type { FrameEntryType } from "@slippi/slippi-js";
+import { Frames } from "@slippi/slippi-js";
 import type { MonoTypeOperatorFunction, Observable, OperatorFunction } from "rxjs";
 import { filter, pairwise } from "rxjs/operators";
 
-import type { FrameEntryType } from "../types";
-import { Frames } from "../types";
 import { exists } from "../utils/exists";
 
 /**
