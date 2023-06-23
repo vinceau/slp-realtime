@@ -48,5 +48,3 @@ export interface InputButtonCombo {
 export interface GameEndPayload extends GameEndType {
   winnerPlayerIndex: number;
 }
-
-// export type PlayerIndexFilter = number | number[] | string;
