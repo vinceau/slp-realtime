@@ -1,24 +1,78 @@
-# API
+# RxJS Observable API
 
-`slp-realtime` exposes two different ways to interface with event subscription.
+[RxJS Observables](https://rxjs-dev.firebaseapp.com/guide/overview) provides a powerful interface for subscribing to real-time events.
+Here is the list of observables that are exposed by `slp-realtime`.
 
+## Events
 
-## 1. JSON Config API
+### Game
 
-> easy to use but limited in power
+#### `realtime.game.start$`
 
-The [JSON Config API](./json-config.md) is recommended for people uncomfortable with Javascript or those unfamiliar with [RxJS](https://rxjs-dev.firebaseapp.com/guide/overview) or [Functional reactive programming](https://en.wikipedia.org/wiki/Functional_reactive_programming).
+Emitted when a game starts.
 
-Using this API, you define all the events you want to subscribe to in a single JSON object. You then write a single handler function which determines what code to execute depending on what event gets emitted.
+Returns an `Observable<`[`GameStartType`](./types.md#gamestarttype)`>`
 
-[Click here](./json-config.md) to read the JSON Config API docs.
+#### `realtime.game.end$`
 
-## 2. RxJS Observable API
+Emitted when a game ends.
 
-> extremely powerful but complex
+Returns an `Observable<`[`GameEndPayload`](./types.md#gameendpayload)`>`
 
-The [RxJS Observable API](./observables.md) is recommended for those who have used [RxJS](https://rxjs-dev.firebaseapp.com/guide/overview) in the past, those who are confident in their JS skills, or anyone who's up for a challenge.
+### Stock
 
-Using this API, you subscribe to each event you want manually using an observable's `subscribe()` method. You should use the RxJS `pipe()` operator to filter down to the exact event that you want, before subscribing. You specify the handler function for each individual event.
+#### `realtime.stock.playerSpawn$`
 
-[Click here](./observables.md) to read the RxJS Observable API docs.
+Emitted when a player spawns.
+
+Returns an `Observable<`[`StockType`](./types.md#stocktype)`>`
+
+#### `realtime.stock.playerDied$`
+
+Emitted when a player dies.
+
+Returns an `Observable<`[`StockType`](./types.md#stocktype)`>`
+
+#### `realtime.stock.percentChange$`
+
+Emitted when a player's percent changes.
+
+Returns an `Observable<`[`PercentChange`](./types.md#percentchange)`>`
+
+#### `realtime.stock.countChange$`
+
+Emitted when the number of stocks a player has changes.
+
+Returns an `Observable<`[`StockCountChange`](./types.md#stockcountchange)`>`
+
+### Combo
+
+#### `realtime.combo.start$`
+
+Emitted when a combo starts.
+
+Returns an `Observable<`[`ComboEventPayload`](./types.md#comboeventpayload)`>`
+
+#### `realtime.combo.extend$`
+
+Emitted for each additional hit that lands during a combo.
+
+Returns an `Observable<`[`ComboEventPayload`](./types.md#comboeventpayload)`>`
+
+#### `realtime.combo.end$`
+
+Emitted when a combo ends.
+
+Returns an `Observable<`[`ComboEventPayload`](./types.md#comboeventpayload)`>`
+
+#### `realtime.combo.conversion$`
+
+Emitted when a conversion occurs.
+
+Returns an `Observable<`[`ComboEventPayload`](./types.md#comboeventpayload)`>`
+
+### Input
+
+#### `realtime.input.playerIndexButtonCombo`
+
+A function which takes in `(playerIndex: number, buttons: string[], duration: number = 1)` and returns an `Observable<`[`InputButtonCombo`](./types.md#inputbuttoncombo)`>` which emits when the buttons in `buttons` are held by player `playerIndex` for `duration` frames.
