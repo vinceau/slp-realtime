@@ -12,7 +12,7 @@ const { Ports } = require('@slippi/slippi-js')
 const { ConnectionStatus, SlpLiveStream, SlpRealTime, ComboFilter, generateDolphinQueuePayload } = require("@vinceau/slp-realtime");
 
 // TODO: Make sure you set these values!
-const ADDRESS = "localhost";  // leave as is for Dolphin or a relay on the same computer
+const ADDRESS = "127.0.0.1";  // leave as is for Dolphin or change to "localhost" for a relay on the same computer
 const PORT = Ports.DEFAULT;   // options are DEFAULT, RELAY_START, and LEGACY
 
 const outputCombosFile = "combos.json";   // The json file to write combos to

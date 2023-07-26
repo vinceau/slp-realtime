@@ -20,7 +20,7 @@ yarn run build
 2. Prepare the example by changing directory into the example folder and installing the dependencies. 
 
 ```bash
-cd examples/relay-connection-or-dolphin
+cd examples/dolphin-or-relay-connection
 yarn install
 ```
 
