@@ -37,7 +37,7 @@ yarn add @vinceau/slp-realtime rxjs @slippi/slippi-js
 
 See a [working example](examples) or [check out the docs](api/README.md).
 
-For a list of all the subscribable events, [click here](api/observables.md#events).
+For a list of all the subscribable events, [click here](api/README.md#events).
 
 ### Subscribing to In-Game Events
 
