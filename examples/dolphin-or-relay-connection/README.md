@@ -3,7 +3,7 @@
 This is an example demonstrating the real-time capabilities of `slp-realtime`.
 
 This script connects to a Dolphin instance or Slippi relay, automatically
-detects combos, and generates a Dolphin-compatible `combos.json` file 
+detects combos, and generates a Dolphin-compatible `combos.json` file
 when disconnected from the relay.
 
 ## How to use
@@ -13,15 +13,15 @@ when disconnected from the relay.
 ```bash
 git clone https://github.com/vinceau/slp-realtime
 cd slp-realtime
-yarn install
-yarn run build
+npm install
+npm run build
 ```
 
-2. Prepare the example by changing directory into the example folder and installing the dependencies. 
+2. Prepare the example by changing directory into the example folder and installing the dependencies.
 
 ```bash
 cd examples/dolphin-or-relay-connection
-yarn install
+npm install
 ```
 
 3. Set the address and port

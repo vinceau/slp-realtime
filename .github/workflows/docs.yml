@@ -25,7 +25,7 @@ jobs:
         id: cache
         with:
           path: node_modules
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.OS }}-build-${{ env.cache-name }}-
             ${{ runner.OS }}-build-
@@ -33,11 +33,11 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
-          yarn install
+          npm install
       - name: Generate docs
         run: |
-          yarn run build
-          yarn run docs
+          npm run build
+          npm run docs
       - name: Publish docs
         uses: peaceiris/actions-gh-pages@v2.4.0
         env:

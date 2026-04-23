@@ -9,7 +9,6 @@ This script reads events from a specific folder which has new SLP files being wr
 and generates a Dolphin-compatible `combos.json` file when disconnected the interrupt signal
 is given.
 
-
 ## How to use
 
 1. Clone the repo, install the dependencies, and build the library to be used by the example.
@@ -17,15 +16,15 @@ is given.
 ```bash
 git clone https://github.com/vinceau/slp-realtime
 cd slp-realtime
-yarn install
-yarn run build
+npm install
+npm run build
 ```
 
-2. Prepare the example by changing directory into the example folder and installing the dependencies. 
+2. Prepare the example by changing directory into the example folder and installing the dependencies.
 
 ```bash
 cd examples/folder-monitoring
-yarn install
+npm install
 ```
 
 3. Set the SLP folder folder location
