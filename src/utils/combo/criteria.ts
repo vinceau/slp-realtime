@@ -2,9 +2,13 @@ import type { ComboType, GameStartType } from "@slippi/slippi-js";
 import { Character } from "@slippi/slippi-js";
 
 import { isEquivalentArray } from "../helpers";
-import { MoveId } from "../melee";
 import { extractPlayerNamesByPort, namesMatch } from "../names";
 import type { Criteria } from "./filter";
+
+enum MoveId {
+  GRAB_PUMMEL = 52,
+  U_THROW = 55,
+}
 
 /**
  * MatchesPortNumber ensures the player performing the combo is a specific port.
