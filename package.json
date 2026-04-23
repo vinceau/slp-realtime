@@ -44,12 +44,12 @@
     "oncemore": "^1.2.0"
   },
   "peerDependencies": {
-    "@slippi/slippi-js": "^6.x",
+    "@slippi/slippi-js": "^9.x",
     "rxjs": "^6.x"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^8.0.0",
-    "@slippi/slippi-js": "^6.7.0",
+    "@slippi/slippi-js": "^9.0.0",
     "@types/fs-extra": "^8.0.1",
     "@types/jest": "^27.0.2",
     "@types/lodash": "^4.14.138",
