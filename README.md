@@ -3,7 +3,7 @@
 [![slp-realtime is magic - Nikki](https://i.imgur.com/qnfI6c5.png)](https://i.imgur.com/qnfI6c5.png)
 
 [![npm version](https://img.shields.io/npm/v/@vinceau/slp-realtime.svg?style=flat)](https://npmjs.org/package/@vinceau/slp-realtime "View this project on npm")
-[![Build Status](https://github.com/vinceau/slp-realtime/workflows/build/badge.svg)](https://github.com/vinceau/slp-realtime/actions?workflow=build)
+[![Build Status](https://github.com/vinceau/slp-realtime/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/vinceau/slp-realtime/actions/workflows/build.yml?query=branch%3Amaster)
 [![Coverage Status](https://coveralls.io/repos/github/vinceau/slp-realtime/badge.svg)](https://coveralls.io/github/vinceau/slp-realtime)
 [![License](https://img.shields.io/npm/l/@vinceau/slp-realtime)](https://github.com/vinceau/slp-realtime/blob/master/LICENSE)
 
@@ -135,7 +135,6 @@ realtime.stock.countChange$.subscribe((payload) => {
 
 **NOTE: Please don't actually do this for real custom HUDs. Writing to files is slow and OBS takes a long time to update after file changes. If you actually want to build a custom layout for OBS you should use a browser source and send updates using websockets instead of writing data to a file.**
 
-
 ## Setup on WSL
 
 If you're running the Node project inside Windows Subsystem for Linux and running Dolphin or a relay in Windows, setup requires a couple extra steps:
@@ -144,27 +143,25 @@ If you're running the Node project inside Windows Subsystem for Linux and runnin
 
 2. Add a firewall rule allowing access from WSL ([see here](https://superuser.com/a/1620974))
 
-
 ## Development
 
 To build the library from source:
 
 ```bash
-yarn run build
+npm run build
 ```
 
 To start the development server:
 
 ```bash
-yarn run watch
+npm run watch
 ```
 
 To run the tests:
 
 ```bash
-yarn run test
+npm run test
 ```
-
 
 ## Acknowledgements
 

@@ -13,15 +13,15 @@ and when percents change or stocks change, writes that data to a file to be rend
 ```bash
 git clone https://github.com/vinceau/slp-realtime
 cd slp-realtime
-yarn install
-yarn run build
+npm install
+npm run build
 ```
 
-2. Prepare the example by changing directory into the example folder and installing the dependencies. 
+2. Prepare the example by changing directory into the example folder and installing the dependencies.
 
 ```bash
 cd examples/custom-hud
-yarn install
+npm install
 ```
 
 3. Set the SLP folder folder location

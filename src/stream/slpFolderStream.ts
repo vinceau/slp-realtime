@@ -5,10 +5,10 @@ import chokidar from "chokidar";
 import path from "path";
 import { BehaviorSubject, Subject } from "rxjs";
 import type { WritableOptions } from "stream";
-import type { TailStream } from "tailstream";
-import tailstream from "tailstream";
 
 import { RxSlpStream } from "./rxSlpStream";
+import type { TailStream } from "./tailstream";
+import { createReadStream } from "./tailstream";
 
 /**
  * SlpFolderStream is responsible for monitoring a folder, and detecting
@@ -50,7 +50,7 @@ export class SlpFolderStream extends RxSlpStream {
       // Restart the parser before we begin
       super.restart();
 
-      this.readStream = tailstream.createReadStream(filePath);
+      this.readStream = createReadStream(filePath);
       this.readStream.pipe(this, { end: false });
     });
   }
