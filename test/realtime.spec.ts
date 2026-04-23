@@ -1,6 +1,7 @@
 import * as sinon from "sinon";
 
-import { pipeFileContents, SlpRealTime, RxSlpStream } from "../src";
+import { SlpRealTime, RxSlpStream } from "../src";
+import { pipeFileContents } from "./pipeFileContents";
 import { SlpStreamMode } from "@slippi/slippi-js";
 import { Subscription } from "rxjs";
 

@@ -1,6 +1,7 @@
 import * as sinon from "sinon";
 
-import { pipeFileContents, SlpRealTime, RxSlpStream, ComboFilter, throttleInputButtons } from "../src";
+import { SlpRealTime, RxSlpStream, ComboFilter, throttleInputButtons } from "../src";
+import { pipeFileContents } from "./pipeFileContents";
 import { SlpStreamMode } from "@slippi/slippi-js";
 import { Subscription } from "rxjs";
 

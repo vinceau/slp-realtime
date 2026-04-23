@@ -1,7 +1,8 @@
 import * as sinon from "sinon";
 
 import { SlippiGame, Character, SlpStreamMode } from "@slippi/slippi-js";
-import { pipeFileContents, SlpRealTime, RxSlpStream, ComboFilter, MoveId } from "../src";
+import { SlpRealTime, RxSlpStream, ComboFilter, MoveId } from "../src";
+import { pipeFileContents } from "./pipeFileContents";
 import { Subscription } from "rxjs";
 
 describe("combo calculation", () => {
