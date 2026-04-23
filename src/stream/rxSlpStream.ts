@@ -8,7 +8,7 @@ import type {
   SlpStreamSettings,
 } from "@slippi/slippi-js";
 import { Command, SlpParser, SlpParserEvent, SlpStream, SlpStreamEvent } from "@slippi/slippi-js";
-import { fromEvent, Subject } from "rxjs";
+import { fromEventPattern, Subject } from "rxjs";
 import { map, share, tap } from "rxjs/operators";
 
 /**
@@ -25,9 +25,18 @@ export class RxSlpStream extends SlpStream {
 
   // Observables
   public messageSize$ = this.messageSizeSource.asObservable();
-  public gameStart$ = fromEvent<GameStartType>(this.parser, SlpParserEvent.SETTINGS).pipe(share());
-  public playerFrame$ = fromEvent<FrameEntryType>(this.parser, SlpParserEvent.FINALIZED_FRAME).pipe(share());
-  public gameEnd$ = fromEvent<GameEndType>(this.parser, SlpParserEvent.END).pipe(share());
+  public gameStart$ = fromEventPattern<GameStartType>(
+    (handler) => this.parser.on(SlpParserEvent.SETTINGS, handler),
+    (handler) => this.parser.off(SlpParserEvent.SETTINGS, handler),
+  ).pipe(share());
+  public playerFrame$ = fromEventPattern<FrameEntryType>(
+    (handler) => this.parser.on(SlpParserEvent.FINALIZED_FRAME, handler),
+    (handler) => this.parser.off(SlpParserEvent.FINALIZED_FRAME, handler),
+  ).pipe(share());
+  public gameEnd$ = fromEventPattern<GameEndType>(
+    (handler) => this.parser.on(SlpParserEvent.END, handler),
+    (handler) => this.parser.off(SlpParserEvent.END, handler),
+  ).pipe(share());
   public allFrames$ = this.playerFrame$.pipe(
     // Run this side effect first so we can update allFrames
     tap((latestFrame) => {
