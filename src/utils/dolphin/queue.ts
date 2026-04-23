@@ -1,8 +1,16 @@
 import type { ComboType } from "@slippi/slippi-js";
 import { Frames } from "@slippi/slippi-js";
-import { shuffle } from "lodash";
 
 import { exists } from "../exists";
+
+const shuffleArray = <T>(array: T[]): T[] => {
+  const result = [...array];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+};
 
 export interface DolphinEntry {
   path: string;
@@ -45,8 +53,8 @@ export const generateDolphinQueue = (
   options?: Partial<DolphinPlaybackQueueOptions>,
 ): DolphinQueueFormat => {
   const opts: DolphinPlaybackQueueOptions = Object.assign({}, defaultSettings, options);
-  const entries = opts.shuffle ? shuffle(items) : items;
-  const queue = entries.map((entry) => mapDolphinEntry(entry, opts.startBuffer, opts.endBuffer));
+  const entries = opts.shuffle ? shuffleArray(items) : items;
+  const queue = entries.map((entry: DolphinPlaybackItem) => mapDolphinEntry(entry, opts.startBuffer, opts.endBuffer));
   const dolphinQueue: DolphinQueueFormat = {
     mode: opts.mode,
     replay: opts.replay,

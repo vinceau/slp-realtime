@@ -1,6 +1,5 @@
 import type { ComboType, GameStartType } from "@slippi/slippi-js";
 import { Character } from "@slippi/slippi-js";
-import { sumBy } from "lodash";
 
 import { isEquivalentArray } from "../helpers";
 import { MoveId } from "../melee";
@@ -127,7 +126,7 @@ export const SatisfiesMinComboPercent: Criteria = (combo, settings, options) => 
 };
 
 export const ExcludesLargeSingleHit: Criteria = (combo, _settings, options) => {
-  const totalDmg = sumBy(combo.moves, ({ damage }) => damage);
+  const totalDmg = combo.moves.reduce((sum, move) => sum + move.damage, 0);
   const largeSingleHit = combo.moves.some(({ damage }) => damage / totalDmg >= options.largeHitThreshold);
   return !largeSingleHit;
 };
