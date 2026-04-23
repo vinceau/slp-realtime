@@ -2,7 +2,7 @@ import * as sinon from "sinon";
 
 import { SlpRealTime, RxSlpStream } from "../src";
 import { pipeFileContents } from "./pipeFileContents";
-import { SlpStreamMode } from "@slippi/slippi-js";
+import { SlpStreamMode } from "@slippi/slippi-js/node";
 import { Subscription } from "rxjs";
 
 describe("SlpRealTime", () => {
@@ -22,7 +22,7 @@ describe("SlpRealTime", () => {
     const stockSpawnSpy = sinon.spy();
     const stockDeathSpy = sinon.spy();
 
-    const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
+    const slpStream = new RxSlpStream({ suppressErrors: false, mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 

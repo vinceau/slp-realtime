@@ -2,7 +2,7 @@ import * as sinon from "sinon";
 
 import { SlpRealTime, RxSlpStream, ComboFilter, throttleInputButtons } from "../src";
 import { pipeFileContents } from "./pipeFileContents";
-import { SlpStreamMode } from "@slippi/slippi-js";
+import { SlpStreamMode } from "@slippi/slippi-js/node";
 import { Subscription } from "rxjs";
 
 describe("combo calculation", () => {
@@ -25,7 +25,7 @@ describe("combo calculation", () => {
   it("correctly finds button combinations", async () => {
     const comboSpy = sinon.spy();
 
-    const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
+    const slpStream = new RxSlpStream({ suppressErrors: false, mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 

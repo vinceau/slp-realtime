@@ -1,4 +1,4 @@
-import { GameStartType, Character, SlippiGame, StatsType } from "@slippi/slippi-js";
+import { GameStartType, Character, SlippiGame, StatsType } from "@slippi/slippi-js/node";
 import { ComboFilter } from "../src";
 
 describe("can match combos for rollback slp files", () => {

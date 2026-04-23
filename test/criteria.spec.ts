@@ -1,5 +1,5 @@
 import { ComboFilterSettings, defaultComboFilterSettings, IncludesComboSequence, MoveId } from "../src";
-import { GameMode, MoveLandedType, ComboType, GameStartType } from "@slippi/slippi-js";
+import { GameMode, MoveLandedType, ComboType, GameStartType } from "@slippi/slippi-js/node";
 
 const generateMoves = (moveIds: number[]): MoveLandedType[] => {
   const baseMove = { damage: 1, frame: 0, hitCount: 1, playerIndex: 1 };
@@ -36,8 +36,9 @@ describe("combo criteria", () => {
         playerIndex: 0,
         startFrame: 0,
         startPercent: 0,
-        lastHitBy: null,
-      };
+        endFrame: 0,
+        lastHitBy: undefined,
+      } as any;
 
       options = defaultComboFilterSettings;
     });

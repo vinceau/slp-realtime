@@ -18,9 +18,9 @@ export function filterJustSpawned(playerIndex: number): MonoTypeOperatorFunction
       playerFrameFilter(playerIndex),
       withPreviousFrame(), // Get previous frame too
       filter(([prevFrame, latestFrame]) => {
-        const prevActionState = prevFrame.players[playerIndex]?.post.actionStateId ?? undefined;
-        const currActionState = latestFrame.players[playerIndex]?.post.actionStateId ?? undefined;
-        if (prevActionState === undefined || currActionState === undefined) {
+        const prevActionState = prevFrame.players[playerIndex]?.post.actionStateId;
+        const currActionState = latestFrame.players[playerIndex]?.post.actionStateId;
+        if (prevActionState == undefined || currActionState == undefined) {
           return false;
         }
         // We only care about the frames where we just spawned

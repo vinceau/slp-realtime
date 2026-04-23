@@ -45,7 +45,7 @@ const comboMatchesCharacter = (combo: ComboType, settings: GameStartType, charac
 
   const matches = combo.moves.find((move) => {
     const player = settings.players.find((player) => player.playerIndex === move.playerIndex);
-    if (!player || player.characterId === undefined) {
+    if (!player || player.characterId == undefined) {
       return false;
     }
     return characterFilter.includes(player.characterId);
