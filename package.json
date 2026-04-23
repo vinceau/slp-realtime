@@ -36,12 +36,6 @@
     "slippi",
     "realtime"
   ],
-  "dependencies": {
-    "chokidar": "^3.3.1",
-    "fs-extra": "^8.1.0",
-    "moment": "^2.27.0",
-    "oncemore": "^1.2.0"
-  },
   "peerDependencies": {
     "@slippi/slippi-js": "^9.x",
     "rxjs": "^6.x"
