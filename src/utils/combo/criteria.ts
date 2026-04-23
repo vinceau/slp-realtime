@@ -45,7 +45,7 @@ const comboMatchesCharacter = (combo: ComboType, settings: GameStartType, charac
 
   const matches = combo.moves.find((move) => {
     const player = settings.players.find((player) => player.playerIndex === move.playerIndex);
-    if (!player || player.characterId === null) {
+    if (!player || player.characterId === undefined) {
       return false;
     }
     return characterFilter.includes(player.characterId);
@@ -114,7 +114,7 @@ export const SatisfiesMinComboPercent: Criteria = (combo, settings, options) => 
   }
 
   const player = settings.players.find((p) => p.playerIndex === move.playerIndex);
-  if (!player || player.characterId === null) {
+  if (!player || player.characterId === undefined) {
     return false;
   }
   const minComboPercent = options.perCharacterMinComboPercent[player.characterId] || options.minComboPercent;

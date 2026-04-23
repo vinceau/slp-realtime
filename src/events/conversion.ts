@@ -1,7 +1,7 @@
 import type { ConversionType, GameStartType } from "@slippi/slippi-js";
 import { ConversionComputer } from "@slippi/slippi-js";
 import type { Observable } from "rxjs";
-import { fromEvent } from "rxjs";
+import { fromEventPattern } from "rxjs";
 import { filter, share, switchMap } from "rxjs/operators";
 
 import type { RxSlpStream } from "../stream";
@@ -14,7 +14,10 @@ interface ConversionEventPayload {
 export class RealTimeConversionEvents {
   private stream$: Observable<RxSlpStream>;
   private conversionComputer = new ConversionComputer();
-  public end$ = fromEvent<ConversionEventPayload>(this.conversionComputer, "CONVERSION").pipe(share());
+  public end$ = fromEventPattern<ConversionEventPayload>(
+    (handler) => this.conversionComputer.on("CONVERSION" as any, handler),
+    (handler) => this.conversionComputer.off("CONVERSION" as any, handler),
+  ).pipe(share());
 
   public constructor(stream: Observable<RxSlpStream>) {
     this.stream$ = stream;
