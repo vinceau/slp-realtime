@@ -3,7 +3,7 @@
 [![slp-realtime is magic - Nikki](https://i.imgur.com/qnfI6c5.png)](https://i.imgur.com/qnfI6c5.png)
 
 [![npm version](https://img.shields.io/npm/v/@vinceau/slp-realtime.svg?style=flat)](https://npmjs.org/package/@vinceau/slp-realtime "View this project on npm")
-[![Build Status](https://github.com/vinceau/slp-realtime/workflows/build/badge.svg)](https://github.com/vinceau/slp-realtime/actions?workflow=build)
+[![Build Status](https://github.com/vinceau/slp-realtime/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/vinceau/slp-realtime/actions/workflows/build.yml?query=branch%3Amaster)
 [![Coverage Status](https://coveralls.io/repos/github/vinceau/slp-realtime/badge.svg)](https://coveralls.io/github/vinceau/slp-realtime)
 [![License](https://img.shields.io/npm/l/@vinceau/slp-realtime)](https://github.com/vinceau/slp-realtime/blob/master/LICENSE)
 
