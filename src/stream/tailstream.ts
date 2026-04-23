@@ -38,9 +38,7 @@ export class TailStream extends Transform {
 
     this.path = path;
     this.flags = "r";
-    this.fd = Object.prototype.hasOwnProperty.call(options, "fd")
-      ? options.fd ?? null
-      : null;
+    this.fd = Object.prototype.hasOwnProperty.call(options, "fd") ? options.fd ?? null : null;
     this.autoClose = !!options.autoClose;
 
     this.closing = false;
@@ -59,7 +57,7 @@ export class TailStream extends Transform {
     });
   }
 
-  public override _transform(chunk: Buffer, _encoding: BufferEncoding, callback: TransformCallback): void {
+  public _transform(chunk: Buffer, _encoding: BufferEncoding, callback: TransformCallback): void {
     this._offset += chunk.length;
     callback(null, chunk);
   }
@@ -67,7 +65,9 @@ export class TailStream extends Transform {
   public open(): void {
     fs.open(this.path, this.flags, (err, fd) => {
       if (err) {
-        if (this.autoClose) {this.destroy();}
+        if (this.autoClose) {
+          this.destroy();
+        }
         this.emit("error", err);
         return;
       }
@@ -80,10 +80,7 @@ export class TailStream extends Transform {
   public poll(): void {
     const wasClosing: boolean = this.closing;
 
-    const handleStat = (
-      err: NodeJS.ErrnoException | null,
-      stat?: Stats
-    ): void => {
+    const handleStat = (err: NodeJS.ErrnoException | null, stat?: Stats): void => {
       if (!err && stat && !stat.isFile()) {
         err = new Error("path does not point to a regular file");
       }
@@ -130,7 +127,9 @@ export class TailStream extends Transform {
 
     const doNextAction = (err?: Error | null): void => {
       if (err) {
-        if (this.autoClose) {this.destroy();}
+        if (this.autoClose) {
+          this.destroy();
+        }
         this.emit("error", err);
         return;
       }
@@ -171,8 +170,10 @@ export class TailStream extends Transform {
     });
   }
 
-  public override destroy(error?: Error): this {
-    if (this.destroyed) {return this;}
+  public destroy(error?: Error): this {
+    if (this.destroyed) {
+      return this;
+    }
 
     super.destroy(error);
 
@@ -184,7 +185,9 @@ export class TailStream extends Transform {
   }
 
   public close(cb?: () => void): void {
-    if (cb) {this.once("close", cb);}
+    if (cb) {
+      this.once("close", cb);
+    }
 
     if (this._closed || this.fd === null) {
       if (this.fd === null) {
@@ -201,8 +204,11 @@ export class TailStream extends Transform {
 
     const closeFd = (fd?: number): void => {
       fs.close(fd ?? fdToClose, (err) => {
-        if (err) {this.emit("error", err);}
-        else {this.emit("close");}
+        if (err) {
+          this.emit("error", err);
+        } else {
+          this.emit("close");
+        }
       });
       this.fd = null;
     };
@@ -217,9 +223,6 @@ export class TailStream extends Transform {
   }
 }
 
-export function createReadStream(
-  path: string,
-  options?: TailStreamOptions
-): TailStream {
+export function createReadStream(path: string, options?: TailStreamOptions): TailStream {
   return new TailStream(path, options);
 }
