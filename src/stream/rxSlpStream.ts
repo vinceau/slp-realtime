@@ -5,12 +5,11 @@ import type {
   GameStartType,
   MessageSizes,
   SlpCommandEventPayload,
-  SlpFileWriterOptions,
+  SlpStreamSettings,
 } from "@slippi/slippi-js";
-import { Command, SlpFileWriter, SlpParser, SlpParserEvent, SlpStreamEvent } from "@slippi/slippi-js";
+import { Command, SlpParser, SlpParserEvent, SlpStream, SlpStreamEvent } from "@slippi/slippi-js";
 import { fromEvent, Subject } from "rxjs";
 import { map, share, tap } from "rxjs/operators";
-import type { WritableOptions } from "stream";
 
 /**
  * SlpStream is a writable stream of Slippi data. It passes the data being written in
@@ -19,7 +18,7 @@ import type { WritableOptions } from "stream";
  * @class SlpStream
  * @extends {Writable}
  */
-export class RxSlpStream extends SlpFileWriter {
+export class RxSlpStream extends SlpStream {
   protected parser = new SlpParser({ strict: true }); // Strict mode will enable data validation
   private messageSizeSource = new Subject<Map<Command, number>>();
   private allFrames: FramesType = {};
@@ -49,14 +48,8 @@ export class RxSlpStream extends SlpFileWriter {
    * @param {WritableOptions} [opts]
    * @memberof SlpStream
    */
-  public constructor(options?: Partial<SlpFileWriterOptions>, opts?: WritableOptions) {
-    super(
-      {
-        ...options,
-        outputFiles: options && options.outputFiles === true, // Don't write out files unless manually specified
-      },
-      opts,
-    );
+  public constructor(options?: SlpStreamSettings) {
+    super(options);
 
     this.on(SlpStreamEvent.COMMAND, (data: SlpCommandEventPayload) => {
       const { command, payload } = data;
