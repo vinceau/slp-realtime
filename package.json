@@ -41,7 +41,7 @@
     "fs-extra": "^8.1.0",
     "lodash": "^4.17.19",
     "moment": "^2.27.0",
-    "tailstream": "^0.1.0"
+    "oncemore": "^1.2.0"
   },
   "peerDependencies": {
     "@slippi/slippi-js": "^6.x",
