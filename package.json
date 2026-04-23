@@ -15,7 +15,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest --verbose --detectOpenHandles",
-    "typecheck": "npm tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "coverage": "npm run test --coverage",
     "postcoverage": "open-cli coverage/lcov-report/index.html",
     "lint": "eslint \"src/**/*.ts\"",
