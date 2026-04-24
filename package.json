@@ -28,7 +28,7 @@
     "minor": "npm version minor && npm publish",
     "major": "npm version major && npm publish",
     "prepublishOnly": "npm run lint && npm run test && npm run build",
-    "docs": "npm typedoc src/index.ts --excludePrivate --exclude \"**/*+(.test).ts\"",
+    "docs": "npx typedoc src/index.ts --excludePrivate --exclude \"**/*+(.test).ts\"",
     "postdocs": "touch docs/.nojekyll"
   },
   "keywords": [
