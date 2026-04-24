@@ -1,9 +1,10 @@
 {
-  "name": "slp-realtime-combos-example",
+  "name": "slp-realtime-dolphin-example",
   "version": "1.0.0",
   "license": "MIT",
   "main": "index.js",
   "dependencies": {
+    "@slippi/slippi-js": "^9.x",
     "@vinceau/slp-realtime": "file:../..",
     "rxjs": "^6.5.4"
   },

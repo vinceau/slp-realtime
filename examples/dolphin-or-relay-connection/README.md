@@ -2,9 +2,7 @@
 
 This is an example demonstrating the real-time capabilities of `slp-realtime`.
 
-This script connects to a Dolphin instance or Slippi relay, automatically
-detects combos, and generates a Dolphin-compatible `combos.json` file
-when disconnected from the relay.
+This script connects to a Dolphin instance or Slippi relay and logs detected combos to the console.
 
 ## How to use
 
@@ -33,3 +31,11 @@ Open up the `index.js` file in your favourite editor, and modify the values for 
 ```bash
 node index.js
 ```
+
+## How it works
+
+- Uses `DolphinConnection` from `@slippi/slippi-js` to connect to Dolphin directly
+- For Console/Relay instead, swap `DolphinConnection` with `ConsoleConnection`
+- The connection emits raw message data which is piped to the `RxSlpStream` via `.process()`
+- `SlpRealTime` emits events for combos, stocks, inputs, and game state changes
+- Detected combos are logged to the console (customize the action as needed)
