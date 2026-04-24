@@ -13,16 +13,16 @@ export class RealTimeComboEvents {
   private comboComputer = new ComboComputer();
 
   public start$ = fromEventPattern<ComboEventPayload>(
-    (handler) => this.comboComputer.on("COMBO_START" as any, handler),
-    (handler) => this.comboComputer.off("COMBO_START" as any, handler),
+    (handler) => this.comboComputer.on("COMBO_START", handler),
+    (handler) => this.comboComputer.off("COMBO_START", handler),
   ).pipe(share());
   public extend$ = fromEventPattern<ComboEventPayload>(
-    (handler) => this.comboComputer.on("COMBO_EXTEND" as any, handler),
-    (handler) => this.comboComputer.off("COMBO_EXTEND" as any, handler),
+    (handler) => this.comboComputer.on("COMBO_EXTEND", handler),
+    (handler) => this.comboComputer.off("COMBO_EXTEND", handler),
   ).pipe(share());
   public end$ = fromEventPattern<ComboEventPayload>(
-    (handler) => this.comboComputer.on("COMBO_END" as any, handler),
-    (handler) => this.comboComputer.off("COMBO_END" as any, handler),
+    (handler) => this.comboComputer.on("COMBO_END", handler),
+    (handler) => this.comboComputer.off("COMBO_END", handler),
   ).pipe(share());
   public conversion$: Observable<ComboEventPayload>;
 
