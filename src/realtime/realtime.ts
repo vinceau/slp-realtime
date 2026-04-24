@@ -37,6 +37,7 @@ export class SlpRealTime {
   }
 
   public destroy(): void {
+    this.stream$.complete();
     this.game.destroy();
     this.stock.destroy();
     this.input.destroy();
