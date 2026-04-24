@@ -1,8 +1,9 @@
+import { SlpStreamMode } from "@slippi/slippi-js/node";
+import type { Subscription } from "rxjs";
 import * as sinon from "sinon";
 
-import { RxSlpStream, pipeFileContents } from "../src";
-import { Subscription } from "rxjs";
-import { SlpStreamMode } from "@slippi/slippi-js";
+import { RxSlpStream } from "../src/stream/rxSlpStream";
+import { pipeFileContents } from "./pipeFileContents";
 
 describe("SlpStream", () => {
   let subscriptions: Array<Subscription>;
@@ -20,13 +21,13 @@ describe("SlpStream", () => {
       const gameStartSpy = sinon.spy();
       const gameEndSpy = sinon.spy();
 
-      const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
+      const slpStream = new RxSlpStream({ suppressErrors: false, mode: SlpStreamMode.MANUAL });
       const unsubGameStart = slpStream.gameStart$.subscribe(gameStartSpy);
       const unsubGameEnd = slpStream.gameEnd$.subscribe(gameEndSpy);
       subscriptions.push(unsubGameStart, unsubGameEnd);
 
       // Pipe the file twice
-      await pipeFileContents("slp/Game_20190810T162904.slp", slpStream, { end: false });
+      await pipeFileContents("slp/Game_20190810T162904.slp", slpStream);
       await pipeFileContents("slp/Game_20190810T162904.slp", slpStream);
       // slpStream.complete();
 
@@ -38,13 +39,13 @@ describe("SlpStream", () => {
       const gameStartSpy = sinon.spy();
       const gameEndSpy = sinon.spy();
 
-      const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
+      const slpStream = new RxSlpStream({ suppressErrors: false, mode: SlpStreamMode.MANUAL });
       const unsubGameStart = slpStream.gameStart$.subscribe(gameStartSpy);
       const unsubGameEnd = slpStream.gameEnd$.subscribe(gameEndSpy);
       subscriptions.push(unsubGameStart, unsubGameEnd);
 
       // Pipe the file twice
-      await pipeFileContents("slp/Game_20190810T162904.slp", slpStream, { end: false });
+      await pipeFileContents("slp/Game_20190810T162904.slp", slpStream);
       slpStream.restart();
       await pipeFileContents("slp/Game_20190810T162904.slp", slpStream);
 

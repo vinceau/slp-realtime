@@ -1,4 +1,6 @@
-import { GameStartType, SlippiGame } from "@slippi/slippi-js";
+import type { GameStartType } from "@slippi/slippi-js/node";
+import { SlippiGame } from "@slippi/slippi-js/node";
+
 import { extractPlayerNames, namesMatch } from "../src";
 
 describe("when extracting player names", () => {

@@ -1,5 +1,4 @@
 import type { GameStartType, MetadataType } from "@slippi/slippi-js";
-import { get } from "lodash";
 
 type PlayerNames = {
   name: string;
@@ -20,8 +19,8 @@ export function extractNames(
 
   const player = settings.players.find((player) => player.playerIndex === index);
   result.tag = player?.nametag ?? "";
-  result.name = player?.displayName || get(metadata, ["players", index, "names", "netplay"], "");
-  result.code = player?.connectCode || get(metadata, ["players", index, "names", "code"], "");
+  result.name = (player?.displayName || metadata?.players?.[index]?.names?.netplay) ?? "";
+  result.code = (player?.connectCode || metadata?.players?.[index]?.names?.code) ?? "";
 
   return result;
 }

@@ -1,6 +1,8 @@
-import { pipeFileContents, SlpRealTime, RxSlpStream } from "../src";
-import { SlpStreamMode } from "@slippi/slippi-js";
-import { Subscription } from "rxjs";
+import { SlpStreamMode } from "@slippi/slippi-js/node";
+import type { Subscription } from "rxjs";
+
+import { RxSlpStream, SlpRealTime } from "../src";
+import { pipeFileContents } from "./pipeFileContents";
 
 describe("when determining the winner", () => {
   let subscriptions: Array<Subscription>;
@@ -16,7 +18,7 @@ describe("when determining the winner", () => {
   it("correctly determines winner", async () => {
     let winner = -1;
 
-    const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
+    const slpStream = new RxSlpStream({ suppressErrors: false, mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 
@@ -27,21 +29,21 @@ describe("when determining the winner", () => {
     );
 
     // Player 4 is the winner
-    await pipeFileContents("slp/Game_20190810T162904.slp", slpStream, { end: false });
+    await pipeFileContents("slp/Game_20190810T162904.slp", slpStream);
     expect(winner).toEqual(3);
 
     winner = -1; // Reset the winner
 
     slpStream.restart();
     // Player 2 is the winner
-    await pipeFileContents("slp/Game_20190517T164215.slp", slpStream, { end: false });
+    await pipeFileContents("slp/Game_20190517T164215.slp", slpStream);
     expect(winner).toEqual(1);
 
     winner = -1; // Reset the winner
 
     slpStream.restart();
     // Player 1 is the winner
-    await pipeFileContents("slp/Game_20190324T113942.slp", slpStream, { end: false });
+    await pipeFileContents("slp/Game_20190324T113942.slp", slpStream);
     expect(winner).toEqual(0);
 
     winner = -1; // Reset the winner

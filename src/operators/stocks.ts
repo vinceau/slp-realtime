@@ -18,9 +18,9 @@ export function filterJustSpawned(playerIndex: number): MonoTypeOperatorFunction
       playerFrameFilter(playerIndex),
       withPreviousFrame(), // Get previous frame too
       filter(([prevFrame, latestFrame]) => {
-        const prevActionState = prevFrame.players[playerIndex]?.post.actionStateId ?? null;
-        const currActionState = latestFrame.players[playerIndex]?.post.actionStateId ?? null;
-        if (prevActionState === null || currActionState === null) {
+        const prevActionState = prevFrame.players[playerIndex]?.post.actionStateId;
+        const currActionState = latestFrame.players[playerIndex]?.post.actionStateId;
+        if (prevActionState == undefined || currActionState == undefined) {
           return false;
         }
         // We only care about the frames where we just spawned
@@ -67,12 +67,12 @@ export function mapFrameToSpawnStockType(
         const stock: StockType = {
           playerIndex: player.playerIndex,
           startFrame: frame.frame,
-          endFrame: null,
+          endFrame: undefined,
           startPercent: 0,
-          endPercent: null,
+          endPercent: undefined,
           currentPercent: 0,
           count: frame.stocksRemaining,
-          deathAnimation: null,
+          deathAnimation: undefined,
         };
         return stock;
       }),

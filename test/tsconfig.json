@@ -4,5 +4,5 @@
     "strictNullChecks": true,
     "esModuleInterop": true
   },
-  "include": ["./**/*.spec.ts"]
+  "include": ["./**/*.test.ts"]
 }

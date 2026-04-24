@@ -1,8 +1,9 @@
+import { SlpStreamMode } from "@slippi/slippi-js/node";
+import type { Subscription } from "rxjs";
 import * as sinon from "sinon";
 
-import { pipeFileContents, SlpRealTime, RxSlpStream } from "../src";
-import { SlpStreamMode } from "@slippi/slippi-js";
-import { Subscription } from "rxjs";
+import { RxSlpStream, SlpRealTime } from "../src";
+import { pipeFileContents } from "./pipeFileContents";
 
 describe("SlpRealTime", () => {
   let subscriptions: Array<Subscription>;
@@ -21,7 +22,7 @@ describe("SlpRealTime", () => {
     const stockSpawnSpy = sinon.spy();
     const stockDeathSpy = sinon.spy();
 
-    const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
+    const slpStream = new RxSlpStream({ suppressErrors: false, mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 

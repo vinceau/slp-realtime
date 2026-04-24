@@ -1,21 +1,19 @@
 import type { ComboType, GameStartType } from "@slippi/slippi-js";
-import { Character } from "@slippi/slippi-js";
-import { sumBy } from "lodash";
+import { Character, MoveId } from "@slippi/slippi-js";
 
 import { isEquivalentArray } from "../helpers";
-import { MoveId } from "../melee";
 import { extractPlayerNamesByPort, namesMatch } from "../names";
 import type { Criteria } from "./filter";
 
 /**
  * MatchesPortNumber ensures the player performing the combo is a specific port.
  */
-export const MatchesPortNumber: Criteria = (combo, _settings, options) => {
+export const matchesPortNumber: Criteria = (combo, _settings, options) => {
   const move = combo.moves.find((move) => options.portFilter.includes(move.playerIndex + 1));
   return Boolean(move);
 };
 
-export const MatchesPlayerName: Criteria = (combo, settings, options, metadata) => {
+export const matchesPlayerName: Criteria = (combo, settings, options, metadata) => {
   if (options.nameTags.length === 0) {
     return true;
   }
@@ -34,7 +32,7 @@ export const MatchesPlayerName: Criteria = (combo, settings, options, metadata) 
   return match !== undefined;
 };
 
-export const MatchesCharacter: Criteria = (combo, settings, options) => {
+export const matchesCharacter: Criteria = (combo, settings, options) => {
   return comboMatchesCharacter(combo, settings, options.characterFilter);
 };
 
@@ -45,7 +43,7 @@ const comboMatchesCharacter = (combo: ComboType, settings: GameStartType, charac
 
   const matches = combo.moves.find((move) => {
     const player = settings.players.find((player) => player.playerIndex === move.playerIndex);
-    if (!player || player.characterId === null) {
+    if (!player || player.characterId == undefined) {
       return false;
     }
     return characterFilter.includes(player.characterId);
@@ -54,7 +52,7 @@ const comboMatchesCharacter = (combo: ComboType, settings: GameStartType, charac
   return Boolean(matches);
 };
 
-export const ExcludesChainGrabs: Criteria = (combo, settings, options) => {
+export const excludesChainGrabs: Criteria = (combo, settings, options) => {
   if (!options.excludeChainGrabs) {
     return true;
   }
@@ -72,7 +70,7 @@ export const ExcludesChainGrabs: Criteria = (combo, settings, options) => {
   return !isChainGrab;
 };
 
-export const ExcludesWobbles: Criteria = (combo, settings, options) => {
+export const excludesWobbles: Criteria = (combo, settings, options) => {
   if (!options.excludeWobbles) {
     return true;
   }
@@ -98,12 +96,12 @@ export const ExcludesWobbles: Criteria = (combo, settings, options) => {
   return !wobbled;
 };
 
-export const SatisfiesMinComboLength: Criteria = (combo, _settings, options) => {
+export const satisfiesMinComboLength: Criteria = (combo, _settings, options) => {
   const numMoves = combo.moves.length;
   return numMoves >= options.minComboLength;
 };
 
-export const SatisfiesMinComboPercent: Criteria = (combo, settings, options) => {
+export const satisfiesMinComboPercent: Criteria = (combo, settings, options) => {
   if (settings.players.length !== 2) {
     return true;
   }
@@ -114,7 +112,7 @@ export const SatisfiesMinComboPercent: Criteria = (combo, settings, options) => 
   }
 
   const player = settings.players.find((p) => p.playerIndex === move.playerIndex);
-  if (!player || player.characterId === null) {
+  if (!player || player.characterId === undefined) {
     return false;
   }
   const minComboPercent = options.perCharacterMinComboPercent[player.characterId] || options.minComboPercent;
@@ -126,13 +124,13 @@ export const SatisfiesMinComboPercent: Criteria = (combo, settings, options) => 
   return totalComboPercent > minComboPercent;
 };
 
-export const ExcludesLargeSingleHit: Criteria = (combo, _settings, options) => {
-  const totalDmg = sumBy(combo.moves, ({ damage }) => damage);
+export const excludesLargeSingleHit: Criteria = (combo, _settings, options) => {
+  const totalDmg = combo.moves.reduce((sum, move) => sum + move.damage, 0);
   const largeSingleHit = combo.moves.some(({ damage }) => damage / totalDmg >= options.largeHitThreshold);
   return !largeSingleHit;
 };
 
-export const ExcludesCPUs: Criteria = (_combo, settings, options) => {
+export const excludesCPUs: Criteria = (_combo, settings, options) => {
   if (!options.excludeCPUs) {
     return true;
   }
@@ -140,11 +138,11 @@ export const ExcludesCPUs: Criteria = (_combo, settings, options) => {
   return !cpu;
 };
 
-export const IsOneVsOne: Criteria = (_combo, settings) => {
+export const isOneVsOne: Criteria = (_combo, settings) => {
   return settings.players.length === 2;
 };
 
-export const ComboDidKill: Criteria = (combo, _settings, options) => {
+export const comboDidKill: Criteria = (combo, _settings, options) => {
   return !options.comboMustKill || combo.didKill;
 };
 
@@ -161,7 +159,7 @@ const isIncludedInCombo = (comboMoves: number[], filterSequence: number[]): bool
   return false;
 };
 
-export const IncludesComboSequence: Criteria = (combo, _, options) => {
+export const includesComboSequence: Criteria = (combo, _, options) => {
   const { sequence, mode = "include" } = options.includesComboSequence;
   const moves = combo.moves.map((move) => move.moveId);
 
@@ -188,16 +186,16 @@ export const IncludesComboSequence: Criteria = (combo, _, options) => {
 };
 
 export const ALL_CRITERIA: Criteria[] = [
-  MatchesPortNumber,
-  MatchesPlayerName,
-  MatchesCharacter,
-  ExcludesChainGrabs,
-  ExcludesWobbles,
-  SatisfiesMinComboLength,
-  SatisfiesMinComboPercent,
-  ExcludesLargeSingleHit,
-  ExcludesCPUs,
-  IsOneVsOne,
-  ComboDidKill,
-  IncludesComboSequence,
+  matchesPortNumber,
+  matchesPlayerName,
+  matchesCharacter,
+  excludesChainGrabs,
+  excludesWobbles,
+  satisfiesMinComboLength,
+  satisfiesMinComboPercent,
+  excludesLargeSingleHit,
+  excludesCPUs,
+  isOneVsOne,
+  comboDidKill,
+  includesComboSequence,
 ];

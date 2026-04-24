@@ -1,8 +1,9 @@
+import { Character, MoveId, SlippiGame, SlpStreamMode } from "@slippi/slippi-js/node";
+import type { Subscription } from "rxjs";
 import * as sinon from "sinon";
 
-import { SlippiGame, Character, SlpStreamMode } from "@slippi/slippi-js";
-import { pipeFileContents, SlpRealTime, RxSlpStream, ComboFilter, MoveId } from "../src";
-import { Subscription } from "rxjs";
+import { ComboFilter, RxSlpStream, SlpRealTime } from "../src";
+import { pipeFileContents } from "./pipeFileContents";
 
 describe("combo calculation", () => {
   const filter = new ComboFilter();
@@ -24,7 +25,7 @@ describe("combo calculation", () => {
   it("correctly matches combo criteria", async () => {
     const comboSpy = sinon.spy();
 
-    const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
+    const slpStream = new RxSlpStream({ suppressErrors: false, mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 
@@ -51,7 +52,7 @@ describe("combo calculation", () => {
 
     bowserOnlyFilter.updateSettings({ characterFilter: [Character.BOWSER] });
     excludesBowserFilter.updateSettings({ characterFilter: [Character.CAPTAIN_FALCON] });
-    const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
+    const slpStream = new RxSlpStream({ suppressErrors: false, mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 
@@ -78,7 +79,7 @@ describe("combo calculation", () => {
     const comboSpy = sinon.spy();
 
     filter.updateSettings({ minComboPercent: 20 });
-    const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
+    const slpStream = new RxSlpStream({ suppressErrors: false, mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
 
@@ -99,7 +100,7 @@ describe("combo calculation", () => {
   it("emits the correct number of conversions", async () => {
     const conversionSpy = sinon.spy();
     filter.updateSettings({ minComboPercent: 20 });
-    const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
+    const slpStream = new RxSlpStream({ suppressErrors: false, mode: SlpStreamMode.MANUAL });
     const realtime = new SlpRealTime();
     realtime.setStream(slpStream);
     subscriptions.push(
@@ -120,7 +121,7 @@ describe("combo calculation", () => {
     const filename = "slp/200306_2258_Falco_v_Fox_PS.slp";
     filter.updateSettings({ minComboPercent: 50 });
 
-    const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
+    const slpStream = new RxSlpStream({ suppressErrors: false, mode: SlpStreamMode.MANUAL });
     realtime.setStream(slpStream);
     subscriptions.push(
       realtime.combo.conversion$.subscribe((payload) => {
@@ -147,7 +148,7 @@ describe("combo calculation", () => {
         nameTags: ["fizzi"],
         fuzzyNameTagMatching: false,
       });
-      const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
+      const slpStream = new RxSlpStream({ suppressErrors: false, mode: SlpStreamMode.MANUAL });
       realtime.setStream(slpStream);
       subscriptions.push(
         realtime.combo.end$.subscribe((payload) => {
@@ -170,7 +171,7 @@ describe("combo calculation", () => {
       const metadata = game.getMetadata();
 
       filter.updateSettings({ minComboPercent: 40, nameTags: ["Fizzi"] });
-      const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
+      const slpStream = new RxSlpStream({ suppressErrors: false, mode: SlpStreamMode.MANUAL });
       realtime.setStream(slpStream);
       subscriptions.push(
         realtime.combo.end$.subscribe((payload) => {
@@ -192,7 +193,7 @@ describe("combo calculation", () => {
       const metadata = game.getMetadata();
 
       filter.updateSettings({ portFilter: [2], minComboPercent: 40 });
-      const slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
+      const slpStream = new RxSlpStream({ suppressErrors: false, mode: SlpStreamMode.MANUAL });
       realtime.setStream(slpStream);
       subscriptions.push(
         realtime.combo.end$.subscribe((payload) => {
@@ -335,7 +336,7 @@ describe("combo calculation", () => {
     let sequenceComboSpy: sinon.SinonSpy;
 
     beforeEach(() => {
-      slpStream = new RxSlpStream({ mode: SlpStreamMode.MANUAL });
+      slpStream = new RxSlpStream({ suppressErrors: false, mode: SlpStreamMode.MANUAL });
       realtime = new SlpRealTime();
       realtime.setStream(slpStream);
       regularComboSpy = sinon.spy();

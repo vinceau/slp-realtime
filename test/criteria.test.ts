@@ -1,5 +1,8 @@
-import { ComboFilterSettings, defaultComboFilterSettings, IncludesComboSequence, MoveId } from "../src";
-import { GameMode, MoveLandedType, ComboType, GameStartType } from "@slippi/slippi-js";
+import type { ComboType, GameStartType, MoveLandedType } from "@slippi/slippi-js/node";
+import { GameMode, MoveId } from "@slippi/slippi-js/node";
+
+import type { ComboFilterSettings } from "../src";
+import { defaultComboFilterSettings, includesComboSequence } from "../src";
 
 const generateMoves = (moveIds: number[]): MoveLandedType[] => {
   const baseMove = { damage: 1, frame: 0, hitCount: 1, playerIndex: 1 };
@@ -10,7 +13,7 @@ describe("combo criteria", () => {
   describe("combo sequence inclusion", () => {
     let combo: ComboType;
     let options: ComboFilterSettings;
-    const gameStartType = ({
+    const gameStartType = {
       gameMode: GameMode.ONLINE,
       isPAL: true,
       isTeams: false,
@@ -18,7 +21,7 @@ describe("combo criteria", () => {
       scene: 0,
       slpVersion: "",
       stageId: 0,
-    } as unknown) as GameStartType;
+    } as unknown as GameStartType;
 
     beforeEach(() => {
       combo = {
@@ -36,8 +39,9 @@ describe("combo criteria", () => {
         playerIndex: 0,
         startFrame: 0,
         startPercent: 0,
-        lastHitBy: null,
-      };
+        endFrame: 0,
+        lastHitBy: undefined,
+      } as any;
 
       options = defaultComboFilterSettings;
     });
@@ -45,7 +49,7 @@ describe("combo criteria", () => {
     it("succeeds when not set in options", () => {
       combo.moves = generateMoves([MoveId.F_SMASH]);
 
-      expect(IncludesComboSequence(combo, gameStartType, options)).toBeTruthy();
+      expect(includesComboSequence(combo, gameStartType, options)).toBeTruthy();
     });
 
     it("fails when combo is shorter than the filter", () => {
@@ -55,7 +59,7 @@ describe("combo criteria", () => {
         sequence: [MoveId.F_SMASH, MoveId.F_SMASH],
       };
 
-      expect(IncludesComboSequence(combo, gameStartType, options)).toBeFalsy();
+      expect(includesComboSequence(combo, gameStartType, options)).toBeFalsy();
     });
 
     it("passes combos that include the given filter", () => {
@@ -64,7 +68,7 @@ describe("combo criteria", () => {
         sequence: [MoveId.D_SPECIAL, MoveId.JAB_1, MoveId.U_AIR, MoveId.U_SMASH],
       };
 
-      expect(IncludesComboSequence(combo, gameStartType, options)).toBeTruthy();
+      expect(includesComboSequence(combo, gameStartType, options)).toBeTruthy();
     });
 
     it("defaults to 'includes' mode", () => {
@@ -72,7 +76,7 @@ describe("combo criteria", () => {
         sequence: [MoveId.D_SPECIAL, MoveId.JAB_1, MoveId.U_AIR, MoveId.U_SMASH],
       };
 
-      expect(IncludesComboSequence(combo, gameStartType, options)).toBeTruthy();
+      expect(includesComboSequence(combo, gameStartType, options)).toBeTruthy();
     });
 
     it("fails combos that do not include the given filter", () => {
@@ -81,7 +85,7 @@ describe("combo criteria", () => {
         sequence: [MoveId.U_SMASH, MoveId.U_SMASH],
       };
 
-      expect(IncludesComboSequence(combo, gameStartType, options)).toBeFalsy();
+      expect(includesComboSequence(combo, gameStartType, options)).toBeFalsy();
     });
 
     it("passes combos that start with the given filter", () => {
@@ -90,7 +94,7 @@ describe("combo criteria", () => {
         sequence: [MoveId.D_AIR, MoveId.D_SPECIAL, MoveId.JAB_1],
       };
 
-      expect(IncludesComboSequence(combo, gameStartType, options)).toBeTruthy();
+      expect(includesComboSequence(combo, gameStartType, options)).toBeTruthy();
     });
 
     it("fails combos that do not start with the given filter", () => {
@@ -99,7 +103,7 @@ describe("combo criteria", () => {
         sequence: [MoveId.D_SPECIAL, MoveId.JAB_1, MoveId.U_AIR],
       };
 
-      expect(IncludesComboSequence(combo, gameStartType, options)).toBeFalsy();
+      expect(includesComboSequence(combo, gameStartType, options)).toBeFalsy();
     });
 
     it("passes combos that end with the given filter", () => {
@@ -108,7 +112,7 @@ describe("combo criteria", () => {
         sequence: [MoveId.U_SMASH, MoveId.NEUTRAL_AIR, MoveId.U_SMASH],
       };
 
-      expect(IncludesComboSequence(combo, gameStartType, options)).toBeTruthy();
+      expect(includesComboSequence(combo, gameStartType, options)).toBeTruthy();
     });
 
     it("fails combos that do not end with the given filter", () => {
@@ -117,7 +121,7 @@ describe("combo criteria", () => {
         sequence: [MoveId.U_AIR, MoveId.U_SMASH, MoveId.NEUTRAL_AIR],
       };
 
-      expect(IncludesComboSequence(combo, gameStartType, options)).toBeFalsy();
+      expect(includesComboSequence(combo, gameStartType, options)).toBeFalsy();
     });
 
     it("passes combos that exactly match the given filter", () => {
@@ -134,7 +138,7 @@ describe("combo criteria", () => {
         ],
       };
 
-      expect(IncludesComboSequence(combo, gameStartType, options)).toBeTruthy();
+      expect(includesComboSequence(combo, gameStartType, options)).toBeTruthy();
     });
 
     it("fails combos that do not exactly match the given filter", () => {
@@ -143,7 +147,7 @@ describe("combo criteria", () => {
         sequence: [MoveId.D_AIR, MoveId.D_SPECIAL, MoveId.JAB_1, MoveId.U_SMASH, MoveId.NEUTRAL_AIR, MoveId.U_SMASH],
       };
 
-      expect(IncludesComboSequence(combo, gameStartType, options)).toBeFalsy();
+      expect(includesComboSequence(combo, gameStartType, options)).toBeFalsy();
     });
   });
 });

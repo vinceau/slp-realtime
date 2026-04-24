@@ -34,22 +34,26 @@ export function mapFramesToButtonInputs(
       playerFrameFilter(index),
       // Map the frames to whether the button combination was pressed or not
       // while tracking the frame number
-      map((f): {
-        frame: number;
-        buttonPressed: boolean;
-        buttonCombo: string[];
-      } | null => {
-        const buttonCombo = f.players[index]?.pre.physicalButtons;
-        if (!exists(buttonCombo)) {
-          return null;
-        }
-        const buttonComboPressed = (buttonCombo & controlBitMask) === controlBitMask;
-        return {
-          frame: f.frame,
-          buttonPressed: buttonComboPressed,
-          buttonCombo: bitmaskToButtons(buttonCombo),
-        };
-      }),
+      map(
+        (
+          f,
+        ): {
+          frame: number;
+          buttonPressed: boolean;
+          buttonCombo: string[];
+        } | null => {
+          const buttonCombo = f.players[index]?.pre.physicalButtons;
+          if (!exists(buttonCombo)) {
+            return null;
+          }
+          const buttonComboPressed = (buttonCombo & controlBitMask) === controlBitMask;
+          return {
+            frame: f.frame,
+            buttonPressed: buttonComboPressed,
+            buttonCombo: bitmaskToButtons(buttonCombo),
+          };
+        },
+      ),
       filter(exists),
       // Count the number of consecutively pressed frames
       scan(

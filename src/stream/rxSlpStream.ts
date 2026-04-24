@@ -5,12 +5,11 @@ import type {
   GameStartType,
   MessageSizes,
   SlpCommandEventPayload,
-  SlpFileWriterOptions,
+  SlpStreamSettings,
 } from "@slippi/slippi-js";
-import { Command, SlpFileWriter, SlpParser, SlpParserEvent, SlpStreamEvent } from "@slippi/slippi-js";
-import { fromEvent, Subject } from "rxjs";
+import { Command, SlpParser, SlpParserEvent, SlpStream, SlpStreamEvent } from "@slippi/slippi-js";
+import { fromEventPattern, Subject } from "rxjs";
 import { map, share, tap } from "rxjs/operators";
-import type { WritableOptions } from "stream";
 
 /**
  * SlpStream is a writable stream of Slippi data. It passes the data being written in
@@ -19,16 +18,25 @@ import type { WritableOptions } from "stream";
  * @class SlpStream
  * @extends {Writable}
  */
-export class RxSlpStream extends SlpFileWriter {
+export class RxSlpStream extends SlpStream {
   protected parser = new SlpParser({ strict: true }); // Strict mode will enable data validation
   private messageSizeSource = new Subject<Map<Command, number>>();
   private allFrames: FramesType = {};
 
   // Observables
   public messageSize$ = this.messageSizeSource.asObservable();
-  public gameStart$ = fromEvent<GameStartType>(this.parser, SlpParserEvent.SETTINGS).pipe(share());
-  public playerFrame$ = fromEvent<FrameEntryType>(this.parser, SlpParserEvent.FINALIZED_FRAME).pipe(share());
-  public gameEnd$ = fromEvent<GameEndType>(this.parser, SlpParserEvent.END).pipe(share());
+  public gameStart$ = fromEventPattern<GameStartType>(
+    (handler) => this.parser.on(SlpParserEvent.SETTINGS, handler),
+    (handler) => this.parser.off(SlpParserEvent.SETTINGS, handler),
+  ).pipe(share());
+  public playerFrame$ = fromEventPattern<FrameEntryType>(
+    (handler) => this.parser.on(SlpParserEvent.FINALIZED_FRAME, handler),
+    (handler) => this.parser.off(SlpParserEvent.FINALIZED_FRAME, handler),
+  ).pipe(share());
+  public gameEnd$ = fromEventPattern<GameEndType>(
+    (handler) => this.parser.on(SlpParserEvent.END, handler),
+    (handler) => this.parser.off(SlpParserEvent.END, handler),
+  ).pipe(share());
   public allFrames$ = this.playerFrame$.pipe(
     // Run this side effect first so we can update allFrames
     tap((latestFrame) => {
@@ -49,14 +57,8 @@ export class RxSlpStream extends SlpFileWriter {
    * @param {WritableOptions} [opts]
    * @memberof SlpStream
    */
-  public constructor(options?: Partial<SlpFileWriterOptions>, opts?: WritableOptions) {
-    super(
-      {
-        ...options,
-        outputFiles: options && options.outputFiles === true, // Don't write out files unless manually specified
-      },
-      opts,
-    );
+  public constructor(options?: SlpStreamSettings) {
+    super(options);
 
     this.on(SlpStreamEvent.COMMAND, (data: SlpCommandEventPayload) => {
       const { command, payload } = data;
