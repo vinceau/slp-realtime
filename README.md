@@ -9,12 +9,12 @@
 
 > The brains _and_ the brawn of [Project Clippi](https://github.com/vinceau/project-clippi).
 
-This library provides an easy way to subscribe to real-time [Slippi](https://github.com/project-slippi/project-slippi) game events as they happen. Rebuilt from the ground up using [RxJS Observables](https://rxjs-dev.firebaseapp.com/guide/overview), the power to subscribe to any and every event is in your hands.
+This library provides an easy way to subscribe to real-time [Slippi](https://github.com/project-slippi/project-slippi) game events as they happen. Built using [RxJS Observables](https://rxjs-dev.firebaseapp.com/guide/overview), the power to subscribe to any and every event is in your hands.
 
 ## Highlights
 
-- Go file-less. Read directly from Slippi Dolphin, the relay, or a console.
-- Custom combos. Easily add combo parameters and output Dolphin-compatible JSON files.
+- Read directly from Slippi Dolphin or a relay/console.
+- Custom combo detection with flexible filtering options.
 - Powerful [RxJS Observable](https://rxjs-dev.firebaseapp.com/guide/overview) and Stream API.
 
 ## Installation
@@ -27,15 +27,9 @@ This package relies on the `rxjs` and `@slippi/slippi-js` packages as a peer dep
 npm install @vinceau/slp-realtime rxjs @slippi/slippi-js
 ```
 
-**With Yarn**
-
-```bash
-yarn add @vinceau/slp-realtime rxjs @slippi/slippi-js
-```
-
 ## Usage
 
-See a [working example](examples) or [check out the docs](api/README.md).
+See [working examples](examples) or [check out the API docs](api/README.md).
 
 For a list of all the subscribable events, [click here](api/README.md#events).
 
@@ -43,29 +37,38 @@ For a list of all the subscribable events, [click here](api/README.md#events).
 
 We can use this library to subscribe to in game events.
 
-First instantiate an instance of `SlpLiveStream` and connect to a Wii or Slippi relay.
+First, instantiate a `DolphinConnection` (or `ConsoleConnection` for relay/nintendont) and an `RxSlpStream`. Connect the connection to the stream by piping messages to `stream.process()`:
 
 ```javascript
-const { SlpLiveStream } = require("@vinceau/slp-realtime");
+const { DolphinConnection } = require("@slippi/slippi-js/node");
+const { RxSlpStream } = require("@vinceau/slp-realtime");
 
-const livestream = new SlpLiveStream();
-livestream
-  .start(address, slpPort)
+const stream = new RxSlpStream();
+const connection = new DolphinConnection();
+
+// Pipe raw message data to the stream for processing
+connection.on("message", (data) => {
+  stream.process(data);
+});
+
+// Connect to Dolphin at the specified address and port
+connection
+  .connect("127.0.0.1", 51441)
   .then(() => {
     console.log("Successfully connected!");
   })
   .catch(console.error);
 ```
 
-Then instantiate an instance of `SlpRealTime` and pass the `SlpLiveStream` to it.
+Then instantiate an instance of `SlpRealTime` and pass the `RxSlpStream` to it.
 We will use it to subscribe to desired events. For example:
 
 ```javascript
 const { SlpRealTime } = require("@vinceau/slp-realtime");
 
 const realtime = new SlpRealTime();
-// Read from the SlpLiveStream object from before
-realtime.setStream(livestream);
+// Read from the RxSlpStream object from before
+realtime.setStream(stream);
 
 realtime.game.start$.subscribe(() => {
   console.log("game started");
@@ -139,7 +142,7 @@ realtime.stock.countChange$.subscribe((payload) => {
 
 If you're running the Node project inside Windows Subsystem for Linux and running Dolphin or a relay in Windows, setup requires a couple extra steps:
 
-1. Change the address passed to `livestream.start` to the one listed in `/etc/resolv.conf` instead of `localhost` ([see here](https://devdojo.com/mvnarendrareddy/access-windows-localhost-from-wsl2))
+1. Change the address passed to `connection.connect()` to the one listed in `/etc/resolv.conf` instead of `localhost` ([see here](https://devdojo.com/mvnarendrareddy/access-windows-localhost-from-wsl2))
 
 2. Add a firewall rule allowing access from WSL ([see here](https://superuser.com/a/1620974))
 
