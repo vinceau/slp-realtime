@@ -114,7 +114,7 @@ describe("when finding player indices by name", () => {
 
 const generateFakePlayer = ({ playerIndex = 0, ...opts }: Partial<Omit<PlayerType, "port">>): PlayerType => {
   const port = playerIndex + 1;
-  return ({
+  return {
     playerIndex,
     port,
     characterId: 1,
@@ -127,5 +127,5 @@ const generateFakePlayer = ({ playerIndex = 0, ...opts }: Partial<Omit<PlayerTyp
     displayName: `player${port}`,
     connectCode: `CODE#00${port}`,
     ...opts,
-  } as unknown) as PlayerType;
+  } as unknown as PlayerType;
 };

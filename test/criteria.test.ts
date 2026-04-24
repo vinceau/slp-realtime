@@ -13,7 +13,7 @@ describe("combo criteria", () => {
   describe("combo sequence inclusion", () => {
     let combo: ComboType;
     let options: ComboFilterSettings;
-    const gameStartType = ({
+    const gameStartType = {
       gameMode: GameMode.ONLINE,
       isPAL: true,
       isTeams: false,
@@ -21,7 +21,7 @@ describe("combo criteria", () => {
       scene: 0,
       slpVersion: "",
       stageId: 0,
-    } as unknown) as GameStartType;
+    } as unknown as GameStartType;
 
     beforeEach(() => {
       combo = {

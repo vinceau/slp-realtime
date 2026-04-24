@@ -83,9 +83,9 @@ const generateLastFrame = (playerInfo: PlayerInfo[]): FrameEntryType => {
       post: p,
     };
   }
-  const lastFrame: FrameEntryType = ({
+  const lastFrame: FrameEntryType = {
     frame: 123,
     players,
-  } as unknown) as FrameEntryType;
+  } as unknown as FrameEntryType;
   return lastFrame;
 };
