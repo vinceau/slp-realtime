@@ -1,4 +1,5 @@
-import { FrameEntryType } from "@slippi/slippi-js";
+import type { FrameEntryType } from "@slippi/slippi-js";
+
 import { findWinner } from "./winner";
 
 describe("when calculating the game winner", () => {
@@ -77,7 +78,7 @@ interface PlayerInfo {
 
 const generateLastFrame = (playerInfo: PlayerInfo[]): FrameEntryType => {
   const players: any = {};
-  for (let p of playerInfo) {
+  for (const p of playerInfo) {
     players[p.playerIndex] = {
       post: p,
     };

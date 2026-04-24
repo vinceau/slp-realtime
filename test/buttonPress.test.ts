@@ -1,9 +1,9 @@
+import { SlpStreamMode } from "@slippi/slippi-js/node";
+import type { Subscription } from "rxjs";
 import * as sinon from "sinon";
 
-import { SlpRealTime, RxSlpStream, ComboFilter, throttleInputButtons } from "../src";
+import { ComboFilter, RxSlpStream, SlpRealTime, throttleInputButtons } from "../src";
 import { pipeFileContents } from "./pipeFileContents";
-import { SlpStreamMode } from "@slippi/slippi-js/node";
-import { Subscription } from "rxjs";
 
 describe("combo calculation", () => {
   const filter = new ComboFilter();

@@ -1,10 +1,10 @@
 import os from "os";
-import * as sinon from "sinon";
-
-import { Transform } from "stream";
 import { Subscription } from "rxjs";
-import { DolphinOutput, DolphinPlaybackStatus } from "./output";
 import { filter, map } from "rxjs/operators";
+import * as sinon from "sinon";
+import { Transform } from "stream";
+
+import { DolphinOutput, DolphinPlaybackStatus } from "./output";
 
 describe("when reading dolphin playback stdout", () => {
   const subscription = new Subscription();

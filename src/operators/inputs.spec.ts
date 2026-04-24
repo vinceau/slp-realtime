@@ -1,6 +1,7 @@
-import { TestScheduler } from "rxjs/testing";
 import { from } from "rxjs";
-import { InputButtonCombo } from "..";
+import { TestScheduler } from "rxjs/testing";
+
+import type { InputButtonCombo } from "..";
 import { throttleInputButtons } from "./inputs";
 
 describe("throttleInputButtons operator", () => {

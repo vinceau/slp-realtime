@@ -1,7 +1,8 @@
-import { SlpRealTime, RxSlpStream } from "../src";
-import { pipeFileContents } from "./pipeFileContents";
 import { SlpStreamMode } from "@slippi/slippi-js/node";
-import { Subscription } from "rxjs";
+import type { Subscription } from "rxjs";
+
+import { RxSlpStream, SlpRealTime } from "../src";
+import { pipeFileContents } from "./pipeFileContents";
 
 describe("when determining the winner", () => {
   let subscriptions: Array<Subscription>;

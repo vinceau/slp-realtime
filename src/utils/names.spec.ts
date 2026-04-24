@@ -1,4 +1,5 @@
-import { PlayerType } from "@slippi/slippi-js";
+import type { PlayerType } from "@slippi/slippi-js";
+
 import { findPlayerIndexByName } from "./names";
 
 describe("when finding player indices by name", () => {

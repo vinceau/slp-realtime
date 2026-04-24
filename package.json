@@ -18,7 +18,7 @@
     "typecheck": "tsc --noEmit",
     "coverage": "npm run test -- --coverage",
     "postcoverage": "open-cli coverage/lcov-report/index.html",
-    "lint": "eslint \"src/**/*.ts\"",
+    "lint": "eslint \"src/**/*.ts\" \"test/**/*.test.ts\"",
     "lint:fix": "npm run lint -- --fix",
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
@@ -28,7 +28,7 @@
     "minor": "npm version minor && npm publish",
     "major": "npm version major && npm publish",
     "prepublishOnly": "npm run lint && npm run test && npm run build",
-    "docs": "npm typedoc src/index.ts --excludePrivate --exclude \"**/*+(.spec).ts\"",
+    "docs": "npm typedoc src/index.ts --excludePrivate --exclude \"**/*+(.test).ts\"",
     "postdocs": "touch docs/.nojekyll"
   },
   "keywords": [

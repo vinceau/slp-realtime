@@ -1,9 +1,9 @@
+import { SlpStreamMode } from "@slippi/slippi-js/node";
+import type { Subscription } from "rxjs";
 import * as sinon from "sinon";
 
 import { RxSlpStream } from "../src/stream/rxSlpStream";
 import { pipeFileContents } from "./pipeFileContents";
-import { Subscription } from "rxjs";
-import { SlpStreamMode } from "@slippi/slippi-js/node";
 
 describe("SlpStream", () => {
   let subscriptions: Array<Subscription>;
