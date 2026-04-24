@@ -28,15 +28,15 @@ export class RxSlpStream extends SlpStream {
   public gameStart$ = fromEventPattern<GameStartType>(
     (handler) => this.parser.on(SlpParserEvent.SETTINGS, handler),
     (handler) => this.parser.off(SlpParserEvent.SETTINGS, handler),
-  ).pipe(shareReplay(1));
+  ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
   public playerFrame$ = fromEventPattern<FrameEntryType>(
     (handler) => this.parser.on(SlpParserEvent.FINALIZED_FRAME, handler),
     (handler) => this.parser.off(SlpParserEvent.FINALIZED_FRAME, handler),
-  ).pipe(shareReplay(1));
+  ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
   public gameEnd$ = fromEventPattern<GameEndType>(
     (handler) => this.parser.on(SlpParserEvent.END, handler),
     (handler) => this.parser.off(SlpParserEvent.END, handler),
-  ).pipe(shareReplay(1));
+  ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
   public allFrames$ = this.playerFrame$.pipe(
     tap((latestFrame) => {
       const frameNum = latestFrame.frame;
@@ -48,7 +48,7 @@ export class RxSlpStream extends SlpStream {
         latestFrame,
       };
     }),
-    shareReplay(1),
+    shareReplay({ bufferSize: 1, refCount: true }),
   );
 
   /**

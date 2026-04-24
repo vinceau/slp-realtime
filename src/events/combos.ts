@@ -22,19 +22,19 @@ export class RealTimeComboEvents {
   public start$ = fromEventPattern<ComboEventPayload>(
     (handler) => this.comboComputer.on("COMBO_START", handler),
     (handler) => this.comboComputer.off("COMBO_START", handler),
-  ).pipe(shareReplay(1));
+  ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
   public extend$ = fromEventPattern<ComboEventPayload>(
     (handler) => this.comboComputer.on("COMBO_EXTEND", handler),
     (handler) => this.comboComputer.off("COMBO_EXTEND", handler),
-  ).pipe(shareReplay(1));
+  ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
   public end$ = fromEventPattern<ComboEventPayload>(
     (handler) => this.comboComputer.on("COMBO_END", handler),
     (handler) => this.comboComputer.off("COMBO_END", handler),
-  ).pipe(shareReplay(1));
+  ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
   public conversion$ = fromEventPattern<ConversionEventPayload>(
     (handler) => this.conversionComputer.on("CONVERSION", handler),
     (handler) => this.conversionComputer.off("CONVERSION", handler),
-  ).pipe(shareReplay(1));
+  ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
   public constructor(stream: Observable<RxSlpStream>) {
     this.stream$ = stream;
