@@ -7,13 +7,9 @@ import { filter, pairwise } from "rxjs/operators";
  * Filter the frames to only those that belong to the player {index}.
  */
 export function playerFrameFilter(index: number): MonoTypeOperatorFunction<FrameEntryType> {
+  const playerKey = index.toString();
   return (source: Observable<FrameEntryType>): Observable<FrameEntryType> =>
-    source.pipe(
-      filter((frame) => {
-        const playerIndices = Object.keys(frame.players);
-        return playerIndices.includes(index.toString());
-      }),
-    );
+    source.pipe(filter((frame) => playerKey in frame.players));
 }
 
 /**

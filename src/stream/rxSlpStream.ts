@@ -9,7 +9,7 @@ import type {
 } from "@slippi/slippi-js";
 import { Command, SlpParser, SlpParserEvent, SlpStream, SlpStreamEvent } from "@slippi/slippi-js";
 import { fromEventPattern, Subject } from "rxjs";
-import { map, share, tap } from "rxjs/operators";
+import { map, shareReplay, tap } from "rxjs/operators";
 
 /**
  * SlpStream is a writable stream of Slippi data. It passes the data being written in
@@ -28,15 +28,15 @@ export class RxSlpStream extends SlpStream {
   public gameStart$ = fromEventPattern<GameStartType>(
     (handler) => this.parser.on(SlpParserEvent.SETTINGS, handler),
     (handler) => this.parser.off(SlpParserEvent.SETTINGS, handler),
-  ).pipe(share());
+  ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
   public playerFrame$ = fromEventPattern<FrameEntryType>(
     (handler) => this.parser.on(SlpParserEvent.FINALIZED_FRAME, handler),
     (handler) => this.parser.off(SlpParserEvent.FINALIZED_FRAME, handler),
-  ).pipe(share());
+  ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
   public gameEnd$ = fromEventPattern<GameEndType>(
     (handler) => this.parser.on(SlpParserEvent.END, handler),
     (handler) => this.parser.off(SlpParserEvent.END, handler),
-  ).pipe(share());
+  ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
   public allFrames$ = this.playerFrame$.pipe(
     // Run this side effect first so we can update allFrames
     tap((latestFrame) => {
@@ -49,6 +49,7 @@ export class RxSlpStream extends SlpStream {
         latestFrame,
       };
     }),
+    shareReplay({ bufferSize: 1, refCount: true }),
   );
 
   /**

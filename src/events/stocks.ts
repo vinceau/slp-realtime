@@ -1,7 +1,8 @@
 import type { StockType } from "@slippi/slippi-js";
 import { didLoseStock } from "@slippi/slippi-js";
 import type { Observable } from "rxjs";
-import { distinctUntilChanged, filter, map, switchMap } from "rxjs/operators";
+import { Subject } from "rxjs";
+import { distinctUntilChanged, filter, map, switchMap, takeUntil } from "rxjs/operators";
 
 import { playerFrameFilter, withPreviousFrame } from "../operators/frames";
 import { filterJustSpawned, mapFramesToDeathStockType, mapFrameToSpawnStockType } from "../operators/stocks";
@@ -12,6 +13,7 @@ import { exists } from "../utils/exists";
 
 export class RealTimeStockEvents {
   private stream$: Observable<RxSlpStream>;
+  private destroy$ = new Subject<void>();
 
   public playerSpawn$: Observable<StockType>;
   public playerDied$: Observable<StockType>;
@@ -40,6 +42,7 @@ export class RealTimeStockEvents {
           mapFrameToSpawnStockType(stream.gameStart$, index), // Map the frame to StockType
         ),
       ),
+      takeUntil(this.destroy$),
     );
   }
 
@@ -57,6 +60,7 @@ export class RealTimeStockEvents {
         ([prevFrame, latestFrame]) => didLoseStock(latestFrame, prevFrame), // We only care about the frames where we just died
       ),
       mapFramesToDeathStockType(this.playerIndexSpawn(index)), // Map the frame to StockType
+      takeUntil(this.destroy$),
     );
   }
 
@@ -71,6 +75,7 @@ export class RealTimeStockEvents {
         playerIndex: index,
         percent,
       })),
+      takeUntil(this.destroy$),
     );
   }
 
@@ -85,6 +90,12 @@ export class RealTimeStockEvents {
         playerIndex: index,
         stocksRemaining,
       })),
+      takeUntil(this.destroy$),
     );
+  }
+
+  public destroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

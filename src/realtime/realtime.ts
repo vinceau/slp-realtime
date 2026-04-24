@@ -35,4 +35,12 @@ export class SlpRealTime {
   public setStream(stream: RxSlpStream): void {
     this.stream$.next(stream);
   }
+
+  public destroy(): void {
+    this.stream$.complete();
+    this.game.destroy();
+    this.stock.destroy();
+    this.input.destroy();
+    this.combo.destroy();
+  }
 }

@@ -1,6 +1,7 @@
 import type { GameStartType } from "@slippi/slippi-js";
 import type { Observable } from "rxjs";
-import { map, switchMap, withLatestFrom } from "rxjs/operators";
+import { Subject } from "rxjs";
+import { map, switchMap, takeUntil, withLatestFrom } from "rxjs/operators";
 
 import type { RxSlpStream } from "../stream";
 import type { GameEndPayload } from "../types";
@@ -8,6 +9,7 @@ import { findWinner } from "../utils";
 
 export class RealTimeGameEvents {
   private stream$: Observable<RxSlpStream>;
+  private destroy$ = new Subject<void>();
 
   public start$: Observable<GameStartType>;
   public end$: Observable<GameEndPayload>;
@@ -15,7 +17,10 @@ export class RealTimeGameEvents {
   public constructor(stream: Observable<RxSlpStream>) {
     this.stream$ = stream;
 
-    this.start$ = this.stream$.pipe(switchMap((s) => s.gameStart$));
+    this.start$ = this.stream$.pipe(
+      switchMap((s) => s.gameStart$),
+      takeUntil(this.destroy$),
+    );
     this.end$ = this.stream$.pipe(
       switchMap((s) =>
         s.gameEnd$.pipe(
@@ -26,6 +31,12 @@ export class RealTimeGameEvents {
           })),
         ),
       ),
+      takeUntil(this.destroy$),
     );
+  }
+
+  public destroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
