@@ -1,9 +1,9 @@
+import { Character, MoveId, SlippiGame, SlpStreamMode } from "@slippi/slippi-js/node";
+import type { Subscription } from "rxjs";
 import * as sinon from "sinon";
 
-import { SlippiGame, Character, SlpStreamMode } from "@slippi/slippi-js/node";
-import { SlpRealTime, RxSlpStream, ComboFilter, MoveId } from "../src";
+import { ComboFilter, RxSlpStream, SlpRealTime } from "../src";
 import { pipeFileContents } from "./pipeFileContents";
-import { Subscription } from "rxjs";
 
 describe("combo calculation", () => {
   const filter = new ComboFilter();
