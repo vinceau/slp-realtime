@@ -38,6 +38,7 @@ export class RxSlpStream extends SlpStream {
     (handler) => this.parser.off(SlpParserEvent.END, handler),
   ).pipe(shareReplay({ bufferSize: 1, refCount: true }));
   public allFrames$ = this.playerFrame$.pipe(
+    // Run this side effect first so we can update allFrames
     tap((latestFrame) => {
       const frameNum = latestFrame.frame;
       this.allFrames[frameNum] = latestFrame;

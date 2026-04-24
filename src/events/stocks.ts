@@ -36,10 +36,10 @@ export class RealTimeStockEvents {
     return this.stream$.pipe(
       switchMap((stream) =>
         stream.playerFrame$.pipe(
-          filterJustSpawned(index),
-          map((f) => f.players[index]?.post),
+          filterJustSpawned(index), // Only take the spawn frames
+          map((f) => f.players[index]?.post), // Only take the post frame data
           filter(exists),
-          mapFrameToSpawnStockType(stream.gameStart$, index),
+          mapFrameToSpawnStockType(stream.gameStart$, index), // Map the frame to StockType
         ),
       ),
       takeUntil(this.destroy$),
@@ -52,12 +52,14 @@ export class RealTimeStockEvents {
   public playerIndexDied(index: number): Observable<StockType> {
     return this.stream$.pipe(
       switchMap((stream) => stream.playerFrame$),
-      playerFrameFilter(index),
-      map((f) => f.players[index]?.post),
+      playerFrameFilter(index), // We only care about certain player frames
+      map((f) => f.players[index]?.post), // Only take the post frame data
       filter(exists),
-      withPreviousFrame(),
-      filter(([prevFrame, latestFrame]) => didLoseStock(latestFrame, prevFrame)),
-      mapFramesToDeathStockType(this.playerIndexSpawn(index)),
+      withPreviousFrame(), // Get previous frame too
+      filter(
+        ([prevFrame, latestFrame]) => didLoseStock(latestFrame, prevFrame), // We only care about the frames where we just died
+      ),
+      mapFramesToDeathStockType(this.playerIndexSpawn(index)), // Map the frame to StockType
       takeUntil(this.destroy$),
     );
   }

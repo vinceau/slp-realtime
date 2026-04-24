@@ -58,7 +58,9 @@ export class RealTimeInputEvents {
    */
   public playerIndexButtonCombo(index: number, buttons: string[], duration = 1): Observable<InputButtonCombo> {
     return this.stream$.pipe(
+      // Get the player frames
       switchMap((stream) => stream.playerFrame$),
+      // Map the frames to button inputs
       mapFramesToButtonInputs(index, buttons, duration),
       takeUntil(this.destroy$),
     );

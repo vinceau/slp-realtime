@@ -39,6 +39,7 @@ export class RealTimeComboEvents {
   public constructor(stream: Observable<RxSlpStream>) {
     this.stream$ = stream;
 
+    // Reset the state on game start
     this.stream$
       .pipe(
         switchMap((s) => s.gameStart$),
@@ -49,6 +50,7 @@ export class RealTimeComboEvents {
         this.conversionComputer.setup(settings);
       });
 
+    // Handle the frame processing
     this.stream$
       .pipe(
         switchMap((s) => s.allFrames$),
