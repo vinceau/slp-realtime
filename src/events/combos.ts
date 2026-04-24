@@ -1,17 +1,23 @@
-import { ComboComputer } from "@slippi/slippi-js";
+import type { ConversionType, GameStartType } from "@slippi/slippi-js";
+import { ComboComputer, ConversionComputer } from "@slippi/slippi-js";
 import type { Observable } from "rxjs";
 import { fromEventPattern, Subject } from "rxjs";
 import { filter, share, switchMap, takeUntil } from "rxjs/operators";
 
 import type { RxSlpStream } from "../stream";
 import type { ComboEventPayload } from "../types";
-import { RealTimeConversionEvents } from "./conversion";
+
+type ConversionEventPayload = {
+  combo: ConversionType;
+  settings: GameStartType;
+};
 
 export class RealTimeComboEvents {
   private stream$: Observable<RxSlpStream>;
   private destroy$ = new Subject<void>();
 
   private comboComputer = new ComboComputer();
+  private conversionComputer = new ConversionComputer();
 
   public start$ = fromEventPattern<ComboEventPayload>(
     (handler) => this.comboComputer.on("COMBO_START", handler),
@@ -25,13 +31,13 @@ export class RealTimeComboEvents {
     (handler) => this.comboComputer.on("COMBO_END", handler),
     (handler) => this.comboComputer.off("COMBO_END", handler),
   ).pipe(share());
-  public conversion$: Observable<ComboEventPayload>;
+  public conversion$ = fromEventPattern<ConversionEventPayload>(
+    (handler) => this.conversionComputer.on("CONVERSION", handler),
+    (handler) => this.conversionComputer.off("CONVERSION", handler),
+  ).pipe(share());
 
   public constructor(stream: Observable<RxSlpStream>) {
     this.stream$ = stream;
-
-    const conversionEvents = new RealTimeConversionEvents(stream);
-    this.conversion$ = conversionEvents.end$;
 
     this.stream$
       .pipe(
@@ -40,6 +46,7 @@ export class RealTimeComboEvents {
       )
       .subscribe((settings) => {
         this.comboComputer.setup(settings);
+        this.conversionComputer.setup(settings);
       });
 
     this.stream$
@@ -53,6 +60,7 @@ export class RealTimeComboEvents {
       )
       .subscribe(({ allFrames, latestFrame }) => {
         this.comboComputer.processFrame(latestFrame, allFrames);
+        this.conversionComputer.processFrame(latestFrame, allFrames);
       });
   }
 
