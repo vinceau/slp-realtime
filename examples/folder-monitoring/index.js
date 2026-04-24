@@ -15,21 +15,27 @@ console.log(`Monitoring ${slpLiveFolderPath} for new SLP files`);
 
 let lastSeenFile = ""; // Track filename of active game
 
+// Create the stream used for processing slp data
 const stream = new RxSlpStream();
+
+// Set up realtime events
 const realtime = new SlpRealTime();
 realtime.setStream(stream);
 
+// Used to find specific combos
 const comboFilter = new ComboFilter();
 comboFilter.updateSettings({
-  excludeCPUs: false,
-  comboMustKill: false,
-  minComboPercent: 40,
+  excludeCPUs: false, // combos on CPUs are okay
+  comboMustKill: false, // combos don't have to kill
+  minComboPercent: 40, // combos have to do at least 40% damage
 });
 
+// Subscribe to game start events
 realtime.game.start$.subscribe(() => {
   console.log("New game detected!");
 });
 
+// Subscribe to combo events whenever we detect them
 realtime.combo.end$.subscribe((payload) => {
   const { combo, settings } = payload;
   if (comboFilter.isCombo(combo, settings)) {
@@ -37,7 +43,9 @@ realtime.combo.end$.subscribe((payload) => {
   }
 });
 
+// Poll the folder for new SLP files every 500ms
 function pollFolder() {
+  // Get list of slp files, sorted by name
   const files = fs
     .readdirSync(slpLiveFolderPath)
     .filter((f) => f.endsWith(".slp"))
@@ -49,18 +57,21 @@ function pollFolder() {
   const latestFile = files[0];
   const filePath = path.join(slpLiveFolderPath, latestFile);
 
+  // If we have a new file, restart the stream to process a new game
   if (latestFile !== lastSeenFile) {
     stream.restart();
     lastSeenFile = latestFile;
     console.log(`Processing game: ${latestFile}`);
   }
 
+  // Read the file contents and process them
   const data = fs.readFileSync(filePath);
   stream.process(new Uint8Array(data));
 }
 
 setInterval(pollFolder, 500);
 
+// Handle graceful shutdown
 process.on("SIGINT", function () {
   console.log("\nStopping...");
   process.exit();
