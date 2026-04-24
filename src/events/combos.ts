@@ -2,7 +2,7 @@ import type { ConversionType, GameStartType } from "@slippi/slippi-js";
 import { ComboComputer, ConversionComputer } from "@slippi/slippi-js";
 import type { Observable } from "rxjs";
 import { fromEventPattern, Subject } from "rxjs";
-import { filter, share, switchMap, takeUntil } from "rxjs/operators";
+import { filter, shareReplay, switchMap, takeUntil } from "rxjs/operators";
 
 import type { RxSlpStream } from "../stream";
 import type { ComboEventPayload } from "../types";
@@ -22,19 +22,19 @@ export class RealTimeComboEvents {
   public start$ = fromEventPattern<ComboEventPayload>(
     (handler) => this.comboComputer.on("COMBO_START", handler),
     (handler) => this.comboComputer.off("COMBO_START", handler),
-  ).pipe(share());
+  ).pipe(shareReplay(1));
   public extend$ = fromEventPattern<ComboEventPayload>(
     (handler) => this.comboComputer.on("COMBO_EXTEND", handler),
     (handler) => this.comboComputer.off("COMBO_EXTEND", handler),
-  ).pipe(share());
+  ).pipe(shareReplay(1));
   public end$ = fromEventPattern<ComboEventPayload>(
     (handler) => this.comboComputer.on("COMBO_END", handler),
     (handler) => this.comboComputer.off("COMBO_END", handler),
-  ).pipe(share());
+  ).pipe(shareReplay(1));
   public conversion$ = fromEventPattern<ConversionEventPayload>(
     (handler) => this.conversionComputer.on("CONVERSION", handler),
     (handler) => this.conversionComputer.off("CONVERSION", handler),
-  ).pipe(share());
+  ).pipe(shareReplay(1));
 
   public constructor(stream: Observable<RxSlpStream>) {
     this.stream$ = stream;

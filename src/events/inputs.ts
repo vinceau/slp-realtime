@@ -1,6 +1,6 @@
 import type { Observable } from "rxjs";
-import { merge } from "rxjs";
-import { switchMap } from "rxjs/operators";
+import { merge, Subject } from "rxjs";
+import { switchMap, takeUntil } from "rxjs/operators";
 
 import { mapFramesToButtonInputs } from "../operators";
 import type { RxSlpStream } from "../stream";
@@ -10,6 +10,7 @@ import { findPlayerIndexByName } from "../utils/names";
 
 export class RealTimeInputEvents {
   private stream$: Observable<RxSlpStream>;
+  private destroy$ = new Subject<void>();
 
   public constructor(stream: Observable<RxSlpStream>) {
     this.stream$ = stream;
@@ -42,6 +43,7 @@ export class RealTimeInputEvents {
         );
         return merge(...matchingPlayerButtonCombos);
       }),
+      takeUntil(this.destroy$),
     );
   }
 
@@ -56,10 +58,14 @@ export class RealTimeInputEvents {
    */
   public playerIndexButtonCombo(index: number, buttons: string[], duration = 1): Observable<InputButtonCombo> {
     return this.stream$.pipe(
-      // Get the player frames
       switchMap((stream) => stream.playerFrame$),
-      // Map the frames to button inputs
       mapFramesToButtonInputs(index, buttons, duration),
+      takeUntil(this.destroy$),
     );
+  }
+
+  public destroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

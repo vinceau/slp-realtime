@@ -1,7 +1,8 @@
 import type { StockType } from "@slippi/slippi-js";
 import { didLoseStock } from "@slippi/slippi-js";
 import type { Observable } from "rxjs";
-import { distinctUntilChanged, filter, map, switchMap } from "rxjs/operators";
+import { Subject } from "rxjs";
+import { distinctUntilChanged, filter, map, switchMap, takeUntil } from "rxjs/operators";
 
 import { playerFrameFilter, withPreviousFrame } from "../operators/frames";
 import { filterJustSpawned, mapFramesToDeathStockType, mapFrameToSpawnStockType } from "../operators/stocks";
@@ -12,6 +13,7 @@ import { exists } from "../utils/exists";
 
 export class RealTimeStockEvents {
   private stream$: Observable<RxSlpStream>;
+  private destroy$ = new Subject<void>();
 
   public playerSpawn$: Observable<StockType>;
   public playerDied$: Observable<StockType>;
@@ -34,12 +36,13 @@ export class RealTimeStockEvents {
     return this.stream$.pipe(
       switchMap((stream) =>
         stream.playerFrame$.pipe(
-          filterJustSpawned(index), // Only take the spawn frames
-          map((f) => f.players[index]?.post), // Only take the post frame data
+          filterJustSpawned(index),
+          map((f) => f.players[index]?.post),
           filter(exists),
-          mapFrameToSpawnStockType(stream.gameStart$, index), // Map the frame to StockType
+          mapFrameToSpawnStockType(stream.gameStart$, index),
         ),
       ),
+      takeUntil(this.destroy$),
     );
   }
 
@@ -49,14 +52,13 @@ export class RealTimeStockEvents {
   public playerIndexDied(index: number): Observable<StockType> {
     return this.stream$.pipe(
       switchMap((stream) => stream.playerFrame$),
-      playerFrameFilter(index), // We only care about certain player frames
-      map((f) => f.players[index]?.post), // Only take the post frame data
+      playerFrameFilter(index),
+      map((f) => f.players[index]?.post),
       filter(exists),
-      withPreviousFrame(), // Get previous frame too
-      filter(
-        ([prevFrame, latestFrame]) => didLoseStock(latestFrame, prevFrame), // We only care about the frames where we just died
-      ),
-      mapFramesToDeathStockType(this.playerIndexSpawn(index)), // Map the frame to StockType
+      withPreviousFrame(),
+      filter(([prevFrame, latestFrame]) => didLoseStock(latestFrame, prevFrame)),
+      mapFramesToDeathStockType(this.playerIndexSpawn(index)),
+      takeUntil(this.destroy$),
     );
   }
 
@@ -71,6 +73,7 @@ export class RealTimeStockEvents {
         playerIndex: index,
         percent,
       })),
+      takeUntil(this.destroy$),
     );
   }
 
@@ -85,6 +88,12 @@ export class RealTimeStockEvents {
         playerIndex: index,
         stocksRemaining,
       })),
+      takeUntil(this.destroy$),
     );
+  }
+
+  public destroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
