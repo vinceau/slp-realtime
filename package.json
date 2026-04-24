@@ -38,7 +38,7 @@
   ],
   "peerDependencies": {
     "@slippi/slippi-js": "^9.x",
-    "rxjs": "^6.x"
+    "rxjs": "^6.0 || ^7.0"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^8.0.0",
@@ -63,7 +63,7 @@
     "rimraf": "^3.0.0",
     "rollup": "^2.2.0",
     "rollup-plugin-typescript2": "^0.26.0",
-    "rxjs": "^6.5.4",
+    "rxjs": "^7.0.0",
     "sinon": "^7.5.0",
     "ts-jest": "^27.1.5",
     "typedoc": "^0.25.13",
