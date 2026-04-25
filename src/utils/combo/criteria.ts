@@ -1,9 +1,15 @@
 import type { ComboType, GameStartType } from "@slippi/slippi-js";
-import { Character, MoveId } from "@slippi/slippi-js";
+import { Character } from "@slippi/slippi-js";
 
 import { isEquivalentArray } from "../helpers";
 import { extractPlayerNamesByPort, namesMatch } from "../names";
 import type { Criteria } from "./filter";
+
+// Manually define it here to avoid users from needing the latest slippi-js package
+const enum MoveId {
+  U_THROW = 55,
+  GRAB_PUMMEL = 52,
+}
 
 /**
  * MatchesPortNumber ensures the player performing the combo is a specific port.
