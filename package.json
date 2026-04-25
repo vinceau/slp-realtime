@@ -37,8 +37,8 @@
     "realtime"
   ],
   "peerDependencies": {
-    "@slippi/slippi-js": "^9.x",
-    "rxjs": "^6.0 || ^7.0"
+    "@slippi/slippi-js": "^6 || ^7 || ^8 || ^9",
+    "rxjs": "^6 || ^7"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^8.0.0",
