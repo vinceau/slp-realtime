@@ -28,8 +28,9 @@
     "minor": "npm version minor && npm publish",
     "major": "npm version major && npm publish",
     "prepublishOnly": "npm run lint && npm run test && npm run build",
-    "docs": "npx typedoc src/index.ts --excludePrivate --exclude \"**/*+(.test).ts\"",
-    "postdocs": "touch docs/.nojekyll"
+    "docs": "npx typedoc --entryPointStrategy expand src/ --out docs --excludePrivate --exclude \"**/*+(.test).ts\"",
+    "postdocs": "touch docs/.nojekyll",
+    "deploy": "gh-pages -d docs"
   },
   "keywords": [
     "slp",
@@ -73,5 +74,8 @@
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
+  },
+  "dependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
