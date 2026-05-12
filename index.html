@@ -1,380 +1,72 @@
-<!doctype html>
-<html class="default no-js">
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>@vinceau/slp-realtime</title>
-	<meta name="description" content="Documentation for @vinceau/slp-realtime">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="assets/css/main.css">
-</head>
-<body>
-<header>
-	<div class="tsd-page-toolbar">
-		<div class="container">
-			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
-					<div class="field">
-						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
-						<input id="tsd-search-field" type="text" />
-					</div>
-					<ul class="results">
-						<li class="state loading">Preparing search index...</li>
-						<li class="state failure">The search index is not available</li>
-					</ul>
-					<a href="index.html" class="title">@vinceau/slp-realtime</a>
-				</div>
-				<div class="table-cell" id="tsd-widgets">
-					<div id="tsd-filter">
-						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
-						<div class="tsd-filter-group">
-							<div class="tsd-select" id="tsd-filter-visibility">
-								<span class="tsd-select-label">All</span>
-								<ul class="tsd-select-list">
-									<li data-value="public">Public</li>
-									<li data-value="protected">Public/Protected</li>
-									<li data-value="private" class="selected">All</li>
-								</ul>
-							</div>
-							<input type="checkbox" id="tsd-filter-inherited" checked />
-							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-externals" checked />
-							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-						</div>
-					</div>
-					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="tsd-page-title">
-		<div class="container">
-			<ul class="tsd-breadcrumb">
-				<li>
-					<a href="globals.html">Globals</a>
-				</li>
-			</ul>
-			<h1>@vinceau/slp-realtime</h1>
-		</div>
-	</div>
-</header>
-<div class="container container-main">
-	<div class="row">
-		<div class="col-8 col-content">
-			<div class="tsd-panel tsd-typography">
-				<a href="#slp-realtime" id="slp-realtime" style="color: inherit; text-decoration: none;">
-					<h1><code>slp-realtime</code></h1>
-				</a>
-				<p><a href="https://i.imgur.com/qnfI6c5.png"><img src="https://i.imgur.com/qnfI6c5.png" alt="slp-realtime is magic - Nikki"></a></p>
-				<p><a href="https://npmjs.org/package/@vinceau/slp-realtime" title="View this project on npm"><img src="https://img.shields.io/npm/v/@vinceau/slp-realtime.svg?style=flat" alt="npm version"></a>
-					<a href="https://github.com/vinceau/slp-realtime/actions?workflow=build"><img src="https://github.com/vinceau/slp-realtime/workflows/build/badge.svg" alt="Build Status"></a>
-					<a href="https://coveralls.io/github/vinceau/slp-realtime"><img src="https://coveralls.io/repos/github/vinceau/slp-realtime/badge.svg" alt="Coverage Status"></a>
-				<a href="https://github.com/vinceau/slp-realtime/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/@vinceau/slp-realtime" alt="License"></a></p>
-				<blockquote>
-					<p>The brains <em>and</em> the brawn of <a href="https://github.com/vinceau/project-clippi">Project Clippi</a>.</p>
-				</blockquote>
-				<p>This library provides an easy way to subscribe to real-time <a href="https://github.com/project-slippi/project-slippi">Slippi</a> game events as they happen. Rebuilt from the ground up using <a href="https://rxjs-dev.firebaseapp.com/guide/overview">RxJS Observables</a>, the power to subscribe to any and every event is in your hands.</p>
-				<a href="#highlights" id="highlights" style="color: inherit; text-decoration: none;">
-					<h2>Highlights</h2>
-				</a>
-				<ul>
-					<li>Go file-less. Read directly from the relay or console.</li>
-					<li>Custom combos. Easily add combo parameters and output Dolphin-compatible JSON files.</li>
-					<li>Powerful <a href="https://rxjs-dev.firebaseapp.com/guide/overview">RxJS Observable</a> and Stream API.</li>
-				</ul>
-				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
-					<h2>Installation</h2>
-				</a>
-				<p>This package relies on the <code>rxjs</code> package as a peer dependency and must be installed alongside.</p>
-				<p><strong>With NPM</strong></p>
-				<pre><code class="language-bash">npm install @vinceau/slp-realtime rxjs</code></pre>
-				<p><strong>With Yarn</strong></p>
-				<pre><code class="language-bash">yarn add @vinceau/slp-realtime rxjs</code></pre>
-				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
-					<h2>Usage</h2>
-				</a>
-				<p>For a list of all the subscribable events, <a href="api/observables.md#events">click here</a>.</p>
-				<p>See a <a href="examples">working example</a> or <a href="api/README.md">check out the docs</a>.</p>
-				<p>The following usage examples use the more complex <a href="api/observables.md">RxJS Observable API</a>. For a more
-				simplified usage, check out the <a href="api/json-config.md">JSON Config API</a> and the <a href="examples/json-config">accompanying working example</a>.</p>
-				<a href="#subscribing-to-in-game-events" id="subscribing-to-in-game-events" style="color: inherit; text-decoration: none;">
-					<h3>Subscribing to In-Game Events</h3>
-				</a>
-				<p>We can use this library to subscribe to in game events.</p>
-				<p>First instantiate an instance of <code>SlpLiveStream</code> and connect to a Wii or Slippi relay.</p>
-				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> { SlpLiveStream } = <span class="hljs-built_in">require</span>(<span class="hljs-string">"@vinceau/slp-realtime"</span>);
-
-<span class="hljs-keyword">const</span> livestream = <span class="hljs-keyword">new</span> SlpLiveStream();
-livestream
-  .start(address, slpPort)
-  .then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Successfully connected!"</span>);
-  })
-  .catch(<span class="hljs-built_in">console</span>.error);</code></pre>
-				<p>Then instantiate an instance of <code>SlpRealTime</code> and pass the <code>SlpLiveStream</code> to it.
-				We will use it to subscribe to desired events. For example:</p>
-				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> { SlpRealTime } = <span class="hljs-built_in">require</span>(<span class="hljs-string">"@vinceau/slp-realtime"</span>);
-
-<span class="hljs-keyword">const</span> realtime = <span class="hljs-keyword">new</span> SlpRealTime();
-<span class="hljs-comment">// Read from the SlpLiveStream object from before</span>
-realtime.setStream(livestream);
-
-realtime.game.start$.subscribe(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"game started"</span>);
-});
-
-realtime.stock.playerSpawn$.subscribe(<span class="hljs-function">(<span class="hljs-params">stock</span>) =&gt;</span> {
-  <span class="hljs-keyword">const</span> { playerIndex, count } = stock;
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`player <span class="hljs-subst">${playerIndex + <span class="hljs-number">1</span>}</span> spawned with <span class="hljs-subst">${count}</span> stocks remaining`</span>);
-});
-
-realtime.combo.end$.subscribe(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"wombo combooo!!"</span>);
-});</code></pre>
-				<a href="#detecting-custom-combos" id="detecting-custom-combos" style="color: inherit; text-decoration: none;">
-					<h3>Detecting Custom Combos</h3>
-				</a>
-				<p>We can subscribe to the end of any and every combo but really what we want is to filter for specific combos.</p>
-				<p>First, instantiate a <code>ComboFilter</code>. For all the possible filtering options, see <a href="api/types.md#combofiltersettings">ComboFilterSettings</a>.</p>
-				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> { ComboFilter } = <span class="hljs-built_in">require</span>(<span class="hljs-string">"@vinceau/slp-realtime"</span>);
-
-<span class="hljs-keyword">const</span> comboFilter = <span class="hljs-keyword">new</span> ComboFilter();
-comboFilter.updateSettings({
-  <span class="hljs-attr">excludeCPUs</span>: <span class="hljs-literal">false</span>, <span class="hljs-comment">// combos on CPUs are okay</span>
-  <span class="hljs-attr">comboMustKill</span>: <span class="hljs-literal">false</span>, <span class="hljs-comment">// combos don't have to kill</span>
-  <span class="hljs-attr">minComboPercent</span>: <span class="hljs-number">40</span>, <span class="hljs-comment">// combos have to do at least 40% damage</span>
-});</code></pre>
-				<p><code>ComboFilter</code> has an <code>isCombo()</code> method which returns <code>true</code> if a given combo matches the specified criteria. We can hook it up to our live stream with the following:</p>
-				<pre><code class="language-javascript">realtime.combo.end$.subscribe(<span class="hljs-function">(<span class="hljs-params">payload</span>) =&gt;</span> {
-  <span class="hljs-keyword">const</span> { combo, settings } = payload;
-  <span class="hljs-keyword">if</span> (comboFilter.isCombo(combo, settings)) {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Combo matched!"</span>);
-  }
-});</code></pre>
-				<a href="#make-a-custom-hud" id="make-a-custom-hud" style="color: inherit; text-decoration: none;">
-					<h3>Make a Custom HUD</h3>
-				</a>
-				<p>Want to make your own HUD?</p>
-				<ol>
-					<li>Subscribe to percent and stock changes</li>
-					<li>Write the data to a file</li>
-					<li>Add files to OBS</li>
-					<li><a href="examples/custom-hud">???</a></li>
-					<li>Profit!!</li>
-				</ol>
-				<pre><code class="language-javascript">realtime.stock.percentChange$.subscribe(<span class="hljs-function">(<span class="hljs-params">payload</span>) =&gt;</span> {
-  <span class="hljs-keyword">const</span> player = payload.playerIndex + <span class="hljs-number">1</span>;
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`player <span class="hljs-subst">${player}</span> percent: <span class="hljs-subst">${payload.percent}</span>`</span>);
-  fs.writeFileSync(<span class="hljs-string">`./player<span class="hljs-subst">${player}</span>Percent.txt`</span>, payload.percent.toFixed(<span class="hljs-number">0</span>));
-});
-
-realtime.stock.countChange$.subscribe(<span class="hljs-function">(<span class="hljs-params">payload</span>) =&gt;</span> {
-  <span class="hljs-keyword">const</span> player = payload.playerIndex + <span class="hljs-number">1</span>;
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`player <span class="hljs-subst">${player}</span> stocks: <span class="hljs-subst">${payload.stocksRemaining}</span>`</span>);
-  fs.writeFileSync(<span class="hljs-string">`./player<span class="hljs-subst">${player}</span>Stocks.txt`</span>, payload.stocksRemaining.toString());
-});</code></pre>
-				<p><strong>NOTE: Please don&#39;t actually do this for real custom HUDs. Writing to files is slow and OBS takes a long time to update after file changes. If you actually want to build a custom layout for OBS you should use a browser source and send updates using websockets instead of writing data to a file.</strong></p>
-				<a href="#development" id="development" style="color: inherit; text-decoration: none;">
-					<h2>Development</h2>
-				</a>
-				<p>To build the library from source:</p>
-				<pre><code class="language-bash">yarn run build</code></pre>
-				<p>To start the development server:</p>
-				<pre><code class="language-bash">yarn run watch</code></pre>
-				<p>To run the tests:</p>
-				<pre><code class="language-bash">yarn run <span class="hljs-built_in">test</span></code></pre>
-				<a href="#acknowledgements" id="acknowledgements" style="color: inherit; text-decoration: none;">
-					<h2>Acknowledgements</h2>
-				</a>
-				<p>This project was made possible by:</p>
-				<ul>
-					<li><p><a href="https://github.com/JLaferri">Jas Laferriere</a> and the rest of the <a href="https://github.com/project-slippi">Project Slippi</a> team</p>
-					</li>
-					<li><p><a href="https://github.com/NikhilNarayana">NikhilNarayana</a> and his <a href="https://gist.github.com/NikhilNarayana/d45e328e9ea47127634f2faf575e8dcf">Get Slippi Combos</a> script</p>
-					</li>
-				</ul>
-				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
-					<h2>License</h2>
-				</a>
-				<p>This software is released under the terms of <a href="LICENSE">MIT license</a>.</p>
-				<p>Linking back to <a href="https://github.com/vinceau/slp-realtime">this Github repo</a> is much appreciated.</p>
-			</div>
-		</div>
-		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
-			<nav class="tsd-navigation primary">
-				<ul>
-					<li class="globals  ">
-						<a href="globals.html"><em>Globals</em></a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_events_combos_.html">&quot;events/combos&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_events_conversion_.html">&quot;events/conversion&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_events_game_.html">&quot;events/game&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_events_index_.html">&quot;events/index&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_events_inputs_.html">&quot;events/inputs&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_events_stocks_.html">&quot;events/stocks&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_events_types_.html">&quot;events/types&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_index_.html">&quot;index&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_manager_combo_.html">&quot;manager/combo&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_manager_eventmanager_.html">&quot;manager/event<wbr>Manager&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_manager_game_.html">&quot;manager/game&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_manager_index_.html">&quot;manager/index&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_manager_inputs_.html">&quot;manager/inputs&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_manager_stocks_.html">&quot;manager/stocks&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_manager_types_.html">&quot;manager/types&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_operators_frames_.html">&quot;operators/frames&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_operators_index_.html">&quot;operators/index&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_operators_inputs_.html">&quot;operators/inputs&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_operators_pausable_.html">&quot;operators/pausable&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_operators_player_.html">&quot;operators/player&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_operators_stocks_.html">&quot;operators/stocks&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_realtime_index_.html">&quot;realtime/index&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_realtime_realtime_.html">&quot;realtime/realtime&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_stream_index_.html">&quot;stream/index&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_stream_rxslpstream_.html">&quot;stream/rx<wbr>Slp<wbr>Stream&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_stream_slpfolderstream_.html">&quot;stream/slp<wbr>Folder<wbr>Stream&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_stream_slplivestream_.html">&quot;stream/slp<wbr>Live<wbr>Stream&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_types_.html">&quot;types&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_utils_combo_criteria_.html">&quot;utils/combo/criteria&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_utils_combo_filter_.html">&quot;utils/combo/filter&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_utils_combo_index_.html">&quot;utils/combo/index&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_utils_combo_matchnames_.html">&quot;utils/combo/match<wbr>Names&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_utils_controls_.html">&quot;utils/controls&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_utils_dolphin_index_.html">&quot;utils/dolphin/index&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_utils_dolphin_launcher_.html">&quot;utils/dolphin/launcher&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_utils_dolphin_output_.html">&quot;utils/dolphin/output&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_utils_dolphin_queue_.html">&quot;utils/dolphin/queue&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_utils_helpers_.html">&quot;utils/helpers&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_utils_index_.html">&quot;utils/index&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_utils_melee_characters_.html">&quot;utils/melee/characters&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_utils_melee_index_.html">&quot;utils/melee/index&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_utils_melee_moves_.html">&quot;utils/melee/moves&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_utils_melee_stages_.html">&quot;utils/melee/stages&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_utils_winner_.html">&quot;utils/winner&quot;</a>
-					</li>
-				</ul>
-			</nav>
-			<nav class="tsd-navigation secondary menu-sticky">
-				<ul class="before-current">
-				</ul>
-			</nav>
-		</div>
-	</div>
-</div>
-<footer class="with-border-bottom">
-	<div class="container">
-		<h2>Legend</h2>
-		<div class="tsd-legend-group">
-			<ul class="tsd-legend">
-				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
-				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
-				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
-				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
-				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
-			</ul>
-		</div>
-	</div>
-</footer>
-<div class="container tsd-generator">
-	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
-</div>
-<div class="overlay"></div>
-<script src="assets/js/main.js"></script>
-<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
-</body>
-</html>
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@vinceau/slp-realtime</title><meta name="description" content="Documentation for @vinceau/slp-realtime"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">@vinceau/slp-realtime</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h2>@vinceau/slp-realtime</h2></div><div class="tsd-panel tsd-typography"><a id="md:slp-realtime" class="tsd-anchor"></a><h1><a href="#md:slp-realtime"><code>slp-realtime</code></a></h1><p><a href="https://i.imgur.com/qnfI6c5.png"><img src="https://i.imgur.com/qnfI6c5.png" alt="slp-realtime is magic - Nikki"></a></p>
+<p><a href="https://npmjs.org/package/@vinceau/slp-realtime" title="View this project on npm"><img src="https://img.shields.io/npm/v/@vinceau/slp-realtime.svg?style=flat" alt="npm version"></a>
+<a href="https://github.com/vinceau/slp-realtime/actions/workflows/build.yml?query=branch%3Amaster"><img src="https://github.com/vinceau/slp-realtime/actions/workflows/build.yml/badge.svg?branch=master" alt="Build Status"></a>
+<a href="https://coveralls.io/github/vinceau/slp-realtime"><img src="https://coveralls.io/repos/github/vinceau/slp-realtime/badge.svg" alt="Coverage Status"></a>
+<a href="https://github.com/vinceau/slp-realtime/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/@vinceau/slp-realtime" alt="License"></a></p>
+<blockquote>
+<p>The brains <em>and</em> the brawn of <a href="https://github.com/vinceau/project-clippi">Project Clippi</a>.</p>
+</blockquote>
+<p>This library provides an easy way to subscribe to real-time <a href="https://github.com/project-slippi/project-slippi">Slippi</a> game events as they happen. Built using <a href="https://rxjs-dev.firebaseapp.com/guide/overview">RxJS Observables</a>, the power to subscribe to any and every event is in your hands.</p>
+<a id="md:highlights" class="tsd-anchor"></a><h2><a href="#md:highlights">Highlights</a></h2><ul>
+<li>Read directly from Slippi Dolphin or a relay/console.</li>
+<li>Custom combo detection with flexible filtering options.</li>
+<li>Powerful <a href="https://rxjs-dev.firebaseapp.com/guide/overview">RxJS Observable</a> and Stream API.</li>
+</ul>
+<a id="md:installation" class="tsd-anchor"></a><h2><a href="#md:installation">Installation</a></h2><p>This package relies on the <code>rxjs</code> and <code>@slippi/slippi-js</code> packages as a peer dependency and must be installed alongside this package.</p>
+<p><strong>With NPM</strong></p>
+<pre><code class="language-bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><span class="hl-1"> </span><span class="hl-2">@vinceau/slp-realtime</span><span class="hl-1"> </span><span class="hl-2">rxjs</span><span class="hl-1"> </span><span class="hl-2">@slippi/slippi-js</span>
+</code><button>Copy</button></pre>
+<a id="md:usage" class="tsd-anchor"></a><h2><a href="#md:usage">Usage</a></h2><p>See <a href="examples">working examples</a> or <a href="api/README.md">check out the API docs</a>.</p>
+<p>For a list of all the subscribable events, <a href="api/README.md#events">click here</a>.</p>
+<a id="md:subscribing-to-in-game-events" class="tsd-anchor"></a><h3><a href="#md:subscribing-to-in-game-events">Subscribing to In-Game Events</a></h3><p>We can use this library to subscribe to in game events.</p>
+<p>First, instantiate a <code>DolphinConnection</code> (or <code>ConsoleConnection</code> for relay/nintendont) and an <code>RxSlpStream</code>. Connect the connection to the stream by piping messages to <code>stream.process()</code>:</p>
+<pre><code class="language-javascript"><span class="hl-3">const</span><span class="hl-1"> { </span><span class="hl-4">DolphinConnection</span><span class="hl-1"> } = </span><span class="hl-0">require</span><span class="hl-1">(</span><span class="hl-2">&quot;@slippi/slippi-js/node&quot;</span><span class="hl-1">);</span><br/><span class="hl-3">const</span><span class="hl-1"> { </span><span class="hl-4">RxSlpStream</span><span class="hl-1"> } = </span><span class="hl-0">require</span><span class="hl-1">(</span><span class="hl-2">&quot;@vinceau/slp-realtime&quot;</span><span class="hl-1">);</span><br/><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-4">stream</span><span class="hl-1"> = </span><span class="hl-3">new</span><span class="hl-1"> </span><span class="hl-0">RxSlpStream</span><span class="hl-1">();</span><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-4">connection</span><span class="hl-1"> = </span><span class="hl-3">new</span><span class="hl-1"> </span><span class="hl-0">DolphinConnection</span><span class="hl-1">();</span><br/><br/><span class="hl-5">// Pipe raw message data to the stream for processing</span><br/><span class="hl-6">connection</span><span class="hl-1">.</span><span class="hl-0">on</span><span class="hl-1">(</span><span class="hl-2">&quot;message&quot;</span><span class="hl-1">, (</span><span class="hl-6">data</span><span class="hl-1">) </span><span class="hl-3">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-6">stream</span><span class="hl-1">.</span><span class="hl-0">process</span><span class="hl-1">(</span><span class="hl-6">data</span><span class="hl-1">);</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-5">// Connect to Dolphin at the specified address and port</span><br/><span class="hl-6">connection</span><br/><span class="hl-1">  .</span><span class="hl-0">connect</span><span class="hl-1">(</span><span class="hl-2">&quot;127.0.0.1&quot;</span><span class="hl-1">, </span><span class="hl-7">51441</span><span class="hl-1">)</span><br/><span class="hl-1">  .</span><span class="hl-0">then</span><span class="hl-1">(() </span><span class="hl-3">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-6">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-2">&quot;Successfully connected!&quot;</span><span class="hl-1">);</span><br/><span class="hl-1">  })</span><br/><span class="hl-1">  .</span><span class="hl-0">catch</span><span class="hl-1">(</span><span class="hl-6">console</span><span class="hl-1">.</span><span class="hl-6">error</span><span class="hl-1">);</span>
+</code><button>Copy</button></pre>
+<p>Then instantiate an instance of <code>SlpRealTime</code> and pass the <code>RxSlpStream</code> to it.
+We will use it to subscribe to desired events. For example:</p>
+<pre><code class="language-javascript"><span class="hl-3">const</span><span class="hl-1"> { </span><span class="hl-4">SlpRealTime</span><span class="hl-1"> } = </span><span class="hl-0">require</span><span class="hl-1">(</span><span class="hl-2">&quot;@vinceau/slp-realtime&quot;</span><span class="hl-1">);</span><br/><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-4">realtime</span><span class="hl-1"> = </span><span class="hl-3">new</span><span class="hl-1"> </span><span class="hl-0">SlpRealTime</span><span class="hl-1">();</span><br/><span class="hl-5">// Read from the RxSlpStream object from before</span><br/><span class="hl-6">realtime</span><span class="hl-1">.</span><span class="hl-0">setStream</span><span class="hl-1">(</span><span class="hl-6">stream</span><span class="hl-1">);</span><br/><br/><span class="hl-6">realtime</span><span class="hl-1">.</span><span class="hl-6">game</span><span class="hl-1">.</span><span class="hl-6">start$</span><span class="hl-1">.</span><span class="hl-0">subscribe</span><span class="hl-1">(() </span><span class="hl-3">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-6">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-2">&quot;game started&quot;</span><span class="hl-1">);</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-6">realtime</span><span class="hl-1">.</span><span class="hl-6">stock</span><span class="hl-1">.</span><span class="hl-6">playerSpawn$</span><span class="hl-1">.</span><span class="hl-0">subscribe</span><span class="hl-1">((</span><span class="hl-6">stock</span><span class="hl-1">) </span><span class="hl-3">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-3">const</span><span class="hl-1"> { </span><span class="hl-4">playerIndex</span><span class="hl-1">, </span><span class="hl-4">count</span><span class="hl-1"> } = </span><span class="hl-6">stock</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-6">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-2">`player </span><span class="hl-3">${</span><span class="hl-6">playerIndex</span><span class="hl-8"> </span><span class="hl-1">+</span><span class="hl-8"> </span><span class="hl-7">1</span><span class="hl-3">}</span><span class="hl-2"> spawned with </span><span class="hl-3">${</span><span class="hl-6">count</span><span class="hl-3">}</span><span class="hl-2"> stocks remaining`</span><span class="hl-1">);</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-6">realtime</span><span class="hl-1">.</span><span class="hl-6">combo</span><span class="hl-1">.</span><span class="hl-6">end$</span><span class="hl-1">.</span><span class="hl-0">subscribe</span><span class="hl-1">(() </span><span class="hl-3">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-6">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-2">&quot;wombo combooo!!&quot;</span><span class="hl-1">);</span><br/><span class="hl-1">});</span>
+</code><button>Copy</button></pre>
+<a id="md:detecting-custom-combos" class="tsd-anchor"></a><h3><a href="#md:detecting-custom-combos">Detecting Custom Combos</a></h3><p>We can subscribe to the end of any and every combo but really what we want is to filter for specific combos.</p>
+<p>First, instantiate a <code>ComboFilter</code>. For all the possible filtering options, see <a href="api/types.md#combofiltersettings">ComboFilterSettings</a>.</p>
+<pre><code class="language-javascript"><span class="hl-3">const</span><span class="hl-1"> { </span><span class="hl-4">ComboFilter</span><span class="hl-1"> } = </span><span class="hl-0">require</span><span class="hl-1">(</span><span class="hl-2">&quot;@vinceau/slp-realtime&quot;</span><span class="hl-1">);</span><br/><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-4">comboFilter</span><span class="hl-1"> = </span><span class="hl-3">new</span><span class="hl-1"> </span><span class="hl-0">ComboFilter</span><span class="hl-1">();</span><br/><span class="hl-6">comboFilter</span><span class="hl-1">.</span><span class="hl-0">updateSettings</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-6">excludeCPUs:</span><span class="hl-1"> </span><span class="hl-3">false</span><span class="hl-1">, </span><span class="hl-5">// combos on CPUs are okay</span><br/><span class="hl-1">  </span><span class="hl-6">comboMustKill:</span><span class="hl-1"> </span><span class="hl-3">false</span><span class="hl-1">, </span><span class="hl-5">// combos don&#39;t have to kill</span><br/><span class="hl-1">  </span><span class="hl-6">minComboPercent:</span><span class="hl-1"> </span><span class="hl-7">40</span><span class="hl-1">, </span><span class="hl-5">// combos have to do at least 40% damage</span><br/><span class="hl-1">});</span>
+</code><button>Copy</button></pre>
+<p><code>ComboFilter</code> has an <code>isCombo()</code> method which returns <code>true</code> if a given combo matches the specified criteria. We can hook it up to our live stream with the following:</p>
+<pre><code class="language-javascript"><span class="hl-6">realtime</span><span class="hl-1">.</span><span class="hl-6">combo</span><span class="hl-1">.</span><span class="hl-6">end$</span><span class="hl-1">.</span><span class="hl-0">subscribe</span><span class="hl-1">((</span><span class="hl-6">payload</span><span class="hl-1">) </span><span class="hl-3">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-3">const</span><span class="hl-1"> { </span><span class="hl-4">combo</span><span class="hl-1">, </span><span class="hl-4">settings</span><span class="hl-1"> } = </span><span class="hl-6">payload</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-9">if</span><span class="hl-1"> (</span><span class="hl-6">comboFilter</span><span class="hl-1">.</span><span class="hl-0">isCombo</span><span class="hl-1">(</span><span class="hl-6">combo</span><span class="hl-1">, </span><span class="hl-6">settings</span><span class="hl-1">)) {</span><br/><span class="hl-1">    </span><span class="hl-6">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-2">&quot;Combo matched!&quot;</span><span class="hl-1">);</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">});</span>
+</code><button>Copy</button></pre>
+<a id="md:make-a-custom-hud" class="tsd-anchor"></a><h3><a href="#md:make-a-custom-hud">Make a Custom HUD</a></h3><p>Want to make your own HUD?</p>
+<ol>
+<li>Subscribe to percent and stock changes</li>
+<li>Write the data to a file</li>
+<li>Add files to OBS</li>
+<li><a href="examples/custom-hud">???</a></li>
+<li>Profit!!</li>
+</ol>
+<pre><code class="language-javascript"><span class="hl-6">realtime</span><span class="hl-1">.</span><span class="hl-6">stock</span><span class="hl-1">.</span><span class="hl-6">percentChange$</span><span class="hl-1">.</span><span class="hl-0">subscribe</span><span class="hl-1">((</span><span class="hl-6">payload</span><span class="hl-1">) </span><span class="hl-3">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-4">player</span><span class="hl-1"> = </span><span class="hl-6">payload</span><span class="hl-1">.</span><span class="hl-6">playerIndex</span><span class="hl-1"> + </span><span class="hl-7">1</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-6">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-2">`player </span><span class="hl-3">${</span><span class="hl-6">player</span><span class="hl-3">}</span><span class="hl-2"> percent: </span><span class="hl-3">${</span><span class="hl-6">payload</span><span class="hl-8">.</span><span class="hl-6">percent</span><span class="hl-3">}</span><span class="hl-2">`</span><span class="hl-1">);</span><br/><span class="hl-1">  </span><span class="hl-6">fs</span><span class="hl-1">.</span><span class="hl-0">writeFileSync</span><span class="hl-1">(</span><span class="hl-2">`./player</span><span class="hl-3">${</span><span class="hl-6">player</span><span class="hl-3">}</span><span class="hl-2">Percent.txt`</span><span class="hl-1">, </span><span class="hl-6">payload</span><span class="hl-1">.</span><span class="hl-6">percent</span><span class="hl-1">.</span><span class="hl-0">toFixed</span><span class="hl-1">(</span><span class="hl-7">0</span><span class="hl-1">));</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-6">realtime</span><span class="hl-1">.</span><span class="hl-6">stock</span><span class="hl-1">.</span><span class="hl-6">countChange$</span><span class="hl-1">.</span><span class="hl-0">subscribe</span><span class="hl-1">((</span><span class="hl-6">payload</span><span class="hl-1">) </span><span class="hl-3">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-4">player</span><span class="hl-1"> = </span><span class="hl-6">payload</span><span class="hl-1">.</span><span class="hl-6">playerIndex</span><span class="hl-1"> + </span><span class="hl-7">1</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-6">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-2">`player </span><span class="hl-3">${</span><span class="hl-6">player</span><span class="hl-3">}</span><span class="hl-2"> stocks: </span><span class="hl-3">${</span><span class="hl-6">payload</span><span class="hl-8">.</span><span class="hl-6">stocksRemaining</span><span class="hl-3">}</span><span class="hl-2">`</span><span class="hl-1">);</span><br/><span class="hl-1">  </span><span class="hl-6">fs</span><span class="hl-1">.</span><span class="hl-0">writeFileSync</span><span class="hl-1">(</span><span class="hl-2">`./player</span><span class="hl-3">${</span><span class="hl-6">player</span><span class="hl-3">}</span><span class="hl-2">Stocks.txt`</span><span class="hl-1">, </span><span class="hl-6">payload</span><span class="hl-1">.</span><span class="hl-6">stocksRemaining</span><span class="hl-1">.</span><span class="hl-0">toString</span><span class="hl-1">());</span><br/><span class="hl-1">});</span>
+</code><button>Copy</button></pre>
+<p><strong>NOTE: Please don&#39;t actually do this for real custom HUDs. Writing to files is slow and OBS takes a long time to update after file changes. If you actually want to build a custom layout for OBS you should use a browser source and send updates using websockets instead of writing data to a file.</strong></p>
+<a id="md:setup-on-wsl" class="tsd-anchor"></a><h2><a href="#md:setup-on-wsl">Setup on WSL</a></h2><p>If you&#39;re running the Node project inside Windows Subsystem for Linux and running Dolphin or a relay in Windows, setup requires a couple extra steps:</p>
+<ol>
+<li><p>Change the address passed to <code>connection.connect()</code> to the one listed in <code>/etc/resolv.conf</code> instead of <code>localhost</code> (<a href="https://devdojo.com/mvnarendrareddy/access-windows-localhost-from-wsl2">see here</a>)</p>
+</li>
+<li><p>Add a firewall rule allowing access from WSL (<a href="https://superuser.com/a/1620974">see here</a>)</p>
+</li>
+</ol>
+<a id="md:development" class="tsd-anchor"></a><h2><a href="#md:development">Development</a></h2><p>To build the library from source:</p>
+<pre><code class="language-bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">build</span>
+</code><button>Copy</button></pre>
+<p>To start the development server:</p>
+<pre><code class="language-bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">watch</span>
+</code><button>Copy</button></pre>
+<p>To run the tests:</p>
+<pre><code class="language-bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">test</span>
+</code><button>Copy</button></pre>
+<a id="md:acknowledgements" class="tsd-anchor"></a><h2><a href="#md:acknowledgements">Acknowledgements</a></h2><p>This project was made possible by:</p>
+<ul>
+<li><p><a href="https://github.com/JLaferri">Jas Laferriere</a> and the rest of the <a href="https://github.com/project-slippi">Project Slippi</a> team</p>
+</li>
+<li><p><a href="https://github.com/NikhilNarayana">NikhilNarayana</a> and his <a href="https://gist.github.com/NikhilNarayana/d45e328e9ea47127634f2faf575e8dcf">Get Slippi Combos</a> script</p>
+</li>
+</ul>
+<a id="md:license" class="tsd-anchor"></a><h2><a href="#md:license">License</a></h2><p>This software is released under the terms of <a href="LICENSE">MIT license</a>.</p>
+<p>Linking back to <a href="https://github.com/vinceau/slp-realtime">this Github repo</a> is much appreciated.</p>
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-index-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><h4 class="uppercase">Member Visibility</h4><form><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div><div class="tsd-theme-toggle"><h4 class="uppercase">Theme</h4><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-index-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#md:slp-realtime"><span>slp-<wbr/>realtime</span></a><ul><li><a href="#md:highlights"><span>Highlights</span></a></li><li><a href="#md:installation"><span>Installation</span></a></li><li><a href="#md:usage"><span>Usage</span></a></li><li><ul><li><a href="#md:subscribing-to-in-game-events"><span>Subscribing to <wbr/>In-<wbr/>Game <wbr/>Events</span></a></li><li><a href="#md:detecting-custom-combos"><span>Detecting <wbr/>Custom <wbr/>Combos</span></a></li><li><a href="#md:make-a-custom-hud"><span>Make a <wbr/>Custom HUD</span></a></li></ul></li><li><a href="#md:setup-on-wsl"><span>Setup on WSL</span></a></li><li><a href="#md:development"><span>Development</span></a></li><li><a href="#md:acknowledgements"><span>Acknowledgements</span></a></li><li><a href="#md:license"><span>License</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="assets/icons.svg#icon-1"></use></svg><span>@vinceau/slp-realtime</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="."><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>
