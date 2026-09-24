@@ -37,7 +37,7 @@ comboFilter.updateSettings({
 const connection = new DolphinConnection();
 
 // Pipe the raw message data to the stream for processing
-connection.on("message", (data) => {
+connection.on("data", (data) => {
   stream.process(data);
 });
 
@@ -60,6 +60,11 @@ connection
     console.log("Connected to Slippi");
   })
   .catch(console.error);
+
+realtime.stock.percentChange$.subscribe((percentChange) => {
+  const { playerIndex, percent } = percentChange;
+  console.log(`Player ${playerIndex + 1} currently has ${Math.trunc(percent)}%`);
+});
 
 // We can choose exactly which events we want to subscribe for
 // by using the pipe command. Learn more by reading the RxJS docs.
